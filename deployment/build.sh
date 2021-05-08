@@ -85,7 +85,6 @@ view()
     scp -i ${PEM} -r ${SERVER}:env/view/* ./
     docker run -t -v ${PWD}:/app/view view ./dockerbuild.sh
     echo -e "${GREEN}Building UI/view Completed!${RESET}"
-    cd ..
     #copy contents of view to build
     mkdir -p build/view
     echo -e "${YELLOW}Copying View to build folder. Please wait this may take sometime....${RESET}"
