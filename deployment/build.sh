@@ -88,7 +88,7 @@ view()
     #copy contents of view to build
     mkdir -p build/view
     echo -e "${YELLOW}Copying View to build folder. Please wait this may take sometime....${RESET}"
-    rsync -rl --exclude=node_modules ${OXHOME}/ ${OXHOME}/build/view/
+    rsync -rl --exclude=node_modules --exclude=build ${OXHOME}/ ${OXHOME}/build/view/
     mkdir -p ${OXHOME}/build/view/bos/node_modules
     rsync -rl --delete ${OXHOME}/bos/node_modules/ ${OXHOME}/build/view/bos/node_modules/
     rsync -rl --delete ${OXHOME}/gui/node_modules/ ${OXHOME}/build/view/gui/node_modules/
