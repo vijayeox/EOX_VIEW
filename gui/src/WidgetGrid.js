@@ -227,7 +227,7 @@ export default class WidgetGrid extends React.Component {
     }
 
     cellRender(tdElement, cellProps, thiz) {
-        let target = this.props.configuration["oxzion-meta"]["drillDown"];
+        let target = this.props.configuration["oxzion-meta"].drillDown;
         if (cellProps.rowType === 'groupFooter') {
             let element = null
             if (thiz.props.configuration["groupable"] && thiz.props.configuration["groupable"] != false && thiz.props.configuration["groupable"]["aggregate"]) {

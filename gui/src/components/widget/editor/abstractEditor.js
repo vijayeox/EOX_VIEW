@@ -11,7 +11,7 @@ class AbstractEditor extends React.Component {
             widgetType: null,
             readOnly: true,
             queries: [],
-            configuration: '',
+            configuration: null,
             drillDownFilter: '',
             drillDownWidget: '',
             drillDownTarget: '',
@@ -32,12 +32,34 @@ class AbstractEditor extends React.Component {
                 expression: null,
                 drillDown: {},
                 queries: [],
-                target: { singleLevel: {}, multiLevel: {} }
+                target:{singleLevel:{},multiLevel:{}}
             }
         };
-        this.widgetTypes = [{ "label": "Chart", "value": "chart" }, { "label": "Inline", "value": "inline" }, { "label": "Table", "value": "table" }, { "label": "Dashboard", "value": "dashboard" }, { "label": "File", "value": "file" }]
+        this.widgetTypes = [{ "label": "Chart", "value": "chart" }, { "label": "Inline", "value": "inline" }, { "label": "Table", "value": "table" }, { "label": "Dashboard", "value": "dashboard" }]
+        this.widgetJson={
+            "chart":[
+                {"name":"Area","value":"area_chart"},
+                {"name":"Bar","value":"bar_chart"},
+                {"name":"Column","value":"column_chart"},
+                {"name":"Funnel","value":"funnel_chart"},
+                {"name":"Line","value":"line_chart"},
+                {"name":"map","value":"map"},
+                {"name":"Multi Axis Cluster Column","value":"multi_axis_cluster_column_chart"},
+                {"name":"Pie","value":"pie_chart"},
+                {"name":"Stacked Horizontal Bar","value":"stacked_horizontal_bar_chart"}
+            ],
+            "table":[
+                {"name":"Area","value":"area_chart"}
+            ],
+            "Aggregate value":[
+            ],
+            "Profile":[
+
+            ]
+        }
         this.queryList = [];
         this.data = null;
+        this.selectedOption=null
     }
 
     getState = () => {
@@ -94,22 +116,23 @@ class AbstractEditor extends React.Component {
         if (name == "drillDownMaxDepth") {
             hasMaxDepth = true
             this.setState({ [name]: value, hasMaxDepth: hasMaxDepth, errors: errors })
-        } else if (name == "drillDownWidget") {
+        }
+        else if (name == "drillDownWidget") {
             if (value !== 'dashboard') {
                 hasMaxDepth = (this.props.widget["uuid"] && this.props.widget["uuid"] === value)
                 this.setState({ [name]: value, hasMaxDepth: hasMaxDepth, errors: errors })
             }
-        } else if (name == "drillDownWidgetType") {
+        }
+        else if (name == "drillDownWidgetType") {
             let filteredWidgetList = null
-            if (value === 'dashboard') {
+            if (value == 'dashboard') {
                 filteredWidgetList = this.props.selectableDashboardOptions.filter(option => option.type == value)
-            } else if (value === 'file') {
-                filteredWidgetList = this.props.selectableAppOptions.filter(option => option.type == value)
             } else {
                 filteredWidgetList = this.props.selectableWidgetOptions.filter(option => option.type == value)
             }
             this.setState({ filteredWidgetList: filteredWidgetList, drillDownWidgetType: e, drillDownWidget: "" })
-        } else {
+        }
+        else {
             this.setState({ [name]: value, errors: errors })
         }
     }
@@ -124,7 +147,7 @@ class AbstractEditor extends React.Component {
                 queries.push({
                     'uuid': query.uuid,
                     'configuration': {
-                        'filter': configuration ? (configuration.filter ? JSON.stringify(configuration.filter, null, '') : '') : '',
+                        'filter': configuration ? (configuration.filter ? JSON.stringify(configuration.filter, null, '    ') : '') : '',
                         'grouping': configuration ? (configuration.grouping ? JSON.stringify(configuration.grouping, null, '') : '') : '',
                         'sort': configuration ? (configuration.sort ? JSON.stringify(configuration.sort, null, '') : '') : ''
                     },
@@ -140,7 +163,7 @@ class AbstractEditor extends React.Component {
             state.widgetType = type;
             return state;
         }, () => {
-            if (this.state.selectedTab !== '' && (this.state.selectedTab == "widget" || this.state.selectedTab == "chart" || this.state.selectedTab == "profile")) {
+            if (this.state.selectedTab !== '' && (this.state.selectedTab == "widget" || this.state.selectedTab == "chart")) {
                 thiz.refreshViews();
             } else if (this.state.selectedTab !== '' && this.state.selectedTab == "query") {
                 thiz.refreshQueryPreview()
@@ -187,20 +210,8 @@ class AbstractEditor extends React.Component {
         });
         return errorMessage ? false : true;
     }
-
     getSelectedWidgetType = () => {
-        switch (this.state.drillDownWidgetType.value) {
-            case 'file':
-                this.state.drillDownWidgetType.value = "file";
-                break;
-            case 'widget':
-                this.state.drillDownWidgetType.value = "widget";
-                break;
-            default:
-                this.state.drillDownWidgetType.value = "dashboard";
-        }
-        return this.state.drillDownWidgetType.value;
-        // return this.state.drillDownWidgetType.value !== "dashboard" ? this.state.drillDownWidgetType.value !== "widget" ? "file" : "widget" : "dashboard";
+        return this.state.drillDownWidgetType.value !== "dashboard" ? "widget" : "dashboard";
     }
 
     ApplyDrillDown = (widgetType) => {
@@ -238,16 +249,14 @@ class AbstractEditor extends React.Component {
     }
 
     setDrillDownTargetType(target) {
-        if (this.state.drillDownWidget.length > 0) {
-            let selectedDrillDownOption = null
+        if (this.state.selectableWidgetOptions.length > 0) {
+            let selectedWidgetOption = null
             if (target == "dashboard") {
-                selectedDrillDownOption = this.state.selectableDashboardOptions.filter(option => option.value == this.state.drillDownWidget)
-            } else if (target == "file") {
-                selectedDrillDownOption = this.state.selectableAppOptions.filter(option => option.value == this.state.drillDownWidget)
+                selectedWidgetOption = this.state.selectableDashboardOptions.filter(option => option.value == this.state.drillDownWidget)
             } else {
-                selectedDrillDownOption = this.state.selectableWidgetOptions.filter(option => option.value == this.state.drillDownWidget)
+                selectedWidgetOption = this.state.selectableWidgetOptions.filter(option => option.value == this.state.drillDownWidget)
             }
-            let widget = selectedDrillDownOption[0] ? selectedDrillDownOption[0]["type"] : ''
+            let widget = selectedWidgetOption[0] ? selectedWidgetOption[0]["type"] : ''
             let selectedWidget = widget
             let widgetType = this.widgetTypes.filter(option => option.value == selectedWidget)
             this.setState({ drillDownWidgetType: widgetType[0] })
@@ -293,17 +302,11 @@ class AbstractEditor extends React.Component {
     }
 
     getSelectedDrillDownWidget() {
-        switch (this.state.drillDownWidgetType.value) {
-            case 'file':
-                this.props.selectableAppOptions.filter(option => option.value == this.state.drillDownWidget)
-                break;
-            case 'widget':
+        if (this.state.drillDownWidgetType !== "") {
+            return this.state.drillDownWidgetType.value == "dashboard" ?
+                this.props.selectableDashboardOptions.filter(option => option.value == this.state.drillDownWidget)
+                :
                 this.props.selectableWidgetOptions.filter(option => option.value == this.state.drillDownWidget)
-                break;
-            case 'dashboard':
-                this.props.selectableDashboardOptions.filter(option => option.value == this.state.drillDownWidget)
-            default:
-                this.props.selectableDashboardOptions.filter(option => option.value == this.state.drillDownWidget)
         }
     }
 
@@ -360,6 +363,7 @@ class AbstractEditor extends React.Component {
                 this.data = response.widget.data;
                 this.refreshWidgetPreview();
             }
+
         }).catch((err)=> console.log("err-->",err));
        
     }
@@ -612,7 +616,7 @@ class AbstractEditor extends React.Component {
                     text: 'Failed to load queries. Please try after some time.'
                 });
             });
-    }
+    }  
 }
 
 export default AbstractEditor;
