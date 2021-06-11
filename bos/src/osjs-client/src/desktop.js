@@ -788,7 +788,7 @@ export default class Desktop extends EventEmitter {
         title: 'Privacy and Policy',
         allowOutsideClick: false,
         input: 'checkbox',
-        inputPlaceholder: 'I have read the EOX Vatage <a href="./privacy-policy" target="_blank">Privacy and Policy</a>. I agree with the terms and conditions.',
+        inputPlaceholder: 'I have read the EOX Vantage <a href="./privacy-policy" target="_blank">Privacy and Policy</a>. I agree with the terms and conditions.',
         confirmButtonText:
         'Continue <i class="fa fa-arrow-right"></i>',
         inputValidator: (result) => {
