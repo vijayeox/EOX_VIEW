@@ -259,6 +259,7 @@ div#filter-form-container.show-filter-panel {
     display: flex;
     align-items: center;
     position: relative;
+    margin-bottom: 2em;
   }
 }
 
@@ -270,15 +271,19 @@ div#filter-form-container.show-filter-panel {
   padding: 1em;
   border: none;
   width: max-content;
-  min-width: 100%;
+  max-width: 100%;
 }
 
 .dashboard-rollup-button {
-  color: black;
+  color: white;
   cursor: pointer;
-  right: 1%;
+  right: 0%;
   position: absolute;
-  top: 0.4%;
+  top: 15%;
+  background-color: rgb(39, 83, 98);
+  overflow: hidden;
+  padding: 0.5em 1em;
+  border-radius: 0 0.25rem 0.25rem 0;
 }
 
 .dashboard-filter-description {

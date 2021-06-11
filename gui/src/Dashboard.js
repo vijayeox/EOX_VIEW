@@ -81,7 +81,7 @@ class Dashboard extends Component {
 				this.props.dashboardStack[this.props.dashboardStack.length - 1][
 				"drilldownDashboardTitle"
 				];
-			backButton = `<div id='dashboard-rollup-button' title="Previous OI" class='dashboard-rollup-button badge'><i class='fa fa-arrow-left'  aria-hidden='true'></i></div>`;
+			backButton = `<div id='dashboard-rollup-button' title="Previous OI" class='dashboard-rollup-button'><i class='fa fa-arrow-circle-left'  aria-hidden='true'></i></div>`;
 			dashboardFilterDescription =
 				"<span class='badge badge-info dashboard-filter-description' id='dashboard-drilldown-title'>" +
 				dashboardTitle +
