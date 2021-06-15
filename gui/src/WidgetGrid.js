@@ -227,7 +227,6 @@ export default class WidgetGrid extends React.Component {
     }
 
     cellRender(tdElement, cellProps, thiz) {
-        let target = this.props.configuration["oxzion-meta"].drillDown;
         if (cellProps.rowType === 'groupFooter') {
             let element = null
             if (thiz.props.configuration["groupable"] && thiz.props.configuration["groupable"] != false && thiz.props.configuration["groupable"]["aggregate"]) {
@@ -253,8 +252,12 @@ export default class WidgetGrid extends React.Component {
                     return <td>{formattedSum}</td>
                 }
             }
-        } else if (target["target"] == "link") {
-            return <td><a eoxapplication={target["AppName"]} file-id={column.uuid}>{column.name}</a></td>
+        }
+        if (this.props.configuration["oxzion-meta"]["drillDown"] != null) {
+            let target = this.props.configuration["oxzion-meta"]["drillDown"];
+            if (target["target"] == "link") {
+                return <td><a eoxapplication={target["AppName"]} file-id={column.uuid}>{column.name}</a></td>
+            }
         }
         return tdElement;
     }
