@@ -181,10 +181,69 @@ export default class Desktop extends EventEmitter {
     this.keyboardContext = ctx;
   }
 
+
+  disableAppInput( Value ){
+    const appList = this.core.make('osjs/packages')
+      .getPackages(q => q.disableAppInput === true);
+    
+    for (let i = 0; i < appList.length; i++) {
+      var name = appList[i].name;
+      var appClassName= 'Window_' + name;
+      var appWin = document.getElementsByClassName(appClassName);
+      var forms = document.getElementsByClassName('form-render');
+
+      try{
+        if(Value == true){
+          for (let a = 0; a < forms.length; a++) {////////////is it necessary anather for
+              if( appWin[0].contains( forms[a])){
+              forms[a].style.pointerEvents = "none";
+            }
+          }
+
+          appWin[0].firstChild.style.opacity = "0.5";
+          appWin[0].firstChild.childNodes[0].childNodes[2].style.pointerEvents = "none";
+          appWin[0].firstChild.childNodes[1].style.pointerEvents = "none";
+
+          let maskApp = document.createElement('div');
+          maskApp.className = 'osjs-mask-application';
+          maskApp.innerHTML= '<div style="color: #275362;font-style: normal;font-size: xx-large;"> Please Wait for network connection</div>'
+          var myElem = appWin[0].getElementsByClassName('osjs-mask-application');
+          if(myElem.length == 0){
+            appWin[0].firstChild.childNodes[1].appendChild(maskApp);
+          } 
+        }
+
+        else if (Value == false){
+          for (let b = 0; b < forms.length; b++) {
+              if( appWin[0].contains( forms[b])){
+              forms[b].style.pointerEvents = "auto";
+            }
+          }
+
+          appWin[0].firstChild.style.opacity = '1';
+          appWin[0].firstChild.childNodes[0].childNodes[2].style.pointerEvents = "auto";
+          appWin[0].firstChild.childNodes[1].style.pointerEvents = "auto";
+
+          var childLoader = appWin[0].firstChild.childNodes[1].querySelector('.osjs-mask-application')
+            if (childLoader) {
+              childLoader.remove()
+            } else {
+              document.querySelector('.osjs-mask-application') && document.querySelector('.osjs-mask-application').remove()
+            }
+        }
+      }
+      //if application is not open
+      catch(err){
+        console.log(err);
+      }
+    }
+  }
+
+
   initConnectionEvents() {
     this.core.on('osjs/core:disconnect', ev => {
       console.warn('Connection closed', ev);
-
+      this.disableAppInput(true);
       const _ = this.core.make('osjs/locale').translate;
       this.core.make('osjs/notification', {
         title: _('LBL_CONNECTION_LOST'),
@@ -194,8 +253,10 @@ export default class Desktop extends EventEmitter {
 
     this.core.on('osjs/core:connect', (ev, reconnected) => {
       console.info('Connection opened');
+      this.disableAppInput(false);
 
-      if (reconnected) {
+     if (reconnected) {
+        this.disableAppInput(false);
         const _ = this.core.make('osjs/locale').translate;
         this.core.make('osjs/notification', {
           title: _('LBL_CONNECTION_RESTORED'),
