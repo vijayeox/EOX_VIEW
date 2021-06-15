@@ -1,0 +1,1595 @@
+{
+	"_id": "5e75cb1f7aa5b89ae9f2d011",
+	"type": "resource",
+	"tags": [],
+	"owner": "5e1f430cb451f91416ebd5cd",
+	"components": [{
+		"input": true,
+		"tableView": true,
+		"key": "orgId",
+		"label": "orgId",
+		"type": "hidden",
+		"lockKey": true,
+		"defaultValue": "f0033dc0-126b-40ba-89e0-d3061bdeda4c"
+	}, {
+		"input": true,
+		"tableView": true,
+		"key": "commands",
+		"label": "commands",
+		"type": "hidden",
+		"lockKey": true,
+		"defaultValue": "[\"create_user\",\"store_cache_data\",\"sign_in\"]"
+	}, {
+		"label": "workflow_uuid",
+		"calculateValue": "if(productName=='IPLRegister'){\n  value = 'f0efea9e-7863-4368-a9b2-baa1a1603067';\n} else if(productName == 'DiveStore'){\n  value = 'cb99e634-de00-468d-9230-d6f77d241c5b';\n} else if(productName == 'DiveBoat'){\n  value = 'bb15e393-11b9-48ea-bc5a-5b7616047cb1';\n} else if(productName == 'EFR'){\n  value = 'cb74d176-225a-11ea-978f-2e728ce88125';\n} else {\n  value = 'f0efea9e-7863-4368-a9b2-baa1a1603067';\n}",
+		"key": "workflow_uuid",
+		"type": "hidden",
+		"input": true,
+		"tableView": false
+	}, {
+		"label": "product",
+		"defaultValue": "Individual Professional Liability",
+		"calculateValue": "if(productName=='IPLRegister'){\n  value = 'Individual Professional Liability';\n} else if(productName == 'DiveStore'){\n  value = 'Dive Store';\n} else if(productName == 'DiveBoat'){\n  value = 'Dive Boat';\n} else if(productName == 'EFR'){\n  value = 'Emergency First Response';\n} else {\n  value = 'Individual Professional Liability';\n}",
+		"key": "product",
+		"type": "hidden",
+		"input": true,
+		"tableView": true,
+		"lockKey": true,
+		"hideOnChildrenHidden": false
+	}, {
+		"label": "product_email_id",
+		"calculateValue": "if(productName=='IPLRegister'){\n  value = 'instructors@diveinsurance.com';\n} else if(productName == 'DiveStore'){\n  value = 'divestore@diveinsurance.com';\n} else if(productName == 'DiveBoat'){\n  value = 'diveboat@diveinsurance.com';\n} else if(productName == 'EFR'){\n  value = 'efr@diveinsurance.com';\n} else {\n  value = 'instructors@diveinsurance.com';\n}",
+		"key": "product_email_id",
+		"type": "hidden",
+		"input": true,
+		"tableView": false
+	}, {
+		"label": "page",
+		"defaultValue": "1",
+		"calculateValue": "if(data.product == 'Dive Store'){\n  value = 0;\n} else {\n  value =1;\n}",
+		"key": "page",
+		"type": "hidden",
+		"input": true,
+		"tableView": true,
+		"lockKey": true
+	}, {
+		"label": "policyStartYear",
+		"protected": true,
+		"calculateValue": "var presentYear = moment().format('YYYY');\nvar presentMonth = moment().month();\nvar presentDate = moment().format('DD');\nif(productName != 'DiveBoat'){\n  if(presentMonth == 5 && presentDate <= 30 && presentYear == 2020){\n\t  value = presentYear;\n  }else if(presentMonth == 5 && presentDate == 30){\n    value = presentYear;\n  }else if(presentMonth > 5 && presentMonth <= 11){\n\t  value = presentYear;\n  }else if(presentMonth <= 5){\n\t  value = presentYear - 1;\n  }  \n}else{\n  if(presentMonth == 6 && presentDate <= 22 && presentYear == 2020){\n\t  value = presentYear;\n  }else if(presentMonth == 6 && presentDate >= 22){\n    value = presentYear;\n  }else if(presentMonth > 6 && presentMonth <= 11){\n\t  value = presentYear;\n  }else if(presentMonth <= 6){\n\t  value = presentYear - 1;\n  }  \n}",
+		"key": "policyStartYear",
+		"type": "hidden",
+		"input": true,
+		"tableView": false
+	}, {
+		"label": "policyEndYear",
+		"calculateValue": "value = parseInt(data.policyStartYear) + 1;",
+		"key": "policyEndYear",
+		"type": "hidden",
+		"input": true,
+		"tableView": false
+	}, {
+		"label": "Columns",
+		"input": false,
+		"tableView": false,
+		"key": "panelColumns3",
+		"columns": [{
+			"components": [{
+				"label": "Content",
+				"attrs": [{
+					"value": "",
+					"attr": ""
+				}],
+				"content": "<center><b><font color=\"blue\"> Policy Period is from 12:01 AM June 30, {{data.policyStartYear}} through 12:01 AM June 30, {{data.policyEndYear}}</font></b></center><br/>\n\n                   <center><b> APPLICATIONS MUST BE RECEIVED IN OUR OFFICE BY JUNE 30, {{data.policyEndYear}}.\n                                                      THERE IS NO GRACE PERIOD. ALL OTHERS WILL BE EFFECTIVE ON THE DATE RECEIVED.\t</b> </center><br/>\n\n                                        <center> <b><font color=\"blue\">Exclusively for PADI Professional Member & Resort Members</font></b></center>\n \t \t <br/>\n   \t                             <center>  Underwritten by a U.S. Rated A++ XV Insurer</center>",
+				"refreshOnChange": true,
+				"tableView": false,
+				"key": "panelColumns3Content",
+				"customConditional": "show = false;\nif(productName == 'IPLRegister' || productName == 'EFR' || productName == 'DiveStore'){\n   show =true;\n}",
+				"type": "htmlelement",
+				"input": false,
+				"hideLabel": true,
+				"hideOnChildrenHidden": false
+			}, {
+				"label": "Content",
+				"attrs": [{
+					"value": "",
+					"attr": ""
+				}],
+				"content": "<center><b><font color=\"blue\"> Policy Period is from 12:01 AM July 22, {{data.policyStartYear}} through 12:01 AM July 22, {{data.policyEndYear}}  \t</font></b></center><br/>\n\n                   <center><b> APPLICATIONS MUST BE RECEIVED IN OUR OFFICE BY JULY 22, {{data.policyEndYear}}.\n                                                      THERE IS NO GRACE PERIOD. ALL OTHERS WILL BE EFFECTIVE ON THE DATE RECEIVED.\t</b> </center><br/>\n\n                                        <center> <b><font color=\"blue\">Exclusively for PADI Professional Member & Resort Members</font></b></center>\n \t \t <br/>\n   \t                             <center>  Underwritten by a U.S. Rated A++ XV Insurer</center>",
+				"refreshOnChange": true,
+				"tableView": false,
+				"key": "panelColumns3Content1",
+				"customConditional": "show = false;\nif(productName == 'DiveBoat'){\n   show =true;\n}",
+				"type": "htmlelement",
+				"input": false,
+				"hideLabel": true,
+				"hideOnChildrenHidden": false
+			}],
+			"width": 6,
+			"offset": 0,
+			"push": 0,
+			"pull": 0,
+			"size": "md"
+		}, {
+			"components": [],
+			"width": 2,
+			"offset": 0,
+			"push": 0,
+			"pull": 0,
+			"size": "md"
+		}, {
+			"components": [{
+				"label": "Content",
+				"attrs": [{
+					"value": "",
+					"attr": ""
+				}],
+				"content": "<center><h3><b>CONTACT US!</b></h3></br>\n \t\n<i>Have questions?</br></br></i>\nCall us at \n<font color=\"blue\">1 800 223 9998 </font>\nor \n<font color=\"blue\">1 714 739 3177</font></br></br>\n\nFAX us at\n<font color=\"blue\">1 714 739 3188</font></br></br>\n\nEmail us at <font color=\"blue\">{{data.product_email_id}}</font></center>",
+				"refreshOnChange": true,
+				"tableView": false,
+				"key": "panelColumns3Content2",
+				"type": "htmlelement",
+				"input": false,
+				"hideLabel": true,
+				"hideOnChildrenHidden": false
+			}],
+			"width": 4,
+			"offset": 0,
+			"push": 0,
+			"pull": 0,
+			"size": "md"
+		}],
+		"type": "columns",
+		"hideLabel": true,
+		"path": "panelColumns3"
+	}, {
+		"key": "panelPanel2",
+		"input": false,
+		"title": "PADI Validation",
+		"theme": "primary",
+		"tableView": false,
+		"components": [{
+			"label": "Columns",
+			"input": false,
+			"tableView": false,
+			"key": "panelColumns",
+			"columns": [{
+				"components": [],
+				"width": 4,
+				"offset": 0,
+				"push": 0,
+				"pull": 0,
+				"size": "md"
+			}, {
+				"components": [{
+					"label": "PADI Number",
+					"mask": false,
+					"autofocus": true,
+					"spellcheck": false,
+					"tableView": false,
+					"delimiter": false,
+					"requireDecimal": false,
+					"inputFormat": "plain",
+					"validate": {
+						"required": true,
+						"customMessage": "Please provide a valid PADI Number",
+						"max": null
+					},
+					"key": "padiNumber",
+					"logic": [{
+						"name": "Check PADI Verified",
+						"trigger": {
+							"type": "javascript",
+							"javascript": "if (\n  (data[\"padiVerified\"] == true || (data[\"padiNotFound\"] == true || data[\"padiNotFound\"] == 'true')) &&\n  (data[\"user_exists\"] == 0 || data[\"user_exists\"] == \"0\")\n) {\n  result = true;\n} else if((data['businessPadiVerified']===true || data['businessPadiVerified']=='true') && \n(data['product'] != 'Individual Professional Liability' && data['product']!='Emergency First Response')){\n  result = true;\n} else if((data['padiNotApplicable']===true || data['padiNotApplicable']=='true')){\n  result = false;\n} else {\n  result = false;\n}"
+						},
+						"actions": [{
+							"name": "Disable editing",
+							"type": "property",
+							"property": {
+								"label": "Disabled",
+								"value": "disabled",
+								"type": "boolean"
+							},
+							"state": true
+						}]
+					}, {
+						"name": "Check for Dive Store",
+						"trigger": {
+							"type": "simple",
+							"simple": {
+								"show": true,
+								"when": "product",
+								"eq": "Dive Store"
+							}
+						},
+						"actions": [{
+							"name": "Change Label",
+							"type": "property",
+							"property": {
+								"label": "Label",
+								"value": "label",
+								"type": "string"
+							},
+							"text": "PADI Store Number"
+						}]
+					}, {
+						"name": "Check if not Dive Store",
+						"trigger": {
+							"type": "javascript",
+							"simple": {
+								"show": true
+							},
+							"javascript": "if(data['product'] == 'Individual Professional Liability' || data['product'] == 'Emergency First Response'|| data['product'] == 'Dive Boat' ){\n  result = true;\n} else {\n  result = false;\n}"
+						},
+						"actions": [{
+							"name": "Set Label",
+							"type": "property",
+							"property": {
+								"label": "Label",
+								"value": "label",
+								"type": "string"
+							},
+							"text": "PADI Number"
+						}]
+					}],
+					"type": "number",
+					"decimalLimit": 0,
+					"input": true,
+					"inputType": "number",
+					"customError": "Cannot set property 'maxLength' of null",
+					"lockKey": true,
+					"hideOnChildrenHidden": false
+				}, {
+					"label": "Content",
+					"attrs": [{
+						"value": "",
+						"attr": ""
+					}],
+					"content": "<style>\n.alignCenter{\ntext-align:center\n}\n</style>",
+					"refreshOnChange": false,
+					"tableView": false,
+					"key": "panelColumnsContent",
+					"type": "htmlelement",
+					"input": false,
+					"hideLabel": true,
+					"hideOnChildrenHidden": false
+				}, {
+					"label": "Validate PADI Membership",
+					"action": "event",
+					"showValidations": false,
+					"theme": "success",
+					"customClass": "alignCenter",
+					"tableView": false,
+					"key": "validatePADIButton",
+					"properties": {
+						"commands": "{\"commands\":[{\"command\":\"verify_user\"},{\"command\":\"delegate\",\"delegate\":\"PadiVerification\"}]}"
+					},
+					"customConditional": "if (\n  data[\"verified\"] === true &&\n  (data[\"user_exists\"] === 0 || data[\"user_exists\"] == \"0\") && (data[\"padiNotApplicable\"] === false || data[\"padiNotApplicable\"] == \"false\")\n) {\n  show = false;\n} else {\n  show = true;\n}",
+					"overlay": {
+						"style": "text-align:center"
+					},
+					"type": "button",
+					"event": "callCommands",
+					"custom": "data['padidata'] = data['padi']",
+					"input": true,
+					"hideOnChildrenHidden": false
+				}, {
+					"label": "Change PADI Number",
+					"action": "event",
+					"showValidations": false,
+					"theme": "warning",
+					"customClass": "alignCenter",
+					"tableView": false,
+					"key": "changePadi",
+					"customConditional": "if (\n  data[\"verified\"] === true &&\n  (data[\"user_exists\"] === 0 || data[\"user_exists\"] == \"0\") && (data[\"padiNotApplicable\"] === false || data[\"padiNotApplicable\"] == \"false\")\n) {\n  show = true;\n} else {\n  show = false;\n}",
+					"logic": [{
+						"name": "Reset PADI",
+						"trigger": {
+							"type": "event",
+							"event": "resetPADI"
+						},
+						"actions": [{
+							"name": "Reset data values",
+							"type": "value",
+							"value": "data.padiVerified = false;\ndata.businessPadiVerified = false;\ndata.user_exists = 0;\ndata.padiNotFound = false;\ndata.verified = false;\ndata.firstname = \"\";\ndata.initial = \"\";\ndata.lastname = \"\";\ndata.sameasmailingaddress = true;\ndata.padiNotApplicable = false",
+							"property": {},
+							"state": ""
+						}]
+					}],
+					"type": "button",
+					"event": "resetPADI",
+					"input": true,
+					"hideOnChildrenHidden": false
+				}, {
+					"label": "Content",
+					"tag": "div",
+					"attrs": [{
+						"value": "text-align: center;background-color: #a94442;color: white;border-radius: 10px;line-height: 30px;",
+						"attr": "style"
+					}],
+					"content": "<div>PADI number already Registered!</div> <div>Please proceed to Login page.</div>",
+					"refreshOnChange": false,
+					"tableView": false,
+					"key": "panelColumnsContent3",
+					"customConditional": "show = ((data['user_exists']==1||data['user_exists']=='1'))",
+					"type": "htmlelement",
+					"input": false,
+					"hideLabel": true,
+					"hideOnChildrenHidden": false
+				}, {
+					"label": "Content",
+					"attrs": [{
+						"value": "text-align: center;background-color: #a94442;color: white;border-radius: 10px;line-height: 30px;",
+						"attr": "style"
+					}],
+					"content": "PADI Membership not Applicable for this Program",
+					"refreshOnChange": false,
+					"tableView": false,
+					"key": "panelColumnsContent2",
+					"customConditional": "show = (data['padiNotApplicable']===true || data['padiNotApplicable']=='true');",
+					"type": "htmlelement",
+					"input": false,
+					"hideLabel": true,
+					"hideOnChildrenHidden": false
+				}, {
+					"label": "Content",
+					"attrs": [{
+						"value": "text-align: center;background-color: #a94442;color: white;border-radius: 10px;line-height: 30px;",
+						"attr": "style"
+					}],
+					"content": "Your PADI membership may not be valid at this moment.  You may continue to complete an application for the PADI Endorsed Professional Liability coverage, however, an active PADI membership is required before coverage can be approved.  Please be sure validate your membership with PADI.",
+					"refreshOnChange": false,
+					"tableView": false,
+					"key": "panelColumnsContent4",
+					"customConditional": "show = (((data['padiNotFound']==true||data['padiNotFound']=='true') && (data['businessPadiNotFound']==true||data['businessPadiNotFound']=='true')) && (data['verified'] == true || data['verified']=='true') && (data['user_exists']!==1 && data['user_exists']!=='1') && (productName == 'IPLRegister'  || productName == 'EFR'))",
+					"type": "htmlelement",
+					"input": false,
+					"hideLabel": true,
+					"hideOnChildrenHidden": false
+				}, {
+					"label": "Content",
+					"attrs": [{
+						"value": "text-align: center;background-color: #a94442;color: white;border-radius: 10px;line-height: 30px;",
+						"attr": "style"
+					}],
+					"content": "Your PADI membership may not be valid at this moment.  You may continue to complete an application for the PADI Endorsed Dive Store coverage, however, an active PADI membership is required before coverage can be approved.  Please be sure validate your membership with PADI.",
+					"refreshOnChange": false,
+					"tableView": false,
+					"key": "panelColumnsContent4",
+					"customConditional": "show = (((data['padiNotFound']==true||data['padiNotFound']=='true') && (data['businessPadiNotFound']==true||data['businessPadiNotFound']=='true')) && (data['verified'] == true || data['verified']=='true') && (data['user_exists']!==1 && data['user_exists']!=='1') && productName == 'DiveStore')",
+					"type": "htmlelement",
+					"input": false,
+					"hideLabel": true,
+					"hideOnChildrenHidden": false
+				}, {
+					"label": "Content",
+					"attrs": [{
+						"value": "text-align: center;background-color: #a94442;color: white;border-radius: 10px;line-height: 30px;",
+						"attr": "style"
+					}],
+					"content": "Your PADI membership may not be valid at this moment.  You may continue to complete an application for the PADI Endorsed Dive Boat coverage, however, an active PADI membership is required before coverage can be approved.  Please be sure validate your membership with PADI.",
+					"refreshOnChange": false,
+					"tableView": false,
+					"key": "panelColumnsContent4",
+					"customConditional": "show = (((data['padiNotFound']==true||data['padiNotFound']=='true') && (data['businessPadiNotFound']==true||data['businessPadiNotFound']=='true')) && (data['verified'] == true || data['verified']=='true') && (data['user_exists']!==1 && data['user_exists']!=='1') && productName == 'DiveBoat')",
+					"type": "htmlelement",
+					"input": false,
+					"hideLabel": true,
+					"hideOnChildrenHidden": false
+				}, {
+					"label": "HTML",
+					"attrs": [{
+						"attr": "style",
+						"value": "text-align: center;background-color: #a94442;color: white;border-radius: 10px;line-height: 30px;"
+					}],
+					"content": "PADI Number cannot be blank",
+					"refreshOnChange": false,
+					"tableView": false,
+					"key": "html",
+					"conditional": {
+						"show": true,
+						"when": "padi_empty",
+						"eq": "true"
+					},
+					"type": "htmlelement",
+					"input": false,
+					"hideOnChildrenHidden": false,
+					"hideLabel": true
+				}, {
+					"label": "padi",
+					"calculateValue": "value = \"\";\nif((productName == 'DiveBoat' && (data.businessPadiVerified == 'false' || data.businessPadiVerified === false)) || productName != 'DiveStore'){\n  value = data.padiNumber;\n}",
+					"key": "padi",
+					"type": "hidden",
+					"input": true,
+					"tableView": false,
+					"hideOnChildrenHidden": false
+				}, {
+					"label": "business_padi",
+					"calculateValue": "value = \"\";\nif(productName == 'DiveStore' || (productName == 'DiveBoat' && (data.businessPadiVerified == 'true' || data.businessPadiVerified === true))){\n  value = data.padiNumber;\n}",
+					"key": "business_padi",
+					"type": "hidden",
+					"input": true,
+					"tableView": false,
+					"hideOnChildrenHidden": false
+				}, {
+					"label": "padiEmpty",
+					"key": "padi_empty",
+					"type": "hidden",
+					"input": true,
+					"tableView": false,
+					"hideOnChildrenHidden": false
+				}, {
+					"input": true,
+					"tableView": true,
+					"key": "padiNotFound",
+					"label": "padiNotFound",
+					"type": "hidden",
+					"lockKey": true,
+					"defaultValue": "false",
+					"hideOnChildrenHidden": false
+				}, {
+					"input": true,
+					"tableView": true,
+					"key": "verified",
+					"label": "verified",
+					"protected": true,
+					"persistent": false,
+					"type": "hidden",
+					"lockKey": true,
+					"defaultValue": "false",
+					"hideOnChildrenHidden": false
+				}, {
+					"label": "identifier_field",
+					"defaultValue": "padi",
+					"key": "identifier_field",
+					"type": "hidden",
+					"input": true,
+					"tableView": true,
+					"lockKey": true,
+					"hideOnChildrenHidden": false,
+					"calculateValue": "if(productName == 'DiveStore' || (productName == 'DiveBoat' && (data.businessPadiVerified == 'true' || data.businessPadiVerified === true))){\n    value = 'business_padi';  \n}else{\n    value = 'padi';\n}"
+				}, {
+					"input": true,
+					"tableView": true,
+					"key": "padiVerified",
+					"label": "padiVerified",
+					"type": "hidden",
+					"lockKey": true,
+					"defaultValue": "false",
+					"hideOnChildrenHidden": false
+				}, {
+					"input": true,
+					"tableView": true,
+					"key": "user_exists",
+					"label": "user_exists",
+					"type": "hidden",
+					"lockKey": true,
+					"defaultValue": "0",
+					"hideOnChildrenHidden": false
+				}, {
+					"label": "Username",
+					"key": "username",
+					"type": "hidden",
+					"input": true,
+					"tableView": true,
+					"lockKey": true,
+					"hideOnChildrenHidden": false
+				}, {
+					"input": true,
+					"tableView": true,
+					"key": "disableUserInfoEdit",
+					"label": "disableUserInfoEditing",
+					"type": "hidden",
+					"lockKey": true,
+					"calculateValue": "value = true",
+					"hideOnChildrenHidden": false
+				}, {
+					"label": "PadiNotFoundCsrReview",
+					"key": "padiNotFoundCsrReview",
+					"type": "hidden",
+					"input": true,
+					"tableView": false,
+					"hideOnChildrenHidden": false
+				}, {
+					"label": "businessPadiVerified",
+					"key": "businessPadiVerified",
+					"type": "hidden",
+					"input": true,
+					"tableView": false,
+					"hideOnChildrenHidden": false
+				}, {
+					"label": "subject",
+					"calculateValue": "value = \"PADI Endorsed Insurance Portal – \" + data[data.identifier_field];",
+					"key": "subject",
+					"type": "hidden",
+					"input": true,
+					"tableView": false,
+					"hideOnChildrenHidden": false
+				}, {
+					"label": "entity_name",
+					"calculateValue": "if(productName == 'IPLRegister'){\n  value = 'Individual Professional Liability'\n}else if(productName == 'EFR'){\n  value = 'Emergency First Response'\n}else if(productName == 'DiveStore'){\n  value = 'Dive Store'\n}",
+					"key": "entity_name",
+					"type": "hidden",
+					"input": true,
+					"tableView": false,
+					"hideOnChildrenHidden": false
+				}],
+				"width": 4,
+				"offset": 0,
+				"push": 0,
+				"pull": 0,
+				"size": "md"
+			}, {
+				"components": [],
+				"width": 4,
+				"offset": 0,
+				"push": 0,
+				"pull": 0,
+				"size": "md"
+			}],
+			"type": "columns",
+			"hideLabel": true,
+			"path": "panelColumns"
+		}],
+		"type": "panel",
+		"breadcrumb": "none",
+		"label": "Panel"
+	}, {
+		"title": "Business Information",
+		"theme": "primary",
+		"collapsible": false,
+		"tableView": false,
+		"key": "businessInformation",
+		"customConditional": "if ((data[\"verified\"] === true && (data[\"user_exists\"] === 0 || data[\"user_exists\"] == \"0\")) && (data[\"padiNotApplicable\"] === false || data[\"padiNotApplicable\"] == \"false\")) {\n  if(data['product'] == 'Dive Store' || data['product'] == 'Dive Boat'){\n  if(data.businessPadiVerified===true||data.businessPadiVerified==\"true\"){\n    show =true;\n  } else {\n    if(data['product'] == 'Dive Store'){\n      if((data.padiNotFound == \"true\" || data.padiNotFound == true)||(data.businessPadiNotFound == \"true\" || data.businessPadiNotFound == true)){\n        show = true;\n      } else {\n        show = false;\n      }\n    } else {\n      show = false;\n    }\n  }\n} else {\n  show = false;\n}\n} else {\n  show = false;\n}",
+		"type": "panel",
+		"label": "Business Information",
+		"input": false,
+		"components": [{
+			"label": "Legal Business Name",
+			"tableView": false,
+			"clearOnHide": false,
+			"calculateValue": "value = data.business_name",
+			"allowCalculateOverride": true,
+			"validate": {
+				"required": true
+			},
+			"key": "business_name",
+			"type": "textfield",
+			"input": true
+		}, {
+			"label": "DBA",
+			"tableView": false,
+			"clearOnHide": false,
+			"allowCalculateOverride": true,
+			"key": "dba",
+			"type": "textfield",
+			"input": true
+		}, {
+			"label": "Columns",
+			"input": false,
+			"tableView": false,
+			"key": "panelPanelColumns3",
+			"columns": [{
+				"components": [{
+					"label": "Entity Type",
+					"widget": "choicesjs",
+					"placeholder": " ",
+					"tableView": true,
+					"data": {
+						"values": [{
+							"value": "corporation",
+							"label": "Corporation"
+						}, {
+							"value": "partnership",
+							"label": "Partnership"
+						}, {
+							"value": "soleProprietor",
+							"label": "Sole Proprietor"
+						}, {
+							"value": "other",
+							"label": "Other"
+						}]
+					},
+					"selectThreshold": 0.3,
+					"clearOnHide": false,
+					"validate": {
+						"required": true,
+						"customMessage": "Please Select the Entity Type of your Business"
+					},
+					"key": "entity_type",
+					"type": "select",
+					"indexeddb": {
+						"filter": {}
+					},
+					"input": true,
+					"lockKey": true,
+					"hideOnChildrenHidden": false
+				}],
+				"width": 6,
+				"offset": 0,
+				"push": 0,
+				"pull": 0,
+				"size": "md"
+			}, {
+				"components": [{
+					"label": "Partners",
+					"tableView": true,
+					"clearOnHide": false,
+					"validate": {
+						"required": true,
+						"customMessage": "Please enter the partners."
+					},
+					"key": "who_are_the_partners",
+					"conditional": {
+						"show": true,
+						"when": "entity_type",
+						"eq": "partnership"
+					},
+					"type": "textfield",
+					"input": true,
+					"lockKey": true,
+					"hideOnChildrenHidden": false
+				}, {
+					"label": "Shareholders",
+					"tableView": true,
+					"clearOnHide": false,
+					"validate": {
+						"required": true,
+						"customMessage": "Please enter the shareholders."
+					},
+					"key": "who_are_the_shareholders",
+					"conditional": {
+						"show": true,
+						"when": "entity_type",
+						"eq": "corporation"
+					},
+					"type": "textfield",
+					"input": true,
+					"lockKey": true,
+					"hideOnChildrenHidden": false
+				}, {
+					"label": "Other",
+					"tableView": true,
+					"clearOnHide": false,
+					"validate": {
+						"required": true,
+						"customMessage": "If other, please explain."
+					},
+					"key": "others_please_explain",
+					"conditional": {
+						"show": true,
+						"when": "entity_type",
+						"eq": "other"
+					},
+					"type": "textfield",
+					"input": true,
+					"lockKey": true,
+					"hideOnChildrenHidden": false
+				}],
+				"width": 6,
+				"offset": 0,
+				"push": 0,
+				"pull": 0,
+				"size": "md"
+			}],
+			"type": "columns",
+			"hideLabel": true
+		}, {
+			"label": "Columns",
+			"columns": [{
+				"components": [{
+					"label": "Current Insurance Company",
+					"tableView": true,
+					"clearOnHide": false,
+					"validate": {
+						"required": true
+					},
+					"key": "current_insurance_company",
+					"type": "textfield",
+					"input": true,
+					"lockKey": true,
+					"hideOnChildrenHidden": false
+				}],
+				"width": 6,
+				"offset": 0,
+				"push": 0,
+				"pull": 0,
+				"size": "md"
+			}, {
+				"components": [],
+				"width": 6,
+				"offset": 0,
+				"push": 0,
+				"pull": 0,
+				"size": "md"
+			}],
+			"tableView": false,
+			"key": "columns12",
+			"type": "columns",
+			"input": false,
+			"hideLabel": true
+		}, {
+			"label": "Columns",
+			"columns": [{
+				"components": [{
+					"label": "Website",
+					"tableView": false,
+					"clearOnHide": false,
+					"validate": {
+						"custom": "if(data['business_website'] && data['business_website'] != ''){\n valid = (data['business_website'].match(/^(http:\\/\\/www\\.|https:\\/\\/www\\.|http:\\/\\/|https:\\/\\/)?[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)?$/)) ?  true : 'Please enter a valid URL';\n}"
+					},
+					"key": "business_website",
+					"type": "textfield",
+					"input": true,
+					"lockKey": true,
+					"hideOnChildrenHidden": false
+				}],
+				"width": 6,
+				"offset": 0,
+				"push": 0,
+				"pull": 0,
+				"size": "md"
+			}, {
+				"components": [],
+				"width": 6,
+				"offset": 0,
+				"push": 0,
+				"pull": 0,
+				"size": "md"
+			}],
+			"tableView": false,
+			"key": "columns13",
+			"type": "columns",
+			"input": false,
+			"hideLabel": true
+		}]
+	}, {
+		"title": "Personal Information",
+		"theme": "primary",
+		"collapsible": false,
+		"tableView": false,
+		"key": "panel",
+		"customConditional": "if (\n  data[\"verified\"] === true &&\n  (data[\"user_exists\"] === 0 || data[\"user_exists\"] == \"0\") && (data[\"padiNotApplicable\"] === false || data[\"padiNotApplicable\"] == \"false\")\n) {\n  show = true;\n} else {\n  show = false;\n}",
+		"logic": [{
+			"name": "Change Personal Information to Primary Contact",
+			"trigger": {
+				"type": "simple",
+				"simple": {
+					"show": true,
+					"when": "product",
+					"eq": "Dive Store"
+				}
+			},
+			"actions": [{
+				"name": "Change Name",
+				"type": "property",
+				"property": {
+					"label": "Title",
+					"value": "title",
+					"type": "string"
+				},
+				"text": "Primary Contact"
+			}]
+		}],
+		"type": "panel",
+		"label": "Personal Information",
+		"input": false,
+		"components": [{
+			"label": "Columns",
+			"columns": [{
+				"components": [{
+					"label": "First Name",
+					"tableView": true,
+					"clearOnHide": false,
+					"validate": {
+						"required": true
+					},
+					"key": "firstname",
+					"logic": [{
+						"name": "Disable Field Logic",
+						"trigger": {
+							"type": "javascript",
+							"simple": {
+								"show": true,
+								"when": "",
+								"eq": ""
+							},
+							"javascript": "result = false;\nif(data.padiNotFound == false && data.businessPadiVerified == false){\n  result = true;\n}"
+						},
+						"actions": [{
+							"name": "disable field",
+							"type": "property",
+							"property": {
+								"label": "Disabled",
+								"value": "disabled",
+								"type": "boolean"
+							},
+							"state": true
+						}, {
+							"name": "mask",
+							"type": "property",
+							"property": {
+								"label": "Required",
+								"value": "validate.required",
+								"type": "boolean"
+							},
+							"state": false
+						}]
+					}],
+					"type": "textfield",
+					"input": true,
+					"lockKey": true,
+					"hideOnChildrenHidden": false
+				}],
+				"width": 4,
+				"offset": 0,
+				"push": 0,
+				"pull": 0,
+				"size": "md"
+			}, {
+				"components": [{
+					"label": "Initial",
+					"tableView": true,
+					"clearOnHide": false,
+					"key": "initial",
+					"logic": [{
+						"name": "disable name",
+						"trigger": {
+							"type": "javascript",
+							"simple": {
+								"show": true,
+								"when": "",
+								"eq": ""
+							},
+							"javascript": "result = false;\nif(data.padiNotFound == false && data.businessPadiVerified == false){\n  result = true;\n}"
+						},
+						"actions": [{
+							"name": "disable name",
+							"type": "property",
+							"property": {
+								"label": "Disabled",
+								"value": "disabled",
+								"type": "boolean"
+							},
+							"state": true
+						}]
+					}],
+					"type": "textfield",
+					"input": true,
+					"lockKey": true,
+					"hideOnChildrenHidden": false
+				}],
+				"width": 4,
+				"offset": 0,
+				"push": 0,
+				"pull": 0,
+				"size": "md"
+			}, {
+				"components": [{
+					"label": "Last Name",
+					"tableView": true,
+					"clearOnHide": false,
+					"validate": {
+						"required": true
+					},
+					"key": "lastname",
+					"logic": [{
+						"name": "disable name",
+						"trigger": {
+							"type": "javascript",
+							"simple": {
+								"show": true,
+								"when": "",
+								"eq": ""
+							},
+							"javascript": "result = false;\nif(data.padiNotFound == false && data.businessPadiVerified == false){\n  result = true;\n}"
+						},
+						"actions": [{
+							"name": "disable name",
+							"type": "property",
+							"property": {
+								"label": "Disabled",
+								"value": "disabled",
+								"type": "boolean"
+							},
+							"state": true
+						}, {
+							"name": "mask",
+							"type": "property",
+							"property": {
+								"label": "Required",
+								"value": "validate.required",
+								"type": "boolean"
+							},
+							"state": false
+						}]
+					}],
+					"type": "textfield",
+					"input": true,
+					"lockKey": true,
+					"hideOnChildrenHidden": false
+				}],
+				"width": 4,
+				"offset": 0,
+				"push": 0,
+				"pull": 0,
+				"size": "md"
+			}],
+			"hideLabel": true,
+			"tableView": false,
+			"key": "panelColumns2",
+			"type": "columns",
+			"input": false
+		}, {
+			"label": "name",
+			"calculateValue": "value = data.firstname + \" \"+ data.lastname",
+			"key": "name",
+			"type": "hidden",
+			"input": true,
+			"tableView": false
+		}, {
+			"title": "Mailing Address",
+			"theme": "primary",
+			"collapsible": false,
+			"tableView": false,
+			"key": "panelPanel",
+			"type": "panel",
+			"label": "Mailing Address",
+			"input": false,
+			"components": [{
+				"label": "Columns",
+				"input": false,
+				"tableView": false,
+				"key": "panelPanelColumns",
+				"columns": [{
+					"components": [{
+						"label": "Country",
+						"widget": "choicesjs",
+						"customClass": "countryDropDown",
+						"tableView": true,
+						"dataSrc": "custom",
+						"data": {
+							"values": [{
+								"value": "",
+								"label": ""
+							}],
+							"custom": "function arrayColumn(array, columnName) {\n    return array.map(function(value,index) {\n        return value[columnName];\n    })\n}\nvalues = arrayColumn(countryList,'country')"
+						},
+						"valueProperty": "country",
+						"dataType": "auto",
+						"template": "<span>{{ item.country }}</span>",
+						"selectThreshold": 0.3,
+						"validate": {
+							"required": true
+						},
+						"key": "country",
+						"type": "select",
+						"input": true,
+						"lockKey": true,
+						"hideOnChildrenHidden": false,
+						"properties": {
+							"clear_field": "state"
+						},
+						"isNew": false
+					}],
+					"width": 4,
+					"offset": 0,
+					"push": 0,
+					"pull": 0,
+					"size": "md"
+				}, {
+					"components": [{
+						"label": "Address 1",
+						"tableView": true,
+						"validate": {
+							"required": true
+						},
+						"key": "address1",
+						"type": "textfield",
+						"input": true,
+						"lockKey": true,
+						"hideOnChildrenHidden": false
+					}],
+					"width": 4,
+					"offset": 0,
+					"push": 0,
+					"pull": 0,
+					"size": "md"
+				}, {
+					"components": [{
+						"label": "Address 2",
+						"tableView": true,
+						"key": "address2",
+						"type": "textfield",
+						"input": true,
+						"lockKey": true,
+						"hideOnChildrenHidden": false
+					}],
+					"width": 4,
+					"offset": 0,
+					"push": 0,
+					"pull": 0,
+					"size": "md"
+				}],
+				"type": "columns",
+				"hideLabel": true,
+				"path": "panelPanelColumns"
+			}, {
+				"label": "Columns",
+				"columns": [{
+					"components": [{
+						"label": "City",
+						"tableView": true,
+						"validate": {
+							"required": true
+						},
+						"key": "city",
+						"type": "textfield",
+						"input": true,
+						"lockKey": true,
+						"hideOnChildrenHidden": false
+					}],
+					"width": 4,
+					"offset": 0,
+					"push": 0,
+					"pull": 0,
+					"size": "md"
+				}, {
+					"components": [{
+						"label": "State",
+						"widget": "choicesjs",
+						"tableView": true,
+						"dataSrc": "custom",
+						"data": {
+							"values": [{}],
+							"custom": "let obj = countryList.find(o => o.country === data['country']);\nif(obj){\n  values = obj.states\n}"
+						},
+						"template": "<span>{{ item }}</span>",
+						"selectThreshold": 0.3,
+						"validate": {
+							"required": true
+						},
+						"key": "state",
+						"type": "select",
+						"refreshOn": "country",
+						"input": true,
+						"lockKey": true,
+						"hideOnChildrenHidden": false,
+						"clearOnRefresh": true
+					}],
+					"width": 4,
+					"offset": 0,
+					"push": 0,
+					"pull": 0,
+					"size": "md"
+				}, {
+					"components": [{
+						"label": "Zip Code",
+						"spellcheck": false,
+						"tableView": true,
+						"validate": {
+							"required": true
+						},
+						"key": "zip",
+						"type": "textfield",
+						"input": true,
+						"lockKey": true,
+						"hideOnChildrenHidden": false
+					}],
+					"size": "md",
+					"width": 4,
+					"offset": 0,
+					"push": 0,
+					"pull": 0
+				}],
+				"tableView": false,
+				"key": "columns",
+				"type": "columns",
+				"input": false
+			}]
+		}, {
+			"title": "Physical Address",
+			"theme": "primary",
+			"collapsible": false,
+			"tableView": false,
+			"key": "panelPanel3",
+			"type": "panel",
+			"label": "Physical Address",
+			"input": false,
+			"components": [{
+				"label": "Same as mailing address",
+				"tableView": false,
+				"defaultValue": true,
+				"clearOnHide": false,
+				"key": "sameasmailingaddress",
+				"type": "checkbox",
+				"input": true,
+				"dataGridLabel": false,
+				"lockKey": true,
+				"style": {
+					"margin-top": "5px",
+					"margin-bottom": "5px"
+				},
+				"hideOnChildrenHidden": false
+			}, {
+				"label": "Physical Address Columns",
+				"columns": [{
+					"components": [{
+						"label": "Country",
+						"widget": "choicesjs",
+						"tableView": true,
+						"dataSrc": "custom",
+						"data": {
+							"values": [{
+								"value": "",
+								"label": ""
+							}],
+							"headers": [{
+								"value": "",
+								"key": ""
+							}],
+							"custom": "function arrayColumn(array, columnName) {\n    return array.map(function(value,index) {\n        return value[columnName];\n    })\n}\nvalues = arrayColumn(countryList,'country')"
+						},
+						"valueProperty": "country",
+						"template": "<span>{{ item }}</span>",
+						"selectThreshold": 0.3,
+						"validate": {
+							"required": true
+						},
+						"key": "physical_country",
+						"properties": {
+							"clear_field": "physical_state"
+						},
+						"type": "select",
+						"indexeddb": {
+							"filter": {}
+						},
+						"input": true,
+						"lockKey": true,
+						"hideOnChildrenHidden": false
+					}],
+					"width": 4,
+					"offset": 0,
+					"push": 0,
+					"pull": 0,
+					"size": "md"
+				}, {
+					"components": [{
+						"label": "Address 1",
+						"tableView": true,
+						"validateOn": "blur",
+						"validate": {
+							"required": true
+						},
+						"key": "mailaddress1",
+						"type": "textfield",
+						"input": true,
+						"lockKey": true,
+						"hideOnChildrenHidden": false
+					}],
+					"width": 4,
+					"offset": 0,
+					"push": 0,
+					"pull": 0,
+					"size": "md"
+				}, {
+					"components": [{
+						"label": "Address 2",
+						"tableView": true,
+						"key": "mailaddress2",
+						"type": "textfield",
+						"input": true,
+						"lockKey": true,
+						"hideOnChildrenHidden": false
+					}],
+					"width": 4,
+					"offset": 0,
+					"push": 0,
+					"pull": 0,
+					"size": "md"
+				}],
+				"hidden": true,
+				"hideLabel": true,
+				"tableView": false,
+				"key": "physicalAddressColumns",
+				"conditional": {
+					"show": true,
+					"when": "sameasmailingaddress",
+					"eq": "false"
+				},
+				"logic": [{
+					"name": "Check same as mailing address",
+					"trigger": {
+						"type": "simple",
+						"simple": {
+							"show": true,
+							"when": "sameasmailingaddress",
+							"eq": "true"
+						}
+					},
+					"actions": [{
+						"name": "Hide Area",
+						"type": "property",
+						"property": {
+							"label": "Hidden",
+							"value": "hidden",
+							"type": "boolean"
+						},
+						"state": true
+					}]
+				}],
+				"type": "columns",
+				"input": false,
+				"path": "panelPanel3Columns2Columns"
+			}, {
+				"label": "Columns",
+				"columns": [{
+					"components": [{
+						"label": "City",
+						"tableView": true,
+						"validate": {
+							"required": true
+						},
+						"key": "physical_city",
+						"type": "textfield",
+						"input": true,
+						"lockKey": true,
+						"hideOnChildrenHidden": false
+					}],
+					"width": 4,
+					"offset": 0,
+					"push": 0,
+					"pull": 0,
+					"size": "md"
+				}, {
+					"components": [{
+						"label": "State",
+						"widget": "choicesjs",
+						"tableView": true,
+						"dataSrc": "custom",
+						"data": {
+							"values": [{
+								"value": "",
+								"label": ""
+							}],
+							"url": "https://api.myjson.com/bins/1bz191",
+							"headers": [{
+								"value": "",
+								"key": ""
+							}],
+							"custom": "let obj = countryList.find(o => o.country === data['physical_country']);\nif(obj){\nvalues = obj.states\n}"
+						},
+						"template": "<span>{{ item }}</span>",
+						"selectThreshold": 0.3,
+						"validate": {
+							"required": true
+						},
+						"key": "physical_state",
+						"type": "select",
+						"indexeddb": {
+							"filter": {}
+						},
+						"refreshOn": "physical_country",
+						"input": true,
+						"lockKey": true,
+						"clearOnRefresh": true,
+						"hideOnChildrenHidden": false,
+						"isNew": false
+					}],
+					"width": 4,
+					"offset": 0,
+					"push": 0,
+					"pull": 0,
+					"size": "md"
+				}, {
+					"components": [{
+						"label": "Zip Code",
+						"tableView": true,
+						"validate": {
+							"required": true
+						},
+						"key": "physical_zip",
+						"type": "textfield",
+						"input": true,
+						"lockKey": true,
+						"hideOnChildrenHidden": false
+					}],
+					"size": "md",
+					"width": 4,
+					"offset": 0,
+					"push": 0,
+					"pull": 0
+				}],
+				"tableView": false,
+				"key": "columns1",
+				"conditional": {
+					"show": true,
+					"when": "sameasmailingaddress",
+					"eq": "false"
+				},
+				"type": "columns",
+				"input": false
+			}]
+		}, {
+			"label": "Columns",
+			"input": false,
+			"tableView": false,
+			"key": "panelPanel3Columns",
+			"columns": [{
+				"components": [{
+					"label": "Columns",
+					"columns": [{
+						"components": [{
+							"label": "Country Code",
+							"widget": "choicesjs",
+							"tableView": true,
+							"dataSrc": "custom",
+							"data": {
+								"values": [{
+									"label": "",
+									"value": ""
+								}],
+								"custom": "values = phoneList"
+							},
+							"valueProperty": "dial_code",
+							"dataType": "auto",
+							"template": "<span>{{item.name}}({{ item.dial_code }})</span>",
+							"selectThreshold": 0.3,
+							"calculateValue": "if(data.country && phoneList){\nlet obj = phoneList.find(o => o.name === data.country);\nif (obj) {\n  value = obj.dial_code;\n}\n}",
+							"allowCalculateOverride": true,
+							"key": "home_country_code",
+							"type": "select",
+							"indexeddb": {
+								"filter": {}
+							},
+							"input": true,
+							"hideOnChildrenHidden": false
+						}],
+						"width": 4,
+						"offset": 0,
+						"push": 0,
+						"pull": 0,
+						"size": "md"
+					}, {
+						"components": [{
+							"label": "Home or Work Phone",
+							"tableView": false,
+							"validate": {
+								"custom": "if(data['home_phone_number'] && data['home_phone_number'] != ''){\n  if(data['home_phone_number'].length <= 15){\n      valid = (data['home_phone_number'].match(/^\\d+$/)) ?  true : 'Please enter a valid Home or Work Phone number';\n  }else{\n    valid = (data['home_phone_number'].length > 15) ? 'Please enter a valid Home or Work Phone number' : true;\n  }\n}",
+								"step": "any"
+							},
+							"key": "home_phone_number",
+							"logic": [{
+								"name": "Check for Dive Store",
+								"trigger": {
+									"type": "simple",
+									"simple": {
+										"when": "product",
+										"eq": "Dive Store",
+										"show": true
+									}
+								},
+								"actions": [{
+									"name": "Change Label",
+									"type": "property",
+									"property": {
+										"label": "Label",
+										"value": "label",
+										"type": "string"
+									},
+									"text": "Work Phone"
+								}, {
+									"name": "Set required",
+									"type": "property",
+									"property": {
+										"label": "Required",
+										"value": "validate.required",
+										"type": "boolean"
+									},
+									"state": true
+								}]
+							}, {
+								"name": "Check if not Dive Store",
+								"trigger": {
+									"type": "javascript",
+									"javascript": "if(data['product'] == 'Individual Professional Liability' || data['product'] == 'Emergency First Response'|| data['product'] == 'Dive Boat' ){\n  result = true;\n} else {\n  result = false;\n}"
+								},
+								"actions": [{
+									"name": "Set Label",
+									"type": "property",
+									"property": {
+										"label": "Label",
+										"value": "label",
+										"type": "string"
+									},
+									"text": "Home or Work Phone"
+								}, {
+									"name": "Unset Required",
+									"type": "property",
+									"property": {
+										"label": "Required",
+										"value": "validate.required",
+										"type": "boolean"
+									},
+									"state": false
+								}]
+							}],
+							"type": "textfield",
+							"delimiter": false,
+							"requireDecimal": false,
+							"input": true,
+							"hideOnChildrenHidden": false
+						}, {
+							"label": "home_phone",
+							"calculateValue": "value = data.home_country_code + \"\"+ (data.home_phone_number != undefined?data.home_phone_number:\"\")",
+							"key": "home_phone",
+							"type": "hidden",
+							"input": true,
+							"tableView": false,
+							"hideOnChildrenHidden": false
+						}],
+						"width": 8,
+						"offset": 0,
+						"push": 0,
+						"pull": 0,
+						"size": "md"
+					}],
+					"hideLabel": true,
+					"tableView": false,
+					"key": "columns3",
+					"type": "columns",
+					"input": false,
+					"path": "columns3"
+				}, {
+					"label": "Columns",
+					"columns": [{
+						"components": [{
+							"label": "Country Code",
+							"widget": "choicesjs",
+							"tableView": true,
+							"dataSrc": "custom",
+							"data": {
+								"values": [{
+									"label": "",
+									"value": ""
+								}],
+								"custom": "values = phoneList"
+							},
+							"valueProperty": "dial_code",
+							"template": "<span>{{item.name}}({{ item.dial_code }})</span>",
+							"selectThreshold": 0.3,
+							"calculateValue": "if(data.country && phoneList){\n  let obj = phoneList.find(o => o.name === data.country);\nif (obj) {\n  value = obj.dial_code;\n}\n}",
+							"allowCalculateOverride": true,
+							"key": "phone_country_code",
+							"type": "select",
+							"indexeddb": {
+								"filter": {}
+							},
+							"input": true,
+							"hideOnChildrenHidden": false
+						}],
+						"width": 4,
+						"offset": 0,
+						"push": 0,
+						"pull": 0,
+						"size": "md"
+					}, {
+						"components": [{
+							"label": "Mobile Phone",
+							"tableView": false,
+							"validate": {
+								"required": true,
+								"custom": "if(data['phone_number'] && data['phone_number'] != ''){\n  if(data['phone_number'].length <= 15){\n      valid = (data['phone_number'].match(/^\\d+$/)) ?  true : 'Please enter a valid Mobile Phone number';\n  }else{\n    valid = (data['phone_number'].length > 15) ? 'Please enter a valid Mobile Phone number' : true;\n  }\n}",
+								"step": "any"
+							},
+							"key": "phone_number",
+							"type": "textfield",
+							"delimiter": false,
+							"requireDecimal": false,
+							"input": true,
+							"hideOnChildrenHidden": false
+						}, {
+							"label": "mobile_phone",
+							"calculateValue": "value = data.phone_country_code + \"\" + (data.phone_number!=undefined)?data.phone_number:\"\";",
+							"key": "phone",
+							"type": "hidden",
+							"input": true,
+							"tableView": false,
+							"hideOnChildrenHidden": false
+						}],
+						"width": 8,
+						"offset": 0,
+						"push": 0,
+						"pull": 0,
+						"size": "md"
+					}],
+					"hideLabel": true,
+					"tableView": false,
+					"key": "columns4",
+					"type": "columns",
+					"input": false,
+					"path": "columns4"
+				}],
+				"width": 6,
+				"offset": 0,
+				"push": 0,
+				"pull": 0,
+				"size": "md"
+			}, {
+				"components": [{
+					"label": "Fax",
+					"placeholder": " ",
+					"tableView": true,
+					"validate": {
+						"custom": "if(data['fax'] && data['fax'] != ''){\n  if(data['fax'].length <= 15){\n      valid = (data['fax'].match(/^\\d+$/)) ?  true : 'Please enter a valid Fax number';\n  }else{\n    valid = (data['fax'].length > 15) ? 'Please enter a valid Fax number' : true;\n  }\n}"
+					},
+					"key": "fax",
+					"type": "textfield",
+					"input": true,
+					"lockKey": true,
+					"hideOnChildrenHidden": false,
+					"inputType": "tel"
+				}, {
+					"label": "Email",
+					"description": "Your certificate may be e-mailed to you from {{data.product_email_id}}. Please make sure you add this to your safe senders list",
+					"tableView": true,
+					"validate": {
+						"required": true,
+						"customMessage": "Please enter your email address in format: yourname@example.com"
+					},
+					"key": "email",
+					"type": "email",
+					"input": true,
+					"lockKey": true,
+					"hideOnChildrenHidden": false
+				}, {
+					"label": "Additional Email",
+					"tableView": true,
+					"multiple": true,
+					"validate": {
+						"customMessage": "Please enter your email address in format: yourname@example.com",
+						"multiple": true
+					},
+					"key": "additional_email",
+					"type": "email",
+					"input": true,
+					"lockKey": true,
+					"hideOnChildrenHidden": false
+				}],
+				"width": 6,
+				"offset": 0,
+				"push": 0,
+				"pull": 0,
+				"size": "md"
+			}],
+			"type": "columns",
+			"hideLabel": true,
+			"path": "panelPanel3Columns"
+		}]
+	}, {
+		"label": "Register",
+		"showValidations": false,
+		"tableView": false,
+		"key": "submit",
+		"customConditional": "show = (((data.padiVerified === true && (data.product!='Dive Store')) || ((data.businessPadiVerified === true || data.padiVerified === true) && (data.product=='Dive Store' || data.product =='Dive Boat'))) && (data.user_exists===0||data.user_exists=='0')) || ((data.padiNotFound===true||data.padiNotFound=='true') && (data.verified === true || data.verified=='true') && (data.user_exists===0||data.user_exists=='0'))",
+		"type": "button",
+		"input": true
+	}],
+	"controller": "",
+	"revisions": "current",
+	"_vid": 196,
+	"title": "PADI Registration Consolidation",
+	"display": "form",
+	"access": [{
+		"roles": ["5ce43aa430776b950569301d", "5ce43aa430776b4a5969301e", "5ce43aa430776bdfb569301f"],
+		"type": "read_all"
+	}],
+	"submissionAccess": [],
+	"settings": {},
+	"properties": {},
+	"name": "padiRegistrationConsolidation",
+	"path": "padiregistrationconsolidation",
+	"project": "5ce43aa430776b2aff69301c",
+	"created": "2020-03-21T08:06:55.909Z",
+	"modified": "2020-08-16T05:01:14.261Z",
+	"machineName": "testdivehub:padiRegistrationConsolidation"
+}
