@@ -8,8 +8,28 @@ export function preparefilter(filter1, filter2) {
   var filter = []
   filter.push(filter1)
   filter.push("AND")
+  filter2 = prepareMultiFilter(filter2);
   filter.push(filter2)
   return filter
+}
+
+export function prepareMultiFilter(filter1) {
+  let subFilter = []
+  if (Array.isArray(filter1['2'])) {
+    let filterValue = filter1['2']
+    filterValue.map((filterArr, i) => {
+      let multiFilter = []
+      multiFilter.push(filter1['0'])
+      multiFilter.push(filter1['1'])
+      multiFilter.push(filterArr['value'])
+      subFilter.push(multiFilter)
+      subFilter.push("OR")
+    });
+    subFilter.pop()
+  } else {
+    return filter1;
+  }
+  return subFilter;
 }
 
 //preparing filter for frontend :setting filter options and applied options
@@ -41,7 +61,6 @@ export function replaceCommonFilters(parentFilters, childFilters, property) {
       }
       if (childFilterCopy.length > 0) {
         childFilterCopy.map((childFilterValue, index) => {
-
           optionalfilters.push(childFilterValue.label ? childFilterValue : { label: childFilterValue.filterName, value: childFilterValue })
         })
       }
@@ -141,11 +160,9 @@ export function extractFilterValues(dashboardFilter, dashboardStack, filtermode)
             startDate = new Date(filter["startDate"])
             startDate = getformattedDate(startDate)
           }
-
           //date range received
           if (filter["operator"] == "gte&&lte" || filter["operator"] === "mtd" || filter["operator"] === "ytd") {
             endDate = filter["endDate"]
-
             if (filter["operator"] == "gte&&lte") {
               if (typeof endDate !== "string") {
                 endDate = getformattedDate(endDate)
@@ -171,8 +188,7 @@ export function extractFilterValues(dashboardFilter, dashboardStack, filtermode)
                 //on default current mtd and ytd is set
                 if (filter["operator"] === "mtd") {
                   startDate = "date:" + startDate.getFullYear() + "-" + (("0" + (startDate.getMonth() + 1)).slice(-2)) + "-" + ("01")
-                }
-                else if (filter["operator"] === "ytd") {
+                } else if (filter["operator"] === "ytd") {
                   startDate = "date:" + startDate.getFullYear() + "-" + ("01") + "-" + ("01")
                 }
                 endDate = getformattedDate(endDate)
@@ -183,7 +199,6 @@ export function extractFilterValues(dashboardFilter, dashboardStack, filtermode)
             filterarray.push(">=")
             filterarray.push(startDate)
             filterParams.push(filterarray)
-
             //prepare endDate array
             filterarray = []
             filterarray.push(filter["field"])
