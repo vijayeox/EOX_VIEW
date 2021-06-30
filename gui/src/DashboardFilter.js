@@ -3,8 +3,10 @@ import DatePicker from 'react-datepicker'
 import { dashboard, dateFormat, dateTimeFormat } from '../metadata.json';
 import { Form, Row, Button } from 'react-bootstrap'
 import "react-datepicker/dist/react-datepicker.css";
-import Select from 'react-select/creatable'
-// import { Multiselect } from 'multiselect-react-dropdown';
+import Select from 'react-select/creatable';
+import MultiSelect from "react-multi-select-component";
+// import "./FilterFields";
+// import Multiselect from 'multiselect-react-dropdown';
 
 const customStyles = {
     control: base => ({
@@ -21,7 +23,7 @@ const customStyles = {
 };
 
 const FilterFields = function (props) {
-    const { filters, filterIndex, index, fieldType, dataType, onUpdate, removeField, field, filterName, filterMode, dateFormat, dataSourceOptions, isDefault, disableDateField } = props;
+    const { filters, multiFilters, filterIndex, index, fieldType, dataType, onUpdate, removeField, field, filterName, filterMode, dateFormat, dataSourceOptions, isDefault, disableDateField, onSelect, onRemove } = props;
     const [isFilterIndexLoading, setIsFilterIndexLoading] = useState(false);
     const [isFilterNameLoading, setIsFilterNameLoading] = useState(false);
     const [isFilterValueLoading, setIsFilterValueLoading] = useState(false);
@@ -36,6 +38,18 @@ const FilterFields = function (props) {
         "numericoperator": [{ "Less Than": "<" }, { "Greater Than": ">" }, { "Equals": "==" }, { "Not Equals": "!=" }],
         "selectoperator": [{ "Equals": "==" }, { "Not Equals": "NOT LIKE" }]
     };
+
+    const myOptions = [
+        { label: "Grapes 🍇", value: "grapes" },
+        { label: "Mango 🥭", value: "mango" },
+        { label: "Strawberry 🍓", value: "strawberry", disabled: true },
+        { label: "Watermelon 🍉", value: "watermelon" },
+        { label: "Pear 🍐", value: "pear" },
+        { label: "Apple 🍎", value: "apple" },
+        { label: "Tangerine 🍊", value: "tangerine" },
+        { label: "Pineapple 🍍", value: "pineapple" },
+        { label: "Peach 🍑", value: "peach" },
+    ];
 
     useEffect(() => {
         //set index value if datasource is set previously
@@ -61,9 +75,7 @@ const FilterFields = function (props) {
     async function setFilterNameList(filter_index) {
         setIsFilterNameLoading(true)
         let datasource_id = filters[index]["filterDataSource"]
-        const response = await props.restClient.request(
-            "v1",
-            'analytics/datasource/' + datasource_id + '/getdetails?type=fields&index=' + filter_index, {}, 'get');
+        const response = await props.restClient.request("v1", 'analytics/datasource/' + datasource_id + '/getdetails?type=fields&index=' + filter_index, {}, 'get');
         if (response.status === "success") {
             //preparing options for react-select component
             if (response.data && typeof (response.data) == "object" && Object.keys(response.data).length > 0) {
@@ -83,9 +95,7 @@ const FilterFields = function (props) {
         setFilterValueOption([])
         let datasource_id = filters[index]["filterDataSource"]
         let filter_index = filters[index]["filterIndex"]
-        const response = await props.restClient.request(
-            "v1",
-            `analytics/datasource/${datasource_id}/getdetails?type=values&index=${filter_index}&field=${filter_field}`, {}, 'get');
+        const response = await props.restClient.request("v1", `analytics/datasource/${datasource_id}/getdetails?type=values&index=${filter_index}&field=${filter_field}`, {}, 'get');
         if (response.status === "success") {
             //preparing options for react-select component
             if (response.data && typeof (response.data) == "object" && response.data.length > 0) {
@@ -114,9 +124,7 @@ const FilterFields = function (props) {
 
     async function setFilterIndexList(datasource_id) {
         setIsFilterIndexLoading(true)
-        const response = await props.restClient.request(
-            "v1",
-            'analytics/datasource/' + datasource_id + '/getdetails', {}, 'get');
+        const response = await props.restClient.request("v1", 'analytics/datasource/' + datasource_id + '/getdetails', {}, 'get');
         if (response.status === "success") {
             //preparing options for react-select component
             if (response.data && response.data.length > 0) {
@@ -172,29 +180,23 @@ const FilterFields = function (props) {
     const visibility = filterMode == "CREATE"
     return (
         <Form.Row className={"filterFields" + (visibility ? '' : 'filter')}>
-
             {!visibility &&
                 <div className="filterFieldsfilter-section-one">
                     <h2 className="dashboard-filter-name">{filterName}</h2>
-
                     <Form.Group className="dashboard-filter-field"> {/*  View Mode : Filter Operator */}
                         {
-                            dataType === "date" || dataType === "text" || dataType === "numeric" || dataType === "select"
-                                ?
+                            dataType === "date" || dataType === "text" || dataType === "numeric" || dataType === "select" ?
                                 <Form.Control className="dashboardTextField" as="select" name={"operator"} onChange={(e) => onUpdate(e, index)} value={filters[index] !== undefined ? filters[index]["operator"] : ""}>
                                     <option disabled key="-1" value=""></option>
                                     {filtersOptions[dataType + 'operator'].map((item, mapindex) => {
                                         return (<option key={mapindex} value={Object.values(item)[0]}>{Object.keys(item)[0]}</option>)
                                     })}
-                                </Form.Control>
-                                :
+                                </Form.Control> :
                                 <Form.Control className="dashboardTextField field-width-75" as="select" name={"operator"} onChange={(e) => onUpdate(e, index)} value={filters[index] !== undefined ? filters[index]["operator"] : ""}>
                                     <option disabled key="-1" value=""></option>
                                 </Form.Control>
                         }
                     </Form.Group>
-
-
                     <Form.Group className="dash-manager-buttons" style={{ marginLeft: "auto", marginRight: "0.5rem" }}>
                         {!filters[index]["isParentFilter"] &&
                             <Button className="filter_remove_button_view" onClick={(e) => removeField(index, fieldType)}><i className="fa fa-minus" aria-hidden="true"></i></Button>
@@ -202,7 +204,6 @@ const FilterFields = function (props) {
                     </Form.Group>
                 </div>
             }
-
 
             {visibility &&
                 <div className="dashboard-filter-field field-width-200">
@@ -242,7 +243,6 @@ const FilterFields = function (props) {
                     </Form.Group>
                 </div>
             }
-
             {visibility &&
                 <div className="dashboard-filter-field" id="">
                     <Form.Group className="dashboard-filter-field">
@@ -286,15 +286,13 @@ const FilterFields = function (props) {
                     <Form.Group className="dashboard-filter-field">
                         <Form.Label>Operator</Form.Label>
                         {
-                            dataType === "date" || dataType === "text" || dataType === "numeric" || dataType === "select"
-                                ?
+                            dataType === "date" || dataType === "text" || dataType === "numeric" || dataType === "select" ?
                                 <Form.Control className="dashboardTextField field-width-100" as="select" name={"operator"} onChange={(e) => onUpdate(e, index)} value={filters[index] !== undefined ? filters[index]["operator"] : ""}>
                                     <option disabled key="-1" value=""></option>
                                     {filtersOptions[dataType + 'operator'].map((item, mapindex) => {
                                         return (<option key={mapindex} value={Object.values(item)[0]}>{Object.keys(item)[0]}</option>)
                                     })}
-                                </Form.Control>
-                                :
+                                </Form.Control> :
                                 <Form.Control className="dashboardTextField field-width-75" as="select" name={"operator"} onChange={(e) => onUpdate(e, index)} value={filters[index] !== undefined ? filters[index]["operator"] : ""}>
                                     <option disabled key="-1" value=""></option>
                                 </Form.Control>
@@ -302,16 +300,14 @@ const FilterFields = function (props) {
                     </Form.Group>
                 </div>
             }
-
             <div className="dashboard-filter-field filterFieldsfilter-section-two">
                 <Form.Group className="dashboard-filter-field" controlId="formGridPassword">
                     {/* <Form.Label>Default Value</Form.Label><br /> */}
-                    {dataType === "date"
-                        ?
+                    {dataType === "date" ?
                         ((filters[index]["operator"] !== "gte&&lte" && filters[index]["operator"] !== "mtd" && filters[index]["operator"] !== "ytd") && filters[index]["dateRange"] === false) ?
                             <DatePicker
                                 className="dashboardTextField"
-                                key={index}
+                                // key={index}
                                 dateFormat={dateFormat}
                                 selected={Date.parse(filters[index]["startDate"])}
                                 showMonthDropdown
@@ -331,8 +327,7 @@ const FilterFields = function (props) {
                                     }
                                 }}
                                 onChange={date => onUpdate(date, index, "startDate")}
-                                name="startDate" />
-                            :
+                                name="startDate" /> :
                             <div className="dates-container">
                                 <DatePicker
                                     className="dashboardTextField"
@@ -341,6 +336,7 @@ const FilterFields = function (props) {
                                     onChange={date => onUpdate(date, index, "startDate")}
                                     selectsStart
                                     enabled={false}
+                                    // key={index}
                                     disabled={disableDateField}
                                     startDate={Date.parse(filters[index]["startDate"])}
                                     endDate={(filters[index]["operator"] == 'mtd' || filters[index]["operator"] == 'ytd') ? new Date() : Date.parse(filters[index]["endDate"])}
@@ -354,8 +350,7 @@ const FilterFields = function (props) {
                                         preventOverflow: {
                                             enabled: false // tell it not to try to stay within the view (this prevents the popper from covering the element you clicked)
                                         },
-                                        hide: {
-                                            enabled: false // turn off since needs preventOverflow to be enabled
+                                        hide: { enabled: false // turn off since needs preventOverflow to be enabled
                                         }
                                     }}
                                     dropdownMode="select"
@@ -366,6 +361,7 @@ const FilterFields = function (props) {
                                     dateFormat={dateFormat}
                                     onChange={date => onUpdate(date, index, "endDate")}
                                     selectsEnd
+                                    // key={index}
                                     enabled={false}
                                     disabled={disableDateField}
                                     startDate={Date.parse(filters[index]["startDate"])}
@@ -391,37 +387,39 @@ const FilterFields = function (props) {
                         :
                         // filterMode == "CREATE" ?
                         dataType === "select" ?
-                            <Select
-                                className="dashboardTextField"
-                                selected={filters[index]["value"] || ""}
-                                name="value"
-                                id="value"
-                                placeholder="Select an option"
-                                style={{ flex: "1 1 100%" }}
-                                onChange={(e) => {
-                                    onUpdate(e, index, "value");
-                                    var x = document.getElementById("select_notif" + index);
-                                    x.className = "toastHide"
-                                }}
-                                value={filterValueOption ? filterValueOption.filter(option => option.value == filters[index]["value"]) : ""}
-                                options={filterValueOption}
-                                styles={customStyles}
-                                isLoading={isFilterValueLoading}
-                            />
-                            // <Multiselect
-                            //     className="dashboardTextField field-width-150"
-                            //     selectedValues={filters[index]["value"]["selected"] || ""}
+                            // <Select
+                            //     className="dashboardTextField"
+                            //     selected={filters[index]["value"] || ""}
                             //     name="value"
                             //     id="value"
-                            //     // onSelect={(e) => onSelect(e, index, "")} // create onSelect function where it assigns the value array
-                            //     onRemove={(e) => onRemove(e, index, "")}
-                            //     //onChange={(e) => onUpdate(e, index, "value")}
+                            //     placeholder="Select an option"
+                            //     style={{ flex: "1 1 100%" }}
+                            //     onChange={(e) => {
+                            //         onUpdate(e, index, "value");
+                            //         var x = document.getElementById("select_notif" + index);
+                            //         x.className = "toastHide"
+                            //     }}
                             //     value={filterValueOption ? filterValueOption.filter(option => option.value == filters[index]["value"]) : ""}
                             //     options={filterValueOption}
                             //     styles={customStyles}
                             //     isLoading={isFilterValueLoading}
-                            //     displayValue="values"
                             // />
+                            <MultiSelect
+                                className="dashboardTextField field-width-300"
+                                value={Array.isArray(multiFilters[index]["value"]) ? multiFilters[index]["value"] : []}
+                                name="value"
+                                // key={index}
+                                id="value"
+                                placeholder="Select an option"
+                                options={filterValueOption}
+                                style={{
+                                    width: "50px"
+                                }}
+                                styles={customStyles}
+                                isLoading={isFilterValueLoading}
+                                onChange={(e) => onSelect(e, index, "")} // create onSelect function where it assigns the value array
+                                onRemove={(e) => onRemove(e, index, "")}
+                            />
                             :
                             <Form.Control className="dashboardTextField field-width-150" id="value"
                                 type="text"
@@ -430,6 +428,7 @@ const FilterFields = function (props) {
                                 name="value"
                                 styles={customStyles}
                                 onChange={(e) => onUpdate(e, index, "value")}
+                            // key={index}
                             />
                     }
                 </Form.Group>
@@ -438,11 +437,9 @@ const FilterFields = function (props) {
             {visibility &&
                 <div className="dashboard-filter-field dash-manager-buttons">
                     <Form.Group className="dashboard-filter-field">
-
                         <Form.Control type="checkbox" name="isDefault" className="form-checkbox filter_remove_button" value={isDefault} defaultChecked={isDefault} onChange={(e) => onUpdate(e, index)} style={{
                             cursor: "pointer", float: "left", verticalAlign: "middle", position: "relative", width: "50px", margin: "5px 2px"
                         }} />
-
                         {!filters[index]["isParentFilter"] &&
                             <Button className="" style={{
                                 cursor: "pointer", float: "left", verticalAlign: "middle", position: "relative",
@@ -451,9 +448,9 @@ const FilterFields = function (props) {
                     </Form.Group>
                 </div>
             }
-
         </Form.Row>)
 }
+
 class DashboardFilter extends React.Component {
     constructor(props) {
         super(props);
@@ -479,7 +476,8 @@ class DashboardFilter extends React.Component {
             dateTimeFormat: dateTimeFormat.title.en_EN,
             showDefaultValue: true,
             dataSourceOptions: [],
-            disableDateField: null
+            disableDateField: null,
+            multiFilters: this.props.filterConfiguration ? [...this.props.filterConfiguration] : [],
         }
     }
 
@@ -653,36 +651,36 @@ class DashboardFilter extends React.Component {
         this.setState({ filters })
     }
 
-    // multiselectFilterRow(e, index, type) {
-    // var value = []
-    // e.map((item) =>
-    //     value.push(item.value)
-    // );
-    // console.log(value);
-    // //this.setState({ showing: true })
-    // let name = "value"
-    // // //deep cloning react state to avoid mutation
-    // let filters = JSON.parse(JSON.stringify(this.state.filters));
-    // let value1 = value[0];
-    // filters[index][name] = value1
-    // console.log(filters)
-    // this.setState({ filters })
-    // };
+    multiselectFilterRow(e, index, type) {
+        let multiFilter = this.state.multiFilters;
+        let itemFilter = []
+        let name = "value"
+        e.map((item, key) => {
+            // itemFilter.push({ key: { "label": item.value, "value": item.value } })
+            itemFilter[key] = ({ "label": item.value, "value": item.value })
+            // multiFilter.push(itemFilter)
+        });
+        multiFilter[index][name] = itemFilter
+        let filters = JSON.parse(JSON.stringify(this.state.filters));
+        this.setState({ multiFilters: multiFilter })
+        filters[index][name] = multiFilter[index][name]
+        this.setState({ filters })
+    }
 
-    // multiremoveFilterRow(e, index, type) {
-    //     var value = []
-    //     e.map((item) =>
-    //         value.push(item.value)
-    //     );
-    //     console.log(value);
-    //     this.setState({ showing: true })
-    //     let name = "value"
-    //     // //deep cloning react state to avoid mutation
-    //     let filters = JSON.parse(JSON.stringify(this.state.filters));
-    //     filters[index][name] = value
-    //     console.log(filters)
-    //     this.setState({ filters })
-    // };
+    multiremoveFilterRow(e, index, type) {
+        var value = []
+        e.map((item) =>
+            value.push(item.value)
+        );
+        console.log(value);
+        this.setState({ showing: true })
+        let name = "value"
+        //deep cloning react state to avoid mutation
+        let filters = JSON.parse(JSON.stringify(this.state.filters));
+        filters[index][name] = value
+        console.log(filters)
+        this.setState({ filters })
+    };
 
     handleSelect(e) {
         let name = e.value;
@@ -764,7 +762,7 @@ class DashboardFilter extends React.Component {
                 <div className="filter-header-panel">
                     <h2 className="filter-header-text">Filter By</h2>
                     <div className="dash-manager-buttons" style={{ marginLeft: "auto" }}>
-                        <Button type="button" className="close" style={{ fontSize: "1.5rem", padding: "2px 7px", boxShadow: "none" , color : "#345561"}} aria-label="Close" onClick={() => this.hideFilterDiv()} >
+                        <Button type="button" className="close" style={{ fontSize: "1.5rem", padding: "2px 7px", boxShadow: "none", color: "#345561" }} aria-label="Close" onClick={() => this.hideFilterDiv()} >
                             <i className="fa fa-close" aria-hidden="true"></i>
                         </Button>
                     </div>
@@ -775,6 +773,7 @@ class DashboardFilter extends React.Component {
                             index={index}
                             dateFormat={this.state.dateFormat}
                             filters={this.state.filters}
+                            multiFilters={this.state.multiFilters}
                             setFilterValues={(filter) => this.setFilterValues(filter)}
                             input={this.state.input}
                             key={filterRow.key}
@@ -791,8 +790,8 @@ class DashboardFilter extends React.Component {
                             dataSourceOptions={this.state.dataSourceOptions}
                             restClient={this.restClient}
                             disableDateField={this.state.disableDateField}
-                        // onSelect={(e, index, type) => this.multiselectFilterRow(e, index, type)}
-                        // onRemove={(e, index, type) => this.multiremoveFilterRow(e, index, type)}
+                            onSelect={(e, index, type) => this.multiselectFilterRow(e, index, type)}
+                            onRemove={(e, index, type) => this.multiremoveFilterRow(e, index, type)}
                         />
                     })
                     }

@@ -3,7 +3,7 @@ import { dashboard as section } from '../metadata.json';
 import Notification from './Notification'
 import DashboardViewer from './Dashboard'
 import DashboardFilter from './DashboardFilter'
-import { preparefilter, replaceCommonFilters, showDashboard, extractFilterValues } from './DashboardUtils'
+import { preparefilter, replaceCommonFilters, showDashboard, extractFilterValues, prepareMultiFilter } from './DashboardUtils'
 import { Button } from 'react-bootstrap'
 import '../../gui/src/public/css/sweetalert.css';
 import Flippy, { FrontSide, BackSide } from 'react-flippy';
@@ -247,6 +247,7 @@ class DashboardManager extends React.Component {
       let drilldownDashboardFilter = (extractedFilterValues && extractedFilterValues.length == 1) ? extractedFilterValues[0] : []
       if (extractedFilterValues && extractedFilterValues.length > 1) {
         drilldownDashboardFilter = extractedFilterValues[0]
+        drilldownDashboardFilter = prepareMultiFilter(drilldownDashboardFilter);
         for (let i = 1; i < extractedFilterValues.length; i++) {
           drilldownDashboardFilter = preparefilter(drilldownDashboardFilter, extractedFilterValues[i])
         }
@@ -351,7 +352,9 @@ class DashboardManager extends React.Component {
       if (extractedFilterValues && extractedFilterValues.length > 1) {
         preapredExtractedFilterValue = extractedFilterValues[0]
         for (let i = 1; i < extractedFilterValues.length; i++) {
-          preapredExtractedFilterValue = preparefilter(preapredExtractedFilterValue, extractedFilterValues[i])
+          let extractFilter = extractedFilterValues[i]
+          extractedMultiFilters = prepareMultiFilter(extractFilter);
+          preapredExtractedFilterValue = preparefilter(preapredExtractedFilterValue, extractedMultiFilters)
         }
       }
     }
@@ -446,7 +449,7 @@ class DashboardManager extends React.Component {
           style={{ width: '100%', height: '100vh' }} /// these are optional style, it is not necessary
         >
           <FrontSide /*style={{ marginTop: '-50px' }}*/>
-            <div id="filter-form-container" style={{width : "30vw"}} className="disappear">
+            <div id="filter-form-container" style={{ width: "30vw" }} className="disappear">
               {containsFilter &&
                 <DashboardFilter
                   ref={this.filterRef}
@@ -536,8 +539,7 @@ class DashboardManager extends React.Component {
                               onClick={() => this.dashboardOperation(this.state.inputs["dashname"], "SetDefault")}
                               title="Make current OI as default OI"> MAKE DEFAULT
                             </Button>
-                          )
-                          : (this.props.hideEdit == false &&
+                          ) : (this.props.hideEdit == false &&
                             <Button title="Selected OI is default OI" disabled>Default OI</Button>
                           )
                         }

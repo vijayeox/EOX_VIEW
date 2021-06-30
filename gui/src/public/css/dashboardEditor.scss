@@ -105,9 +105,6 @@
   width: 12vw;
 }
 
-.create-filter-form input {
-  // width: 20vw;
-}
 
 .dates-container input {
   width: 140px;
@@ -417,9 +414,6 @@ div#filter-form-container.show-filter-panel {
   width: 300px !important;
 }
 
-.disabled {
-}
-
 .select_notif {
   padding: 4px;
   color: red;
@@ -499,7 +493,6 @@ div#filter-form-container.show-filter-panel {
       select.dashboardTextField.form-control {
         border: none;
       }
-
       #value.dashboardTextField {
         flex-basis: 100%;
       }
@@ -507,12 +500,10 @@ div#filter-form-container.show-filter-panel {
 
     .filterFieldsfilter-section-two {
       flex: 1 0 100%;
-
       .dashboard-filter-field {
         display: flex;
         justify-content: center;
       }
-
       #value.dashboardTextField {
         flex-basis: 100%;
       }
@@ -536,15 +527,12 @@ div#filter-form-container.show-filter-panel {
       .filterFieldsfilter-section-two {
         flex: 1;
         align-self: flex-end;
-
         > .dashboard-filter-field {
           flex: 1;
         }
-
         #value.dashboardTextField {
           flex-basis: 0;
         }
-
         .dates-container {
           display: inline-block;
         }
@@ -558,4 +546,10 @@ div#filter-form-container.show-filter-panel {
       }
     }
   }
+}
+
+input[type="checkbox"] {
+  // transform: scale(1.5);
+  height: 12px;
+  width: 12px;
 }

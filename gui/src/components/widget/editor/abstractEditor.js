@@ -22,11 +22,11 @@ class AbstractEditor extends React.Component {
             hasMaxDepth: false,
             drillDownMaxDepth: -1,
             filteredWidgetList: [],
-            templateList:[],
-            widgetVisualType : this.props.widget.type,
-            isTemplateLoading : true,
+            templateList: [],
+            widgetVisualType: this.props.widget.type,
+            isTemplateLoading: true,
             selectedTemplate: "",
-            templateContent:"",
+            templateContent: "",
             errors: {
                 configuration: null,
                 expression: null,
@@ -38,27 +38,24 @@ class AbstractEditor extends React.Component {
         this.widgetTypes = [{ "label": "Chart", "value": "chart" }, { "label": "Inline", "value": "inline" }, { "label": "Table", "value": "table" }, { "label": "Dashboard", "value": "dashboard" }, { "label": "File", "value": "file" }]
         this.queryList = [];
         this.data = null;
-        this.selectedOption=null
-        this.widgetJson={
-            "chart":[
-                {"name":"Area","value":"area_chart"},
-                {"name":"Bar","value":"bar_chart"},
-                {"name":"Column","value":"column_chart"},
-                {"name":"Funnel","value":"funnel_chart"},
-                {"name":"Line","value":"line_chart"},
-                {"name":"map","value":"map"},
-                {"name":"Multi Axis Cluster Column","value":"multi_axis_cluster_column_chart"},
-                {"name":"Pie","value":"pie_chart"},
-                {"name":"Stacked Horizontal Bar","value":"stacked_horizontal_bar_chart"}
+        this.selectedOption = null
+        this.widgetJson = {
+            "chart": [
+                { "name": "Area", "value": "area_chart" },
+                { "name": "Bar", "value": "bar_chart" },
+                { "name": "Column", "value": "column_chart" },
+                { "name": "Funnel", "value": "funnel_chart" },
+                { "name": "Line", "value": "line_chart" },
+                { "name": "map", "value": "map" },
+                { "name": "Multi Axis Cluster Column", "value": "multi_axis_cluster_column_chart" },
+                { "name": "Pie", "value": "pie_chart" },
+                { "name": "Stacked Horizontal Bar", "value": "stacked_horizontal_bar_chart" }
             ],
-            "table":[
-                {"name":"Area","value":"area_chart"}
+            "table": [
+                { "name": "Area", "value": "area_chart" }
             ],
-            "Aggregate value":[
-            ],
-            "Profile":[
-
-            ]
+            "Aggregate value": [],
+            "Profile": []
         }
     }
 
@@ -347,20 +344,20 @@ class AbstractEditor extends React.Component {
 
     getTemplateSelection = () => {
         window.postDataRequest('analytics/template', {}, 'get')
-        .then((response)=>{
-            if(response.status == "success"){
-                this.setState({isTemplateLoading:false,templateList:response.data})
-            }
-        })
+            .then((response) => {
+                if (response.status == "success") {
+                    this.setState({ isTemplateLoading: false, templateList: response.data })
+                }
+            })
     }
 
-    getWidgetPreView = (templateName,queries,expression) => {
+    getWidgetPreView = (templateName, queries, expression) => {
         let params = {};
         let postUrl = '';
         let method = '';
         postUrl = 'analytics/widget/preview'
         method = 'filepost'
-        if(this.state.queries[0].uuid == ""){
+        if (this.state.queries[0].uuid == "") {
             Swal.fire({
                 type: 'error',
                 title: 'Oops ...',
@@ -369,29 +366,29 @@ class AbstractEditor extends React.Component {
             return;
         }
         else if (!expression || (expression === '')) {
-            params['configuration'] = JSON.stringify({"template":templateName});
-            params['queries'] = JSON.stringify({"queries":[queries[0].uuid]});            
-        }else{
-            params['configuration'] = JSON.stringify({"template":templateName});
-            params['queries'] = JSON.stringify({"queries":[queries[0].uuid]});
-            params['expression'] = JSON.stringify({"expression":[expression]});
+            params['configuration'] = JSON.stringify({ "template": templateName });
+            params['queries'] = JSON.stringify({ "queries": [queries[0].uuid] });
+        } else {
+            params['configuration'] = JSON.stringify({ "template": templateName });
+            params['queries'] = JSON.stringify({ "queries": [queries[0].uuid] });
+            params['expression'] = JSON.stringify({ "expression": [expression] });
         }
-        window.postDataRequest(postUrl,params,method)
-        .then((response)=>{
-            if(response.status == 'success'){
-                this.data = response.widget.data;
-                this.refreshWidgetPreview();
-            }
-        }).catch((err)=> console.log("err-->",err));
-       
+        window.postDataRequest(postUrl, params, method)
+            .then((response) => {
+                if (response.status == 'success') {
+                    this.data = response.widget.data;
+                    this.refreshWidgetPreview();
+                }
+            }).catch((err) => console.log("err-->", err));
+
     }
 
-    templateSelectionChanged = (evt) =>{
+    templateSelectionChanged = (evt) => {
         let value = evt.value;
-        this.getWidgetPreView(value.split('.')[0],this.state.queries,this.state.expression);
+        this.getWidgetPreView(value.split('.')[0], this.state.queries, this.state.expression);
         this.setState({
-            selectedTemplate:evt,
-            configuration:JSON.stringify({"template":value.split('.')[0]})
+            selectedTemplate: evt,
+            configuration: JSON.stringify({ "template": value.split('.')[0] })
         });
     }
 

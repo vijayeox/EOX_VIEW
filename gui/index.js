@@ -41,6 +41,7 @@ import * as Antd from "antd";
 import * as AntdIcons from "@ant-design/icons";
 import Visualization from "./src/Visualization";
 import WidgetManager from "./src/WidgetManager";
+import TemplateManager from "./src/TemplateManager";
 
 const LazyLoad = ({ component: Component,...rest}) => (
   <>
@@ -122,5 +123,6 @@ export {
   WidgetManager,
   DocumentList,
   Antd,
-  AntdIcons
+  AntdIcons,
+  TemplateManager
 };

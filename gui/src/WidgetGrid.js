@@ -254,7 +254,7 @@ export default class WidgetGrid extends React.Component {
             }
         }
         // if (this.props.configuration["oxzion-meta"]["drillDown"] != null) {
-        if (typeof this.props.isDrillDownTable === true) {
+        if (this.props.isDrillDownTable === 'undefined' && this.props.configuration["oxzion-meta"]["drillDown"] !== null) {
             let target = this.props.configuration["oxzion-meta"]["drillDown"];
             if (target["target"] == "link") {
                 return <td><a eoxapplication={target["AppName"]} file-id={column.uuid}>{column.name}</a></td>
