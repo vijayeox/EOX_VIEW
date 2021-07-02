@@ -182,7 +182,7 @@ export default class Desktop extends EventEmitter {
   }
 
 
-  disableAppInput( Value ){
+  disableAppInput( value ){
     const appList = this.core.make('osjs/packages')
       .getPackages(q => q.disableAppInput === true);
     
@@ -193,8 +193,8 @@ export default class Desktop extends EventEmitter {
       var forms = document.getElementsByClassName('form-render');
 
       try{
-        if(Value == true){
-          for (let a = 0; a < forms.length; a++) {////////////is it necessary anather for
+        if(value == true){
+          for (let a = 0; a < forms.length; a++) {
               if( appWin[0].contains( forms[a])){
               forms[a].style.pointerEvents = "none";
             }
@@ -213,7 +213,7 @@ export default class Desktop extends EventEmitter {
           } 
         }
 
-        else if (Value == false){
+        else if (value == false){
           for (let b = 0; b < forms.length; b++) {
               if( appWin[0].contains( forms[b])){
               forms[b].style.pointerEvents = "auto";
