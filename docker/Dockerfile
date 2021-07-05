@@ -1,6 +1,6 @@
 # view build 
 
-FROM node:8-slim
+FROM node:14-slim
 
 RUN apt-get update && apt-get install python \
 					build-essential -y
