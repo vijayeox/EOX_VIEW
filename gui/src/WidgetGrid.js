@@ -188,13 +188,13 @@ export default class WidgetGrid extends React.Component {
     }
 
     drillDownClick = (evt) => {
-        console.log(this.props.configuration);
+        // console.log(this.props.configuration);
         let drillDownTarget = this.props.configuration["oxzion-meta"]['drillDown']['target'];
 
         if (drillDownTarget == 'file') {
             let appName = this.props.configuration["oxzion-meta"]['drillDown']['nextWidgetId'];
             let eventData = evt.dataItem;
-            console.log("Inside the file log Content" + eventData); //Need to open a URL
+            // console.log("Inside the file log Content" + eventData); //Need to open a URL
             this.launchApplication(eventData, appName)
         } else {
             WidgetDrillDownHelper.drillDownClicked(WidgetDrillDownHelper.findWidgetElement(evt.nativeEvent ? evt.nativeEvent.target : evt.target), evt.dataItem)

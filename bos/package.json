@@ -1,6 +1,6 @@
 {
   "name": "@osjs/osjs",
-  "version": "3.0.0-beta.8",
+  "version": "3.1.19",
   "description": "OS.js v3",
   "main": "index.js",
   "scripts": {
@@ -56,14 +56,14 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-pro": "^5.13.0",
-    "@osjs/cli": "3.0.24",
-    "@osjs/client": "^3.1.34",
-    "@osjs/common": "^3.0.8",
-    "@osjs/dialogs": "^3.0.19",
+    "@osjs/cli": "3.0.28",
+    "@osjs/client": "^3.6.7",
+    "@osjs/common": "^3.0.12",
+    "@osjs/dialogs": "^3.0.23",
     "@osjs/freedesktop-sounds": "^3.0.2",
-    "@osjs/gui": "^4.0.33",
-    "@osjs/panels": "^3.0.25",
-    "@osjs/widgets": "^3.0.4",
+    "@osjs/gui": "^4.0.35",
+    "@osjs/panels": "^3.0.31",
+    "@osjs/widgets": "^3.1.0",
     "ajv": "~6.8.1",
     "babel-loader": "^8.1.0",
     "babel-preset-env": "^1.7.0",
@@ -101,7 +101,7 @@
     "signale": "^1.4.0",
     "simplejsonconf": "2.0.5",
     "sweetalert2": "^8.19.0",
-    "sweetalert2-react-content": "^1.1.0",
+    "sweetalert2-react-content": "^4.1.0",
     "uglifyjs-webpack-plugin": "^2.2.0",
     "url-loader": "^1.1.2",
     "uuid": "^8.3.2"
