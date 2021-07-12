@@ -122,10 +122,17 @@ html {
 .osjs-window-breadcrumb{
   display: flex;
   line-height: 0;
-  flex-grow: 25;
+  flex-grow: 50;
   height: auto !important;
   align-items:baseline;
- }
+  font-size: 18px  !important;
+}
+.activeBreadcrumb >a >i {
+  font-size: 0px;
+}
+.disabledBreadcrumb >a >i {
+  font-size: 0px;
+}
 .osjs-gui-menu {
   ul {
     background-color: #333333;
