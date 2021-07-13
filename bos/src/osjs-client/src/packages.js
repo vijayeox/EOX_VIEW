@@ -414,6 +414,18 @@ export default class Packages {
     if (!metadata) {
       metadata = this.metadata;
     }
+    
+    const metadataList = metadata;
+    details.key.apps.map(iteration => {
+      metadataList.map((iter1, index) => {
+        if (iteration.name == iter1.name) {
+          this.metadata[index] = {
+            ...iter1,
+            ...JSON.parse(iteration.start_options)
+          };
+        }
+      });
+    });
 
     const filterBlacklist = iter => details.key.blackListedApps instanceof Object
     ? !details.key.blackListedApps[iter.name]

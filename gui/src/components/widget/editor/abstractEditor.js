@@ -11,7 +11,7 @@ class AbstractEditor extends React.Component {
             widgetType: null,
             readOnly: true,
             queries: [],
-            configuration: '',
+            configuration: null,
             drillDownFilter: '',
             drillDownWidget: '',
             drillDownTarget: '',
@@ -38,6 +38,28 @@ class AbstractEditor extends React.Component {
         this.widgetTypes = [{ "label": "Chart", "value": "chart" }, { "label": "Inline", "value": "inline" }, { "label": "Table", "value": "table" }, { "label": "Dashboard", "value": "dashboard" }, { "label": "File", "value": "file" }]
         this.queryList = [];
         this.data = null;
+        this.selectedOption=null
+        this.widgetJson={
+            "chart":[
+                {"name":"Area","value":"area_chart"},
+                {"name":"Bar","value":"bar_chart"},
+                {"name":"Column","value":"column_chart"},
+                {"name":"Funnel","value":"funnel_chart"},
+                {"name":"Line","value":"line_chart"},
+                {"name":"map","value":"map"},
+                {"name":"Multi Axis Cluster Column","value":"multi_axis_cluster_column_chart"},
+                {"name":"Pie","value":"pie_chart"},
+                {"name":"Stacked Horizontal Bar","value":"stacked_horizontal_bar_chart"}
+            ],
+            "table":[
+                {"name":"Area","value":"area_chart"}
+            ],
+            "Aggregate value":[
+            ],
+            "Profile":[
+
+            ]
+        }
     }
 
     getState = () => {

@@ -90,10 +90,7 @@
         "serve": "^11.3.0",
         "sweetalert2": "^9.10.12",
         "url-loader": "^2.3.0",
-        "viewerjs": "^1.5.0",
-        "multiselect-react-dropdown": "^1.6.11",
-        "emoji-mart": "^3.0.1",
-        "react-feather": "^2.0.9"
+        "viewerjs": "^1.5.0"
     },
     "devDependencies": {
         "@babel/core": "^7.11.4",

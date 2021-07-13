@@ -1,10 +1,11 @@
 import WidgetRenderer from '../../../WidgetRenderer';
 import AbstractEditor from './abstractEditor';
+import JSONHtmlForm from "./JSONtoHTMLForm";
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Swal from 'sweetalert2';
 import Select from 'react-select'
-import { Tabs, Tab, Overlay, Tooltip, Form, Row, Col, Button,Dropdown} from 'react-bootstrap';
+import { Tabs, Tab, Overlay, Tooltip, Form, Row, Col, Button,Dropdown,Spinner} from 'react-bootstrap';
 import { array } from 'prop-types';
 var SINGLELEVEL = "singleLevel"
 var MULTILEVEL = "multiLevel"
@@ -23,6 +24,8 @@ class WidgetEditorBody extends AbstractEditor {
         this.state.singleTarget = true;
         this.state.disabledTargetForm = false;
         this.state.targetTypeValue = "1";
+        this.state.selectedJsonOption=null;
+        this.state.isJsonLoading=false;
         this.ERRORS = {
             CHART_CONFIGURATION_NEEDED: 'Chart configuration is needed',
             TABLE_CONFIGURATION_NEEDED: 'Table configuration is needed',
@@ -40,6 +43,8 @@ class WidgetEditorBody extends AbstractEditor {
             { "label": "Multiple", "value": "multiple" }
         ];
         console.log(this.state.drillDownWidgetType);
+        this.handleFormChange = this.handleFormChange.bind(this);
+        this.state.optionData = [];
     }
 
     getTargetFieldList() {
@@ -394,9 +399,18 @@ class WidgetEditorBody extends AbstractEditor {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        if(prevProps.widget.type != this.props.widget.type){
-            console.log("widget type changed",this.props.widget.type);
-            this.setState({widgetVisualType:this.props.widget.type})
+        if (prevProps.widget.type != this.props.widget.type) {
+            console.log("selectedOption",this.state.selectedJsonOption)
+            this.setState({isJsonLoading:true});
+            setTimeout(() => {
+              this.setState({
+                widgetVisualType: this.props.widget.type,
+                selectedTab:this.props.type != 'html' ? this.props.type : 'widget',
+                widgetType:this.props.type != 'html' ? this.props.type : 'widget',
+                configuration: null,
+                isJsonLoading:false
+              });
+            }, 1000);
         }
     }
 
@@ -610,10 +624,66 @@ class WidgetEditorBody extends AbstractEditor {
         templateList.map(temp => templateOptions.push({value:temp,label:temp.split('.')[0]}));
         return templateOptions;
     }
+    handleDropDown = (key) => {
+        this.setState({selectedJsonOption:key.label})
+        var json = require(`../../../public/json/${key.value}.json`);
+        this.setState({configuration:JSON.stringify(json,undefined,3)},this.refreshWidgetPreview())
+    };
+
+    handleFormChange(keys, evt) {
+        const updatedValue = evt.target.value;
+        let configurationChart = { ...JSON.parse(this.state.configuration) };
+    
+        let result = (keys || []).reduce((result, targetKey, index) => {
+          if (index === keys.length - 1) {
+            result[targetKey] = updatedValue;
+            return result[targetKey];
+          }
+    
+          return result[targetKey] || {};
+        }, configurationChart);
+    
+        this.setState((state) => {
+          state.configuration = JSON.stringify(configurationChart, null, "    ");
+          state.errors.configuration =
+            "" === configurationChart
+              ? thiz.ERRORS.CHART_CONFIGURATION_NEEDED
+              : null;
+          return state;
+        });
+      }
+      getOptions() {
+        console.log("calling",this.state.selectedOption);
+        var options = [];
+        if(this.widgetJson[this.state.widgetVisualType]!=undefined){
+          this.widgetJson[this.state.widgetVisualType].map((item) =>
+          options.push({ label: item.name, value: item.value })
+        );
+        }
+      
+        return options;
+      }
 
     render() {
         let thiz = this;
+        let parentKeys = [];
         const {widgetVisualType,isTemplateLoading,templateList,selectedTemplate} = this.state;
+        
+        function getFormChart() {
+            try {
+              return (
+                <JSONHtmlForm
+                  data={{ ...JSON.parse(thiz.state.configuration) }}
+                  handleFormChange={thiz.handleFormChange}
+                  stack={parentKeys}
+                />
+              );
+            } catch (error) {
+              console.log(error);
+              return <div>Error in JSON</div>;
+            }
+        }
+        
         function getQuerySelectOptoins(keyPrefix) {
             let i = 0;
             let options = [<option value="" key={keyPrefix + '00000000-0000-0000-0000-000000000000'}>-Select query-</option>];
@@ -698,6 +768,28 @@ class WidgetEditorBody extends AbstractEditor {
             return string[0].toUpperCase() + string.slice(1);
         };
 
+        const DropdownComponent = (
+            <Select
+              options={this.getOptions()}
+              onChange={(e) => this.handleDropDown(e)}
+              defaultValue={
+                this.state.selectedJsonOption
+                  ? this.state.selectedJsonOption
+                  : ""
+              }
+            ></Select>
+          );
+        const SpinnerComponent = (
+            <div style={{ marginLeft: "50%", marginTop: "35%" }}>
+                <Spinner
+                animation="border"
+                role="status"
+                size="sm"
+                style={{ marginRight: "50%" }}
+                ></Spinner>
+            </div>
+        );
+
         return (
             <>
                 <div className="form-group col">
@@ -709,26 +801,87 @@ class WidgetEditorBody extends AbstractEditor {
                             <div className="form-group row" style={{ marginBottom: '0px' }}>
                                 <Tabs activeKey={this.state.selectedTab} onSelect={this.configurationTabSelected}>
                                     <Tab eventKey={this.state.widgetType} title={capitalizeFirstLetter(this.state.widgetType)}>
-                                        <div className="form-group row" style={{ marginLeft: '0px', marginRight: '0px' }}>
+                                    {!this.state.isJsonLoading ?
+                                        this.state.widgetType != 'widget'
+                                        ?
+                                            <div className="form-group row" style={{ marginLeft: "0px", marginRight: "0px" }}>
                                             <div className="col-12 no-left-padding no-right-padding">
-                                                <textarea id="configuration" name="configuration" ref="configuration"
-                                                    className="form-control form-control-sm" style={{ fontFamily: 'Monospace' }}
-                                                    onChange={this.configurationChanged} value={this.state.configuration}
-                                                    onBlur={() => {
-                                                        this.props.syncWidgetState("configuration", this.state.configuration, this.data);
-                                                        this.refreshWidgetPreview();
-                                                    }
-                                                    } disabled={this.state.readOnly} />
-                                                <Overlay id="configuration-overlay" target={this.refs.configuration}
-                                                    show={this.state.errors.configuration != null} placement="top">
-                                                    {props => (
-                                                        <Tooltip id="configuration-tooltip" {...props} className="error-tooltip">
-                                                            {this.state.errors.configuration}
-                                                        </Tooltip>
-                                                    )}
-                                                </Overlay>
+                                            {!this.state.readOnly  && <div style={{padding: "5px 5px 5px 0px",maxWidth: "300px"}}>
+                                                {DropdownComponent}
+                                            </div>}
+                                            {this.state.configuration != null ? (
+                                                !this.state.readOnly ?
+                                                <>
+                                                    <Tabs defaultActiveKey="form">
+                                                        <Tab eventKey="form" title="Form">
+                                                            <Form style={{border: "1px solid lightgray",overflowY: "scroll",height: "340px",}}>
+                                                            {getFormChart()}
+                                                            </Form>
+                                                        </Tab>
+                                                        <Tab eventKey="json" title="Json">
+                                                            <Form.Control
+                                                                as="textarea"
+                                                                rows="10"
+                                                                name="chartConfiguration"
+                                                                value={this.state.configuration}
+                                                                onChange={this.configurationChanged}
+                                                                onBlur={() => {
+                                                                    this.props.syncWidgetState(
+                                                                    "configuration",
+                                                                    this.state.configuration,
+                                                                    this.data
+                                                                    );
+                                                                    this.refreshWidgetPreview();
+                                                                }}
+                                                                disabled={this.state.readOnly}
+                                                            />
+                                                        </Tab>
+                                                    </Tabs>
+                                                </>
+                                                :
+                                                    <Form.Control
+                                                        as="textarea"
+                                                        rows="10"
+                                                        name="chartConfiguration"
+                                                        value={this.state.configuration}
+                                                        onChange={this.configurationChanged}
+                                                        onBlur={() => {
+                                                            this.props.syncWidgetState(
+                                                            "configuration",
+                                                            this.state.configuration,
+                                                            this.data
+                                                            );
+                                                            this.refreshWidgetPreview();
+                                                        }}
+                                                        disabled={this.state.readOnly}
+                                                    />
+                                            ) : null}
                                             </div>
                                         </div>
+                                        :
+                                            <div className="form-group row" style={{ marginLeft: '0px', marginRight: '0px' }}>
+                                                <div className="col-12 no-left-padding no-right-padding">
+                                                    <textarea id="configuration" name="configuration" ref="configuration"
+                                                        className="form-control form-control-sm" style={{ fontFamily: 'Monospace' }}
+                                                        onChange={this.configurationChanged} value={this.state.configuration}
+                                                        onBlur={() => {
+                                                            this.props.syncWidgetState("configuration", this.state.configuration, this.data);
+                                                            this.refreshWidgetPreview();
+                                                        }
+                                                        } disabled={this.state.readOnly} />
+                                                    <Overlay id="configuration-overlay" target={this.refs.configuration}
+                                                        show={this.state.errors.configuration != null} placement="top">
+                                                        {props => (
+                                                            <Tooltip id="configuration-tooltip" {...props} className="error-tooltip">
+                                                                {this.state.errors.configuration}
+                                                            </Tooltip>
+                                                        )}
+                                                    </Overlay>
+                                                </div>
+                                            </div>
+                                    :
+                                        <>{SpinnerComponent}</>
+                                    }
                                     </Tab>
                                     <Tab eventKey="query" title="Query">
                                         <br />

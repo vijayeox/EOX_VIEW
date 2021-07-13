@@ -757,13 +757,14 @@ class DashboardFilter extends React.Component {
         this.setState({ filters })
     }
 
+
     render() {
         return (
             <div className="dashboard-filter-wrapper">
                 <div className="filter-header-panel">
                     <h2 className="filter-header-text">Filter By</h2>
                     <div className="dash-manager-buttons" style={{ marginLeft: "auto" }}>
-                        <Button type="button" className="close btn btn-primary" style={{ fontSize: "1.5rem", padding: "2px 7px", boxShadow: "none" }} aria-label="Close" onClick={() => this.hideFilterDiv()} >
+                        <Button type="button" className="close" style={{ fontSize: "1.5rem", padding: "2px 7px", boxShadow: "none" , color : "#345561"}} aria-label="Close" onClick={() => this.hideFilterDiv()} >
                             <i className="fa fa-close" aria-hidden="true"></i>
                         </Button>
                     </div>
