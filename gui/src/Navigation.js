@@ -37,7 +37,11 @@ class Navigation extends React.Component {
       Requests.getMenulist(this.core,this.appId).then((response) => {
         this.props.menuLoad(response["data"]);
         if (response["data"] && response["data"][0]) {
-          this.homepage = response["data"][0];
+          if(response["data"][0].submenu){
+            this.homepage = response["data"][0].submenu[0];
+          } else {
+            this.homepage = response["data"][0];
+          }
         }
         if (this.params && this.params.page) {
           this.setState({
@@ -273,7 +277,7 @@ getElementInsideElement(baseElement, wantedElementID) {
               <i class="fas fa-angle-right" style={{ marginRight: "5px"}}></i>
               <div value={""} disabled={!clickable} className={ clickable ? "activeBreadcrumb" : "disabledBreadcrumb" } type={clickable || index == 0 ? "none" : "info"} selected={false} >
                   <a onClick={() => { clickable ? this.breadcrumbClick(currentValue, index) : null;}}>
-                    <i className={currentValue.icon}></i>
+                    <i className={currentValue.icon}style={{ marginRight: "5px"}} />
                     {currentValue.title}
                   </a>
               </div>
@@ -332,7 +336,8 @@ getElementInsideElement(baseElement, wantedElementID) {
         <div className={this.breadcrumbDiv + " breadcrumbHeader"} id={this.breadcrumbDiv}>
           {this.state.pages.length > 0 ? (
             <div className="row">
-            <div className="breadcrumbs col-md-9">{this.renderBreadcrumbs()}</div><div className="col-md-3 customActions" id="customActions">{this.state.customActions}</div>
+                          <div className="breadcrumbs">{this.renderBreadcrumbs()}</div>
+            <div className="col-md-12 customActions" id="customActions">{this.state.customActions}</div>
             </div>
           ) : null}
         </div>
