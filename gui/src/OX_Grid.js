@@ -576,7 +576,18 @@ export default class OX_Grid extends React.Component {
         />
       );
     } else if (operationsList.length == 1) {
-      return (
+      return operationsList[0].name ? (
+        <Button
+          style={{ right: "10px", fontSize:"0.9rem" }}
+          primary={true}
+          onClick={(e) => this.updatePageContent(operationsList[0])}
+        >
+          {operationsList[0].icon ? (
+            <i className={operationsList[0].icon} style={{paddingRight: "5px" }}/>
+          ) : null}
+          {operationsList[0].name}
+        </Button>
+      ) : (
         <Button
           title={operationsList[0].name}
           className={"toolBarButton"}
