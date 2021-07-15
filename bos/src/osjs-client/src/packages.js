@@ -419,10 +419,10 @@ export default class Packages {
     details.key.apps.map(iteration => {
       metadataList.map((iter1, index) => {
         if (iteration.name == iter1.name) {
-          this.metadata[index] = {
+          this.metadata[index] = iteration.start_options ? {
             ...iter1,
             ...JSON.parse(iteration.start_options)
-          };
+          } : iter1;
         }
       });
     });
