@@ -34,7 +34,7 @@
 # Using docker-compose is recommended
 # You can freely modify this file
 
-FROM node:10
+FROM node:14
 
 # Default Environment
 ARG NODE_ENV=production

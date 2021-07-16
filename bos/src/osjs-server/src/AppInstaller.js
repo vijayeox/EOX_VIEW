@@ -48,12 +48,12 @@ class AppInstaller {
         this.runCommand(req.body.path, req.body.command).then((result) => {
           result
             ? res.json({
-                status: "Success",
-                output: result
-              })
+              status: "Success",
+              output: result
+            })
             : res.status(500).json({
-                status: "Failed"
-              });
+              status: "Failed"
+            });
         });
       } catch (error) {
         res.status(500).json({
@@ -65,7 +65,7 @@ class AppInstaller {
       res.status(404).json({
         status: "Failed",
         error:
-          "Folder -> " + req.body.path + " does not exist in " + process.cwd()
+          "Folder -> " + req.body.path + ' does not exist in ' + process.cwd()
       });
     }
   }
