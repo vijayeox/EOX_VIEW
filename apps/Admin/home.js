@@ -1,4 +1,4 @@
-import {React,ReactDOM} from "oxziongui";
+import { React, ReactDOM } from "oxziongui";
 import $ from "jquery";
 import Organization from "./modules/Organization";
 import Project from "./modules/Project";
@@ -8,9 +8,13 @@ import Kra from "./modules/Kra";
 import Role from "./modules/Roles";
 import Announcement from "./modules/Announcement";
 import Errorlog from "./modules/Errorlog";
-import { slide as Menu } from "react-burger-menu";
+// import { slide as Menu } from "react-burger-menu";
 
 class Home extends React.Component {
+  showSettings(event) {
+    event.preventDefault();
+  }
+
   constructor(props) {
     super(props);
     this.core = this.props.args;
@@ -38,14 +42,14 @@ class Home extends React.Component {
   };
 
   componentDidMount() {
-    $(document).ready(function() {
+    $(document).ready(function () {
       $("#componentsBox").hide();
 
-      $(document).on("click", ".moduleBtn", function() {
+      $(document).on("click", ".moduleBtn", function () {
         $(".DashBG").fadeOut(), $("#componentsBox").show();
       });
 
-      $(document).on("click", ".moduleBtn", function() {
+      $(document).on("click", ".moduleBtn", function () {
         $(".DashBG").fadeOut(), $("#componentsBox").show();
       });
     });
@@ -155,7 +159,7 @@ class Home extends React.Component {
           </div>
         ) : null}
         {this.userProfile.privileges.MANAGE_MAILADMIN_WRITE ? (
-          <div key={10} onClick={()=>this.launchExternalApp("MailAdmin")}>
+          <div key={10} onClick={() => this.launchExternalApp("MailAdmin")}>
             <div className="block d1">
               <img src="apps/Admin/091-email-1.svg" />
             </div>
@@ -164,7 +168,7 @@ class Home extends React.Component {
         ) : null}
 
         {this.userProfile.privileges.MANAGE_CRMADMIN_WRITE ? (
-          <div onClick={()=>this.launchExternalApp("CRMAdmin")}>
+          <div onClick={() => this.launchExternalApp("CRMAdmin")}>
             <div className="block d1">
               <img src="apps/Admin/crm-icon.svg" />
             </div>
@@ -172,8 +176,8 @@ class Home extends React.Component {
           </div>
         ) : null}
 
-          {this.userProfile.privileges.MANAGE_TASKADMIN_WRITE ? (
-          <div onClick={()=>this.launchExternalApp("TaskAdmin")}>
+        {this.userProfile.privileges.MANAGE_TASKADMIN_WRITE ? (
+          <div onClick={() => this.launchExternalApp("TaskAdmin")}>
             <div className="block d1">
               <img src="apps/Admin/008-development-2.svg" />
             </div>
@@ -181,7 +185,7 @@ class Home extends React.Component {
           </div>
         ) : null}
         {this.userProfile.privileges.MANAGE_APPBUILDER_READ ? (
-          <div onClick={()=>this.launchExternalApp("EOXAppBuilder")}>
+          <div onClick={() => this.launchExternalApp("EOXAppBuilder")}>
             <div className="block d1">
               <img src="apps/Admin/008-development-2.svg" />
             </div>
@@ -190,7 +194,7 @@ class Home extends React.Component {
         ) : null}
 
         {this.userProfile.privileges.MANAGE_OIBUILDER_READ ? (
-          <div onClick={()=>this.launchExternalApp("Analytics")}>
+          <div onClick={() => this.launchExternalApp("Analytics")}>
             <div className="block d1">
               <img src="apps/Admin/014-analytics.svg" />
             </div>
@@ -229,7 +233,7 @@ class Home extends React.Component {
           height: this.state.windowSize || "32rem"
         }}
       >
-        <Menu
+        {/* <Menu
           width={"15rem"}
           isOpen={this.state.showMenu}
           disableAutoFocus
@@ -257,7 +261,7 @@ class Home extends React.Component {
           </div>
 
           <div className="dashIcons">{this.createBlock()}</div>
-        </Menu>
+        </Menu> */}
 
         <div className="DashBG" style={{ height: "100%" }} id="admin-page-wrap">
           <div className="dashIcons">{this.createBlock()}</div>

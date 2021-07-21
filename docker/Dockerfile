@@ -1,7 +1,7 @@
 # view build 
 
 FROM node:14-slim
-
+USER root
 RUN apt-get update && apt-get install python \
 					build-essential -y
 RUN npm install gulp-cli -g
