@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Button, Modal, Form, Row, Col } from 'react-bootstrap'
 import JSONFormRenderer from "../../JSONFormRenderer"
-import { FormSchema } from "./DataSourceModalSchema.json"
+import FormSchema from "./DataSourceModalSchema.json"
 
 function DataSourceModal(props) {
   const [input, setInput] = useState({})
@@ -188,7 +188,7 @@ function DataSourceModal(props) {
       <Modal.Header >
         <Modal.Title id="contained-modal-title-vcenter">
           {props.modalType} Data Source
-         </Modal.Title>
+        </Modal.Title>
       </Modal.Header>
       <Modal.Body className="modal-body">
         <Form>

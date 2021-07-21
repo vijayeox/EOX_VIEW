@@ -1,7 +1,8 @@
 import osjs from "osjs";
-import { name as applicationName } from "./metadata.json";
+// import { name as applicationName } from "./metadata.json";
+import adminJson from "./metadata.json";
 import {React,ReactDOM} from "oxziongui";
-import { icon_white } from "./metadata.json";
+import icon_white from "./metadata.json";
 import Home from "./home";
 
 var i, finalposition, finalDimension,finalMaximised,finalMinimised;
@@ -89,4 +90,4 @@ const register = (core, args, options, metadata) => {
   return proc;
 };
 
-osjs.register(applicationName, register);
+osjs.register(adminJson.name, register);

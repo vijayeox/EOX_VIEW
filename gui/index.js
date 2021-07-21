@@ -7,7 +7,7 @@ import './index.scss';
 import DateComponent from "./src/components/DateComponent.js";
 import CurrencySelect from "./src/components/Currency Select/currencySelect";
 import countryStateList from "./src/components/data/country-state-codes";
-import * as ReactWebTabs from "react-web-tabs";
+// import * as ReactWebTabs from "react-web-tabs";
 import * as ReactBootstrap from "react-bootstrap";
 import * as KendoFileUploader from "@progress/kendo-react-upload";
 import * as KendoReactButtons from "@progress/kendo-react-buttons";
@@ -43,12 +43,10 @@ import Visualization from "./src/Visualization";
 import WidgetManager from "./src/WidgetManager";
 import TemplateManager from "./src/TemplateManager";
 
-const LazyLoad = ({ component: Component,...rest}) => (
-  <>
+const LazyLoad = ({ component: Component, ...rest }) => (
   <React.Suspense fallback={<div className="spinner"><div className="bounce1"></div><div className="bounce2"></div><div className="bounce3"></div></div>}>
     <Component {...rest} />
-    </React.Suspense>
-  </>
+  </React.Suspense>
 );
 // const GridTemplate = (props) => <LazyLoad component={lazy(() => import("./src/GridTemplate"))} {...props} />;
 // const DashboardManager = (props) => <LazyLoad component={lazy(() => import("./src/DashboardManager"))} {...props} />;
@@ -97,7 +95,7 @@ export {
   AvatarImageCropper,
   ReactStrap,
   ReactBootstrap,
-  ReactWebTabs,
+  // ReactWebTabs,
   Webcam,
   KendoFileUploader,
   KendoReactEditor,

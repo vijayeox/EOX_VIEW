@@ -1,5 +1,5 @@
 import {React,Notification,KendoDataQuery,KendoReactGrid,KendoReactWindow,KendoReactInput,KendoReactRipple} from "oxziongui";
-import TextareaAutosize from "react-textarea-autosize";
+// import TextareaAutosize from "react-textarea-autosize";
 import { SaveCancel } from "../components/index";
 
 export default class DialogContainer extends React.Component {
@@ -191,7 +191,7 @@ export default class DialogContainer extends React.Component {
 
             <div className="form-group text-area-custom">
               <label className="required-label">Role Description</label>
-              <TextareaAutosize
+              <textarea
                 type="text"
                 className="form-control"
                 name="description"

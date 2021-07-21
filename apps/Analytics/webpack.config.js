@@ -1,19 +1,21 @@
 const Dotenv = require('dotenv-webpack')
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+// const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const TerserPlugin = require("terser-webpack-plugin");
+// const NodePolyfillPlugin = require("node-polyfill-webpack-plugin")
 
 const mode = process.env.NODE_ENV || 'development';
 const minimize = mode === 'production';
 const plugins = [];
 
 if (mode === 'production') {
-  plugins.push(new OptimizeCSSAssetsPlugin({
-    cssProcessorOptions: {
-      discardComments: true
-    },
-  }));
+  // plugins.push(new OptimizeCSSAssetsPlugin({
+  //   cssProcessorOptions: {
+  //     discardComments: true
+  //   },
+  // }));
 }
 
 module.exports = {
@@ -42,7 +44,9 @@ module.exports = {
     }
   },
   optimization: {
-    minimize,
+    minimizer: [
+      new TerserPlugin()
+    ],
   },
   plugins: [
     new CopyWebpackPlugin([
@@ -50,10 +54,7 @@ module.exports = {
       'icon_white.png',
       'images/',
       { from: path.resolve(__dirname, "../../gui/src/ckeditor/") },
-      {
-        from: 'node_modules/@progress/kendo-theme-default/dist/all.css',
-        to: 'kendo-theme-default-all.css'
-      }
+      { from: 'node_modules/@progress/kendo-theme-default/dist/all.css', to: 'kendo-theme-default-all.css' }
     ]
     ),
     new MiniCssExtractPlugin({
@@ -64,6 +65,7 @@ module.exports = {
       path: './.env',
       safe: true
     }),
+    // new NodePolyfillPlugin(),
     ...plugins
   ],
   module: {
@@ -81,7 +83,11 @@ module.exports = {
       },
       {
         test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        loader: "url-loader?limit=10000&mimetype=application/font-woff"
+        loader: "url-loader",
+        options: {
+          limit: 10000,
+          mimetype: 'application/font-woff'
+        }
       },
       {
         test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
@@ -100,7 +106,6 @@ module.exports = {
           {
             loader: "sass-loader",
             options: {
-              minimize,
               sourceMap: true
             }
           }

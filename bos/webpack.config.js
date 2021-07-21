@@ -5,23 +5,26 @@ const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+// const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const TerserPlugin = require("terser-webpack-plugin");
+const NodePolyfillPlugin = require("node-polyfill-webpack-plugin")
 const {
   DefinePlugin
 } = webpack;
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+// const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+// const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const npm = require('./package.json');
 const plugins = [];
 
 if (mode === 'production') {
-  plugins.push(new OptimizeCSSAssetsPlugin({
-    cssProcessorOptions: {
-      discardComments: true,
-      map: {
-        inline: false
-      }
-    },
-  }));
+  // plugins.push(new OptimizeCSSAssetsPlugin({
+  //   cssProcessorOptions: {
+  //     discardComments: true,
+  //     map: {
+  //       inline: false
+  //     }
+  //   },
+  // }));
 }
 
 module.exports = {
@@ -55,14 +58,15 @@ module.exports = {
   },
   optimization: {
     minimizer: [
-      new UglifyJSPlugin({
-        sourceMap: true,
-        uglifyOptions: {
-          compress: {
-            inline: false
-          }
-        }
-      })
+      new TerserPlugin()
+      // new UglifyJSPlugin({
+      //   sourceMap: true,
+      //   uglifyOptions: {
+      //     compress: {
+      //       inline: false
+      //     }
+      //   }
+      // })
     ],
     runtimeChunk: false,
     splitChunks: {
@@ -96,6 +100,7 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: '[name].css'
     }),
+    new NodePolyfillPlugin(),
     ...plugins
   ],
   module: {
@@ -114,7 +119,11 @@ module.exports = {
       },
       {
         test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        loader: "url-loader?limit=10000&mimetype=application/font-woff"
+        loader: "url-loader",
+        options: {
+            limit: 10000,
+            mimetype: 'application/font-woff'
+        }
       },
       {
         test: /\.(sa|sc|c)ss$/,
@@ -129,7 +138,6 @@ module.exports = {
           {
             loader: 'sass-loader',
             options: {
-              minimize,
               sourceMap: true
             }
           },

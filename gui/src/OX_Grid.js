@@ -1040,7 +1040,7 @@ class DatePickerPopup extends React.Component {
 }
 
 
-class CustomCell extends GridCell {
+class CustomCell extends React.Component {
   render() {
     var formatDate = (dateTime, dateTimeFormat) => {
       let userTimezone, userDateTimeFomat = null;
