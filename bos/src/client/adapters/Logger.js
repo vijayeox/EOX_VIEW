@@ -20,18 +20,6 @@ export class LoggerServiceProvider extends ServiceProvider {
     }
 
     log(type, message) {
-        switch (type) {
-            case 'trace':
-            case 'debug':
-            case 'info':
-            case 'warn':
-            case 'error':
-            case 'fatal':
-                break;
-            default:
-                type = 'info';
-                break;
-        }
         this.core.make("oxzion/restClient").request(
             "v1",
             "/logger",
