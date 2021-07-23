@@ -30,8 +30,7 @@ export class LoggerServiceProvider extends ServiceProvider {
             "post"
         ).then((response) => {
             if (response.status != "success") {
-                let messageDialog = this.core.make("oxzion/messageDialog");
-                messageDialog.show('Logging Error', 'Unable to add ' + type + ' log on the server.', 'Ok', 'Cancel');
+                console.log('Logging Error - Unable to add ' + type + ' log on the server.');
             }
         });
     }
