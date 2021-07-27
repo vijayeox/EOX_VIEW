@@ -106,7 +106,6 @@ export default class Body extends React.Component {
 	render() {
 		const { expanded, selected } = this.state;
 		let sectionContent;
-		console.log("Inside the body render");
 		switch (this.state.displaySection) {
 			case SECTION_DATA_SOURCE:
 				sectionContent = <DataSource args={this.core} setTitle={this.setTitle} />;

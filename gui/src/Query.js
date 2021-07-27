@@ -10,8 +10,6 @@ import QueryResult from './components/Query/QueryResult'
 // import { FormSchema } from "./components/Modals/QueryModalSchema.json"
 import querySchemaJson from "./components/Modals/QueryModalSchema.json"
 import JSONFormRenderer from "./JSONFormRenderer"
-
-
 import ReactDOM from 'react-dom'
 import "./public/css/query.scss";
 
