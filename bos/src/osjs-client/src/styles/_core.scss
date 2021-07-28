@@ -95,3 +95,17 @@
   align-items: center;
   justify-content: center;
 }
+.osjs-mask-application{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 99999999999;
+  background-color: rgba(255, 255, 255, 0.5);
+  height: 100%;
+  width: 100%;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

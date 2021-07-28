@@ -415,6 +415,27 @@ export default class Packages {
       metadata = this.metadata;
     }
 
+    var isJsonParsable = (string) => {
+      try {
+        JSON.parse(string);
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+
+    const metadataList = metadata;
+    details.key.apps.map(eos_app => {
+      metadataList.map((osjs_app, index) => {
+        if (eos_app.name == osjs_app.name) {
+          this.metadata[index] = (isJsonParsable(eos_app.start_options)) ? {
+            ...osjs_app,
+            ...JSON.parse(eos_app.start_options)
+          } : osjs_app;
+        }
+      });
+    });
+
     const filterBlacklist = iter => details.key.blackListedApps instanceof Object
     ? !details.key.blackListedApps[iter.name]
     : true;
