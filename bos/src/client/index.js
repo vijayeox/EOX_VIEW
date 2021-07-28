@@ -70,6 +70,7 @@ import { BosAdapter } from './adapters/BosAdapter.js';
 import { GlobalLinkAdapter } from "./adapters/GlobalLinkAdapter.js";
 import {ScriptLoaderServiceProvider} from './adapters/ScriptLoader.js';
 import { MessageServiceProvider } from "./adapters/MessageAdapter.js";
+import { LoggerServiceProvider } from './adapters/Logger.js'
 /*import {MyApiServiceProvider} from './testProvider.js';
 import announcementWidget from './customWidget.js';
 import customPanelItem from './customPanel.js'*/
@@ -105,6 +106,7 @@ const init = () => {
   osjs.register(ScriptLoaderServiceProvider,{before: true});
   osjs.register(MessageServiceProvider, { before: true });
   osjs.register(GlobalLinkHandler,{before: true});
+  osjs.register(LoggerServiceProvider,{before: true});
   osjs.boot();
 };
 
