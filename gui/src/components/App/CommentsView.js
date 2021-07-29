@@ -56,9 +56,11 @@ class CommentsView extends React.Component {
       ) {
         var file = fileData.data.data ? fileData.data.data : fileData.data;
         this.setState({ entityId: fileData.data.entity_id, fileData: file });
-        this.getEntityPage().then(entityPage => {
-          this.setState({ entityConfig: entityPage.data });
-          this.generateViewButton(entityPage.data.enable_auditlog);
+        this.getEntityPage().then((entityPage) => {
+          if (entityPage.data) {
+            this.setState({ entityConfig: entityPage.data });
+            this.generateViewButton(entityPage.data.enable_auditlog);
+          }
           this.fetchCommentData();
         });
       }
@@ -124,24 +126,29 @@ class CommentsView extends React.Component {
     let res = {};
     let data = [],
       fileName = [];
-    response.data.map((i, index) => {
-      data.push({
-        id: this.uuidv4(),
-        text: i.text,
-        name: i.name,
-        time: i.time,
-        user_id: i.userId,
-        comment_id: i.commentId
-      });
-      res["data"] = data;
-      i.attachments &&
-        i.attachments.map(j => {
-          fileName.push(j.name);
-          res["data"][index]["fileName"] = fileName;
-        });
-      fileName = [];
-    });
-    return this.formatFormData(res["data"]);
+      if(response.data.length > 0){
+        response.data.map((i, index) => {
+          data.push({
+            id: this.uuidv4(),
+            text: i.text,
+            name: i.name,
+            time: i.time,
+            user_id: i.userId,
+            comment_id: i.commentId
+          });
+          res["data"] = data;
+          i.attachments &&
+            i.attachments.map(j => {
+              fileName.push(j.name);
+              res["data"][index]["fileName"] = fileName;
+            });
+          fileName = [];
+        }) ;
+        return this.formatFormData(res["data"]);
+      } else {
+        return [];
+      }
+  
   }
 
   fetchCommentData() {
