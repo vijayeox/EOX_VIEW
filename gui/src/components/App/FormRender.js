@@ -351,7 +351,8 @@ class FormRender extends BaseFormRenderer {
         if (response.status == "success") {
           if (!this.state.content) {
             this.setState(
-              { content: JSON.parse(response.data.template) }
+              { content: JSON.parse(response.data.template),
+                entity_name: response.data.entity_name }
             );
           }
           this.createForm().then((form) => {
