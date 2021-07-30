@@ -427,8 +427,8 @@ class PageContent extends React.Component {
             gridDefaultFilters={
               itemContent.defaultFilters
                 ? typeof itemContent.defaultFilters == "string"
-                  ? JSON.parse(ParameterHandler.replaceParams(this.appId, itemContent.defaultFilters))
-                  : ParameterHandler.replaceParams(this.appId, itemContent.defaultFilters)
+                  ? JSON.parse(ParameterHandler.replaceParams(this.appId,itemContent.defaultFilters,mergeRowData))
+                  : JSON.parse(ParameterHandler.replaceParams(this.appId, JSON.stringify(itemContent.defaultFilters),mergeRowData))
                 : undefined
             }
             gridOperations={operations}
