@@ -116,7 +116,8 @@ class Home extends React.Component {
         name: "Announcement",
         api: "ANNOUNCEMENT",
         icon: "apps/Admin/131-laptop.svg",
-        component: Announcement
+        component: Announcement,
+        type: "internal"
       }
     ];
     let table = [];

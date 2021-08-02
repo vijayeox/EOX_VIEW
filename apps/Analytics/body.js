@@ -2,7 +2,7 @@
 import $ from 'jquery';
 import { React, Query, DataSource, Visualization, TemplateManager } from 'oxziongui';
 import { WidgetManager, DashboardManager } from 'oxziongui';
-import SideNav, { NavItem, NavIcon, NavText } from "@trendmicro/react-sidenav";
+import SideNav, { Toggle, Nav, NavItem, NavIcon, NavText } from '@trendmicro/react-sidenav';
 import "@trendmicro/react-sidenav/dist/react-sidenav.css";
 
 const SECTION_DATA_SOURCE = 'DS'; //DataSource
@@ -13,7 +13,7 @@ const SECTION_WIDGET = 'WD'; //Edit DashBoard
 const SECTION_VISULAIZATION = 'VS' //Visualization
 const SECTION_TEMPLATEMANGER = 'TM' //TemplateManager
 
-export default class Body extends React.Component {
+class Body extends React.Component {
 	constructor(props) {
 		super(props);
 		this.core = this.props.args;
@@ -33,7 +33,7 @@ export default class Body extends React.Component {
 		this.onToggle = this.onToggle.bind(this);
 		this.state = {
 			isMenuOpen: false,
-			displaySection: SECTION_DASHBOARD,
+			displaySection: SECTION_DATA_SOURCE,
 			sectionData: null,
 			title: ''
 		};
@@ -104,7 +104,7 @@ export default class Body extends React.Component {
 	}
 
 	render() {
-		const { expanded, selected } = this.state;
+		// const { expanded, selected } = this.state;
 		let sectionContent;
 		switch (this.state.displaySection) {
 			case SECTION_DATA_SOURCE:
@@ -126,13 +126,14 @@ export default class Body extends React.Component {
 				sectionContent = <TemplateManager args={this.core} setTitle={this.setTitle} />;
 				break;
 		}
+		console.log(sectionContent);
 		return (
 			<div id="page-body" className={"page-body full-width LeftMenuTemplate" + (this.props.proc.metadata.hideMenu ? " hideMenu" : "")}>
 				<SideNav
 					onSelect={this.onSelect}
 				>
 					<SideNav.Toggle />
-					<SideNav.Nav defaultSelected={SECTION_DASHBOARD}>
+					<SideNav.Nav defaultSelected={SECTION_DATA_SOURCE}>
 						<NavItem eventKey={SECTION_DATA_SOURCE} key={SECTION_DATA_SOURCE}>
 							<NavIcon>
 								<i className="fad fa-database" aria-hidden="true"></i>
@@ -187,9 +188,13 @@ export default class Body extends React.Component {
 					{
 						this.state.title != "Operational Intelligence" && <div className="page-title">{this.state.title}</div>
 					}
-					{sectionContent}
+					<div className="page-content full-width" id="page-content">
+						{sectionContent}
+					</div>
 				</div>
 			</div>
 		);
 	}
 }
+
+export default Body;
