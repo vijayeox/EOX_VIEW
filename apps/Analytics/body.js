@@ -1,6 +1,6 @@
 import $ from 'jquery';
 import { name as applicationName } from './metadata.json';
-import { React, Query, DataSource, Visualization, WidgetGrid, Suspense } from 'oxziongui';
+import { React, Query, DataSource, Visualization, WidgetGrid, Suspense,TemplateManager } from 'oxziongui';
 import { WidgetManager, DashboardManager } from 'oxziongui';
 import DashboardViewer from "OxzionGUI/DashboardManager"
 import { slide as Menu } from 'react-burger-menu';
@@ -11,6 +11,7 @@ const SECTION_DASHBOARD = 'DB'; //DashBoard
 const SECTION_EDIT_DASHBOARD = 'EDB'; //Edit DashBoard
 const SECTION_WIDGET = 'WD'; //Edit DashBoard
 const SECTION_VISULAIZATION = 'VS' //Visualization
+const SECTION_TEMPLATEMANGER = 'TM' //TemplateManager
 
 
 class Body extends React.Component {
@@ -71,7 +72,7 @@ class Body extends React.Component {
 
   render() {
     let sectionContent;
-    // console.log("Inside the body render");
+    console.log("Inside the body render");
     switch (this.state.displaySection) {
       case SECTION_DATA_SOURCE:
         sectionContent = <DataSource args={this.core} setTitle={this.setTitle} />;
@@ -87,6 +88,9 @@ class Body extends React.Component {
         break;
       case SECTION_VISULAIZATION:
         sectionContent = <Visualization args={this.core} setTitle={this.setTitle} />;
+        break;
+      case SECTION_TEMPLATEMANGER:
+        sectionContent = <TemplateManager args={this.core} setTitle={this.setTitle} />;
         break;
     }
 
@@ -105,10 +109,13 @@ class Body extends React.Component {
             <i className="fa fa-tasks" aria-hidden="true"></i> Operational Intelligence
                   </a>
           <a className="menu-item" onClick={(e) => { this.switchSection(SECTION_WIDGET, null) }}>
-            <i className="fa fa-cubes" aria-hidden="true"></i> MLET Manager
+            <i className="fa fa-cubes" aria-hidden="true"></i> Widget Manager
                   </a>
           <a className="menu-item" onClick={(e) => { this.switchSection(SECTION_VISULAIZATION, null) }}>
             <i className="fa fa-cubes" aria-hidden="true"></i> Visualization
+                  </a>
+          <a className="menu-item" onClick={(e) => { this.switchSection(SECTION_TEMPLATEMANGER, null) }}>
+            <i className="fas fa-code" aria-hidden="true"></i> Template Manager
                   </a>
         </Menu>
         {
