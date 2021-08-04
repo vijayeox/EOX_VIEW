@@ -297,14 +297,8 @@ class App extends React.Component {
         </div>
       </div>
       <div className="col-md-9">
-        <Tabs name="tabs2" className="tabs" selectedTab="vertical-tab-myprofile">
+        <Tabs name="tabs2" className="tabs" selectedTab="vertical-tab-editprofile">
           <div className="links">
-            <TabLink to="vertical-tab-myprofile"> 
-              <i className="fa fa-user-circle" />
-              <span>
-                My Profile
-              </span>
-            </TabLink>
             <TabLink to="vertical-tab-editprofile">
               <i className="fa fa-user-circle" />
               <span>
@@ -325,9 +319,6 @@ class App extends React.Component {
             </TabLink>
           </div>
           <div className="tabContentDiv">
-            <TabContent for="vertical-tab-myprofile" key="vertical-tab-myprofile"> 
-              <Profile core={this.core} />          
-            </TabContent>
             <TabContent for="vertical-tab-editprofile" key="vertical-tab-editprofile">
               <EditProfile args={this.core} />
             </TabContent>
