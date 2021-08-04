@@ -1,5 +1,6 @@
 import React from 'react';
-import { dashboard as section } from '../metadata.json';
+import dashboardJson from '../metadata.json';
+// import { dashboard as section } from '../metadata.json';
 import Notification from './Notification'
 import DashboardViewer from './Dashboard'
 import DashboardFilter from './DashboardFilter'
@@ -20,7 +21,7 @@ class DashboardManager extends React.Component {
     this.core = this.props.args;
     this.userProfile = this.core.make("oxzion/profile").get();
     this.filterRef = React.createRef();
-    this.props.setTitle(section.title.en_EN);
+    this.props.setTitle(dashboardJson.dashboard.title.en_EN);
     this.content = this.props.content;
     var uuid = '';
     if (this.props.uuid) {

@@ -50,6 +50,7 @@ usage() {
     echo "npm run build [-- options] - to build all packages";
     echo "npm run build-bos [-- options] - to build only bos";
     echo "npm run build-gui [-- options] - to build only gui";
+    echo "npx kendo-ui-license activate";
     echo "npm run build-iconpacks [-- options] - to build only iconpacks";
     echo "npm run build-themes [-- options] - to build only themes";
     echo "npm run build-apps -- [\"<app names>\"] [options]  - to build apps. Optionally comma separated list of App names can be provided";

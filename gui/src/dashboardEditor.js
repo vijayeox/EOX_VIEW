@@ -1,6 +1,6 @@
 import React from 'react';
 import { Overlay, Tooltip, Button, Form } from 'react-bootstrap';
-import { dashboardEditor as section } from '../metadata.json';
+import dashboardJson from '../metadata.json';
 import JavascriptLoader from './components/javascriptLoader';
 import WidgetRenderer from './WidgetRenderer';
 import DashboardFilter from './DashboardFilter';
@@ -31,7 +31,7 @@ class DashboardEditor extends React.Component {
 		};
 		this.initialState = { ...this.state }
 		this.renderedCharts = {};
-		this.props.setTitle(section.title.en_EN);
+		this.props.setTitle(dashboardJson.dashboardEditor.title.en_EN);
 		this.restClient = this.core.make('oxzion/restClient');
 		this.editor = null;
 		this.dashboardName = React.createRef();

@@ -1,6 +1,5 @@
 import {React,Notification,KendoReactWindow,KendoReactInput,Moment} from "oxziongui";
 import { Editor, EditorTools, EditorUtils } from '@progress/kendo-react-editor';
-import TextareaAutosize from "react-textarea-autosize";
 import scrollIntoView from "scroll-into-view-if-needed";
 import { SaveCancel, DateComponent, FileUploader } from "../components/index";
 export default class DialogContainerAnnouncement extends React.Component {
