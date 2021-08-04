@@ -1,6 +1,6 @@
 const path = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+// const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 
@@ -78,7 +78,6 @@ module.exports = {
           {
             loader: "sass-loader",
             options: {
-              minimize,
               sourceMap: true
             }
           }
@@ -109,8 +108,5 @@ module.exports = {
         loader: "html-loader"
       }
     ]
-  },
-  node: {
-    fs: "empty"
   }
 };

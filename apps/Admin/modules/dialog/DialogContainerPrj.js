@@ -5,7 +5,7 @@ import {
   KendoReactWindow,
   KendoReactInput,
 } from "oxziongui";
-import TextareaAutosize from "react-textarea-autosize";
+// import TextareaAutosize from "react-textarea-autosize";
 import { GetSingleEntityData, PushData } from "../components/apiCalls";
 import { SaveCancel, DropDown } from "../components/index";
 import Swal from "sweetalert2";
@@ -159,7 +159,7 @@ export default class DialogContainer extends React.Component {
             </div>
             <div className="form-group text-area-custom">
               <label className="required-label">Project Description</label>
-              <TextareaAutosize
+              <textarea
                 type="text"
                 className="form-control"
                 name="description"
