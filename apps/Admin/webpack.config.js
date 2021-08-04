@@ -2,20 +2,21 @@ const path = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 // const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
-const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
+// const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
+const TerserPlugin = require("terser-webpack-plugin");
 
 const mode = process.env.NODE_ENV || "development";
 const minimize = mode === "production";
 const plugins = [];
 
 if (mode === "production") {
-  plugins.push(
-    new OptimizeCSSAssetsPlugin({
-      cssProcessorOptions: {
-        discardComments: true
-      }
-    })
-  );
+  // plugins.push(
+  //   new OptimizeCSSAssetsPlugin({
+  //     cssProcessorOptions: {
+  //       discardComments: true
+  //     }
+  //   })
+  // );
 }
 
 module.exports = {
@@ -30,14 +31,16 @@ module.exports = {
     oxziongui: "oxziongui"
   },
   optimization: {
-    minimize
+    minimizer: [
+      new TerserPlugin()
+    ],
   },
   plugins: [
     // new BundleAnalyzerPlugin(),
     new CopyWebpackPlugin(["icon.svg", "icon_white.svg", "images/"]),
     new MiniCssExtractPlugin({
-      filename: "[name].css",
-      chunkFilename: "[id].css"
+      filename: '[name].css',
+      chunkFilename: '[id].css'
     }),
     ...plugins
   ],
@@ -55,6 +58,18 @@ module.exports = {
         ]
       },
       {
+        test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        loader: "url-loader",
+        options: {
+          limit: 10000,
+          mimetype: 'application/font-woff'
+        }
+      },
+      {
+        test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        loader: "file-loader"
+      },
+      {
         test: /\.(eot|ttf|woff|woff2)$/,
         include: /typeface/,
         use: {
@@ -67,6 +82,9 @@ module.exports = {
       },
       {
         test: /\.(sa|sc|c)ss$/,
+        // include: [
+        //   path.resolve(__dirname, 'src', 'sass')
+        // ],
         use: [
           MiniCssExtractPlugin.loader,
           {
@@ -102,6 +120,12 @@ module.exports = {
             ]
           }
         }
+      },
+      {
+        test: /\.(svg|png|jpe?g|gif|webp)$/,
+        use: [{
+          loader: 'file-loader'
+        }]
       },
       {
         test: /\.html$/,
