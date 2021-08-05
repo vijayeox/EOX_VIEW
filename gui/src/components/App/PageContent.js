@@ -206,20 +206,7 @@ class PageContent extends React.Component {
             }
           }
         });
-        action.updateOnly
-          ? null
-          : PageNavigation.loadPage(
-              this.appId,
-              this.pageId,
-              pageId,
-              action.icon,
-              true,
-              action.name,
-              mergeRowData,
-              copyPageContent,
-              undefined,
-              action.popupConfig
-            );
+        action.updateOnly ? null : PageNavigation.loadPage(this.appId, this.pageId, pageId, action.icon, true, action.name, mergeRowData, copyPageContent);
       }
     }
   }

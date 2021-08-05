@@ -796,9 +796,7 @@ export default class OX_Grid extends React.Component {
           true,
           action.name,
           mergeRowData,
-          copyPageContent,
-          undefined,
-          action.popupConfig
+          copyPageContent
         );
       }
     }
