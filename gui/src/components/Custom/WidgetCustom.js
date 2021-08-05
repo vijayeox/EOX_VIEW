@@ -37,7 +37,7 @@ const columns = [
     //     { title:"Before EJE Variance %",field:"Before EJE Variance %"}]}
 ];
 
-class App extends Component {
+class WidgetCustom extends Component {
   state = {
     data: [ ...employees ],
     dataState: {
