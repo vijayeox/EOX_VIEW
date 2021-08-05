@@ -68,7 +68,7 @@ class WidgetEditorBody extends AbstractEditor {
             state.errors.configuration = ('' === value) ? thiz.ERRORS.CHART_CONFIGURATION_NEEDED : null;
             return state;
         });
-        //IMPORTANT: Don't refresh chart preview when configurationChanged method is called. 
+        //IMPORTANT: Don't refresh chart preview when configurationChanged method is called.
         //           It is too much to update preview for every key stroke when the user is typing the configuration.
         //           Therefore chart preview is updated when the configuration field loses focus OR when the "chart" tab comes back to focus.
     }
@@ -141,6 +141,7 @@ class WidgetEditorBody extends AbstractEditor {
     }
 
     refreshQueryPreview = () => {
+        console.log("hello");
         let cardBody = document.querySelector('div#previewBox div.card-body');
         let textArea = document.querySelector('textarea#queryPreviewText');
         textArea.style.height = (cardBody.offsetHeight - 40) + 'px'; //-40px for border and margin around textarea.
@@ -380,6 +381,7 @@ class WidgetEditorBody extends AbstractEditor {
     }
 
     componentDidMount() {
+        if(this.state.widgetType == 'report') this.setState({configuration:'{"report":"custom"}'})
         let thiz = this;
         this.loadQueries(function () {
             thiz.configurationTabSelected(thiz.type);
@@ -395,11 +397,12 @@ class WidgetEditorBody extends AbstractEditor {
         //     state.drillDownWidgetType.value = drillDownWidgetType.value ? drillDownWidgetType.value  : "dashboard";
         //     return state;
         // });
-        
+
     }
 
     componentDidUpdate(prevProps, prevState) {
         if (prevProps.widget.type != this.props.widget.type) {
+            console.log("props--->",this.props.widget.type)
             console.log("selectedOption",this.state.selectedJsonOption)
             this.setState({isJsonLoading:true});
             setTimeout(() => {
@@ -407,7 +410,7 @@ class WidgetEditorBody extends AbstractEditor {
                 widgetVisualType: this.props.widget.type,
                 selectedTab:this.props.type != 'html' ? this.props.type : 'widget',
                 widgetType:this.props.type != 'html' ? this.props.type : 'widget',
-                configuration: null,
+                configuration: this.props.widget.type==="report" ? '{"report":"custom"}':null,
                 isJsonLoading:false
               });
             }, 1000);
@@ -439,7 +442,7 @@ class WidgetEditorBody extends AbstractEditor {
     }
 
     refreshPreview() {
-        if (this.state.selectedTab === 'chart' || this.state.selectedTab === 'table' || this.state.selectedTab === 'widget' || this.state.selectedTab === 'inline' || this.state.selectedTab === 'html' || this.state.selectedTab === 'profile') {
+        if (this.state.selectedTab === 'chart' || this.state.selectedTab === 'table' || this.state.selectedTab === 'widget' || this.state.selectedTab === 'inline' || this.state.selectedTab === 'html' || this.state.selectedTab === 'profile' || this.state.selectedTab === 'report') {
             //refresh preview
             this.refreshWidgetPreview();
         } else if (this.state.selectedTab === 'query') {
@@ -633,16 +636,15 @@ class WidgetEditorBody extends AbstractEditor {
     handleFormChange(keys, evt) {
         const updatedValue = evt.target.value;
         let configurationChart = { ...JSON.parse(this.state.configuration) };
-    
+
         let result = (keys || []).reduce((result, targetKey, index) => {
           if (index === keys.length - 1) {
             result[targetKey] = updatedValue;
             return result[targetKey];
           }
-    
+
           return result[targetKey] || {};
         }, configurationChart);
-    
         this.setState((state) => {
           state.configuration = JSON.stringify(configurationChart, null, "    ");
           state.errors.configuration =
@@ -660,7 +662,7 @@ class WidgetEditorBody extends AbstractEditor {
           options.push({ label: item.name, value: item.value })
         );
         }
-      
+
         return options;
       }
 
@@ -668,7 +670,7 @@ class WidgetEditorBody extends AbstractEditor {
         let thiz = this;
         let parentKeys = [];
         const {widgetVisualType,isTemplateLoading,templateList,selectedTemplate} = this.state;
-        
+
         function getFormChart() {
             try {
               return (
@@ -683,7 +685,7 @@ class WidgetEditorBody extends AbstractEditor {
               return <div>Error in JSON</div>;
             }
         }
-        
+
         function getQuerySelectOptoins(keyPrefix) {
             let i = 0;
             let options = [<option value="" key={keyPrefix + '00000000-0000-0000-0000-000000000000'}>-Select query-</option>];
@@ -799,481 +801,507 @@ class WidgetEditorBody extends AbstractEditor {
                         </div>
                         <div className="card-body">
                             <div className="form-group row" style={{ marginBottom: '0px' }}>
-                                <Tabs activeKey={this.state.selectedTab} onSelect={this.configurationTabSelected}>
-                                    <Tab eventKey={this.state.widgetType} title={capitalizeFirstLetter(this.state.widgetType)}>
-                                    {!this.state.isJsonLoading ?
-                                        this.state.widgetType != 'widget'
-                                        ?
-                                            <div className="form-group row" style={{ marginLeft: "0px", marginRight: "0px" }}>
-                                            <div className="col-12 no-left-padding no-right-padding">
-                                            {!this.state.readOnly  && <div style={{padding: "5px 5px 5px 0px",maxWidth: "300px"}}>
-                                                {DropdownComponent}
-                                            </div>}
-                                            {this.state.configuration != null ? (
-                                                !this.state.readOnly ?
-                                                <>
-                                                    <Tabs defaultActiveKey="form">
-                                                        <Tab eventKey="form" title="Form">
-                                                            <Form style={{border: "1px solid lightgray",overflowY: "scroll",height: "340px",}}>
-                                                            {getFormChart()}
-                                                            </Form>
-                                                        </Tab>
-                                                        <Tab eventKey="json" title="Json">
-                                                            <Form.Control
-                                                                as="textarea"
-                                                                rows="10"
-                                                                name="chartConfiguration"
-                                                                value={this.state.configuration}
-                                                                onChange={this.configurationChanged}
-                                                                onBlur={() => {
-                                                                    this.props.syncWidgetState(
-                                                                    "configuration",
-                                                                    this.state.configuration,
-                                                                    this.data
-                                                                    );
-                                                                    this.refreshWidgetPreview();
-                                                                }}
-                                                                disabled={this.state.readOnly}
-                                                            />
-                                                        </Tab>
-                                                    </Tabs>
-                                                </>
-                                                :
-                                                    <Form.Control
-                                                        as="textarea"
-                                                        rows="10"
-                                                        name="chartConfiguration"
-                                                        value={this.state.configuration}
-                                                        onChange={this.configurationChanged}
-                                                        onBlur={() => {
-                                                            this.props.syncWidgetState(
-                                                            "configuration",
-                                                            this.state.configuration,
-                                                            this.data
-                                                            );
-                                                            this.refreshWidgetPreview();
-                                                        }}
-                                                        disabled={this.state.readOnly}
-                                                    />
-                                            ) : null}
-                                            </div>
-                                        </div>
-                                        :
+                                {this.state.widgetType == 'report' ?
+                                   <Tabs activeKey={this.state.selectedTab} onSelect={this.configurationTabSelected}>
+                                        <Tab eventKey={this.state.widgetType} title={capitalizeFirstLetter(this.state.widgetType)}>
                                             <div className="form-group row" style={{ marginLeft: '0px', marginRight: '0px' }}>
                                                 <div className="col-12 no-left-padding no-right-padding">
-                                                    <textarea id="configuration" name="configuration" ref="configuration"
+                                                    <textarea id="report" name="report" ref="report"
                                                         className="form-control form-control-sm" style={{ fontFamily: 'Monospace' }}
-                                                        onChange={this.configurationChanged} value={this.state.configuration}
-                                                        onBlur={() => {
-                                                            this.props.syncWidgetState("configuration", this.state.configuration, this.data);
-                                                            this.refreshWidgetPreview();
-                                                        }
-                                                        } disabled={this.state.readOnly} />
-                                                    <Overlay id="configuration-overlay" target={this.refs.configuration}
-                                                        show={this.state.errors.configuration != null} placement="top">
-                                                        {props => (
-                                                            <Tooltip id="configuration-tooltip" {...props} className="error-tooltip">
-                                                                {this.state.errors.configuration}
-                                                            </Tooltip>
-                                                        )}
-                                                    </Overlay>
+                                                        value={this.state.configuration}
+                                                        onChange={this.configurationChanged}
+                                                        disabled={this.state.readOnly} />
                                                 </div>
                                             </div>
-                                    :
-                                        <>{SpinnerComponent}</>
-                                    }
-                                    </Tab>
-                                    <Tab eventKey="query" title="Query">
-                                        <br />
-                                        {getQuerySelections()}
-                                        <div className="col-1 dash-manager-buttons" style={{ paddingLeft: '0px', float: 'left' }}>
-                                            <button type="button" className="btn btn-primary widget-action-btn add-query-button" title="Add query"
-                                                onClick={() => this.addQuery()} disabled={this.state.readOnly}>
-                                                <span className="fa fa-plus" aria-hidden="true"></span>
-                                            </button>
-                                        </div>
-                                    </Tab>
-                                    <Tab eventKey="expression" title="Expression">
-                                        <div className="form-group row" style={{ marginLeft: '0px', marginRight: '0px' }}>
-                                            <div className="col-12 no-left-padding no-right-padding">
-                                                <textarea id="expression" name="expression" ref="expression"
-                                                    className="form-control form-control-sm" style={{ fontFamily: 'Monospace' }}
-                                                    onChange={this.expressionChanged} value={this.state.expression}
-                                                    onBlur={this.expressionBlurred} disabled={this.state.readOnly} />
-                                                <Overlay id="expression-overlay" target={this.refs.expression}
-                                                    show={this.state.errors.expression != null} placement="top">
-                                                    {props => (
-                                                        <Tooltip id="expression-tooltip" {...props} className="error-tooltip">
-                                                            {this.state.errors.expression}
-                                                        </Tooltip>
-                                                    )}
-                                                </Overlay>
-                                            </div>
-                                        </div>
-                                    </Tab>
-                                    <Tab eventKey="drilldown" title="Drill Down">
-                                        <div className="drilldown-div">
-                                            <Form.Group as={Row}>
-                                                <Form.Label column lg="3">Filter</Form.Label>
-                                                <Col lg="9">
-                                                    <Form.Control
-                                                        as="textarea"
-                                                        name="drillDownFilter"
-                                                        onChange={(e) => this.handleDrillDownInputChange(e)}
-                                                        value={this.state.drillDownFilter}
-                                                        disabled={this.state.readOnly}
-                                                    />
-                                                    <Form.Text className=" errorMsg">
-                                                        {this.state.errors.drillDown["drillDownFilter"]}
-                                                    </Form.Text>
-                                                </Col>
-                                            </Form.Group>
-                                            <Form.Group as={Row}>
-                                                <Form.Label column md="3" lg="3">Widget</Form.Label>
-                                                <Col md="3" lg="3">
-                                                    <Select
-                                                        placeholder="Type"
-                                                        name="drillDownWidgetType"
-                                                        id="drillDownWidgetType"
-                                                        onChange={(e) => this.handleSelect(e, "drillDownWidgetType")}
-                                                        value={this.state.drillDownWidgetType ? this.state.drillDownWidgetType : ""}
-                                                        options={this.widgetTypes}
-                                                        isDisabled={this.state.readOnly}
-                                                    />
-                                                </Col>
-                                                <Col md="3" lg="6">
-                                                    <Select
-                                                        placeholder={this.state.drillDownWidgetType.value == "dashboard" ? "Choose Dashboard" : this.state.drillDownWidgetType.value == "file" ? "Choose App" : "Choose Widget"}
-                                                        name="drillDownWidget"
-                                                        id="drillDownWidget"
-                                                        isDisabled={this.state.readOnly}
-                                                        onChange={(e) => this.handleSelect(e, "drillDownWidget")}
-                                                        value={this.state.drillDownWidgetType.value == "dashboard" ?
-                                                            this.props.selectableDashboardOptions.filter(option => option.value == this.state.drillDownWidget) :
-                                                            (this.state.drillDownWidgetType.value == "file") ?
-                                                                this.props.selectableAppOptions.filter(option => option.value == this.state.drillDownWidget) :
-                                                                this.props.selectableWidgetOptions.filter(option => option.value == this.state.drillDownWidget)}
-                                                        options={this.state.drillDownWidgetType.value == "dashboard" ? this.props.selectableDashboardOptions : this.state.drillDownWidgetType.value == 'file' ? this.props.selectableAppOptions : this.props.selectableWidgetOptions}
-                                                    />
-                                                    <Form.Text className="errorMsg">
-                                                        {this.state.errors.drillDown["drillDownWidget"]}
-                                                    </Form.Text>
-                                                </Col>
-                                            </Form.Group>
-                                            {this.state.drillDownWidgetType.value == "dashboard" &&
-                                                <Form.Group as={Row}>
-                                                    <Form.Label column lg="3">Dashboard Header</Form.Label>
-                                                    <Col lg="9">
-                                                        <Form.Control
-                                                            type="text"
-                                                            name="drillDownDashboardTitle"
-                                                            onChange={(e) => this.handleDrillDownInputChange(e)}
-                                                            value={this.state.drillDownDashboardTitle || ''}
-                                                            disabled={this.state.readOnly}
-                                                        />
-                                                    </Col>
-                                                </Form.Group>
-                                            }
-                                            <Form.Group as={Row}>
-                                                <Form.Label column lg="3">Title</Form.Label>
-                                                <Col lg="9">
-                                                    <Form.Control
-                                                        type="text"
-                                                        name="drillDownWidgetTitle"
-                                                        onChange={(e) => this.handleDrillDownInputChange(e)}
-                                                        value={this.state.drillDownWidgetTitle || ''}
-                                                        disabled={this.state.readOnly}
-                                                    />
-                                                </Col>
-                                            </Form.Group>
-                                            <Form.Group as={Row}>
-                                                <Form.Label column lg="3">Footer</Form.Label>
-                                                <Col lg="9">
-                                                    <Form.Control
-                                                        type="text"
-                                                        name="drillDownWidgetFooter"
-                                                        onChange={(e) => this.handleDrillDownInputChange(e)}
-                                                        value={this.state.drillDownWidgetFooter || ''}
-                                                        disabled={this.state.readOnly}
-                                                    />
-                                                </Col>
-                                            </Form.Group>
-                                            {this.state.hasMaxDepth &&
-                                                <Form.Group as={Row}>
-                                                    <Form.Label column lg="3">Max Depth</Form.Label>
-                                                    <Col lg="9">
-                                                        <Form.Control
-                                                            as="select"
-                                                            name="drillDownMaxDepth"
-                                                            value={this.state.drillDownMaxDepth ? this.state.drillDownMaxDepth : -1}
-                                                            onChange={(e) => this.handleDrillDownInputChange(e)}
-                                                            disabled={this.state.readOnly}
-                                                        >
-                                                            <option key="-1" value={-1}></option>
-                                                            <option key="2" value={2}>2</option>
-                                                            <option key="3" value={3}>3</option>
-                                                            <option key="4" value={4}>4</option>
-                                                        </Form.Control>
-                                                        <Form.Text className="errorMsg">
-                                                            {this.state.errors.drillDown["drillDownMaxDepth"]}
-                                                        </Form.Text>
-                                                    </Col>
-                                                </Form.Group>}
-                                            <Button variant="primary"
-                                                type="button"
-                                                disabled={this.state.readOnly}
-                                                onClick={() => { this.ApplyDrillDown(this.state.widgetType) }}>
-                                                Apply DrillDown
-                                            </Button>
-
-                                        </div>
-                                    </Tab>
-                                    {
-                                        (this.props.widget && this.props.widget.configuration && (this.props.widget.configuration.series || this.props.widget.type == "inline")) &&
-                                        <Tab eventKey="target_sla" title="Target">
-                                            <div className="form-group row" style={{ marginTop: '10px', marginRight: '0px' }}>
-                                                <div className="col-12">
+                                        </Tab>
+                                        <Tab eventKey="query" title="Query">
+                                                <br />
+                                                {getQuerySelections()}
+                                                <div className="col-1 dash-manager-buttons" style={{ paddingLeft: '0px', float: 'left' }}>
+                                                    <button type="button" className="btn btn-primary widget-action-btn add-query-button" title="Add query"
+                                                        onClick={() => this.addQuery()} disabled={this.state.readOnly}>
+                                                        <span className="fa fa-plus" aria-hidden="true"></span>
+                                                    </button>
+                                                </div>
+                                            </Tab>
+                                    </Tabs>
+                                :
+                                    <Tabs activeKey={this.state.selectedTab} onSelect={this.configurationTabSelected}>
+                                            <Tab eventKey={this.state.widgetType} title={capitalizeFirstLetter(this.state.widgetType)}>
+                                                    {!this.state.isJsonLoading ?
+                                                        this.state.widgetType != 'widget'
+                                                        ?
+                                                            <div className="form-group row" style={{ marginLeft: "0px", marginRight: "0px" }}>
+                                                            <div className="col-12 no-left-padding no-right-padding">
+                                                            {!this.state.readOnly  && <div style={{padding: "5px 5px 5px 0px",maxWidth: "300px"}}>
+                                                                {DropdownComponent}
+                                                            </div>}
+                                                            {this.state.configuration != null ? (
+                                                                !this.state.readOnly ?
+                                                                <>
+                                                                    <Tabs defaultActiveKey="form">
+                                                                        <Tab eventKey="form" title="Form">
+                                                                            <Form style={{border: "1px solid lightgray",overflowY: "scroll",height: "340px",}}>
+                                                                            {getFormChart()}
+                                                                            </Form>
+                                                                        </Tab>
+                                                                        <Tab eventKey="json" title="Json">
+                                                                            <Form.Control
+                                                                                as="textarea"
+                                                                                rows="10"
+                                                                                name="chartConfiguration"
+                                                                                value={this.state.configuration}
+                                                                                onChange={this.configurationChanged}
+                                                                                onBlur={() => {
+                                                                                    this.props.syncWidgetState(
+                                                                                    "configuration",
+                                                                                    this.state.configuration,
+                                                                                    this.data
+                                                                                    );
+                                                                                    this.refreshWidgetPreview();
+                                                                                }}
+                                                                                disabled={this.state.readOnly}
+                                                                            />
+                                                                        </Tab>
+                                                                    </Tabs>
+                                                                </>
+                                                                :
+                                                                    <Form.Control
+                                                                        as="textarea"
+                                                                        rows="10"
+                                                                        name="chartConfiguration"
+                                                                        value={this.state.configuration}
+                                                                        onChange={this.configurationChanged}
+                                                                        onBlur={() => {
+                                                                            this.props.syncWidgetState(
+                                                                            "configuration",
+                                                                            this.state.configuration,
+                                                                            this.data
+                                                                            );
+                                                                            this.refreshWidgetPreview();
+                                                                        }}
+                                                                        disabled={this.state.readOnly}
+                                                                    />
+                                                            ) : null}
+                                                            </div>
+                                                        </div>
+                                                        :
+                                                            <div className="form-group row" style={{ marginLeft: '0px', marginRight: '0px' }}>
+                                                                <div className="col-12 no-left-padding no-right-padding">
+                                                                    <textarea id="configuration" name="configuration" ref="configuration"
+                                                                        className="form-control form-control-sm" style={{ fontFamily: 'Monospace' }}
+                                                                        onChange={this.configurationChanged} value={this.state.configuration}
+                                                                        onBlur={() => {
+                                                                            this.props.syncWidgetState("configuration", this.state.configuration, this.data);
+                                                                            this.refreshWidgetPreview();
+                                                                        }
+                                                                        } disabled={this.state.readOnly} />
+                                                                    <Overlay id="configuration-overlay" target={this.refs.configuration}
+                                                                        show={this.state.errors.configuration != null} placement="top">
+                                                                        {props => (
+                                                                            <Tooltip id="configuration-tooltip" {...props} className="error-tooltip">
+                                                                                {this.state.errors.configuration}
+                                                                            </Tooltip>
+                                                                        )}
+                                                                    </Overlay>
+                                                                </div>
+                                                            </div>
+                                                    :
+                                                        <>{SpinnerComponent}</>
+                                                    }
+                                            </Tab>
+                                            <Tab eventKey="query" title="Query">
+                                                <br />
+                                                {getQuerySelections()}
+                                                <div className="col-1 dash-manager-buttons" style={{ paddingLeft: '0px', float: 'left' }}>
+                                                    <button type="button" className="btn btn-primary widget-action-btn add-query-button" title="Add query"
+                                                        onClick={() => this.addQuery()} disabled={this.state.readOnly}>
+                                                        <span className="fa fa-plus" aria-hidden="true"></span>
+                                                    </button>
+                                                </div>
+                                            </Tab>
+                                            <Tab eventKey="expression" title="Expression">
+                                                <div className="form-group row" style={{ marginLeft: '0px', marginRight: '0px' }}>
+                                                    <div className="col-12 no-left-padding no-right-padding">
+                                                        <textarea id="expression" name="expression" ref="expression"
+                                                            className="form-control form-control-sm" style={{ fontFamily: 'Monospace' }}
+                                                            onChange={this.expressionChanged} value={this.state.expression}
+                                                            onBlur={this.expressionBlurred} disabled={this.state.readOnly} />
+                                                        <Overlay id="expression-overlay" target={this.refs.expression}
+                                                            show={this.state.errors.expression != null} placement="top">
+                                                            {props => (
+                                                                <Tooltip id="expression-tooltip" {...props} className="error-tooltip">
+                                                                    {this.state.errors.expression}
+                                                                </Tooltip>
+                                                            )}
+                                                        </Overlay>
+                                                    </div>
+                                                </div>
+                                            </Tab>
+                                            <Tab eventKey="drilldown" title="Drill Down">
+                                                <div className="drilldown-div">
                                                     <Form.Group as={Row}>
-                                                        <Form.Label column lg="3">Target Type</Form.Label>
+                                                        <Form.Label column lg="3">Filter</Form.Label>
                                                         <Col lg="9">
                                                             <Form.Control
-                                                                as="select"
-                                                                placeholder="Choose Target Type"
-                                                                name="target_type"
-                                                                id="target_type"
-                                                                disabled={this.state.readOnly || this.state.disabledTargetForm}
-                                                                onChange={(e) => this.handleTargetSelectChange(e)}
-                                                                value={this.state.targetTypeValue}
-                                                                options={this.state.targetType}
-                                                            >
-                                                                {/* <option key="-1" value={-1}>Choose Target Type</option> */}
-                                                                <option key="1" value="1">Single</option>
-                                                                <option key="2" value="2">Multiple</option>
-                                                            </Form.Control>
+                                                                as="textarea"
+                                                                name="drillDownFilter"
+                                                                onChange={(e) => this.handleDrillDownInputChange(e)}
+                                                                value={this.state.drillDownFilter}
+                                                                disabled={this.state.readOnly}
+                                                            />
+                                                            <Form.Text className=" errorMsg">
+                                                                {this.state.errors.drillDown["drillDownFilter"]}
+                                                            </Form.Text>
                                                         </Col>
                                                     </Form.Group>
-
-                                                    {!this.state.readOnly && (this.state.singleTarget) &&
-                                                        <>
-                                                            <Form.Group as={Row}>
-                                                                <Form.Label column lg="3">Red Limit</Form.Label>
-                                                                <Col lg="4">
-                                                                    <Form.Control
-                                                                        placeholder={"Red Limit"}
-                                                                        type="text"
-                                                                        name="red_limit"
-                                                                        disabled={this.state.readOnly || this.state.disabledTargetForm}
-                                                                        value={this.state.singleLimit.red_limit || ''}
-                                                                        onChange={(e) => this.handleTargetInputChange(e)}
-                                                                    />
-                                                                    <Form.Text className="errorMsg">
-                                                                        {this.state.errors.target[SINGLELEVEL]["red_limit"]}
-                                                                    </Form.Text>
-                                                                </Col>
-                                                                <Col lg="4">
-                                                                    <Form.Control
-                                                                        placeholder={"WorkflowId"}
-                                                                        type="text"
-                                                                        name="red_workflow_id"
-                                                                        disabled={this.state.readOnly || this.state.disabledTargetForm}
-                                                                        value={this.state.singleLimit.red_workflow_id}
-                                                                        onChange={(e) => this.handleTargetInputChange(e)}
-                                                                    />
-                                                                </Col>
-                                                            </Form.Group>
-                                                            <Form.Group as={Row}>
-                                                                <Form.Label column lg="3">Yellow Limit</Form.Label>
-                                                                <Col lg="4">
-                                                                    <Form.Control
-                                                                        placeholder={"Yellow Limit"}
-                                                                        type="text"
-                                                                        name="yellow_limit"
-                                                                        disabled={this.state.readOnly || this.state.disabledTargetForm}
-                                                                        value={this.state.singleLimit.yellow_limit || ''}
-                                                                        onChange={(e) => this.handleTargetInputChange(e)}
-                                                                    />
-                                                                    <Form.Text className="errorMsg">
-                                                                        {this.state.errors.target[SINGLELEVEL]["yellow_limit"]}
-                                                                    </Form.Text>
-                                                                </Col>
-                                                                <Col lg="4">
-                                                                    <Form.Control
-                                                                        placeholder={"WorkflowId"}
-                                                                        type="text"
-                                                                        name="yellow_workflow_id"
-                                                                        disabled={this.state.readOnly || this.state.disabledTargetForm}
-                                                                        value={this.state.singleLimit.yellow_workflow_id}
-                                                                        onChange={(e) => this.handleTargetInputChange(e)}
-                                                                    />
-                                                                </Col>
-                                                            </Form.Group>
-                                                            <Form.Group as={Row}>
-                                                                <Form.Label column lg="3">Green Limit</Form.Label>
-                                                                <Col lg="4">
-                                                                    <Form.Control
-                                                                        placeholder={"Green Limit"}
-                                                                        type="text"
-                                                                        name="green_limit"
-                                                                        disabled={this.state.readOnly || this.state.disabledTargetForm}
-                                                                        value={this.state.singleLimit.green_limit || ''}
-                                                                        onChange={(e) => this.handleTargetInputChange(e)}
-                                                                    />
-                                                                    <Form.Text className="errorMsg">
-                                                                        {this.state.errors.target[SINGLELEVEL]["green_limit"]}
-                                                                    </Form.Text>
-                                                                </Col>
-                                                                <Col lg="4">
-                                                                    <Form.Control
-                                                                        placeholder={"WorkflowId"}
-                                                                        type="text"
-                                                                        name="green_workflow_id"
-                                                                        disabled={this.state.readOnly || this.state.disabledTargetForm}
-                                                                        value={this.state.singleLimit.green_workflow_id}
-                                                                        onChange={(e) => this.handleTargetInputChange(e)}
-                                                                    />
-                                                                </Col>
-                                                            </Form.Group>
-                                                        </>
+                                                    <Form.Group as={Row}>
+                                                        <Form.Label column md="3" lg="3">Widget</Form.Label>
+                                                        <Col md="3" lg="3">
+                                                            <Select
+                                                                placeholder="Type"
+                                                                name="drillDownWidgetType"
+                                                                id="drillDownWidgetType"
+                                                                onChange={(e) => this.handleSelect(e, "drillDownWidgetType")}
+                                                                value={this.state.drillDownWidgetType ? this.state.drillDownWidgetType : ""}
+                                                                options={this.widgetTypes}
+                                                                isDisabled={this.state.readOnly}
+                                                            />
+                                                        </Col>
+                                                        <Col md="3" lg="6">
+                                                            <Select
+                                                                placeholder={this.state.drillDownWidgetType.value == "dashboard" ? "Choose Dashboard" : this.state.drillDownWidgetType.value == "file" ? "Choose App" : "Choose Widget"}
+                                                                name="drillDownWidget"
+                                                                id="drillDownWidget"
+                                                                isDisabled={this.state.readOnly}
+                                                                onChange={(e) => this.handleSelect(e, "drillDownWidget")}
+                                                                value={this.state.drillDownWidgetType.value == "dashboard" ?
+                                                                    this.props.selectableDashboardOptions.filter(option => option.value == this.state.drillDownWidget) :
+                                                                    (this.state.drillDownWidgetType.value == "file") ?
+                                                                        this.props.selectableAppOptions.filter(option => option.value == this.state.drillDownWidget) :
+                                                                        this.props.selectableWidgetOptions.filter(option => option.value == this.state.drillDownWidget)}
+                                                                options={this.state.drillDownWidgetType.value == "dashboard" ? this.props.selectableDashboardOptions : this.state.drillDownWidgetType.value == 'file' ? this.props.selectableAppOptions : this.props.selectableWidgetOptions}
+                                                            />
+                                                            <Form.Text className="errorMsg">
+                                                                {this.state.errors.drillDown["drillDownWidget"]}
+                                                            </Form.Text>
+                                                        </Col>
+                                                    </Form.Group>
+                                                    {this.state.drillDownWidgetType.value == "dashboard" &&
+                                                        <Form.Group as={Row}>
+                                                            <Form.Label column lg="3">Dashboard Header</Form.Label>
+                                                            <Col lg="9">
+                                                                <Form.Control
+                                                                    type="text"
+                                                                    name="drillDownDashboardTitle"
+                                                                    onChange={(e) => this.handleDrillDownInputChange(e)}
+                                                                    value={this.state.drillDownDashboardTitle || ''}
+                                                                    disabled={this.state.readOnly}
+                                                                />
+                                                            </Col>
+                                                        </Form.Group>
                                                     }
-                                                    {!this.state.readOnly && !(this.state.singleTarget) && !(this.props.widget.type == "inline") &&
-                                                        // this.props.widget.data
-                                                        <div className="col-12">
-                                                            {
-                                                                this.props.widget.data.map((item, index) => {
-                                                                    {/* return (<div key={item[this.state.targetFields[0].label]}>{item[this.state.targetFields[0].label]}</div>) */ }
-                                                                    return (<>
-                                                                        <div>{item[this.state.targetFields[0].label]}</div>
-                                                                        <Form.Group as={Row} style={{ marginLeft: "5px", fontSize: "14px" }}>
-                                                                            <Form.Label column lg="3">Red Limit</Form.Label>
-                                                                            <Col lg="4">
-                                                                                <Form.Control
-                                                                                    placeholder={"Red Limit"}
-                                                                                    type="text"
-                                                                                    name={this.state.targetFields[0].label + "_" + index}
-                                                                                    id={"red_limit"}
-                                                                                    disabled={this.state.readOnly}
-                                                                                    value={(this.state.multiLimit[this.state.targetFields[0].label + "_" + index]) ? this.state.multiLimit[this.state.targetFields[0].label + "_" + index].red_limit : ""}
-                                                                                    onChange={(e) => this.handleTargetInputChange(e)}
-                                                                                    style={{ height: "25px", fontSize: "14px", margin: "0px" }}
-                                                                                />
-                                                                                <Form.Text className="errorMsg">
-                                                                                    {this.state.errors.target[MULTILEVEL][`${this.state.targetFields[0].label}_${index}_red_limit`]}
-                                                                                </Form.Text>
-                                                                            </Col>
-                                                                            <Col lg="4">
-                                                                                <Form.Control
-                                                                                    placeholder={"WorkflowId"}
-                                                                                    type="text"
-                                                                                    name={this.state.targetFields[0].label + "_" + index}
-                                                                                    id={"red_workflow_id"}
-                                                                                    disabled={this.state.readOnly}
-                                                                                    value={(this.state.multiLimit[this.state.targetFields[0].label + "_" + index]) ? this.state.multiLimit[this.state.targetFields[0].label + "_" + index].red_workflow_id : ""}
-                                                                                    onChange={(e) => this.handleTargetInputChange(e)}
-                                                                                    style={{ height: "25px", fontSize: "14px", margin: "0px" }}
-                                                                                />
-                                                                            </Col>
-
-                                                                            <Form.Label column lg="3">Yellow Limit</Form.Label>
-                                                                            <Col lg="4">
-                                                                                <Form.Control
-                                                                                    placeholder={"Yellow Limit"}
-                                                                                    type="text"
-                                                                                    name={this.state.targetFields[0].label + "_" + index}
-                                                                                    id={"yellow_limit"}
-                                                                                    disabled={this.state.readOnly}
-                                                                                    value={(this.state.multiLimit[this.state.targetFields[0].label + "_" + index]) ? this.state.multiLimit[this.state.targetFields[0].label + "_" + index].yellow_limit : ""}
-                                                                                    onChange={(e) => this.handleTargetInputChange(e)}
-                                                                                    style={{ height: "25px", fontSize: "14px", margin: "0px" }}
-                                                                                />
-                                                                                <Form.Text className="errorMsg">
-                                                                                    {this.state.errors.target[MULTILEVEL][`${this.state.targetFields[0].label}_${index}_yellow_limit`]}
-                                                                                </Form.Text>
-                                                                            </Col>
-                                                                            <Col lg="4">
-                                                                                <Form.Control
-                                                                                    placeholder={"WorkflowId"}
-                                                                                    type="text"
-                                                                                    name={this.state.targetFields[0].label + "_" + index}
-                                                                                    id={"yellow_workflow_id"}
-                                                                                    disabled={this.state.readOnly}
-                                                                                    value={(this.state.multiLimit[this.state.targetFields[0].label + "_" + index]) ? this.state.multiLimit[this.state.targetFields[0].label + "_" + index].yellow_workflow_id : ""}
-                                                                                    onChange={(e) => this.handleTargetInputChange(e)}
-                                                                                    style={{ height: "25px", fontSize: "14px", margin: "0px" }}
-                                                                                />
-                                                                            </Col>
-
-                                                                            <Form.Label column lg="3">Green Limit</Form.Label>
-                                                                            <Col lg="4">
-                                                                                <Form.Control
-                                                                                    placeholder={"Green Limit"}
-                                                                                    type="text"
-                                                                                    name={this.state.targetFields[0].label + "_" + index}
-                                                                                    id={"green_limit"}
-                                                                                    disabled={this.state.readOnly}
-                                                                                    value={(this.state.multiLimit[this.state.targetFields[0].label + "_" + index]) ? this.state.multiLimit[this.state.targetFields[0].label + "_" + index].green_limit : ""}
-                                                                                    onChange={(e) => this.handleTargetInputChange(e)}
-                                                                                    style={{ height: "25px", fontSize: "14px", margin: "0px" }}
-                                                                                />
-                                                                                <Form.Text className="errorMsg">
-                                                                                    {this.state.errors.target[MULTILEVEL][`${this.state.targetFields[0].label}_${index}_green_limit`]}
-                                                                                </Form.Text>
-                                                                            </Col>
-                                                                            <Col lg="4">
-                                                                                <Form.Control
-                                                                                    placeholder={"WorkflowId"}
-                                                                                    type="text"
-                                                                                    name={this.state.targetFields[0].label + "_" + index}
-                                                                                    id={"green_workflow_id"}
-                                                                                    disabled={this.state.readOnly}
-                                                                                    value={(this.state.multiLimit[this.state.targetFields[0].label + "_" + index]) ? this.state.multiLimit[this.state.targetFields[0].label + "_" + index].green_workflow_id : ""}
-                                                                                    onChange={(e) => this.handleTargetInputChange(e)}
-                                                                                    style={{ height: "25px", fontSize: "14px", margin: "0px" }}
-                                                                                />
-                                                                            </Col>
-                                                                        </Form.Group>
-                                                                    </>)
-                                                                })
-                                                            }
-                                                        </div>
-                                                    }
+                                                    <Form.Group as={Row}>
+                                                        <Form.Label column lg="3">Title</Form.Label>
+                                                        <Col lg="9">
+                                                            <Form.Control
+                                                                type="text"
+                                                                name="drillDownWidgetTitle"
+                                                                onChange={(e) => this.handleDrillDownInputChange(e)}
+                                                                value={this.state.drillDownWidgetTitle || ''}
+                                                                disabled={this.state.readOnly}
+                                                            />
+                                                        </Col>
+                                                    </Form.Group>
+                                                    <Form.Group as={Row}>
+                                                        <Form.Label column lg="3">Footer</Form.Label>
+                                                        <Col lg="9">
+                                                            <Form.Control
+                                                                type="text"
+                                                                name="drillDownWidgetFooter"
+                                                                onChange={(e) => this.handleDrillDownInputChange(e)}
+                                                                value={this.state.drillDownWidgetFooter || ''}
+                                                                disabled={this.state.readOnly}
+                                                            />
+                                                        </Col>
+                                                    </Form.Group>
+                                                    {this.state.hasMaxDepth &&
+                                                        <Form.Group as={Row}>
+                                                            <Form.Label column lg="3">Max Depth</Form.Label>
+                                                            <Col lg="9">
+                                                                <Form.Control
+                                                                    as="select"
+                                                                    name="drillDownMaxDepth"
+                                                                    value={this.state.drillDownMaxDepth ? this.state.drillDownMaxDepth : -1}
+                                                                    onChange={(e) => this.handleDrillDownInputChange(e)}
+                                                                    disabled={this.state.readOnly}
+                                                                >
+                                                                    <option key="-1" value={-1}></option>
+                                                                    <option key="2" value={2}>2</option>
+                                                                    <option key="3" value={3}>3</option>
+                                                                    <option key="4" value={4}>4</option>
+                                                                </Form.Control>
+                                                                <Form.Text className="errorMsg">
+                                                                    {this.state.errors.drillDown["drillDownMaxDepth"]}
+                                                                </Form.Text>
+                                                            </Col>
+                                                        </Form.Group>}
                                                     <Button variant="primary"
                                                         type="button"
-                                                        disabled={(this.state.readOnly || Object.keys(this.state.errors["target"][SINGLELEVEL]).length != 0 || Object.keys(this.state.errors["target"][MULTILEVEL]).length != 0)}
-                                                        onClick={(e) => { this.applyTarget() }}>
-                                                        Apply Target
-                                                </Button>
+                                                        disabled={this.state.readOnly}
+                                                        onClick={() => { this.ApplyDrillDown(this.state.widgetType) }}>
+                                                        Apply DrillDown
+                                                    </Button>
 
-                                                    <Overlay id="target_sla-overlay" target={this.refs.target_sla}
-                                                        show={this.state.errors.target_sla != null} placement="top">
-                                                        {props => (
-                                                            <Tooltip id="target_sla-tooltip" {...props} className="error-tooltip">
-                                                                {this.state.errors.target_sla}
-                                                            </Tooltip>
-                                                        )}
-                                                    </Overlay>
                                                 </div>
-                                            </div>
-                                        </Tab>
-                                    }
-                                    {widgetVisualType == "html" &&
-                                        <Tab eventKey="template" title="Template">
-                                            {isTemplateLoading ?
-                                                <p>loading.....</p>
-                                            :
-                                                <div className="form-group row" style={{marginTop:'30px'}}>
-                                                    <div className="col-7">
-                                                        <Select
-                                                            placeholder="Select Template"
-                                                            onChange={(e) => {this.templateSelectionChanged(e)}}
-                                                            value={selectedTemplate ? selectedTemplate : ""}
-                                                            options={this.getTemplateListOptions(templateList)}
-                                                        />
+                                            </Tab>
+                                            {
+                                                (this.props.widget && this.props.widget.configuration && (this.props.widget.configuration.series || this.props.widget.type == "inline")) &&
+                                                <Tab eventKey="target_sla" title="Target">
+                                                    <div className="form-group row" style={{ marginTop: '10px', marginRight: '0px' }}>
+                                                        <div className="col-12">
+                                                            <Form.Group as={Row}>
+                                                                <Form.Label column lg="3">Target Type</Form.Label>
+                                                                <Col lg="9">
+                                                                    <Form.Control
+                                                                        as="select"
+                                                                        placeholder="Choose Target Type"
+                                                                        name="target_type"
+                                                                        id="target_type"
+                                                                        disabled={this.state.readOnly || this.state.disabledTargetForm}
+                                                                        onChange={(e) => this.handleTargetSelectChange(e)}
+                                                                        value={this.state.targetTypeValue}
+                                                                        options={this.state.targetType}
+                                                                    >
+                                                                        {/* <option key="-1" value={-1}>Choose Target Type</option> */}
+                                                                        <option key="1" value="1">Single</option>
+                                                                        <option key="2" value="2">Multiple</option>
+                                                                    </Form.Control>
+                                                                </Col>
+                                                            </Form.Group>
+
+                                                            {!this.state.readOnly && (this.state.singleTarget) &&
+                                                                <>
+                                                                    <Form.Group as={Row}>
+                                                                        <Form.Label column lg="3">Red Limit</Form.Label>
+                                                                        <Col lg="4">
+                                                                            <Form.Control
+                                                                                placeholder={"Red Limit"}
+                                                                                type="text"
+                                                                                name="red_limit"
+                                                                                disabled={this.state.readOnly || this.state.disabledTargetForm}
+                                                                                value={this.state.singleLimit.red_limit || ''}
+                                                                                onChange={(e) => this.handleTargetInputChange(e)}
+                                                                            />
+                                                                            <Form.Text className="errorMsg">
+                                                                                {this.state.errors.target[SINGLELEVEL]["red_limit"]}
+                                                                            </Form.Text>
+                                                                        </Col>
+                                                                        <Col lg="4">
+                                                                            <Form.Control
+                                                                                placeholder={"WorkflowId"}
+                                                                                type="text"
+                                                                                name="red_workflow_id"
+                                                                                disabled={this.state.readOnly || this.state.disabledTargetForm}
+                                                                                value={this.state.singleLimit.red_workflow_id}
+                                                                                onChange={(e) => this.handleTargetInputChange(e)}
+                                                                            />
+                                                                        </Col>
+                                                                    </Form.Group>
+                                                                    <Form.Group as={Row}>
+                                                                        <Form.Label column lg="3">Yellow Limit</Form.Label>
+                                                                        <Col lg="4">
+                                                                            <Form.Control
+                                                                                placeholder={"Yellow Limit"}
+                                                                                type="text"
+                                                                                name="yellow_limit"
+                                                                                disabled={this.state.readOnly || this.state.disabledTargetForm}
+                                                                                value={this.state.singleLimit.yellow_limit || ''}
+                                                                                onChange={(e) => this.handleTargetInputChange(e)}
+                                                                            />
+                                                                            <Form.Text className="errorMsg">
+                                                                                {this.state.errors.target[SINGLELEVEL]["yellow_limit"]}
+                                                                            </Form.Text>
+                                                                        </Col>
+                                                                        <Col lg="4">
+                                                                            <Form.Control
+                                                                                placeholder={"WorkflowId"}
+                                                                                type="text"
+                                                                                name="yellow_workflow_id"
+                                                                                disabled={this.state.readOnly || this.state.disabledTargetForm}
+                                                                                value={this.state.singleLimit.yellow_workflow_id}
+                                                                                onChange={(e) => this.handleTargetInputChange(e)}
+                                                                            />
+                                                                        </Col>
+                                                                    </Form.Group>
+                                                                    <Form.Group as={Row}>
+                                                                        <Form.Label column lg="3">Green Limit</Form.Label>
+                                                                        <Col lg="4">
+                                                                            <Form.Control
+                                                                                placeholder={"Green Limit"}
+                                                                                type="text"
+                                                                                name="green_limit"
+                                                                                disabled={this.state.readOnly || this.state.disabledTargetForm}
+                                                                                value={this.state.singleLimit.green_limit || ''}
+                                                                                onChange={(e) => this.handleTargetInputChange(e)}
+                                                                            />
+                                                                            <Form.Text className="errorMsg">
+                                                                                {this.state.errors.target[SINGLELEVEL]["green_limit"]}
+                                                                            </Form.Text>
+                                                                        </Col>
+                                                                        <Col lg="4">
+                                                                            <Form.Control
+                                                                                placeholder={"WorkflowId"}
+                                                                                type="text"
+                                                                                name="green_workflow_id"
+                                                                                disabled={this.state.readOnly || this.state.disabledTargetForm}
+                                                                                value={this.state.singleLimit.green_workflow_id}
+                                                                                onChange={(e) => this.handleTargetInputChange(e)}
+                                                                            />
+                                                                        </Col>
+                                                                    </Form.Group>
+                                                                </>
+                                                            }
+                                                            {!this.state.readOnly && !(this.state.singleTarget) && !(this.props.widget.type == "inline") &&
+                                                                // this.props.widget.data
+                                                                <div className="col-12">
+                                                                    {
+                                                                        this.props.widget.data.map((item, index) => {
+                                                                            {/* return (<div key={item[this.state.targetFields[0].label]}>{item[this.state.targetFields[0].label]}</div>) */ }
+                                                                            return (<>
+                                                                                <div>{item[this.state.targetFields[0].label]}</div>
+                                                                                <Form.Group as={Row} style={{ marginLeft: "5px", fontSize: "14px" }}>
+                                                                                    <Form.Label column lg="3">Red Limit</Form.Label>
+                                                                                    <Col lg="4">
+                                                                                        <Form.Control
+                                                                                            placeholder={"Red Limit"}
+                                                                                            type="text"
+                                                                                            name={this.state.targetFields[0].label + "_" + index}
+                                                                                            id={"red_limit"}
+                                                                                            disabled={this.state.readOnly}
+                                                                                            value={(this.state.multiLimit[this.state.targetFields[0].label + "_" + index]) ? this.state.multiLimit[this.state.targetFields[0].label + "_" + index].red_limit : ""}
+                                                                                            onChange={(e) => this.handleTargetInputChange(e)}
+                                                                                            style={{ height: "25px", fontSize: "14px", margin: "0px" }}
+                                                                                        />
+                                                                                        <Form.Text className="errorMsg">
+                                                                                            {this.state.errors.target[MULTILEVEL][`${this.state.targetFields[0].label}_${index}_red_limit`]}
+                                                                                        </Form.Text>
+                                                                                    </Col>
+                                                                                    <Col lg="4">
+                                                                                        <Form.Control
+                                                                                            placeholder={"WorkflowId"}
+                                                                                            type="text"
+                                                                                            name={this.state.targetFields[0].label + "_" + index}
+                                                                                            id={"red_workflow_id"}
+                                                                                            disabled={this.state.readOnly}
+                                                                                            value={(this.state.multiLimit[this.state.targetFields[0].label + "_" + index]) ? this.state.multiLimit[this.state.targetFields[0].label + "_" + index].red_workflow_id : ""}
+                                                                                            onChange={(e) => this.handleTargetInputChange(e)}
+                                                                                            style={{ height: "25px", fontSize: "14px", margin: "0px" }}
+                                                                                        />
+                                                                                    </Col>
+
+                                                                                    <Form.Label column lg="3">Yellow Limit</Form.Label>
+                                                                                    <Col lg="4">
+                                                                                        <Form.Control
+                                                                                            placeholder={"Yellow Limit"}
+                                                                                            type="text"
+                                                                                            name={this.state.targetFields[0].label + "_" + index}
+                                                                                            id={"yellow_limit"}
+                                                                                            disabled={this.state.readOnly}
+                                                                                            value={(this.state.multiLimit[this.state.targetFields[0].label + "_" + index]) ? this.state.multiLimit[this.state.targetFields[0].label + "_" + index].yellow_limit : ""}
+                                                                                            onChange={(e) => this.handleTargetInputChange(e)}
+                                                                                            style={{ height: "25px", fontSize: "14px", margin: "0px" }}
+                                                                                        />
+                                                                                        <Form.Text className="errorMsg">
+                                                                                            {this.state.errors.target[MULTILEVEL][`${this.state.targetFields[0].label}_${index}_yellow_limit`]}
+                                                                                        </Form.Text>
+                                                                                    </Col>
+                                                                                    <Col lg="4">
+                                                                                        <Form.Control
+                                                                                            placeholder={"WorkflowId"}
+                                                                                            type="text"
+                                                                                            name={this.state.targetFields[0].label + "_" + index}
+                                                                                            id={"yellow_workflow_id"}
+                                                                                            disabled={this.state.readOnly}
+                                                                                            value={(this.state.multiLimit[this.state.targetFields[0].label + "_" + index]) ? this.state.multiLimit[this.state.targetFields[0].label + "_" + index].yellow_workflow_id : ""}
+                                                                                            onChange={(e) => this.handleTargetInputChange(e)}
+                                                                                            style={{ height: "25px", fontSize: "14px", margin: "0px" }}
+                                                                                        />
+                                                                                    </Col>
+
+                                                                                    <Form.Label column lg="3">Green Limit</Form.Label>
+                                                                                    <Col lg="4">
+                                                                                        <Form.Control
+                                                                                            placeholder={"Green Limit"}
+                                                                                            type="text"
+                                                                                            name={this.state.targetFields[0].label + "_" + index}
+                                                                                            id={"green_limit"}
+                                                                                            disabled={this.state.readOnly}
+                                                                                            value={(this.state.multiLimit[this.state.targetFields[0].label + "_" + index]) ? this.state.multiLimit[this.state.targetFields[0].label + "_" + index].green_limit : ""}
+                                                                                            onChange={(e) => this.handleTargetInputChange(e)}
+                                                                                            style={{ height: "25px", fontSize: "14px", margin: "0px" }}
+                                                                                        />
+                                                                                        <Form.Text className="errorMsg">
+                                                                                            {this.state.errors.target[MULTILEVEL][`${this.state.targetFields[0].label}_${index}_green_limit`]}
+                                                                                        </Form.Text>
+                                                                                    </Col>
+                                                                                    <Col lg="4">
+                                                                                        <Form.Control
+                                                                                            placeholder={"WorkflowId"}
+                                                                                            type="text"
+                                                                                            name={this.state.targetFields[0].label + "_" + index}
+                                                                                            id={"green_workflow_id"}
+                                                                                            disabled={this.state.readOnly}
+                                                                                            value={(this.state.multiLimit[this.state.targetFields[0].label + "_" + index]) ? this.state.multiLimit[this.state.targetFields[0].label + "_" + index].green_workflow_id : ""}
+                                                                                            onChange={(e) => this.handleTargetInputChange(e)}
+                                                                                            style={{ height: "25px", fontSize: "14px", margin: "0px" }}
+                                                                                        />
+                                                                                    </Col>
+                                                                                </Form.Group>
+                                                                            </>)
+                                                                        })
+                                                                    }
+                                                                </div>
+                                                            }
+                                                            <Button variant="primary"
+                                                                type="button"
+                                                                disabled={(this.state.readOnly || Object.keys(this.state.errors["target"][SINGLELEVEL]).length != 0 || Object.keys(this.state.errors["target"][MULTILEVEL]).length != 0)}
+                                                                onClick={(e) => { this.applyTarget() }}>
+                                                                Apply Target
+                                                        </Button>
+
+                                                            <Overlay id="target_sla-overlay" target={this.refs.target_sla}
+                                                                show={this.state.errors.target_sla != null} placement="top">
+                                                                {props => (
+                                                                    <Tooltip id="target_sla-tooltip" {...props} className="error-tooltip">
+                                                                        {this.state.errors.target_sla}
+                                                                    </Tooltip>
+                                                                )}
+                                                            </Overlay>
+                                                        </div>
                                                     </div>
-                                                </div>    
+                                                </Tab>
                                             }
-                                        </Tab>
-                                    }
-                                </Tabs>
+                                            {widgetVisualType == "html" &&
+                                                <Tab eventKey="template" title="Template">``
+                                                    {isTemplateLoading ?
+                                                        <p>loading.....</p>
+                                                    :
+                                                        <div className="form-group row" style={{marginTop:'30px'}}>
+                                                            <div className="col-7">
+                                                                <Select
+                                                                    placeholder="Select Template"
+                                                                    onChange={(e) => {this.templateSelectionChanged(e)}}
+                                                                    value={selectedTemplate ? selectedTemplate : ""}
+                                                                    options={this.getTemplateListOptions(templateList)}
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                </Tab>
+                                            }
+                                    </Tabs>
+                            }
                             </div>
                         </div>
                     </div>
@@ -1311,6 +1339,11 @@ class WidgetEditorBody extends AbstractEditor {
                                         value="" disabled={true} />
                                 </div>
                             }
+                                 {(this.state.selectedTab === 'report') &&
+                                <div id="reportPreview">
+                                    <b>Report preview</b>
+                                </div>
+                            }
                         </div>
                     </div>
                 </div>
@@ -1320,4 +1353,3 @@ class WidgetEditorBody extends AbstractEditor {
 }
 
 export default WidgetEditorBody;
-

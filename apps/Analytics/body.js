@@ -33,7 +33,7 @@ class Body extends React.Component {
 		this.onToggle = this.onToggle.bind(this);
 		this.state = {
 			isMenuOpen: false,
-			displaySection: SECTION_DATA_SOURCE,
+			displaySection: SECTION_DASHBOARD,
 			sectionData: null,
 			title: ''
 		};
