@@ -17,7 +17,7 @@ import am4geodata_worldLow from "@amcharts/amcharts4-geodata/worldLow";
 am4core.useTheme(am4themes_animated);
 am4core.options.commercialLicense = true;
 import WidgetcustomReport from './components/Custom/WidgetCustom'
-import WidgetCustom from './components/Custom/WidgetCustom';
+// import WidgetCustom from './components/Custom/WidgetCustom';
 
 
 class WidgetRenderer {
@@ -91,7 +91,7 @@ class WidgetRenderer {
                 //     console.log(`Unexpected inline Report value widget tag "${widgetTagName}"`);
                 //     // throw (`Unexpected inline aggregate value widget tag "${widgetTagName}"`);
                 // }
-                widgetReturnParams = WidgetRenderer.renderReport(element,widget.configuration, core, widget.data);
+                // widgetReturnParams = WidgetRenderer.renderReport(element,widget.configuration, core, widget.data);
                 break;
             // add a case for jsGrid for the server grid loading
             default:

@@ -1,10 +1,10 @@
-import {
-    TreeList, orderBy, filterBy, mapTree, extendDataItem,
-TreeListNumericFilter, TreeListTextFilter, TreeListDateFilter, TreeListBooleanFilter
-} from '@progress/kendo-react-treelist';
-import employees from './data.js';
-import '@progress/kendo-theme-default/dist/all.css';
-import React,{Component} from 'react'
+// import {
+//     TreeList, orderBy, filterBy, mapTree, extendDataItem,
+// TreeListNumericFilter, TreeListTextFilter, TreeListDateFilter, TreeListBooleanFilter
+// } from '@progress/kendo-react-treelist';
+// import employees from './data.js';
+// import '@progress/kendo-theme-default/dist/all.css';
+// import React,{Component} from 'react'
 
 
 const subItemsField ='subRevanue';
@@ -79,7 +79,7 @@ processData = () => {
 render() {
     return (
         <div style={{overflow:'auto'}}>
-      <TreeList
+      {/* <TreeList
         style={{ maxHeight: '510px', overflow: 'auto' }}
         expandField={expandField}
         subItemsField={subItemsField}
@@ -90,7 +90,7 @@ render() {
         onDataStateChange={this.handleDataStateChange}
         columns={columns}
         resizable={true}
-        />
+        /> */}
         </div>
     );
 }
