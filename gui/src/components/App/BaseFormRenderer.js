@@ -563,7 +563,7 @@ class BaseFormRenderer extends React.Component {
                 method = "post";
 
                 if (that.props.route) {
-                    route = that.props.route;
+                    route = that.appUrl + "/" + that.props.route;
                     method = "post"
                 }
                 if(that.state.fileId){

@@ -43,6 +43,10 @@
     .form-control.is-invalid.dropdown {
       background-position: right calc(2.8em + 0.1875rem) center;
     }
+
+    .choices__list--dropdown.is-active{
+      position: relative;
+    }
   }
 
   .formio-component-modal-wrapper{
