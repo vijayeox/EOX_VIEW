@@ -563,8 +563,10 @@ class BaseFormRenderer extends React.Component {
                 method = "post";
 
                 if (that.props.route) {
-                    route = that.appUrl + "/" + that.props.route;
-                    method = "post"
+                    route = that.props.absoluteUrl
+                      ? that.props.route
+                      : that.appUrl + "/" + that.props.route;
+                    method = "post";
                 }
                 if(that.state.fileId){
                     data.uuid = that.state.fileId;
@@ -1497,6 +1499,10 @@ class BaseFormRenderer extends React.Component {
             </div>
         );
     }
+}
+
+BaseFormRenderer.defaultProps = {
+    absoluteUrl : true
 }
 
 export default BaseFormRenderer;
