@@ -1108,8 +1108,8 @@ OX_Grid.defaultProps = {
   scrollable: "scrollable",
   filterOperators: {
     text: [
-      { text: "grid.filterStartsWithOperator", operator: "startswith" },
       { text: "grid.filterContainsOperator", operator: "contains" },
+      { text: "grid.filterStartsWithOperator", operator: "startswith" },
       { text: "grid.filterEqOperator", operator: "eq" },
       { text: "grid.filterNotContainsOperator", operator: "doesnotcontain" },
       { text: "grid.filterNotEqOperator", operator: "neq" },
