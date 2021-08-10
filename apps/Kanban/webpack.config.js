@@ -1,34 +1,46 @@
-const path = require("path");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-// const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
-const CopyWebpackPlugin = require("copy-webpack-plugin");
-// const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
+const Dotenv = require('dotenv-webpack')
+const path = require('path');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+// const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const TerserPlugin = require("terser-webpack-plugin");
+// const NodePolyfillPlugin = require("node-polyfill-webpack-plugin")
 
-const mode = process.env.NODE_ENV || "development";
-const minimize = mode === "production";
+const mode = process.env.NODE_ENV || 'development';
+const minimize = mode === 'production';
 const plugins = [];
 
-if (mode === "production") {
-  // plugins.push(
-  //   new OptimizeCSSAssetsPlugin({
-  //     cssProcessorOptions: {
-  //       discardComments: true
-  //     }
-  //   })
-  // );
+if (mode === 'production') {
+  // plugins.push(new OptimizeCSSAssetsPlugin({
+  //   cssProcessorOptions: {
+  //     discardComments: true
+  //   },
+  // }));
 }
 
 module.exports = {
-  mode: mode !== "development" ? "production" : mode,
-  devtool: "source-map",
-  entry: [
-    path.resolve(__dirname, "index.js"),
-    path.resolve(__dirname, "index.scss")
-  ],
+  mode: (mode !== 'development' ? 'production' : mode),
+  devtool: 'source-map',
+  entry: {
+    'main': [
+      path.resolve(__dirname, 'index.js'),
+      path.resolve(__dirname, 'index.scss')
+    ]
+  },
+  output: {
+    filename: '[name].js',
+    path: __dirname + '/dist'
+  },
   externals: {
-    osjs: "OSjs",
+    osjs: 'OSjs',
     oxziongui: "oxziongui"
+  },
+  resolve: {
+    modules: ['node_modules'],
+    alias: {
+      react: path.resolve(__dirname, 'node_modules/react'),
+      OxzionGUI: path.resolve(__dirname, "../../gui/src/")
+    }
   },
   optimization: {
     minimizer: [
@@ -36,12 +48,21 @@ module.exports = {
     ],
   },
   plugins: [
-    // new BundleAnalyzerPlugin(),
-    new CopyWebpackPlugin(["icon.svg", "icon_white.svg", "images/"]),
+    new CopyWebpackPlugin([
+      'icon.png',
+      'icon_white.png',
+      'images/'
+    ]
+    ),
     new MiniCssExtractPlugin({
       filename: '[name].css',
       chunkFilename: '[id].css'
     }),
+    new Dotenv({
+      path: './.env',
+      safe: true
+    }),
+    // new NodePolyfillPlugin(),
     ...plugins
   ],
   module: {
@@ -52,7 +73,7 @@ module.exports = {
           {
             loader: "file-loader",
             options: {
-              publicPath: "/apps/Admin"
+              publicPath: "/apps/Kanban"
             }
           }
         ]
@@ -70,21 +91,7 @@ module.exports = {
         loader: "file-loader"
       },
       {
-        test: /\.(eot|ttf|woff|woff2)$/,
-        include: /typeface/,
-        use: {
-          loader: "file-loader",
-          options: {
-            name: "fonts/[name].[ext]",
-            publicPath: "apps/Admin"
-          }
-        }
-      },
-      {
         test: /\.(sa|sc|c)ss$/,
-        // include: [
-        //   path.resolve(__dirname, 'src', 'sass')
-        // ],
         use: [
           MiniCssExtractPlugin.loader,
           {
@@ -126,10 +133,6 @@ module.exports = {
         use: [{
           loader: 'file-loader'
         }]
-      },
-      {
-        test: /\.html$/,
-        loader: "html-loader"
       }
     ]
   }

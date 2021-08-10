@@ -16,6 +16,8 @@ import * as am4plugins_forceDirected from "../amcharts/plugins/forceDirected";
 import am4geodata_worldLow from "@amcharts/amcharts4-geodata/worldLow";
 am4core.useTheme(am4themes_animated);
 am4core.options.commercialLicense = true;
+import WidgetcustomReport from './components/Custom/WidgetCustom'
+// import WidgetCustom from './components/Custom/WidgetCustom';
 
 
 class WidgetRenderer {
@@ -25,6 +27,8 @@ class WidgetRenderer {
         // am4core.options.queue = true //reduces load on the browser
         let widgetTagName = element.tagName.toUpperCase();
         let widgetReturnParams = {}
+        // let renderer = 'Report';
+        console.log(widget.renderer)
         switch (widget.renderer) {
             case 'JsAggregate':
                 if ((widgetTagName !== 'SPAN') && (widgetTagName !== 'DIV')) {
@@ -81,12 +85,30 @@ class WidgetRenderer {
                 }
                 widgetReturnParams = WidgetRenderer.renderProfile(element, widget.configuration, core, widget.data);
                 break;
-            // add a case for jsGrid for the server grid loading
 
+            case 'Report':
+                // if ((widgetTagName !== 'SPAN') && (widgetTagName !== 'DIV')) {
+                //     console.log(`Unexpected inline Report value widget tag "${widgetTagName}"`);
+                //     // throw (`Unexpected inline aggregate value widget tag "${widgetTagName}"`);
+                // }
+                // widgetReturnParams = WidgetRenderer.renderReport(element,widget.configuration, core, widget.data);
+                break;
+            // add a case for jsGrid for the server grid loading
             default:
                 throw (`Unexpected widget renderer "${widget.renderer}"`);
         }
         return widgetReturnParams;
+    }
+
+    static renderReport(element){
+        let canvasElement = null;
+        // let elementTagName = element.tagName.toUpperCase();
+        canvasElement = element.querySelector('div.oxzion-widget-content');
+        console.log("report case working....",canvasElement);
+
+        ReactDOM.render(<WidgetcustomReport />,canvasElement);
+        // <WidgetcustomReport />  ---- calling custom json table report file not rendering
+        // return null;
     }
 
     static renderAggregateValue(element, configuration, props, data, hasDashboardFilters, dashboardEditMode, widget) {
@@ -135,37 +157,6 @@ class WidgetRenderer {
         return null;
     }
 
-    static renderProfile(element, configuration, core, data) {
-        let displayValue = null;
-        let imageHtml = '';
-        if (configuration) {
-            if (configuration.uuid) {
-                let format = configuration.uuid;
-                let uuid = data;
-                let encodedKey = btoa( "wrapper.url" );
-                let imageUrl = '';
-                const imageSrcTag = '<img alt="" title="Profile Picture" width="140px" height="100px" src="';
-                displayValue = data[0][format];
-                if( core !== undefined ){
-                    imageUrl = core.config("wrapper.url") + "user/profile/" + displayValue; 
-                    if( window.localStorage.getItem( encodedKey) == null )
-                    {
-                        let encodedVal = btoa( core.config("wrapper.url") );
-                        window.localStorage.setItem( encodedKey, encodedVal );
-                    }
-                } else{
-                    let encodedVal = window.localStorage.getItem(encodedKey);
-                    imageUrl = atob( encodedVal ) + "user/profile/" + displayValue;
-                }
-                imageHtml = imageSrcTag + imageUrl + '">';
-            } else {
-                displayValue = data;
-            }
-        }
-        element.innerHTML = imageHtml;
-        return null;
-    }
-
 
     static renderProfile(element, configuration, core, data) {
         let displayValue = null;
@@ -181,7 +172,7 @@ class WidgetRenderer {
                 displayValue = data[0][format];
 
                 if( core !== undefined ){
-                    imageUrl = core.config("wrapper.url") + "user/profile/" + displayValue; 
+                    imageUrl = core.config("wrapper.url") + "user/profile/" + displayValue;
                     if( window.localStorage.getItem( encodedKey) == null )
                     {
                         let encodedVal = btoa( core.config("wrapper.url") );
@@ -210,7 +201,8 @@ class WidgetRenderer {
                 let format = configuration.numberFormat;
                 let num = numeral(data);
                 displayValue = num.format(format);
-            } else if (configuration.dateFormat) {
+            }
+            else if (configuration.dateFormat) {
                 let format = configuration.dateFormat;
                 displayValue = dayjs(data).format(format);
             } else {
@@ -727,4 +719,3 @@ class WidgetRenderer {
 }
 
 export default WidgetRenderer;
-
