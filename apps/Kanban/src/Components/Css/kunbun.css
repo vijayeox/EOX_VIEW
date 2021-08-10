@@ -1,0 +1,161 @@
+.containerbox{
+  display:flex !important;
+    flex-direction:column !important;
+    flex-flow: column !important;
+    
+    align-items: flex-start !important;
+   
+    /* padding: 0.5rem!important;
+    margin: 1rem 0 !important; */
+    flex-wrap: initial !important;
+    top: auto;
+
+}
+/* .button{
+  box-shadow :2px 3px 4px 4px lightgrey;
+  background-color: white;
+  border:ivory;
+  color: black;
+  position: relative;
+  margin: auto; */
+  
+  
+  
+
+#button{
+  box-shadow :2px 3px 4px 4px lightgrey;
+  background-color: white;
+  border:ivory;
+  color: black;
+  position: relative;
+  margin: auto; 
+
+}
+.hover:hover, .hover:active {
+  color: #fff;
+  text-decoration: none;
+  background-color: white!important;
+  background-image: none;
+  
+}
+.containerbox:hover{
+  background-color: none;
+}
+.containerbox:active{
+  background-color: none;
+}
+/* .expense-item  {
+    display:flex !important;
+    flex-direction:row !important;
+    flex-flow: row !important;
+    
+    align-items: flex-start !important;
+   
+    padding: 0.5rem!important;
+    margin: 1rem 0 !important;
+    flex-wrap: initial !important;
+   
+  
+  }
+  .taskdiv{
+    display:flex;
+    flex-direction:row;
+    flex-flow: row;
+    width: max-content;
+    height: max-content;
+    
+    align-items: flex-start;
+   
+    padding: 0.5rem;
+    margin: 2rem ;
+    background-color: white;
+    flex-wrap: initial;
+   
+  
+  }
+  .nav-button {
+    display:flex;
+    flex-direction:row;
+    flex-flow: row;
+    
+    align-items: flex-start;
+   
+    padding: 0.5rem;
+    margin: 0.5rem;
+    flex-wrap: initial;
+   
+  
+  }
+  .cards {
+    flex: 0 0 12.5%;padding: 1px;
+    margin: 20px;
+    box-shadow :2px 3px 4px 4px lightgrey;
+    background-color: white;
+    max-width: 120px;
+    height: 145px;
+}
+.taskcards {
+  flex: 0 0 25%;padding: 1px;
+  margin: 0px;
+  top:1rem;
+  background-color: white;
+  max-width: 300px;
+  height: auto;
+  border: none;
+}
+.taskcards:hover .img {
+  border-color: rgb(99, 204, 131);
+}
+.img{
+  border: solid 2px transparent;
+  border-radius: 50%;
+  width: 20px!important;
+  
+  height: 20px !important;
+}
+.taskcardDisplay{
+  margin-top: 1rem;
+ padding: 0;
+  display: flex;
+  flex-direction: row;
+}
+.taskcardDisplay1{
+  height: auto;
+  width: auto;
+ 
+  display: flex;
+  flex-direction: row;
+}
+.calendar{
+  top: 2rem;
+  display: flex;
+  flex-direction: row;
+  margin-left: 1rem;
+  
+  align-items: flex-start;
+  
+}
+.fab{
+  display: flex;
+  margin-left: 15px;
+  margin-right: 5px;
+  margin-top: 5px;
+  margin-bottom: 2px;
+}
+.select{
+  top: 2rem;
+  position: initial;
+  display: flex;
+  flex-direction: row;
+  margin-left: 1rem;
+  margin-top: 0%;
+  
+  align-items: flex-start;
+  
+}
+.button{
+  box-shadow :2px 3px 4px 4px lightgrey;
+  background-color: white;
+  border:ivory
+
+} */
