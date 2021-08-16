@@ -1,0 +1,23 @@
+{
+  "type": "application",
+  "name": "Profile",
+  "category": null,
+  "icon" : "icon.svg",
+  "icon_white": "icon_white.svg",
+  "server": "server.js",
+  "autostart": true,
+  "singleton": true,
+  "hidden": true,
+  "internal": true,
+  "defaultAppforOrgs" : true,
+  "title": {
+    "en_EN": "Profile"
+  },
+  "description": {
+    "en_EN": "Profile"
+  },
+  "files": [
+    "main.js",
+    "main.css"
+  ]
+}
