@@ -53,6 +53,10 @@ export default class Home extends React.Component {
     });
   };
 
+  onIconClickHandler = (content) => {
+    this.onSelect(content)
+  }
+
   launchExternalApp = (appName) => {
     this.core.run(appName);
     let name = document.getElementsByClassName("Window_Admin");
@@ -72,6 +76,7 @@ export default class Home extends React.Component {
             userProfile={this.userProfile}
             name="Menu"
             key={"Menu"}
+            onIconClick={this.onIconClickHandler}
           />
         );
         break;
