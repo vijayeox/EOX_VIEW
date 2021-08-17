@@ -1137,3 +1137,50 @@ body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown) {
 .k-widget.k-grid {
   margin-bottom: 4rem;
 }
+
+.sidenav---sidenav---_2tBP {
+  background: #275362 !important;
+}
+
+div.desk {
+  text-align: center;
+  padding: 10px 10px 20px 10px;
+  border: 0px solid rgba(0, 0, 0, 0.125);
+  border-radius: 1.25rem;
+  top: 12px;
+  left: 25px;
+  height: 100px;
+  width: 175px;
+  display: inline-block;
+  margin: 15px;
+  background-color: #265160;
+}
+
+div.desk:hover {
+  box-shadow: 0 10px 8px 0 rgba(0, 0, 0, 0.3), 0 10px 8px 0 rgba(0, 0, 0, 0.3);
+  transform: scale(1.2);
+}
+
+div.header {
+  background-color: #265160;
+  color: white;
+  padding: 10px;
+  font-size: 40px;
+  border-radius: 1.25rem;
+}
+
+div.text {
+  color: white;
+  font-weight: 600;
+  font-size: 22px;
+}
+
+.div.iconTitle {
+  padding: 10px;
+  text-align: center;
+  display: flex;
+  flex-wrap: wrap;
+  height: fit-content;
+  justify-content: center;
+  align-content: space-between;
+}
