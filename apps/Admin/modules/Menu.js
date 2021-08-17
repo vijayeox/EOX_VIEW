@@ -18,8 +18,18 @@ export default class Menu extends React.Component {
     this.child = React.createRef();
   }
 
-  onIconClickHandler = (e, name) => {
-    this.props.onIconClick(name);
+
+  launchExternalApp = (appName) => {
+    this.core.run(appName);
+    let name = document.getElementsByClassName("Window_Admin");
+  };
+
+  onIconClickHandler = (e, component, type) => {
+    if (type == "external") {
+      this.launchExternalApp(component)
+    } else {
+      this.props.onIconClick(component);
+    }
   }
 
   list = () => {
@@ -27,12 +37,12 @@ export default class Menu extends React.Component {
       {
         name: "Account",
         icon: <i className="fad fa-users-cog" aria-hidden="true"></i>,
-        name: "Account"
+        component: "Account"
       },
       {
         name: "Users",
         icon: <i className="fas fa-user " aria-hidden="true"></i>,
-        name: "User"
+        component: "User"
       },
       {
         name: "Roles",
@@ -77,6 +87,8 @@ export default class Menu extends React.Component {
       {
         name: "OI Studio",
         icon: <i className="fad fa-database" aria-hidden="true"></i>,
+        component: "Analytics",
+        type: "external"
       },
     ];
     return iconTitleList;
@@ -87,8 +99,8 @@ export default class Menu extends React.Component {
     let table = [];
     iconsList.map((currentValue) => {
       table.push(
-        <div className="desk" id={currentValue.name} onClick={(e) => this.onIconClickHandler(e, currentValue.name)} key={currentValue.name}
-          data-txt={currentValue.name}>
+        <div className="desk" id={currentValue.name} onClick={(e) => this.onIconClickHandler(e, currentValue.component, currentValue.type)} key={currentValue.name}
+          data-txt={currentValue.component}>
           <div className="header">{currentValue.icon}</div>
           <div className="text">
             <p>{currentValue.name}</p>
