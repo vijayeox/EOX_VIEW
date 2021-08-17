@@ -1144,25 +1144,44 @@ body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown) {
 
 div.desk {
   text-align: center;
-  padding: 10px 10px 20px 10px;
+  padding: 2px 2px 2px 2px;
   border: 0px solid rgba(0, 0, 0, 0.125);
   border-radius: 1.25rem;
   top: 12px;
-  left: 25px;
+  left: 17px;
   height: 100px;
   width: 175px;
-  display: inline-block;
-  margin: 15px;
-  background-color: #265160;
+  display: inline-table;
+  margin: 16px;
+  cursor: pointer;
+  background-color: #265160d4;
+  box-shadow: 0px 0px 2px 1px rgba(41, 28, 28, 0.3),
+    -1px -1px 8px 3px rgba(41, 28, 28, 0.3);
+}
+
+div.desk .header {
+  background-color: transparent;
+  color: white;
+  padding: 10px;
+  font-size: 40px;
+  border-radius: 1.25rem;
+}
+
+div.desk .text {
+  color: white;
+  font-weight: 100;
+  font-size: 22px;
 }
 
 div.desk:hover {
-  box-shadow: 0 10px 8px 0 rgba(0, 0, 0, 0.3), 0 10px 8px 0 rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0px 8px 3px rgba(41, 28, 28, 0.3),
+    0 10px 8px 0 rgba(0, 0, 0, 0.3);
   transform: scale(1.2);
+  transition: all .2s ease-in-out;
 }
 
 div.header {
-  background-color: #265160;
+  background-color: #265160d4;
   color: white;
   padding: 10px;
   font-size: 40px;
@@ -1175,7 +1194,7 @@ div.text {
   font-size: 22px;
 }
 
-.div.iconTitle {
+div.iconTitle {
   padding: 10px;
   text-align: center;
   display: flex;
@@ -1183,4 +1202,10 @@ div.text {
   height: fit-content;
   justify-content: center;
   align-content: space-between;
+}
+
+.icon-title {
+  margin: 10px;
+  flex-direction: column;
+  display: contents;
 }

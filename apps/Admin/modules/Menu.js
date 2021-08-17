@@ -4,6 +4,7 @@ export default class Menu extends React.Component {
   constructor(props) {
     super(props);
     this.core = this.props.args;
+    // this.onSelect = this.onSelect(this);
     this.state = {
       userInEdit: undefined,
       permission: {
@@ -12,8 +13,13 @@ export default class Menu extends React.Component {
         canDelete: this.props.userProfile.privileges.MANAGE_USER_DELETE,
       },
       selectedOrg: this.props.userProfile.accountId,
+      displaySection: "Menu"
     };
     this.child = React.createRef();
+  }
+
+  onIconClickHandler = (e, name) => {
+    this.props.onIconClick(name);
   }
 
   list = () => {
@@ -21,10 +27,12 @@ export default class Menu extends React.Component {
       {
         name: "Account",
         icon: <i className="fad fa-users-cog" aria-hidden="true"></i>,
+        name: "Account"
       },
       {
         name: "Users",
         icon: <i className="fas fa-user " aria-hidden="true"></i>,
+        name: "User"
       },
       {
         name: "Roles",
@@ -48,27 +56,27 @@ export default class Menu extends React.Component {
       },
       {
         name: "Announcements",
-        icon: <i class="fad fa-bullhorn" aria-hidden="true"></i>,
+        icon: <i className="fad fa-bullhorn" aria-hidden="true"></i>,
       },
       {
         name: "Mail Admin",
-        icon: <i class="fad fa-mail-bulk" aria-hidden="true"></i>,
+        icon: <i className="fad fa-mail-bulk" aria-hidden="true"></i>,
       },
       {
         name: "CRM Admin",
-        icon: <i class="fad fa-user-tie" aria-hidden="true"></i>,
+        icon: <i className="fad fa-user-tie" aria-hidden="true"></i>,
       },
       {
         name: "PM Admin",
-        icon: <i class="fas fa-project-diagram" aria-hidden="true"></i>,
+        icon: <i className="fas fa-project-diagram" aria-hidden="true"></i>,
       },
       {
         name: "App Builder",
-        icon: <i class="far fa-desktop-alt" aria-hidden="true"></i>,
+        icon: <i className="far fa-desktop-alt" aria-hidden="true"></i>,
       },
       {
         name: "OI Studio",
-        icon: <i class="fad fa-database" aria-hidden="true"></i>,
+        icon: <i className="fad fa-database" aria-hidden="true"></i>,
       },
     ];
     return iconTitleList;
@@ -79,7 +87,8 @@ export default class Menu extends React.Component {
     let table = [];
     iconsList.map((currentValue) => {
       table.push(
-        <div className="desk" onClick={this.handleClick}>
+        <div className="desk" id={currentValue.name} onClick={(e) => this.onIconClickHandler(e, currentValue.name)} key={currentValue.name}
+          data-txt={currentValue.name}>
           <div className="header">{currentValue.icon}</div>
           <div className="text">
             <p>{currentValue.name}</p>
