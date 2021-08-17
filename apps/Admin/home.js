@@ -318,7 +318,7 @@ export default class Home extends React.Component {
               onClick={() => this.launchExternalApp("Analytics")}
             >
               <NavIcon>
-                <i className="fad fa-database" aria-hidden="true"></i>
+                <i className="fas fa-chart-bar" aria-hidden="true"></i>
               </NavIcon>
               <NavText>OI Studio</NavText>
             </NavItem>

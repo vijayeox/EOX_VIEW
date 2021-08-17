@@ -86,7 +86,7 @@ export default class Menu extends React.Component {
       },
       {
         name: "OI Studio",
-        icon: <i className="fad fa-database" aria-hidden="true"></i>,
+        icon: <i className="fas fa-chart-bar" aria-hidden="true"></i>,
         component: "Analytics",
         type: "external"
       },
