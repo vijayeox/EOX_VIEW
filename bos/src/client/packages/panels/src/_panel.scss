@@ -38,9 +38,6 @@
   right: 0;
   line-height: normal;
 
-  transform: translateY(-90%);
-  transition: all 0.5s;
-
   &[data-ontop="true"] {
     /* Begin Oxzion customization. */
     /* z-index: 9995; */
@@ -50,10 +47,22 @@
 
   &[data-position="top"] {
     top: 0;
+    transform: translateY(-90%);
+    transition: all 0.2s;
+
+    &:hover {
+      transform: translateY(0);
+    }
   }
 
   &[data-position="bottom"] {
     bottom: 2em !important;
+    transform: translateY(90%);
+    transition: all 0.2s;
+
+    &:hover {
+      transform: translateY(0);
+    }
   }
 
   & > .osjs-panel-item {
@@ -73,9 +82,6 @@
       margin-right: $base-margin / 2;
     }
   }
-  &:hover {
-    transform: translateY(0);
-  }
 }
 
 .footer-CR {
@@ -90,7 +96,7 @@
   bottom: 0 !important;
   flex-direction: row-reverse !important;
   background-color: #275362 !important;
-  z-index: 50;
+  z-index: 99999;
 }
 .footer-CR .coppyRight {
   color: #fff;
@@ -140,7 +146,7 @@
   width: 0;
   position: absolute;
   top: 0;
-  margin-top: 3.5em;
+  margin-top: 2.5em !important;
   margin-bottom: 3.5em;
   background-color: rgb(0, 0, 1);
   transition: 0.5s;
@@ -148,7 +154,7 @@
 
 .appmenu-visible {
   width: 300px;
-  z-index: 9995;
+  z-index: 9994;
 }
 
 /* Position and style the close button (top right corner) */
@@ -434,7 +440,7 @@ img.profile-dropdown-image {
 .profile-content {
   display: none;
   position: fixed;
-  right: 50px;
+  right: 35px;
   width: 200px;
   min-width: 160px;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
@@ -442,11 +448,11 @@ img.profile-dropdown-image {
 }
 
 .osjs-panel[data-position="top"] .profile-content {
-  top: 3.5em;
+  top: 2.5em;
 }
 
 .osjs-panel[data-position="bottom"] .profile-content {
-  bottom: 3.5em;
+  bottom: 2.5em;
 }
 
 .profile-dropdown-text {

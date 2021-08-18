@@ -65,17 +65,17 @@ html {
   }
 
   &[data-action="minimize"] {
-  & > div {
+    & > div {
       background-position: 50% 50%;
       background-size: 14px;
-    background-image: url("./src/images/minimize.svg");
-  }
-    &:hover{
-     transform: scale(1.2);
+      background-image: url("./src/images/minimize.svg");
+    }
+    &:hover {
+      transform: scale(1.2);
     }
   }
   &[data-action="maximize"] {
-  & > div {
+    & > div {
       background-position: 50% 50%;
       background-size: 14px;
       background-image: url("./src/images/maximize.svg");
@@ -119,18 +119,18 @@ html {
   padding: 0;
 }
 
-.osjs-window-breadcrumb{
+.osjs-window-breadcrumb {
   display: flex;
   line-height: 0;
   flex-grow: 50;
   height: auto !important;
-  align-items:baseline;
-  font-size: 18px  !important;
+  align-items: baseline;
+  font-size: 18px !important;
 }
-.activeBreadcrumb >a >i {
+.activeBreadcrumb > a > i {
   font-size: 0px;
 }
-.disabledBreadcrumb >a >i {
+.disabledBreadcrumb > a > i {
   font-size: 0px;
 }
 .osjs-gui-menu {
@@ -146,6 +146,7 @@ html {
 }
 
 .osjs-panel-item[data-name="tray"] > div > img {
+  margin-left: -7px !important;
 }
 
 .osjs-gui-menu-separator::after {
@@ -173,8 +174,6 @@ html {
 .osjs-gui-tabs-header > div.osjs__active {
   background-color: #333333;
 }
-
-
 
 .osjs-window-icon > div {
   width: 3em;
@@ -243,7 +242,6 @@ html {
 }
 
 .osjs-panel-item[data-name="windows"] > div {
-
   font-size: 12px;
   color: white;
   background-color: rgba(255, 255, 255, 0.4);
@@ -256,7 +254,7 @@ html {
   }
 }
 
-.osjs-panel-item[data-name=menu] {
+.osjs-panel-item[data-name="menu"] {
   display: contents;
   align-items: center;
   padding: 0;
@@ -317,7 +315,6 @@ label {
 }
 .appmenu .app-bar .app .appcaption {
   color: #275362;
-
 }
 .profile-dropdown-div:hover {
   color: #275362;
