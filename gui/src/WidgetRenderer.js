@@ -16,7 +16,7 @@ import * as am4plugins_forceDirected from "../amcharts/plugins/forceDirected";
 import am4geodata_worldLow from "@amcharts/amcharts4-geodata/worldLow";
 am4core.useTheme(am4themes_animated);
 am4core.options.commercialLicense = true;
-import WidgetcustomReport from './components/Custom/WidgetCustom'
+// import WidgetcustomReport from './components/Custom/WidgetCustom'
 // import WidgetCustom from './components/Custom/WidgetCustom';
 
 
