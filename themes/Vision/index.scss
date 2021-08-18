@@ -228,8 +228,8 @@ html {
 }
 
 .osjs-panel {
-  height: 2em;
-  min-height: 2em;
+  height: 2.5m;
+  min-height: 2.5em;
 }
 
 .osjs-panel .osjs-panel-item--icon {
@@ -254,6 +254,14 @@ html {
   img {
     max-height: 20px;
   }
+}
+
+.osjs-panel-item[data-name=menu] {
+  display: contents;
+  align-items: center;
+  padding: 0;
+  width: 10%;
+  padding: 0px !important;
 }
 
 .k-dateinput-wrap {
