@@ -110,9 +110,9 @@ class Navigation extends React.Component {
       document.getElementById(pageId + "_page").classList.add("page-active");
     }
   }
-  pageInActive(pageId) {
+  pageInActive(pageId, dimPage) {
     if (document.getElementById(pageId + "_page")) {
-      document.getElementById(pageId + "_page").classList.add("page-inactive");
+      document.getElementById(pageId + "_page").classList.add(dimPage ? "page-dimmed" : "page-inactive");
       document.getElementById(pageId + "_page").classList.remove("page-active");
     }
   }
@@ -151,12 +151,12 @@ class Navigation extends React.Component {
         setTimeout(function(){ 
           that.addPage({detail: e.detail});
         }, 1000);
-        // this.addPage({detail: pageContent});
-        // pages.push(e.detail);
       }
     }
     if (e.detail.parentPage && document.getElementById(e.detail.parentPage + "_page")) {
-      this.pageInActive(e.detail.parentPage);
+      this.pageInActive(e.detail.parentPage,
+        e.detail.popupConfig ? true : false
+        );
     } else {
       if(pages[pages.length - 2] && pages[pages.length - 2].pageId){
         pages.length > 0 ? this.pageInActive(pages[pages.length - 2].pageId) : null;
@@ -306,23 +306,30 @@ getElementInsideElement(baseElement, wantedElementID) {
       this.state.pages.map((item, i) => {
         var pageId = item.pageId + "_page";
         var pageClasses = this.pageClass + " page-active";
-        pageList.push(
-          <div className={pageClasses} id={pageId}>
-            <Page
-              key={item.pageId}
-              config={this.props.config}
-              proc={this.props.proc}
-              app={this.props.appId}
-              core={this.core}
-              fileId={item.fileId}
-              pageId={item.pageId}
-              notif={this.notif}
-              params={item.params}
-              pageContent={item.pageContent}
-              currentRow={item.currentRow}
-            />
-          </div>
-        );
+        if (i == this.state.pages.length - 1 || true) {
+          pageList.push(
+            <div className={pageClasses} id={pageId}>
+              <Page
+                key={item.pageId}
+                config={this.props.config}
+                proc={this.props.proc}
+                app={this.props.appId}
+                core={this.core}
+                fileId={item.fileId}
+                pageId={item.pageId}
+                notif={this.notif}
+                params={item.params}
+                pageContent={item.pageContent}
+                currentRow={item.currentRow}
+                popupConfig = {item.popupConfig}
+              />
+            </div>
+          );
+        } else {
+          pageList.push(
+          <div></div>
+            )
+        }
       });
     }
     return pageList;
