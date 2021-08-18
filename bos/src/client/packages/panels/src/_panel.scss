@@ -87,11 +87,11 @@
   z-index: 50;
 }
 .footer-CR .coppyRight {
-  color: #fff
+  color: #fff;
 }
 
 .osjs-root[data-dir="rtl"] {
-  .osjs-panel>.osjs-panel-item:not(:last-child) {
+  .osjs-panel > .osjs-panel-item:not(:last-child) {
     margin-right: 0;
     margin-left: $base-margin;
   }
@@ -196,7 +196,7 @@
   margin-bottom: 5px;
   margin-top: 5px;
   align-self: stretch;
-  padding:10px;
+  padding: 10px;
   background-color: rgba(0, 0, 0, 0.85);
 }
 
@@ -225,7 +225,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  cursor: inherit !important
+  cursor: inherit !important;
 }
 
 .appmenu .app-bar .app .appcaption {
@@ -283,8 +283,8 @@
   line-height: 20px;
   color: #fff;
   padding: 0 10px;
-  transition: all .3s cubic-bezier(.39, .58, .57, 1), padding 0s;
-  transition-delay: .3s;
+  transition: all 0.3s cubic-bezier(0.39, 0.58, 0.57, 1), padding 0s;
+  transition-delay: 0.3s;
 }
 
 .appmenu .app-bar .applist .app i {
@@ -317,7 +317,7 @@
 }
 
 .osjs-panel-logout img {
-  max-width: 48px;
+  max-width: 30px;
 }
 
 .osjs-panel-item[data-name=logout]:hover {
@@ -394,12 +394,13 @@
   padding-left: 120px;
 }
 
-.profileIcon{
-    width: 70% !important;
+.profileIcon {
+  width: 70% !important;
+  border-radius: 50%;
 }
 
-.profileEdit{
-margin-left:85px;  
+.profileEdit {
+  margin-left: 85px;
 }
 
 .profileicon {
