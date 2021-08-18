@@ -580,7 +580,10 @@ class PageContent extends React.Component {
           />
         );
       } else if (item.type == "Document" || item.type == "HTMLViewer") {
-        var fileData = this.state.fileData ? this.state.fileData : this.state.currentRow;
+        var fileData = {
+          ...this.state.currentRow,
+          ...this.state.fileData
+        }
         var fileId = item.fileId ? item.fileId : item.uuid;
         content.push(
           <HTMLViewer
