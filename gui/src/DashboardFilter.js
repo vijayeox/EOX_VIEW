@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import DatePicker from 'react-datepicker'
-import { dashboard, dateFormat, dateTimeFormat } from '../metadata.json';
+import dashboardFilterJson from '../metadata.json';
 import { Form, Row, Button } from 'react-bootstrap'
 import "react-datepicker/dist/react-datepicker.css";
 import Select from 'react-select/creatable';
@@ -473,7 +473,7 @@ class DashboardFilter extends React.Component {
             defaultFilters: [],
             applyFilters: [],
             dateFormat: undefined,
-            dateTimeFormat: dateTimeFormat.title.en_EN,
+            dateTimeFormat: dashboardFilterJson.dateTimeFormat.title.en_EN,
             showDefaultValue: true,
             dataSourceOptions: [],
             disableDateField: null,

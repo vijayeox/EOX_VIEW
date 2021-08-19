@@ -1,5 +1,6 @@
 import React from 'react';
-import { dataSource as section } from '../metadata.json';
+import dashboardJson from '../metadata.json';
+// import { dataSource as section } from '../metadata.json';
 import { Button } from 'react-bootstrap'
 import OX_Grid from "./OX_Grid"
 import Notification from "./Notification"
@@ -19,7 +20,7 @@ class DataSource extends React.Component {
     };
     this.refresh = React.createRef();
     this.notif = React.createRef();
-    this.props.setTitle(section.title.en_EN);
+    this.props.setTitle(dashboardJson.dataSource.title.en_EN);
     this.handleSwitch = this.handleSwitch.bind(this);
     this.checkedList = {}
   }

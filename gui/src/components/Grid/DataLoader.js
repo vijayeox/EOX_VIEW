@@ -75,9 +75,7 @@ export class DataLoader extends React.Component {
             };
           }
           this.props.onDataRecieved.call(undefined, {
-            data: groupConfig
-              ? process(response.data, groupConfig).data
-              : response.data,
+            data: groupConfig ? process(response.data, groupConfig).data : response.data,
             total: response.total ? response.total : null
           });
         } else {
@@ -96,12 +94,12 @@ export class DataLoader extends React.Component {
       url !== undefined ? (url.includes("?") ? "&" : "?") : "&";
     var columnList = this.props.passColumnConfig
       ? this.props.passColumnConfig.concat(
-          this.props.columnConfig
-            .map((item) => (item.field ? item.field : null))
-            .filter(
-              (el) => el != null && this.props.passColumnConfig.indexOf(el) < 0
-            )
-        )
+        this.props.columnConfig
+          .map((item) => (item.field ? item.field : null))
+          .filter(
+            (el) => el != null && this.props.passColumnConfig.indexOf(el) < 0
+          )
+      )
       : undefined;
     if (Object.keys(this.props.dataState).length === 0) {
       return columnList
@@ -111,16 +109,16 @@ export class DataLoader extends React.Component {
       var filterConfig = this.prepareQueryFilters(this.props.dataState);
       var finalRoute = columnList
         ? url +
-          paramSeperator +
-          "filter=[" +
-          JSON.stringify(filterConfig) +
-          "]&columns=" +
-          JSON.stringify(columnList)
+        paramSeperator +
+        "filter=[" +
+        JSON.stringify(filterConfig) +
+        "]&columns=" +
+        JSON.stringify(columnList)
         : url +
-          paramSeperator +
-          "filter=[" +
-          JSON.stringify(filterConfig) +
-          "]";
+        paramSeperator +
+        "filter=[" +
+        JSON.stringify(filterConfig) +
+        "]";
       return finalRoute;
     }
   }
@@ -141,11 +139,11 @@ export class DataLoader extends React.Component {
       var route = this.prepareAPIRoute(url);
       let data = this.props.urlPostParams
         ? await helper.request(
-            "v1",
-            "/" + route,
-            this.props.urlPostParams,
-            "post"
-          )
+          "v1",
+          "/" + route,
+          this.props.urlPostParams,
+          "post"
+        )
         : await helper.request("v1", "/" + route, {}, "get");
       if (data.status == "success") {
         return data;
@@ -160,11 +158,9 @@ export class DataLoader extends React.Component {
     if (this.props.forceDefaultFilters) {
       try {
         if (gridConfig.sort.length == 0 || gridConfig.sort == null) {
-          gridConfig.sort = this.props.gridDefaultFilters.sort
-            ? this.props.gridDefaultFilters.sort
-            : gridConfig.sort;
+          gridConfig.sort = this.props.gridDefaultFilters.sort ? this.props.gridDefaultFilters.sort : gridConfig.sort;
         }
-      } catch {}
+      } catch { }
     }
     if (this.props.filterLogic && gridConfig.filter) {
       gridConfig.filter.logic = this.props.filterLogic;
@@ -173,11 +169,11 @@ export class DataLoader extends React.Component {
       if (ColumnItem.filterFormat && gridConfig.filter) {
         gridConfig.filter.filters.map((filterItem1, i) => {
           filterItem1.filters && filterItem1.filters.map((filterItems1, j) => {
-              this.processFilters(filterItems1,ColumnItem,gridConfig,i,j,filterItem1);
-              console.log(gridConfig);
+            this.processFilters(filterItems1, ColumnItem, gridConfig, i, j, filterItem1);
+            console.log(gridConfig);
           });
-          filterItem1 && this.processFilters(filterItem1,ColumnItem,gridConfig,i);     
-          console.log(gridConfig);    
+          filterItem1 && this.processFilters(filterItem1, ColumnItem, gridConfig, i);
+          console.log(gridConfig);
         });
       }
       if (ColumnItem.multiFieldFilter && gridConfig.filter) {
@@ -211,17 +207,14 @@ export class DataLoader extends React.Component {
   };
 
   requestDataIfNeeded = () => {
-    if (
-      (this.pending && this.pending != undefined) ||
-      toODataString(this.props.dataState) === this.lastSuccess
-    ) {
+    if ((this.pending && this.pending != undefined) || toODataString(this.props.dataState) === this.lastSuccess) {
       return;
     }
     this.pending = toODataString(this.props.dataState);
     this.triggerGetCall();
   };
 
-  processFilters = (filterItem, ColumnItem, gridConfig, i ,j,filterItem1) => {
+  processFilters = (filterItem, ColumnItem, gridConfig, i, j, filterItem1) => {
     if (filterItem.field == ColumnItem.field) {
       var result = moment(filterItem.value).format(
         ColumnItem.filterFormat

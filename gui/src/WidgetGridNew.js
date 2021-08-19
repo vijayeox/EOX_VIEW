@@ -60,12 +60,12 @@ export default class WidgetGridNew extends React.Component {
     }
 
     dataStateChange = (e) => {
-        console.log(e);
+        // console.log(e);
         this.setState({
             ...this.state,
             dataState: e.dataState
         }, () => {
-            console.log(this.state.dataState);
+            // console.log(this.state.dataState);
         });
     }
 
