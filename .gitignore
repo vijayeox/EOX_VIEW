@@ -4,7 +4,6 @@ node_modules
 dist
 /packages.json
 /sessions
-/.env*
 /session-store.db
 npm-debug.log
 package-lock.json
