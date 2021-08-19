@@ -109,8 +109,8 @@ html {
 }
 
 .osjs-window-title {
-  font-size: 20px;
-  //padding-left: 20px;
+  font-size: 16px;
+  margin: 0px 8px;
   height: auto !important;
   color: white;
 }
@@ -179,7 +179,7 @@ html {
   width: 3em;
   height: 3em;
   background-color: #275362;
-  margin: 8px 16px !important;
+  margin: 4px 10px 2px 16px !important;
 }
 
 .osjs-panel-item[data-name="windows"] > div {
@@ -236,7 +236,7 @@ html {
 }
 
 .osjs-window-header {
-  min-height: 3em;
+  min-height: 2em;
   height: auto;
   align-items: center;
 }
