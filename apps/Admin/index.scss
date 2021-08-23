@@ -1150,25 +1150,28 @@ div.desk {
   top: 12px;
   left: 17px;
   height: auto;
-  width: 175px;
+  width: 140px;
   display: inline-table;
   margin: 20px;
   cursor: pointer;
-  background-color: #265160d4;
-  box-shadow: 0px 0px 2px 1px rgba(41, 28, 28, 0.3),
-    -1px -1px 8px 3px rgba(41, 28, 28, 0.3);
+  background-color: white;
+  box-shadow: #26394d 0px 10px 30px 0px;
 }
 
 div.desk .header {
   background-color: transparent;
-  color: white;
-  padding: 10px;
+  color: #275362;
+  padding: 8px;
   font-size: 40px;
   border-radius: 1.25rem;
 }
 
+div.desk .header .fad {
+  font-weight: lighter !important;
+}
+
 div.desk .text {
-  color: white;
+  color: #275362;
   font-weight: 100;
   font-size: 18px;
 }
@@ -1181,15 +1184,15 @@ div.desk:hover {
 }
 
 div.header {
-  background-color: #265160d4;
-  color: white;
+  background-color: white;
+  color: #275362;
   padding: 10px;
   font-size: 40px;
   border-radius: 1.25rem;
 }
 
 div.text {
-  color: white;
+  color: #275362;
   font-weight: 600;
   font-size: 22px;
 }

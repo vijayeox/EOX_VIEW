@@ -202,66 +202,66 @@ export default class Home extends React.Component {
         >
           <SideNav.Toggle />
           <SideNav.Nav defaultSelected={this.state.displaySection}>
-            <NavItem eventKey="Menu" key="Menu">
+            <NavItem eventKey="Menu" key="Menu" title="Home">
               <NavIcon>
-                <i className="fas fa-home" aria-hidden="true"></i>
+                <i className="fad fa-home" aria-hidden="true"></i>
               </NavIcon>
               <NavText>Home</NavText>
             </NavItem>
 
-            <NavItem eventKey="Account" key="Account">
+            <NavItem eventKey="Account" key="Account" title="Account">
               <NavIcon>
                 <i className="fad fa-users-cog" aria-hidden="true"></i>
               </NavIcon>
               <NavText>Account</NavText>
             </NavItem>
 
-            <NavItem eventKey="User" key="User">
+            <NavItem eventKey="User" key="User" title="Users">
               <NavIcon>
-                <i className="fas fa-user" aria-hidden="true"></i>
+                <i className="fad fa-user" aria-hidden="true"></i>
               </NavIcon>
               <NavText>Users</NavText>
             </NavItem>
 
-            <NavItem eventKey="Role" key="Role">
+            <NavItem eventKey="Role" key="Role" title="Roles">
               <NavIcon>
-                <i className="fas fa-person-sign" aria-hidden="true"></i>
+                <i className="fad fa-person-sign" aria-hidden="true"></i>
               </NavIcon>
               <NavText>Roles</NavText>
             </NavItem>
 
-            <NavItem eventKey="Team" key="Team">
+            <NavItem eventKey="Team" key="Team" title="Teams">
               <NavIcon>
-                <i className="fas fa-users" aria-hidden="true"></i>
+                <i className="fad fa-users" aria-hidden="true"></i>
               </NavIcon>
               <NavText>Teams</NavText>
             </NavItem>
 
-            <NavItem eventKey="Errorlog" key="Errorlog">
+            <NavItem eventKey="Errorlog" key="Errorlog" title="Errorlog">
               <NavIcon>
                 <i
-                  className="far fa-bug faa-bug animated-hover"
+                  className="fad fa-bug faa-bug animated-hover"
                   aria-hidden="true"
                 ></i>
               </NavIcon>
               <NavText>Errorlog</NavText>
             </NavItem>
 
-            <NavItem eventKey="Goal" key="Goal">
+            <NavItem eventKey="Goal" key="Goal" title="Goals">
               <NavIcon>
-                <i className="fas fa-bullseye-arrow" aria-hidden="true"></i>
+                <i className="fad fa-bullseye-arrow" aria-hidden="true"></i>
               </NavIcon>
               <NavText>Goals</NavText>
             </NavItem>
 
-            <NavItem eventKey="Project" key="Project">
+            <NavItem eventKey="Project" key="Project" title="Projects">
               <NavIcon>
                 <i className="fad fa-cogs" aria-hidden="true"></i>
               </NavIcon>
               <NavText>Projects</NavText>
             </NavItem>
 
-            <NavItem eventKey="Announcement" key="Announcement">
+            <NavItem eventKey="Announcement" key="Announcement" title="Announcement">
               <NavIcon>
                 <i className="fad fa-bullhorn" aria-hidden="true"></i>
               </NavIcon>
@@ -271,7 +271,7 @@ export default class Home extends React.Component {
             <NavItem
               eventKey={this.userProfile.privileges.MANAGE_MAILADMIN_WRITE}
               key={this.userProfile.privileges.MANAGE_MAILADMIN_WRITE}
-              onClick={() => this.launchExternalApp("MailAdmin")}
+              onClick={() => this.launchExternalApp("MailAdmin")} title="Mail Admin"
             >
               <NavIcon>
                 <i className="fad fa-mail-bulk" aria-hidden="true"></i>
@@ -282,7 +282,7 @@ export default class Home extends React.Component {
             <NavItem
               eventKey={this.userProfile.privileges.MANAGE_CRMADMIN_WRITE}
               key={this.userProfile.privileges.MANAGE_CRMADMIN_WRITE}
-              onClick={() => this.launchExternalApp("CRMAdmin")}
+              onClick={() => this.launchExternalApp("CRMAdmin")} title="CRM Admin"
             >
               <NavIcon>
                 <i className="fad fa-user-tie" aria-hidden="true"></i>
@@ -293,10 +293,10 @@ export default class Home extends React.Component {
             <NavItem
               eventKey={this.userProfile.privileges.MANAGE_TASKADMIN_WRITE}
               key={this.userProfile.privileges.MANAGE_TASKADMIN_WRITE}
-              onClick={() => this.launchExternalApp("TaskAdmin")}
+              onClick={() => this.launchExternalApp("TaskAdmin")} title="PM Admin"
             >
               <NavIcon>
-                <i className="fas fa-project-diagram" aria-hidden="true"></i>
+                <i className="fad fa-project-diagram" aria-hidden="true"></i>
               </NavIcon>
               <NavText>PM Admin</NavText>
             </NavItem>
@@ -304,10 +304,10 @@ export default class Home extends React.Component {
             <NavItem
               eventKey={this.userProfile.privileges.MANAGE_APPBUILDER_READ}
               key={this.userProfile.privileges.MANAGE_APPBUILDER_READ}
-              onClick={() => this.launchExternalApp("EOXAppBuilder")}
+              onClick={() => this.launchExternalApp("EOXAppBuilder")} title="App Builder"
             >
               <NavIcon>
-                <i className="far fa-desktop-alt" aria-hidden="true"></i>
+                <i className="fad fa-desktop-alt" aria-hidden="true"></i>
               </NavIcon>
               <NavText>App Builder</NavText>
             </NavItem>
@@ -315,10 +315,10 @@ export default class Home extends React.Component {
             <NavItem
               eventKey={this.userProfile.privileges.MANAGE_OIBUILDER_READ}
               key={this.userProfile.privileges.MANAGE_OIBUILDER_READ}
-              onClick={() => this.launchExternalApp("Analytics")}
+              onClick={() => this.launchExternalApp("Analytics")} title="OI Studio"
             >
               <NavIcon>
-                <i className="fas fa-chart-bar" aria-hidden="true"></i>
+                <i className="fad fa-chart-bar" aria-hidden="true"></i>
               </NavIcon>
               <NavText>OI Studio</NavText>
             </NavItem>
