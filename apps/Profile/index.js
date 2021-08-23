@@ -1,7 +1,6 @@
 import osjs from "osjs";
 import { name as applicationName } from "./metadata.json";
 import { icon_white } from "./metadata.json";
-import Slider from "./slider.js";
 import Body from "./body.js";
 import { React, ReactDOM } from "oxziongui";
 
@@ -11,6 +10,8 @@ const register = (core, args, options, metadata) => {
   // Create a new Application instance
   const proc = core.make("osjs/application", { args, options, metadata });
   let tray = null;
+  //   let tray = null;
+   const trayOptions = {};
   let dashboardUUID = ""    // add the UUID string here 
   let trayInitialized = false;
   // Create  a new Window instance
@@ -48,7 +49,7 @@ const register = (core, args, options, metadata) => {
             top: 50
           },
           visibility: "restricted",
-          closeable: true
+          closeable: false
         }
           
       })
@@ -59,9 +60,39 @@ const register = (core, args, options, metadata) => {
       if(finalMaximised){
         win.maximize();
       }
+            if (core.has('osjs/tray') && !trayInitialized) {
+        trayInitialized = true;
+        trayOptions.title = "Profile";
+        trayOptions.icon = proc.resource(metadata.icon_white);
+        trayOptions.pos = 5;
+        trayOptions.onclick = () => {
+                  console.log(proc);
+                  win.raise();
+                  win.focus();
+                  trigger()
+        }
+        tray = core.make('osjs/tray').create(trayOptions, (ev) => {
+          core.make('osjs/contextmenu').show({
+            position: ev
+          });
+        });
+      }
+
   };
   createProcWindow(proc);
   return proc;
 };
+
+const trigger = () => {
+  var an_ev = new CustomEvent("openProfile", {
+    detail: null,
+    bubbles: true,
+    cancelable: true,
+  });
+  document
+  .querySelector('div[data-id="profileWindow"]')
+  .dispatchEvent(an_ev);
+};
+
 // Creates the internal callback function when OS.js launches an application
 osjs.register(applicationName, register);
