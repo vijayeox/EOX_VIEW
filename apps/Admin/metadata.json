@@ -6,6 +6,7 @@
   "icon": "icon.svg",
   "icon_white": "icon_white.svg",
   "defaultAppforOrgs" : true,
+  "fontIcon":"fad fa-user-lock",
   "singleton": true,
   "title": {
     "en_EN": "Admin"
