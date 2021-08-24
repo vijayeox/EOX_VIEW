@@ -50,7 +50,7 @@ class EntityViewer extends React.Component {
   callAuditLog() {
     this.setState({ showAuditLog: true });
   }
-  generateEditButton(enableComments, enableAuditLog) {
+  generateEditButton(enableComments, enableAuditLog, enablePrint, enableGenerateLink) {
     var fileId;
     let gridToolbarContent = [];
     var filePage;
@@ -66,7 +66,9 @@ class EntityViewer extends React.Component {
       let pageContent = { pageContent: filePage, title: "Edit", icon: "far fa-pencil" }
       gridToolbarContent.push(<Button title={"Edit"} className={"toolBarButton"} primary={true} onClick={(e) => this.updatePageContent(pageContent)} ><i className={"fa fa-pencil"}></i></Button>);
     }
-    gridToolbarContent.push(<Button title={"Print"} className={"toolBarButton"} primary={true} onClick={(e) => this.callPrint()} ><i className={"fa fa-print"}></i></Button>);
+    if(enablePrint){
+        gridToolbarContent.push(<Button title={"Print"} className={"toolBarButton"} primary={true} onClick={(e) => this.callPrint()} ><i className={"fa fa-print"}></i></Button>);
+    }
     if (enableAuditLog) {
       gridToolbarContent.push(<Button title={"Audit Log"} className={"toolBarButton"} primary={true} onClick={(e) => this.callAuditLog()} ><i className={"fa fa-history"}></i></Button>);
     }
@@ -74,7 +76,9 @@ class EntityViewer extends React.Component {
       var commentPage = { title: "Comments", icon: "far fa-comment", pageContent: [{ type: "Comment", fileId: fileId }] };
       gridToolbarContent.push(<Button title={"Comments"} className={"toolBarButton"} primary={true} onClick={(e) => this.updatePageContent(commentPage)} ><i className={"fa fa-comment"}></i></Button>);
     }
-    gridToolbarContent.push(<Button title={"Generate Link"} className={"toolBarButton"} primary={true} onClick={(e) => this.core.make("oxzion/link").copyToClipboard('<a eoxapplication="' + this.state.entityConfig.app_name + '" file-id="' + fileId + '" href="' + this.core.config('ui.url') + '?app=' + this.state.entityConfig.app_name + '&fileId=' + fileId + '" >Link</a>')} ><i className={"fa fa-share-alt"}></i></Button>);
+    if(enableGenerateLink){
+        gridToolbarContent.push(<Button title={"Generate Link"} className={"toolBarButton"} primary={true} onClick={(e) => this.core.make("oxzion/link").copyToClipboard('<a eoxapplication="'+this.state.entityConfig.app_name+'" file-id="'+ fileId + '" href="'+this.core.config('ui.url')+'?app='+this.state.entityConfig.app_name+'&fileId='+fileId+'" >Link</a>')} ><i className={"fa fa-share-alt"}></i></Button>);
+    }
     let ev = new CustomEvent("addcustomActions", {
       detail: { customActions: gridToolbarContent },
       bubbles: true,
@@ -89,7 +93,7 @@ class EntityViewer extends React.Component {
         this.setState({ entityId: fileData.data.entity_id, fileData: file });
         this.getEntityPage().then(entityPage => {
           this.setState({ entityConfig: entityPage.data });
-          this.generateEditButton(entityPage.data.enable_documents, entityPage.data.enable_auditlog);
+          this.generateEditButton(entityPage.data.enable_documents, entityPage.data.enable_auditlog,entityPage.data.enable_print,entityPage.data.enable_generateLink);
           var content = this.constructTabs(entityPage.data, entityPage.data.enable_documents, entityPage.data.enable_view);
           this.setState({ content: content });
           this.setState({ dataReady: true });
