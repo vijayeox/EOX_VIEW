@@ -157,7 +157,7 @@ export default class WindowsPanelItem extends PanelItem {
       h(
         "div",
         {
-          "data-has-image": w. ? true : undefined,
+          // "data-has-image": w. ? true : undefined,
           "data-focused": w.focused ? "true" : "false",
           onclick: () => w.raise(),
           oncontextmenu: (ev) => {
