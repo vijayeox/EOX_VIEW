@@ -30,7 +30,13 @@ module.exports = {
     minimize,
   },
   plugins: [
-    new CopyWebpackPlugin(['icon.svg','icon_white.svg']),
+    // new CopyWebpackPlugin(['icon.svg','icon_white.svg']),
+    new CopyWebpackPlugin({
+      patterns: [
+        'icon.svg',
+        'icon_white.svg'
+      ]
+    }),
     new MiniCssExtractPlugin({
       filename: '[name].css',
       chunkFilename: '[id].css'
@@ -39,25 +45,23 @@ module.exports = {
   ],
   module: {
     rules: [{
-        test: /\.(sa|sc|c)ss$/,
-        exclude: /(node_modules|bower_components)/,
-        use: [
-          MiniCssExtractPlugin.loader,
-          {
-            loader: 'css-loader',
-            options: {
-              sourceMap: true
-            }
-          },
-          {
-            loader: 'sass-loader',
-            options: {
-              minimize,
-              sourceMap: true
-            }
+      test: /\.(sa|sc|c)ss$/,
+      use: [
+        MiniCssExtractPlugin.loader,
+        {
+          loader: "css-loader",
+          options: {
+            sourceMap: true,
           }
-        ]
-      },
+        },
+        {
+          loader: "sass-loader",
+          options: {
+            sourceMap: true
+          }
+        }
+      ]
+    },
       {
         test: /\.js$/,
         exclude: /(node_modules|bower_components)/,
