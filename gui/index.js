@@ -12,19 +12,19 @@ import * as ReactBootstrap from "react-bootstrap";
 import * as KendoFileUploader from "@progress/kendo-react-upload";
 import * as KendoReactButtons from "@progress/kendo-react-buttons";
 import * as KendoReactDropDowns from "@progress/kendo-react-dropdowns";
-import * as KendoReactEditor from "@progress/kendo-react-editor";
+// import * as KendoReactEditor from "@progress/kendo-react-editor";
 import * as KendoReactDateInputs from "@progress/kendo-react-dateinputs";
 import * as KendoReactPopup from "@progress/kendo-react-popup";
 import * as KendoDataQuery from "@progress/kendo-data-query";
 import * as KendoReactWindow from "@progress/kendo-react-dialogs";
 import * as KendoReactGrid from "@progress/kendo-react-grid";
 import * as KendoReactInput from "@progress/kendo-react-inputs";
-import * as KendoReactRipple from "@progress/kendo-react-ripple";
+// import * as KendoReactRipple from "@progress/kendo-react-ripple";
 import * as Moment from "moment";
 import * as MomentTZ from "moment-timezone";
 import * as PopupDialog from 'sweetalert2';
 import * as ReactStrap from "reactstrap";
-import * as Webcam from "react-webcam";
+// import * as Webcam from "react-webcam";
 import AvatarImageCropper from "react-avatar-image-cropper";
 import GridTemplate from "./src/GridTemplate";
 import OX_Grid from "./src/OX_Grid";
@@ -96,9 +96,9 @@ export {
   ReactStrap,
   ReactBootstrap,
   // ReactWebTabs,
-  Webcam,
+  // Webcam,
   KendoFileUploader,
-  KendoReactEditor,
+  // KendoReactEditor,
   KendoReactDateInputs,
   KendoReactPopup,
   KendoReactDropDowns,
@@ -107,7 +107,7 @@ export {
   KendoReactWindow,
   KendoReactGrid,
   KendoReactInput,
-  KendoReactRipple,
+  // KendoReactRipple,
   PopupDialog,
   Moment,
   MomentTZ,
