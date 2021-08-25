@@ -24,7 +24,7 @@ module.exports = {
     ]
   },
   output: {
-    filename: '[name].js', //main.[contentHash].js
+    filename: '[name].[contenthash].js', //main.[contentHash].js
     path: __dirname + '/dist'
   },
   externals: {

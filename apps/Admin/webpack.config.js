@@ -15,6 +15,10 @@ module.exports = {
     path.resolve(__dirname, "index.js"),
     path.resolve(__dirname, "index.scss")
   ],
+  output: {
+    filename: '[name].[contenthash].js', //main.[contentHash].js
+    path: __dirname + '/dist'
+  },
   externals: {
     osjs: "OSjs",
     oxziongui: "oxziongui"
