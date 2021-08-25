@@ -48,20 +48,26 @@
   &[data-position="top"] {
     top: 0;
     transform: translateY(-86%);
-    transition: all 0.1s;
+    transition-duration: 1s;
+    transition-delay: 3s;
 
     &:hover {
       transform: translateY(0);
+      transition-duration: 0.2s;
+      transition-delay: 0.1s;
     }
   }
 
   &[data-position="bottom"] {
     bottom: 2em !important;
     transform: translateY(86%);
-    transition: all 0.2s;
+    transition-duration: 1s;
+    transition-delay: 3s;
 
     &:hover {
       transform: translateY(0);
+      transition-duration: 0.2s;
+      transition-delay: 0.1s;
     }
   }
 
