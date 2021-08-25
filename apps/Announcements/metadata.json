@@ -6,7 +6,7 @@
   "icon_white": "icon_white.svg",
   "fontIcon":"fad fa-bullhorn",
   "server": "server.js",
-  "autostart": true,
+  "autostart": false,
   "singleton": true,
   "hidden": true,
   "internal": true,

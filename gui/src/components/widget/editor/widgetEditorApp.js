@@ -4,14 +4,9 @@ import { Overlay, Tooltip, Button, Form } from 'react-bootstrap';
 import WidgetModal from './Modal/WidgetModal'
 import './globalFunctions';
 import Swal from "sweetalert2";
-import '../../../public/css/sweetalert.css';
-// import './widgetEditorApp.scss';
-import { options } from '../../../../../gui/amcharts/core';
 import Select from 'react-select'
 import Flippy, { FrontSide, BackSide } from 'react-flippy';
 import WidgetEditorBody from './widgetEditorBody'
-import Tabs from 'react-bootstrap/Tabs'
-// import '../../../public/css/dashboardEditor.scss'
 
 class WidgetEditorApp extends React.Component {
     constructor(props) {
@@ -683,15 +678,15 @@ class WidgetEditorApp extends React.Component {
                                 </div>
 
                                 <div className="row">
-                                    {(this.state.widget.type === 'chart' || this.state.widget.type === 'table' || this.state.widget.type === 'inline' || this.state.widget.type === 'html' || this.state.widget.type === 'profile' || this.state.widget.type === 'report') &&
+                                    {(this.state.widget.type === 'chart' || this.state.widget.type === 'table' || this.state.widget.type === 'inline' || this.state.widget.type === 'html' || this.state.widget.type === 'profile') &&
                                         <WidgetEditorBody
-                                        ref="editor"
-                                        type={this.state.widget.type}
-                                        widget={this.state.widget}
-                                        syncWidgetState={(name, value, data) => this.syncWidgetState(name, value, data)}
-                                        selectableWidgetOptions={this.state.selectableWidgetOptions}
-                                        selectableDashboardOptions={this.state.selectableDashboardOptions}
-                                        selectableAppOptions={this.state.selectableAppOptions} />
+                                            ref="editor"
+                                            type={this.state.widget.type}
+                                            widget={this.state.widget}
+                                            syncWidgetState={(name, value, data) => this.syncWidgetState(name, value, data)}
+                                            selectableWidgetOptions={this.state.selectableWidgetOptions}
+                                            selectableDashboardOptions={this.state.selectableDashboardOptions}
+                                            selectableAppOptions={this.state.selectableAppOptions} />
                                     }
                                 </div>
                             </>

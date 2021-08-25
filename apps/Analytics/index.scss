@@ -4,6 +4,10 @@
   @import "./components/burger-menu.css";
 }
 
+@import "../../gui/src/public/css/dashboardEditor.scss";
+@import "../../gui/src/public/css/sweetalert.css";
+@import "../../gui/src/components/widget/editor/widgetEditorApp.scss";
+
 .osjs-window-header {
   background: #265160;
 }

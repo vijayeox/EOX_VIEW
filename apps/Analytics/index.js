@@ -2,9 +2,6 @@ import "./index.scss";
 import osjs from "osjs";
 import { React, ReactDOM } from "oxziongui";
 import metaData from "./metadata.json";
-// import {name as applicationName} from './metadata.json';
-import icon_white from "./metadata.json";
-import fontIcon from "./metadata.json";
 import Body from "./body";
 
 // Our launcher
@@ -37,9 +34,9 @@ const register = (core, args, options, metadata) => {
         dimension: finalDimension
           ? finalDimension
           : {
-              width: 900,
-              height: 570,
-            },
+            width: 900,
+            height: 570,
+          },
         minDimension: {
           width: 900,
           height: 570,
@@ -47,9 +44,9 @@ const register = (core, args, options, metadata) => {
         position: finalposition
           ? finalposition
           : {
-              left: 150,
-              top: 50,
-            },
+            left: 150,
+            top: 50,
+          },
       },
     })
     .on("destroy", () => proc.destroy())
