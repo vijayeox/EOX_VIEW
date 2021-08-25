@@ -3,6 +3,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TerserPlugin = require("terser-webpack-plugin");
 const mode = process.env.NODE_ENV || "development";
 const minimize = mode === "production";
@@ -15,7 +16,8 @@ module.exports = {
     libraryTarget: 'umd',
     umdNamedDefine: true,
     sourceMapFilename: '[file].map',
-    filename: '[name].js'
+    filename: '[name].[contenthash].js',
+    clean: true,
   },
   mode,
   devtool: "source-map",
@@ -58,6 +60,9 @@ module.exports = {
       chunkFilename: "[id].css"
     }),
     new NodePolyfillPlugin(),
+    new HtmlWebpackPlugin({
+
+    }),
     ...plugins
   ],
   resolve: {
@@ -102,7 +107,6 @@ module.exports = {
         exclude: /(node_modules|bower_components)/,
         use: {
           loader: "babel-loader",
-          // query: { compact: false },
           options: {
             generatorOpts: { compact: false },
             presets: [

@@ -11,6 +11,7 @@ const { DefinePlugin } = webpack;
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const npm = require('./package.json');
 const plugins = [];
+// const mode = "production";
 
 module.exports = {
   mode: (mode !== 'development' ? 'production' : mode),
@@ -34,7 +35,7 @@ module.exports = {
     libraryTarget: 'umd',
     umdNamedDefine: true,
     sourceMapFilename: '[file].map',
-    filename: '[name].js'
+    filename: '[name].[contenthash].js'
   },
   performance: {
     maxEntrypointSize: 600 * 1024,
