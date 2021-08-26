@@ -14,9 +14,14 @@
   }
 
   .sidenav---sidenav-subnav---1EN61 {
+    .sidenav---navitem---9uL5T:hover {
+      background: #0003!important;
+    }
     .sidenav---navitem---9uL5T {
       padding: 10px;
       display: flex !important;
+      align-items: center;
+      justify-content: flex-start;
       .sidenav---navicon---3gCRo {
         padding-left: 10px;
       }
@@ -28,20 +33,21 @@
 
     .sidenav---sidenav-subnavitem---1cD47 > .sidenav---navitem---9uL5T {
       padding: 5px 14px 5px 25px !important;
+      color: white;
     }
   }
 
-  .breadcrumbs{
-    .k-chip-icon{
-      font-family: 'Font Awesome 5 Pro'!important;
+  .breadcrumbs {
+    .k-chip-icon {
+      font-family: "Font Awesome 5 Pro" !important;
     }
-    .disabledBreadcrumb{
+    .disabledBreadcrumb {
       opacity: 1 !important;
     }
   }
 }
-.LeftMenuTemplate.hideMenu{
-  nav{
+.LeftMenuTemplate.hideMenu {
+  nav {
     display: none;
   }
 }
