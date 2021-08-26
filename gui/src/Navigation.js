@@ -37,7 +37,11 @@ class Navigation extends React.Component {
       Requests.getMenulist(this.core,this.appId).then((response) => {
         this.props.menuLoad(response["data"]);
         if (response["data"] && response["data"][0]) {
-          this.homepage = response["data"][0];
+          if(response["data"][0].submenu){
+            this.homepage = response["data"][0].submenu[0];
+          } else {
+            this.homepage = response["data"][0];
+          }
         }
         if (this.params && this.params.page) {
           this.setState({
@@ -106,9 +110,9 @@ class Navigation extends React.Component {
       document.getElementById(pageId + "_page").classList.add("page-active");
     }
   }
-  pageInActive(pageId) {
+  pageInActive(pageId, dimPage) {
     if (document.getElementById(pageId + "_page")) {
-      document.getElementById(pageId + "_page").classList.add("page-inactive");
+      document.getElementById(pageId + "_page").classList.add(dimPage ? "page-dimmed" : "page-inactive");
       document.getElementById(pageId + "_page").classList.remove("page-active");
     }
   }
@@ -147,12 +151,12 @@ class Navigation extends React.Component {
         setTimeout(function(){ 
           that.addPage({detail: e.detail});
         }, 1000);
-        // this.addPage({detail: pageContent});
-        // pages.push(e.detail);
       }
     }
     if (e.detail.parentPage && document.getElementById(e.detail.parentPage + "_page")) {
-      this.pageInActive(e.detail.parentPage);
+      this.pageInActive(e.detail.parentPage,
+        e.detail.popupConfig ? true : false
+        );
     } else {
       if(pages[pages.length - 2] && pages[pages.length - 2].pageId){
         pages.length > 0 ? this.pageInActive(pages[pages.length - 2].pageId) : null;
@@ -273,7 +277,7 @@ getElementInsideElement(baseElement, wantedElementID) {
               <i class="fas fa-angle-right" style={{ marginRight: "5px"}}></i>
               <div value={""} disabled={!clickable} className={ clickable ? "activeBreadcrumb" : "disabledBreadcrumb" } type={clickable || index == 0 ? "none" : "info"} selected={false} >
                   <a onClick={() => { clickable ? this.breadcrumbClick(currentValue, index) : null;}}>
-                    <i className={currentValue.icon}></i>
+                    <i className={currentValue.icon}style={{ marginRight: "5px"}} />
                     {currentValue.title}
                   </a>
               </div>
@@ -302,23 +306,30 @@ getElementInsideElement(baseElement, wantedElementID) {
       this.state.pages.map((item, i) => {
         var pageId = item.pageId + "_page";
         var pageClasses = this.pageClass + " page-active";
-        pageList.push(
-          <div className={pageClasses} id={pageId}>
-            <Page
-              key={item.pageId}
-              config={this.props.config}
-              proc={this.props.proc}
-              app={this.props.appId}
-              core={this.core}
-              fileId={item.fileId}
-              pageId={item.pageId}
-              notif={this.notif}
-              params={item.params}
-              pageContent={item.pageContent}
-              currentRow={item.currentRow}
-            />
-          </div>
-        );
+        if (i == this.state.pages.length - 1 || true) {
+          pageList.push(
+            <div className={pageClasses} id={pageId}>
+              <Page
+                key={item.pageId}
+                config={this.props.config}
+                proc={this.props.proc}
+                app={this.props.appId}
+                core={this.core}
+                fileId={item.fileId}
+                pageId={item.pageId}
+                notif={this.notif}
+                params={item.params}
+                pageContent={item.pageContent}
+                currentRow={item.currentRow}
+                popupConfig = {item.popupConfig}
+              />
+            </div>
+          );
+        } else {
+          pageList.push(
+          <div></div>
+            )
+        }
       });
     }
     return pageList;
@@ -332,7 +343,8 @@ getElementInsideElement(baseElement, wantedElementID) {
         <div className={this.breadcrumbDiv + " breadcrumbHeader"} id={this.breadcrumbDiv}>
           {this.state.pages.length > 0 ? (
             <div className="row">
-            <div className="breadcrumbs col-md-9">{this.renderBreadcrumbs()}</div><div className="col-md-3 customActions" id="customActions">{this.state.customActions}</div>
+                          <div className="breadcrumbs">{this.renderBreadcrumbs()}</div>
+            <div className="col-md-12 customActions" id="customActions">{this.state.customActions}</div>
             </div>
           ) : null}
         </div>
