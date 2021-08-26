@@ -536,7 +536,18 @@ export default class OX_Grid extends React.Component {
         />
       );
     } else if (operationsList.length == 1) {
-      return (
+      return operationsList[0].name ? (
+        <Button
+          style={{ right: "10px", fontSize:"0.9rem" }}
+          primary={true}
+          onClick={(e) => this.updatePageContent(operationsList[0])}
+        >
+          {operationsList[0].icon ? (
+            <i className={operationsList[0].icon} style={{paddingRight: "5px" }}/>
+          ) : null}
+          {operationsList[0].name}
+        </Button>
+      ) : (
         <Button
           title={operationsList[0].name}
           className={"toolBarButton"}
@@ -732,7 +743,9 @@ export default class OX_Grid extends React.Component {
           true,
           action.name,
           mergeRowData,
-          copyPageContent
+          copyPageContent,
+          undefined,
+          action.popupConfig
         );
       }
     }
@@ -1029,8 +1042,8 @@ OX_Grid.defaultProps = {
   scrollable: "scrollable",
   filterOperators: {
     text: [
-      { text: "grid.filterStartsWithOperator", operator: "startswith" },
       { text: "grid.filterContainsOperator", operator: "contains" },
+      { text: "grid.filterStartsWithOperator", operator: "startswith" },
       { text: "grid.filterEqOperator", operator: "eq" },
       { text: "grid.filterNotContainsOperator", operator: "doesnotcontain" },
       { text: "grid.filterNotEqOperator", operator: "neq" },

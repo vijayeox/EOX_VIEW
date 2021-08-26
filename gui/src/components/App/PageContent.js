@@ -206,7 +206,20 @@ class PageContent extends React.Component {
             }
           }
         });
-        action.updateOnly ? null : PageNavigation.loadPage(this.appId, this.pageId, pageId, action.icon, true, action.name, mergeRowData, copyPageContent);
+        action.updateOnly
+          ? null
+          : PageNavigation.loadPage(
+              this.appId,
+              this.pageId,
+              pageId,
+              action.icon,
+              true,
+              action.name,
+              mergeRowData,
+              copyPageContent,
+              undefined,
+              action.popupConfig
+            );
       }
     }
   }
@@ -427,8 +440,8 @@ class PageContent extends React.Component {
             gridDefaultFilters={
               itemContent.defaultFilters
                 ? typeof itemContent.defaultFilters == "string"
-                  ? JSON.parse(ParameterHandler.replaceParams(this.appId, itemContent.defaultFilters))
-                  : ParameterHandler.replaceParams(this.appId, itemContent.defaultFilters)
+                  ? JSON.parse(ParameterHandler.replaceParams(this.appId,itemContent.defaultFilters,mergeRowData))
+                  : JSON.parse(ParameterHandler.replaceParams(this.appId, JSON.stringify(itemContent.defaultFilters),mergeRowData))
                 : undefined
             }
             gridOperations={operations}
@@ -580,7 +593,10 @@ class PageContent extends React.Component {
           />
         );
       } else if (item.type == "Document" || item.type == "HTMLViewer") {
-        var fileData = this.state.fileData ? this.state.fileData : this.state.currentRow;
+        var fileData = {
+          ...this.state.currentRow,
+          ...this.state.fileData
+        }
         var fileId = item.fileId ? item.fileId : item.uuid;
         content.push(
           <HTMLViewer
