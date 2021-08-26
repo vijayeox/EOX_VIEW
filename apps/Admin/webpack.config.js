@@ -1,22 +1,12 @@
 const path = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require("copy-webpack-plugin");
-const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
-
+const TerserPlugin = require("terser-webpack-plugin");
 const mode = process.env.NODE_ENV || "development";
 const minimize = mode === "production";
 const plugins = [];
-
-if (mode === "production") {
-  plugins.push(
-    new OptimizeCSSAssetsPlugin({
-      cssProcessorOptions: {
-        discardComments: true
-      }
-    })
-  );
-}
 
 module.exports = {
   mode: mode !== "development" ? "production" : mode,
@@ -25,64 +15,59 @@ module.exports = {
     path.resolve(__dirname, "index.js"),
     path.resolve(__dirname, "index.scss")
   ],
+  output: {
+    filename: '[name].[contenthash].js', //main.[contentHash].js
+    path: __dirname + '/dist'
+  },
   externals: {
     osjs: "OSjs",
     oxziongui: "oxziongui"
   },
   optimization: {
-    minimize
+    minimizer: [
+      new CssMinimizerPlugin(),
+      new TerserPlugin()
+    ],
   },
   plugins: [
-    // new BundleAnalyzerPlugin(),
-    new CopyWebpackPlugin(["icon.svg", "icon_white.svg", "images/"]),
+    // new CopyWebpackPlugin(["icon.svg", "icon_white.svg", "images/"]),
     new MiniCssExtractPlugin({
-      filename: "[name].css",
-      chunkFilename: "[id].css"
+      filename: '[name].css',
+      chunkFilename: '[id].css'
     }),
+    new CleanWebpackPlugin(),
     ...plugins
   ],
   module: {
     rules: [
       {
-        test: /\.(svg|png|jpe?g|gif|webp)$/,
+        test: /\.(svg|png|jpe?g|gif|webp|)$/,
         use: [
           {
             loader: "file-loader",
             options: {
-              publicPath: "/apps/Admin"
+              name: "[name].[hash].[ext]",
+              outputPath: "images"
             }
           }
         ]
       },
       {
-        test: /\.(eot|ttf|woff|woff2)$/,
-        include: /typeface/,
-        use: {
-          loader: "file-loader",
-          options: {
-            name: "fonts/[name].[ext]",
-            publicPath: "apps/Admin"
-          }
+        test: /\.(woff(2)?|ttf|eot)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        loader: "file-loader",
+        options: {
+          name: "[name].[hash].[ext]",
+          outputPath: "font"
         }
       },
       {
         test: /\.(sa|sc|c)ss$/,
         use: [
           MiniCssExtractPlugin.loader,
-          {
-            loader: "css-loader",
-            options: {
-              sourceMap: true
-            }
-          },
-          {
-            loader: "sass-loader",
-            options: {
-              minimize,
-              sourceMap: true
-            }
-          }
-        ]
+          'css-loader',
+          'sass-loader',
+        ],
+        sideEffects: true,
       },
       {
         test: /\.js$/,
@@ -105,12 +90,15 @@ module.exports = {
         }
       },
       {
+        test: /\.(svg|png|jpe?g|gif|webp)$/,
+        use: [{
+          loader: 'file-loader'
+        }]
+      },
+      {
         test: /\.html$/,
         loader: "html-loader"
       }
     ]
-  },
-  node: {
-    fs: "empty"
   }
 };

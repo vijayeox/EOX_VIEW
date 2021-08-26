@@ -1,4 +1,4 @@
-import {React,KendoReactButtons} from "oxziongui";
+import { React, KendoReactButtons } from "oxziongui";
 import { DropDown } from "./index.js";
 
 export class TitleBar extends React.Component {
@@ -11,7 +11,7 @@ export class TitleBar extends React.Component {
         <div
           style={{ marginLeft: "15px", position: "absolute", zIndex: "101" }}
         >
-          <KendoReactButtons.Button
+          {/* <KendoReactButtons.Button
             onClick={this.props.menu}
             primary={true}
             style={{
@@ -22,7 +22,7 @@ export class TitleBar extends React.Component {
             }}
           >
             <i className="fa fa-bars"></i>
-          </KendoReactButtons.Button>
+          </KendoReactButtons.Button> */}
         </div>
         <div className="col text-center" id="pageTitle">
           {this.props.title}
@@ -34,7 +34,7 @@ export class TitleBar extends React.Component {
               top: "15px",
               position: "absolute",
               zIndex: "100",
-              width: "200px"
+              width: "200px",
             }}
           >
             <DropDown
@@ -42,7 +42,7 @@ export class TitleBar extends React.Component {
               mainList={"account"}
               selectedItem={{
                 id: "111",
-                name: "Switch Account"
+                name: "Switch Account",
               }}
               preFetch={true}
               onDataChange={this.props.orgChange}

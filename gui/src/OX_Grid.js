@@ -1,20 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {
-  Grid,
-  GridCell,
-  GridColumn,
-  GridDetailRow,
-  GridColumnMenuCheckboxFilter,
-  GridNoRecords,
-  GridToolbar
-} from "@progress/kendo-react-grid";
+import { Grid, GridCell, GridColumn, GridDetailRow, GridColumnMenuCheckboxFilter, GridNoRecords, GridToolbar } from "@progress/kendo-react-grid";
 import { process } from "@progress/kendo-data-query";
 import { GridPDFExport } from "@progress/kendo-react-pdf";
-import {
-  ExcelExport,
-  ExcelExportColumn
-} from "@progress/kendo-react-excel-export";
+import { ExcelExport, ExcelExportColumn } from "@progress/kendo-react-excel-export";
 import { Button, DropDownButton } from "@progress/kendo-react-buttons";
 import $ from "jquery";
 import JsxParser from "react-jsx-parser";
@@ -38,12 +27,8 @@ export default class OX_Grid extends React.Component {
   constructor(props) {
     super(props);
     this.core = this.props.osjsCore;
-    this.baseUrl = this.props.osjsCore
-      ? this.props.osjsCore.config("wrapper.url")
-      : undefined;
-    this.userprofile = this.props.osjsCore
-      ? this.props.osjsCore.make("oxzion/profile").get().key
-      : undefined;
+    this.baseUrl = this.props.osjsCore ? this.props.osjsCore.config("wrapper.url") : undefined;
+    this.userprofile = this.props.osjsCore ? this.props.osjsCore.make("oxzion/profile").get().key : undefined;
     this.restClient = this.core.make("oxzion/restClient");
     this.rawDataPresent = typeof this.props.data == "object" ? true : false;
     this.pageId = this.props.pageId;
@@ -53,11 +38,9 @@ export default class OX_Grid extends React.Component {
     this.state = {
       showLoader: false,
       gridData: this.rawDataPresent ? this.props.data : { data: [], total: 0 },
-      dataState: this.props.gridDefaultFilters
-        ? this.props.gridDefaultFilters
-        : {},
-      showButtonPopup:false,
-      buttonPopup:null,  
+      dataState: this.props.gridDefaultFilters ? this.props.gridDefaultFilters : {},
+      showButtonPopup: false,
+      buttonPopup: null,
       contextMenuOpen: false,
       notif: this.notif,
       apiActivityCompleted: this.rawDataPresent ? true : false,
@@ -87,18 +70,20 @@ export default class OX_Grid extends React.Component {
     this.generateGridToolbar();
     document.getElementById('customActionsToolbar').addEventListener("getCustomActions", this.getCustomActions, false);
   }
+
   getCustomActions = (e) => {
     this.generateGridToolbar();
   }
+
   dataStateChange = (e) => {
-    this.setState({ ...this.state, dataState: e.data });
+    this.setState({ ...this.state, dataState: e.dataState });
   };
 
   dataRecieved = (data) => {
     this.setState({ gridData: data, apiActivityCompleted: true });
   };
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     // change to use componentDidUpdate later in future
     // Write different props which when changed we need to trigger a setState
     if (util.inspect(this.props.data, { depth: 2 }) != util.inspect(nextProps.data) || util.inspect(this.props.gridDefaultFilters, { depth: 4 }) != util.inspect(nextProps.gridDefaultFilters, { depth: 4 }) || util.inspect(this.props.columnConfig) != util.inspect(nextProps.columnConfig)) {
@@ -106,10 +91,6 @@ export default class OX_Grid extends React.Component {
         let mergedFilters = { ...this.state.dataState, ...nextProps.gridDefaultFilters, };
         this.setState({ dataState: mergedFilters });
       }
-      // Disable untill there is a use case to do this
-      // if (nextProps.data) {
-      //   this.setState();
-      // }
     }
   }
 
@@ -150,11 +131,6 @@ export default class OX_Grid extends React.Component {
         <GridColumn
           field="selected"
           filterable={false}
-          // headerSelectionValue={
-          //   this.state.gridData.findIndex(
-          //     dataItem => dataItem.selected === false
-          //   ) === -1
-          // }
           columnMenu={this.props.columnMenuFilter != false ? GridColumnMenuCheckboxFilter : undefined}
           key={Math.random() * 20}
           locked={true}
@@ -183,22 +159,16 @@ export default class OX_Grid extends React.Component {
           field={dataItem.field ? dataItem.field : undefined}
           filter={dataItem.filter ? dataItem.filter : "text"}
           filterable={this.props.columnMenuFilter == false ? dataItem.filterable : undefined}
-          columnMenu={dataItem.columnMenuFilter==false?undefined:(this.props.columnMenuFilter != false ? ColumnMenu : undefined)}
-          filterCell={
-            dataItem.filterCell ? CustomFilter(dataItem.filterCell) : undefined
-          }
+          columnMenu={dataItem.columnMenuFilter == false ? undefined : (this.props.columnMenuFilter != false ? ColumnMenu : undefined)}
+          filterCell={dataItem.filterCell ? CustomFilter(dataItem.filterCell) : undefined}
           groupable={dataItem.groupable ? dataItem.groupable : undefined}
           editor={dataItem.editor ? dataItem.editor : undefined}
           editable={dataItem.editable}
-          headerClassName={
-            dataItem.headerClassName ? dataItem.headerClassName : undefined
-          }
+          headerClassName={dataItem.headerClassName ? dataItem.headerClassName : undefined}
           headerCell={dataItem.headerCell ? dataItem.headerCell : undefined}
           key={i}
           locked={dataItem.locked ? dataItem.locked : undefined}
-          minResizableWidth={
-            dataItem.minResizableWidth ? dataItem.minResizableWidth : undefined
-          }
+          minResizableWidth={dataItem.minResizableWidth ? dataItem.minResizableWidth : undefined}
           orderIndex={dataItem.orderIndex ? dataItem.orderIndex : undefined}
           reorderable={this.props.reorderable ? (this.props.reorderable) : (dataItem.reorderable ? dataItem.reorderable : undefined)}
           resizable={this.props.resizable ? (this.props.resizable) : (dataItem.resizable ? dataItem.resizable : undefined)}
@@ -223,9 +193,7 @@ export default class OX_Grid extends React.Component {
             this.refreshHandler
           )}
         />
-      )
-      : null;
-
+      ) : null;
     return table;
   };
 
@@ -234,9 +202,7 @@ export default class OX_Grid extends React.Component {
       if (this.state.dataState.group.length > 0) {
         var newData = this.state.gridData.data.map((item) => {
           var newItem = item.items.map((item1) => {
-            return item1.id === dataItem.id
-              ? { ...item1, inEdit: true }
-              : item1;
+            return item1.id === dataItem.id ? { ...item1, inEdit: true } : item1;
           });
           return {
             items: newItem,
@@ -261,9 +227,7 @@ export default class OX_Grid extends React.Component {
       if (this.state.dataState.group.length > 0) {
         var data = this.state.gridData.data.map((item) => {
           var newItem = item.items.map((item1) => {
-            return item1.id === event.dataItem.id
-              ? { ...item1, [event.field]: event.value }
-              : item1;
+            return item1.id === event.dataItem.id ? { ...item1, [event.field]: event.value } : item1;
           });
           return {
             items: newItem,
@@ -307,6 +271,7 @@ export default class OX_Grid extends React.Component {
     };
     return React.cloneElement(trElement, { ...trProps }, trElement.props.children);
   }
+  
   handleContextMenuOpen = (e, dataItem) => {
     if (this.state.actions) {
       this.dataItem = dataItem;
@@ -323,16 +288,11 @@ export default class OX_Grid extends React.Component {
         var profile = this.userprofile;
         paramsRule = paramsRule.replace(/moment/g, '_moment');
         var showButton = eval(paramsRule);
-        var buttonStyles = action[key].icon
-          ? {
-            width: "auto"
-          }
-          : {
-            width: "auto",
-            // paddingTop: "5px",
-            color: "white",
-            fontWeight: "600"
-          };
+        var buttonStyles = action[key].icon ? { width: "auto" } : {
+          width: "auto",
+          color: "white",
+          fontWeight: "600"
+        };
         const itemRender = (props) => {
           return (
             <div style={{ padding: '5px' }} text={action[key].name}><i style={{ marginRight: '5px' }} className={action[key].icon + " manageIcons"}></i>{action[key].name}</div>
@@ -353,7 +313,7 @@ export default class OX_Grid extends React.Component {
     let gridToolbarContent = [];
     if (typeof this.props.gridToolbar == "string") {
       gridToolbarContent.push(
-        <div style={{ display: "inline-block"}}>
+        <div style={{ display: "inline-block" }}>
           <JsxParser
             bindings={{
               item: this.props.parentData,
@@ -498,30 +458,30 @@ export default class OX_Grid extends React.Component {
         {this.props.gridNoRecords ? (
           this.props.gridNoRecords
         ) : (
-            <div className="grid-no-records">
-              <ul className="list-group" style={{ listStyle: "disc" }}>
+          <div className="grid-no-records">
+            <ul className="list-group" style={{ listStyle: "disc" }}>
+              <div
+                href="#"
+                className="list-group-item list-group-item-action bg-warning"
+                style={{
+                  display: "flex",
+                  width: "110%",
+                  alignItems: "center"
+                }}
+              >
+                <div style={{ marginLeft: "10px" }}>
+                  <i className="fas fa-info-circle"></i>
+                </div>
                 <div
-                  href="#"
-                  className="list-group-item list-group-item-action bg-warning"
-                  style={{
-                    display: "flex",
-                    width: "110%",
-                    alignItems: "center"
-                  }}
+                  style={{ fontSize: "medium", paddingLeft: "30px" }}
+                  className="noRecords"
                 >
-                  <div style={{ marginLeft: "10px" }}>
-                    <i className="fas fa-info-circle"></i>
-                  </div>
-                  <div
-                    style={{ fontSize: "medium", paddingLeft: "30px" }}
-                    className="noRecords"
-                  >
-                    No Records Available
+                  No Records Available
                 </div>
-                </div>
-              </ul>
-            </div>
-          )}
+              </div>
+            </ul>
+          </div>
+        )}
       </GridNoRecords>
     );
   }
@@ -607,7 +567,6 @@ export default class OX_Grid extends React.Component {
             />
           </div>
         ) : null}
-
         {PDFProps.JSXtemplate ? (
           <JsxParser
             bindings={{
@@ -621,8 +580,8 @@ export default class OX_Grid extends React.Component {
         ) : null}
       </div>
     ) : (
-        <div />
-      );
+      <div />
+    );
   }
   onPopupOpen = (e, props) => {
     if (this.menuWrapperRef.querySelector('[tabindex]')) {
@@ -638,7 +597,6 @@ export default class OX_Grid extends React.Component {
     this.setState({
       contextMenuOpen: false
     });
-
     this.blurTimeoutRef = undefined;
   };
 
@@ -697,7 +655,7 @@ export default class OX_Grid extends React.Component {
               return false;
             }
           } else if (item.type == "API") {
-            if(item.typeOfRequest == 'delete'){
+            if (item.typeOfRequest == 'delete') {
               action.updateOnly = true;
               var url = ParameterHandler.replaceParams(this.appId, item.route, mergeRowData);
               Swal.fire({
@@ -722,13 +680,12 @@ export default class OX_Grid extends React.Component {
                       this.state.notif.current.notify("Success", "Deleted Successfully", "success")
                     } else {
                       this.state.notif.current.notify("Error", response.message, "danger")
-  
+
                     }
                   });
                 }
               });
-            }
-            else if(item.typeOfRequest == 'post'){
+            } else if (item.typeOfRequest == 'post') {
               action.updateOnly = true;
               var url = ParameterHandler.replaceParams(this.appId, item.route, mergeRowData);
               var params = ParameterHandler.replaceParams(this.appId, item.params, mergeRowData);
@@ -738,31 +695,21 @@ export default class OX_Grid extends React.Component {
                 params,
                 "post",
                 {
-                  "Content-Type":"application/json"
+                  "Content-Type": "application/json"
                 }
-              ).then((response)=>{
+              ).then((response) => {
                 this.refreshHandler(response);
               })
-              
-
-
-
             }
-          } 
-
-          else if(item.type == "ButtonPopUp"){
+          } else if (item.type == "ButtonPopUp") {
             action.updateOnly = true;
             var params = ParameterHandler.replaceParams(this.appId, item.params, mergeRowData);
-              var buttonPopup = this.renderButtonPopup(params);
-              that.setState({
-                buttonPopup:buttonPopup,
-                showButtonPopup:true
-              })
-            
-
-          }
-          
-          else {
+            var buttonPopup = this.renderButtonPopup(params);
+            that.setState({
+              buttonPopup: buttonPopup,
+              showButtonPopup: true
+            })
+          } else {
             if (item.params && item.params.page_id) {
               pageId = item.params.page_id;
               if (item.params.params) {
@@ -791,17 +738,16 @@ export default class OX_Grid extends React.Component {
     }
   }
 
-  async handleDatePicker(params)
-  {
-    if(this.datePickerValue){
+  async handleDatePicker(params) {
+    if (this.datePickerValue) {
       var year = this.datePickerValue.getFullYear();
       var month = this.datePickerValue.getUTCMonth() + 1;
       var day = this.datePickerValue.getUTCDate();
       var hours = this.datePickerValue.getUTCHours();
       var minute = this.datePickerValue.getUTCMinutes();
 
-      var cron = "0 " + minute.toString() + " " + hours.toString() + " " + day.toString() + " " + month.toString() + " ? " + year.toString();      
-      if(params.cron){
+      var cron = "0 " + minute.toString() + " " + hours.toString() + " " + day.toString() + " " + month.toString() + " ? " + year.toString();
+      if (params.cron) {
         params.cron = cron;
       }
       let route = params.route;
@@ -813,7 +759,7 @@ export default class OX_Grid extends React.Component {
         params,
         "post",
         {
-          "Content-Type":"application/json"
+          "Content-Type": "application/json"
         }
       );
       this.refreshHandler(response);
@@ -822,46 +768,44 @@ export default class OX_Grid extends React.Component {
     }
   }
 
-  renderButtonPopup(params){
+  renderButtonPopup(params) {
     var that = this;
-    if(params.type == "DatePicker")
-    {
+    if (params.type == "DatePicker") {
       var toggleDialogue = () => {
-        that.setState({showButtonPopup:!that.state.showButtonPopup});
+        that.setState({ showButtonPopup: !that.state.showButtonPopup });
       }
       return (
-          <Dialog title={"Set Date & Time"} onClose={
-            toggleDialogue
-          }>
-            <DateTimePicker
-              popup={DatePickerPopup}
-              onChange = {(event) => {
-                that.datePickerValue = event.target.value;
-              }}
-            />
-            <DialogActionsBar >
-              <Button 
-                primary = {true}
-                onClick={toggleDialogue}
-              >
-                Cancel
-              </Button>
-              <Button 
-                primary = {true}
-                onClick={()=>{
-                  var currentTime = new Date();
-                  if(that.datePickerValue >= currentTime)
-                  {
-                    that.handleDatePicker(params);
-                    toggleDialogue();
-                  }
+        <Dialog title={"Set Date & Time"} onClose={
+          toggleDialogue
+        }>
+          <DateTimePicker
+            popup={DatePickerPopup}
+            onChange={(event) => {
+              that.datePickerValue = event.target.value;
+            }}
+          />
+          <DialogActionsBar >
+            <Button
+              primary={true}
+              onClick={toggleDialogue}
+            >
+              Cancel
+            </Button>
+            <Button
+              primary={true}
+              onClick={() => {
+                var currentTime = new Date();
+                if (that.datePickerValue >= currentTime) {
+                  that.handleDatePicker(params);
+                  toggleDialogue();
+                }
 
-                }}
-              >
-                Save
-              </Button>
-            </DialogActionsBar>
-          </Dialog>
+              }}
+            >
+              Save
+            </Button>
+          </DialogActionsBar>
+        </Dialog>
       )
     }
   }
@@ -895,7 +839,7 @@ export default class OX_Grid extends React.Component {
             resolve({ status: downloadStatus });
           }
           );
-        } 
+        }
         else {
           that.setState({ showLoader: false });
           resolve(response);
@@ -929,7 +873,7 @@ export default class OX_Grid extends React.Component {
   render() {
     return (
       <div style={this.props.wrapStyle ? this.props.wrapStyle : { height: "100%", float: "left" }} className={"GridCustomStyle " + (this.props.className ? this.props.className : "")} >
-        {this.state.showButtonPopup? this.state.buttonPopup:null}
+        {this.state.showButtonPopup ? this.state.buttonPopup : null}
         <Popup offset={this.offset} show={this.state.contextMenuOpen} open={this.onPopupOpen} popupClass={'popup-content'} >
           <div onFocus={this.onFocusHandler} onBlur={this.onBlurHandler} tabIndex={-1} ref={el => (this.menuWrapperRef = el)} >
             <Menu vertical={true} style={{ display: 'inline-block' }} onSelect={this.handleOnSelect}>
@@ -941,21 +885,13 @@ export default class OX_Grid extends React.Component {
           <DataLoader ref={(r) => { this.child = r; }} args={this.props.osjsCore} url={this.props.data} dataState={this.state.dataState} onDataRecieved={this.dataRecieved} {...this.props} />
         )}
         <div id="customActionsToolbar" />
-
-
-          
-
         <Grid
           rowRender={this.rowRender}
           data={this.state.gridData.data}
           ref={(grid) => {
             this._grid = grid;
           }}
-          total={
-            this.state.gridData.total
-              ? parseInt(this.state.gridData.total)
-              : null
-          }
+          total={this.state.gridData.total ? parseInt(this.state.gridData.total) : null}
           detail={
             this.props.rowTemplate
               ? (dataItem) => (
@@ -972,9 +908,9 @@ export default class OX_Grid extends React.Component {
           style={this.props.gridStyles}
           pageable={this.props.pageable}
           take={this.props.take}
-          resizable={(this.props.resizable?true:false)}
-          reorderable={(this.props.reorderable? true:false)}
-          sortable={(this.props.sortable? true:false)}
+          resizable={(this.props.resizable ? true : false)}
+          reorderable={(this.props.reorderable ? true : false)}
+          sortable={(this.props.sortable ? true : false)}
           scrollable={this.props.scrollable}
           onDataStateChange={this.dataStateChange}
           onExpandChange={this.props.expandable ? this.expandChange : null}
@@ -1020,27 +956,25 @@ export default class OX_Grid extends React.Component {
   }
 }
 
-
 class DatePickerPopup extends React.Component {
   render() {
-      return (
-        <Popup
-          {...this.props}
-          anchorAlign={{
-                  horizontal: 'center',
-                  vertical: 'center'
-              }}
-          popupAlign={{
-                  horizontal: 'center',
-                  vertical: 'center'
-              }}
-          />
-      );
+    return (
+      <Popup
+        {...this.props}
+        anchorAlign={{
+          horizontal: 'center',
+          vertical: 'center'
+        }}
+        popupAlign={{
+          horizontal: 'center',
+          vertical: 'center'
+        }}
+      />
+    );
   }
 }
 
-
-class CustomCell extends GridCell {
+class CustomCell extends React.Component {
   render() {
     var formatDate = (dateTime, dateTimeFormat) => {
       let userTimezone, userDateTimeFomat = null;

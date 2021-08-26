@@ -124,7 +124,7 @@ export default class WidgetGrid extends React.Component {
 
     gridPageChanged = (e) => {
         console.log("page event clicked");
-        // call the api to get the data for the next page by passing the new page 
+        // call the api to get the data for the next page by passing the new page
         let pagination = {
             skip: e.page.skip,
             take: e.page.take
@@ -173,7 +173,7 @@ export default class WidgetGrid extends React.Component {
 
     gridGroupExpansionChanged = (e) => {
         e.dataItem[e.target.props.expandField] = e.value;
-        //Force state change with modified e.dataItem in this.state.displayedData. This state 
+        //Force state change with modified e.dataItem in this.state.displayedData. This state
         //change forces Kendo grid to repaint itself with expanded/collapsed grouped row item.
         this.setState((state) => {
             state.displayedData = this.state.displayedData;
@@ -188,13 +188,13 @@ export default class WidgetGrid extends React.Component {
     }
 
     drillDownClick = (evt) => {
-        console.log(this.props.configuration);
+        // console.log(this.props.configuration);
         let drillDownTarget = this.props.configuration["oxzion-meta"]['drillDown']['target'];
 
         if (drillDownTarget == 'file') {
             let appName = this.props.configuration["oxzion-meta"]['drillDown']['nextWidgetId'];
             let eventData = evt.dataItem;
-            console.log("Inside the file log Content" + eventData); //Need to open a URL
+            // console.log("Inside the file log Content" + eventData); //Need to open a URL
             this.launchApplication(eventData, appName)
         } else {
             WidgetDrillDownHelper.drillDownClicked(WidgetDrillDownHelper.findWidgetElement(evt.nativeEvent ? evt.nativeEvent.target : evt.target), evt.dataItem)
@@ -358,4 +358,3 @@ export default class WidgetGrid extends React.Component {
         );
     }
 }
-

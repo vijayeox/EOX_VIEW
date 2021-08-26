@@ -1,5 +1,4 @@
 import {React,Notification,KendoReactWindow,KendoReactInput} from "oxziongui";
-import TextareaAutosize from "react-textarea-autosize";
 import { PushData, GetSingleEntityData } from "../components/apiCalls";
 import { DropDown, SaveCancel } from "../components/index";
 import Swal from "sweetalert2";

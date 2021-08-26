@@ -1,5 +1,5 @@
 {
-    "name": "Oxzion",
+    "name": "oxzion",
     "version": "3.0.0",
     "description": "Oxzion 3.0",
     "scripts": {
@@ -33,6 +33,6 @@
     },
     "homepage": "https://www.eoxvantage.com",
     "engines": {
-        "node": ">=8.0.0"
+        "node": ">=14.0.0"
     }
 }

@@ -7,7 +7,7 @@ import {
   KendoReactInput
 } from "oxziongui";
 import PhoneInput from "react-phone-number-input";
-import TextareaAutosize from "react-textarea-autosize";
+// import TextareaAutosize from "react-textarea-autosize";
 import 'react-phone-number-input/style.css';
 import { GetSingleEntityData, PushDataPOST } from "../components/apiCalls";
 import { SaveCancel, DropDown, CurrencySelect, FileUploader } from "../components/index";
@@ -322,7 +322,7 @@ export default class DialogContainer extends React.Component {
             </div>
             <div className="form-group text-area-custom">
               <label className="required-label">Address</label>
-              <TextareaAutosize
+              <textarea
                 type="text"
                 className="form-control"
                 value={this.state.orgInEdit.address1 || ""}
@@ -438,7 +438,7 @@ export default class DialogContainer extends React.Component {
 
             <div className="form-group text-area-custom">
               <label>Subdomain</label>
-              <TextareaAutosize
+              <textarea
                 type="text"
                 className="form-control"
                 value={this.state.orgInEdit.subdomain || ""}

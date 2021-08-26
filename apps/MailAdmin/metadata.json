@@ -4,6 +4,7 @@
   "category": "utilities",
   "server": "server.js",
   "icon": "icon.svg",
+  "fontIcon":"fad fa-mail-bulk",
   "hidden": true,
   "icon_white": "icon_white.svg",
   "title": {

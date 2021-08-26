@@ -1,5 +1,6 @@
 import React from 'react';
-import { widget as section } from '../metadata.json';
+// import { widget as section } from '../metadata.json';
+import dashboardJson from '../metadata.json';
 import { Button } from 'react-bootstrap'
 import OX_Grid from "./OX_Grid"
 import Notification from "./Notification"
@@ -20,7 +21,7 @@ class WidgetManager extends React.Component {
     };
     this.refresh = React.createRef();
     this.notif = React.createRef();
-    this.props.setTitle(section.title.en_EN);
+    this.props.setTitle(dashboardJson.widget.title.en_EN);
     this.handleSwitch = this.handleSwitch.bind(this);
     this.checkedList = {}
   }
@@ -108,8 +109,8 @@ class WidgetManager extends React.Component {
                 {action[key].icon ? (
                   <i className={action[key].icon + " manageIcons"}></i>
                 ) : (
-                    action[key].name
-                  )}
+                  action[key].name
+                )}
               </Button>
             </abbr>
           )

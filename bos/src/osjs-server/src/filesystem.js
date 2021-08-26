@@ -28,9 +28,10 @@
  * @licence Simplified BSD License
  */
 
-const {methodArguments} = require('./utils/vfs');
+const { methodArguments } = require('./utils/vfs');
 const systemAdapter = require('./adapters/vfs/system');
-const uuid = require('uuid/v1');
+// const uuid = require('uuid');
+const { v4: uuidv4 } = require('uuid');
 const mime = require('mime');
 const path = require('path');
 const vfs = require('./vfs');
@@ -63,7 +64,7 @@ class Filesystem {
    * Destroys instance
    */
   destroy() {
-    this.watches.forEach(({watch}) => {
+    this.watches.forEach(({ watch }) => {
       if (watch && typeof watch.close === 'function') {
         watch.close();
       }
@@ -88,18 +89,16 @@ class Filesystem {
     }, {});
 
     // Routes
-    const {router, methods} = vfs(this.core);
+    const { router, methods } = vfs(this.core);
     this.router = router;
     this.methods = methods;
 
     // Mimes
-    const {define} = this.core.config('mime', {define: {}, filenames: {}});
-    mime.define(define, {force: true});
+    const { define } = this.core.config('mime', { define: {}, filenames: {} });
+    mime.define(define, { force: true });
 
     // Mountpoints
-    this.core.config('vfs.mountpoints')
-      .forEach(mount => this.mount(mount));
-
+    this.core.config('vfs.mountpoints').forEach(mount => this.mount(mount));
     return true;
   }
 
@@ -109,14 +108,12 @@ class Filesystem {
    * @return {string}
    */
   mime(filename) {
-    const {filenames} = this.core.config('mime', {
+    const { filenames } = this.core.config('mime', {
       define: {},
       filenames: {}
     });
 
-    return filenames[path.basename(filename)]
-      ? filenames[path.basename(filename)]
-      : mime.getType(filename) || 'application/octet-stream';
+    return filenames[path.basename(filename)] ? filenames[path.basename(filename)] : mime.getType(filename) || 'application/octet-stream';
   }
 
   /**
@@ -138,12 +135,11 @@ class Filesystem {
    * @return {Promise<*>}
    */
   call(options, ...args) {
-    const {method, user} = Object.assign({
+    const { method, user } = Object.assign({
       user: {}
     }, options);
-
     const req = methodArguments[method]
-      .reduce(({fields, files}, key, index) => {
+      .reduce(({ fields, files }, key, index) => {
         const arg = args[index];
         if (typeof key === 'function') {
           files = Object.assign(key(arg), files);
@@ -152,12 +148,10 @@ class Filesystem {
             [key]: arg
           }, fields);
         }
+        return { fields, files };
+      }, { fields: {}, files: {} });
 
-        return {fields, files};
-      }, {fields: {}, files: {}});
-
-    req.session = {user};
-
+    req.session = { user };
     return this.request(method, req);
   }
 
@@ -185,17 +179,14 @@ class Filesystem {
    */
   mount(mount) {
     const mountpoint = Object.assign({
-      id: uuid(),
+      // id: uuid(),
+      id: uuidv4(), // Change to accomodate the new version changes
       root: `${mount.name}:/`,
       attributes: {}
     }, mount);
-
     this.mountpoints.push(mountpoint);
-
     logger.success('Mounted', mountpoint.name);
-
     this.watch(mountpoint);
-
     return mountpoint;
   }
 
@@ -206,19 +197,14 @@ class Filesystem {
    */
   unmount(mountpoint) {
     const found = this.watches.find(w => w.id === mountpoint.id);
-
     if (found && found.watch) {
       found.watch.close();
     }
-
     const index = this.mountpoints.indexOf(mountpoint);
-
     if (index !== -1) {
       this.mountpoints.splice(index, 1);
-
       return true;
     }
-
     return false;
   }
 
@@ -234,10 +220,7 @@ class Filesystem {
     ) {
       return;
     }
-
-    const adapter = mountpoint.adapter
-      ? this.adapters[mountpoint.adapter]
-      : this.adapters.system;
+    const adapter = mountpoint.adapter ? this.adapters[mountpoint.adapter] : this.adapters.system;
 
     if (typeof adapter.watch === 'function') {
       this._watch(mountpoint, adapter);
@@ -253,9 +236,7 @@ class Filesystem {
     const watch = adapter.watch(mountpoint, (args, dir, type) => {
       const target = mountpoint.name + ':/' + dir;
       const keys = Object.keys(args);
-      const filter = keys.length === 0
-        ? () => true
-        : ws => keys.every(k => ws._osjs_client[k] === args[k]);
+      const filter = keys.length === 0 ? () => true : ws => keys.every(k => ws._osjs_client[k] === args[k]);
 
       this.core.emit('osjs/vfs:watch:change', {
         mountpoint,

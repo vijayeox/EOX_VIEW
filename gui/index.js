@@ -7,24 +7,24 @@ import './index.scss';
 import DateComponent from "./src/components/DateComponent.js";
 import CurrencySelect from "./src/components/Currency Select/currencySelect";
 import countryStateList from "./src/components/data/country-state-codes";
-import * as ReactWebTabs from "react-web-tabs";
+// import * as ReactWebTabs from "react-web-tabs";
 import * as ReactBootstrap from "react-bootstrap";
 import * as KendoFileUploader from "@progress/kendo-react-upload";
 import * as KendoReactButtons from "@progress/kendo-react-buttons";
 import * as KendoReactDropDowns from "@progress/kendo-react-dropdowns";
-import * as KendoReactEditor from "@progress/kendo-react-editor";
+// import * as KendoReactEditor from "@progress/kendo-react-editor";
 import * as KendoReactDateInputs from "@progress/kendo-react-dateinputs";
 import * as KendoReactPopup from "@progress/kendo-react-popup";
 import * as KendoDataQuery from "@progress/kendo-data-query";
 import * as KendoReactWindow from "@progress/kendo-react-dialogs";
 import * as KendoReactGrid from "@progress/kendo-react-grid";
 import * as KendoReactInput from "@progress/kendo-react-inputs";
-import * as KendoReactRipple from "@progress/kendo-react-ripple";
+// import * as KendoReactRipple from "@progress/kendo-react-ripple";
 import * as Moment from "moment";
 import * as MomentTZ from "moment-timezone";
 import * as PopupDialog from 'sweetalert2';
 import * as ReactStrap from "reactstrap";
-import * as Webcam from "react-webcam";
+// import * as Webcam from "react-webcam";
 import AvatarImageCropper from "react-avatar-image-cropper";
 import GridTemplate from "./src/GridTemplate";
 import OX_Grid from "./src/OX_Grid";
@@ -43,12 +43,10 @@ import Visualization from "./src/Visualization";
 import WidgetManager from "./src/WidgetManager";
 import TemplateManager from "./src/TemplateManager";
 
-const LazyLoad = ({ component: Component,...rest}) => (
-  <>
+const LazyLoad = ({ component: Component, ...rest }) => (
   <React.Suspense fallback={<div className="spinner"><div className="bounce1"></div><div className="bounce2"></div><div className="bounce3"></div></div>}>
     <Component {...rest} />
-    </React.Suspense>
-  </>
+  </React.Suspense>
 );
 // const GridTemplate = (props) => <LazyLoad component={lazy(() => import("./src/GridTemplate"))} {...props} />;
 // const DashboardManager = (props) => <LazyLoad component={lazy(() => import("./src/DashboardManager"))} {...props} />;
@@ -97,10 +95,10 @@ export {
   AvatarImageCropper,
   ReactStrap,
   ReactBootstrap,
-  ReactWebTabs,
-  Webcam,
+  // ReactWebTabs,
+  // Webcam,
   KendoFileUploader,
-  KendoReactEditor,
+  // KendoReactEditor,
   KendoReactDateInputs,
   KendoReactPopup,
   KendoReactDropDowns,
@@ -109,7 +107,7 @@ export {
   KendoReactWindow,
   KendoReactGrid,
   KendoReactInput,
-  KendoReactRipple,
+  // KendoReactRipple,
   PopupDialog,
   Moment,
   MomentTZ,
