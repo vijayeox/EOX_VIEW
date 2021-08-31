@@ -10,7 +10,6 @@ const minimize = mode === 'production';
 const plugins = [];
 
 if (mode === 'production') { }
-
 module.exports = {
   mode: (mode !== 'development' ? 'production' : mode),
   devtool: 'source-map',

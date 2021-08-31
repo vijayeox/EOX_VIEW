@@ -3,8 +3,8 @@ import DatePicker from 'react-datepicker'
 import dashboardFilterJson from '../metadata.json';
 import { Form, Row, Button } from 'react-bootstrap'
 import "react-datepicker/dist/react-datepicker.css";
-import Select from 'react-select/creatable';
-import MultiSelect from "react-multi-select-component";
+import Select from 'react-select/creatable'; 
+import { MultiSelect } from "react-multi-select-component";
 // import "./FilterFields";
 // import Multiselect from 'multiselect-react-dropdown';
 
@@ -38,18 +38,6 @@ const FilterFields = function (props) {
         "numericoperator": [{ "Less Than": "<" }, { "Greater Than": ">" }, { "Equals": "==" }, { "Not Equals": "!=" }],
         "selectoperator": [{ "Equals": "==" }, { "Not Equals": "NOT LIKE" }]
     };
-
-    const myOptions = [
-        { label: "Grapes 🍇", value: "grapes" },
-        { label: "Mango 🥭", value: "mango" },
-        { label: "Strawberry 🍓", value: "strawberry", disabled: true },
-        { label: "Watermelon 🍉", value: "watermelon" },
-        { label: "Pear 🍐", value: "pear" },
-        { label: "Apple 🍎", value: "apple" },
-        { label: "Tangerine 🍊", value: "tangerine" },
-        { label: "Pineapple 🍍", value: "pineapple" },
-        { label: "Peach 🍑", value: "peach" },
-    ];
 
     useEffect(() => {
         //set index value if datasource is set previously
@@ -350,7 +338,8 @@ const FilterFields = function (props) {
                                         preventOverflow: {
                                             enabled: false // tell it not to try to stay within the view (this prevents the popper from covering the element you clicked)
                                         },
-                                        hide: { enabled: false // turn off since needs preventOverflow to be enabled
+                                        hide: {
+                                            enabled: false // turn off since needs preventOverflow to be enabled
                                         }
                                     }}
                                     dropdownMode="select"
