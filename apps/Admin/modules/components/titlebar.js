@@ -8,33 +8,34 @@ export class TitleBar extends React.Component {
         style={{ paddingTop: "12px", marginLeft: "0px" }}
         className="adminTitleBar"
       >
-        <div
+        {/* <div> */}
+        {/* <div
           style={{ marginLeft: "15px", position: "absolute", zIndex: "101" }}
         >
-          {/* <KendoReactButtons.Button
+          <KendoReactButtons.Button
             onClick={this.props.menu}
             primary={true}
             style={{
               width: "45px",
               height: "45px",
               position: "relative",
-              bottom: "3px"
+              bottom: "3px",
             }}
           >
             <i className="fa fa-bars"></i>
-          </KendoReactButtons.Button> */}
-        </div>
+          </KendoReactButtons.Button>
+        </div> */}
         <div className="col text-center" id="pageTitle">
           {this.props.title}
         </div>
         {this.props.orgSwitch ? (
           <div
             style={{
-              right: "15px",
-              top: "15px",
+              right: "65px",
+              top: "5px",
               position: "absolute",
               zIndex: "100",
-              width: "200px",
+              width: "155px",
             }}
           >
             <DropDown

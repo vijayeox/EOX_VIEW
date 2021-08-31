@@ -99,14 +99,14 @@ class Goal extends React.Component {
           style={{
             position: "absolute",
             top: "1px",
-            right: "10px",
+            right: "4px",
             fontSize: "14px",
-            padding: "5px 8px",
+            padding: "8px 0px 8px 8px",
           }}
         >
           <i className="fa fa-plus-circle" style={{ fontSize: "20px" }}></i>
           <p style={{ margin: "0px", paddingLeft: "10px" }}>
-            {this.listConfig.addButton.title}
+            {/* {this.listConfig.addButton.title} */}
           </p>
         </button>
       );
@@ -336,7 +336,7 @@ class Goal extends React.Component {
           }
           wrapStyle={{
             height: "calc(100% - 72px)",
-            margin: "15px",
+            margin: "0px 15px",
             position: "relative",
             top: "5px",
           }}
@@ -351,7 +351,7 @@ class Goal extends React.Component {
           pageable={{ buttonCount: 3, pageSizes: [10, 20, 30], info: true }}
           columnConfig={this.prepareColumnData(this.listConfig)}
           gridToolbar={[
-            this.listConfig.toolbarTemplate,
+            // this.listConfig.toolbarTemplate,
             this.createAddButton(),
           ]}
         />
