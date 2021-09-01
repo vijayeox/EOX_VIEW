@@ -72,9 +72,9 @@ const makeAppList = (category, categoryDiv, core) => {
       appDiv.classList.add("app");
       let captionDiv = document.createElement("div");
       let icon = document.createElement("i");
-      icon.classList.add("osjs-icon");
-      icon.setAttribute("data-icon", appItem.icon);
-      icon.style["background-image"] = "url(" + appItem.icon + ")";
+      let iconClassList = appItem.fontIcon.split(" ");
+      icon.classList.add(iconClassList[0]);
+      icon.classList.add(iconClassList[1]);
       captionDiv.classList.add("appcaption");
       let appLabel = document.createTextNode(appItem.label);
       captionDiv.append(appLabel);
@@ -114,6 +114,7 @@ const makeTree = (core, __, metadata) => {
       categories[cat].items.push({
         icon: getIcon(core, m),
         label: getTitle(locale, m),
+        fontIcon: m.fontIcon ? m.fontIcon : "fad fa-globe",
         data: {
           name: m.name,
         },
