@@ -152,7 +152,7 @@ export default class GridTemplate extends React.Component {
     return (
       <div
         className="gridTemplateWrap"
-        style={{ height: "90%", display: "flex", marginTop: "10px" }}
+        style={{ height: "90%", display: "flex", marginTop: "-35px" }}
       >
         <Notification ref={this.notif} />
         {this.rawDataPresent()}
@@ -207,9 +207,9 @@ export default class GridTemplate extends React.Component {
           {this.props.config.showToolBar == true && (
             <GridToolbar>
               <div>
-                <div style={{ fontSize: "20px" }}>
+                {/* <div style={{ fontSize: "20px" }}>
                   {this.props.config.title + "'s"} List
-                </div>
+                </div> */}
                 <AddButton
                   args={this.props.manageGrid.add}
                   permission={this.props.permission.canAdd}
@@ -222,7 +222,7 @@ export default class GridTemplate extends React.Component {
           {(this.props.permission.canEdit ||
             this.props.permission.canDelete) && (
             <GridColumn
-              title="Manage"
+              title="Actions"
               minResizableWidth={170}
               cell={CellWithEditing(
                 this.props.config.title,
@@ -254,15 +254,16 @@ class AddButton extends React.Component {
         className="k-button"
         style={{
           position: "absolute",
-          top: "3px",
-          right: "10px",
+          top: "1px",
+          right: "4px",
           fontSize: "14px",
+          padding: "8px 0px 8px 8px",
         }}
       >
         <i className="fa fa-plus-circle" style={{ fontSize: "20px" }}></i>
 
         <p style={{ margin: "0px", paddingLeft: "10px" }}>
-          Add {this.props.label}
+          {/* Add {this.props.label} */}
         </p>
       </button>
     ) : null;

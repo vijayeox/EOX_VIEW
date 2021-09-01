@@ -770,21 +770,47 @@ body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown) {
 
   .gridTemplateWrap {
     .k-grid {
-      margin: 15px;
+      margin: 0px 15px;
       width: 100%;
       font-size: 14px;
+
+      .k-grid-header,
+      .k-grid-footer {
+        padding-right: 0px !important;
+      }
+
+      .k-toolbar {
+        padding-bottom: 10px;
+      }
 
       .k-pager-wrap .k-pager-sizes > select {
         width: 5rem;
       }
     }
   }
-
-  .k-header.k-grid-toolbar {
-    border: unset;
-    padding: 10px 10px 10px 10px;
+  .GridToolBar {
+    margin-bottom: 25px;
+    > h5 {
+      margin-right: auto !important;
+    }
   }
 
+  .GridCustomStyle {
+    margin-left: 15px;
+    .k-widget {
+      border-color: rgba(33, 37, 41, 0.125);
+      border-width: 1px;
+      border-style: solid;
+    }
+  }
+  .k-header.k-grid-toolbar {
+    border: unset;
+    padding: 10px;
+  }
+
+  .k-grid-header .k-grid-draggable-header {
+    margin-top: 20px;
+  }
   .k-tooltip-validation {
     color: rgb(212, 206, 206);
     display: none !important;
@@ -889,9 +915,10 @@ body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown) {
   #pageTitle {
     font-size: 25px;
     color: #183651;
-    padding-top: 5px;
+    padding-top: 1px;
     font-family: "Century Gothic", "Futura", "Didact Gothic", san-serif;
     font-weight: 500;
+    z-index: 99;
   }
 
   .adminTitleBar {
@@ -1136,6 +1163,7 @@ body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown) {
 
 .k-widget.k-grid {
   margin-bottom: 4rem;
+  margin-top: -40px;
 }
 
 .sidenav---sidenav---_2tBP {

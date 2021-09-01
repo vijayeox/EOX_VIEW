@@ -16,7 +16,7 @@ module.exports = {
     path.resolve(__dirname, "index.scss")
   ],
   output: {
-    filename: '[name].[contenthash].js', //main.[contentHash].js
+    filename: '[name].js', //main.[contentHash].js
     path: __dirname + '/dist'
   },
   externals: {

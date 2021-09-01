@@ -33,10 +33,10 @@ import PanelItem from "../panel-item";
 import * as languages from "../locales";
 
 // const menuIcon = require('../logo-white-32x32.png');
-const menuIcon = require("../../../../assets/images/logo.png");
+const menuIcon = require("../../../../assets/images/logo.png").default;
 const defaultIcon = require("../../../../assets/images/oxfav.png");
-const sortBy = fn => (a, b) => -(fn(a) < fn(b)) || +(fn(a) > fn(b));
-const sortByLabel = iter => String(iter.label).toLowerCase();
+const sortBy = (fn) => (a, b) => -(fn(a) < fn(b)) || +(fn(a) > fn(b));
+const sortByLabel = (iter) => String(iter.label).toLowerCase();
 
 const getIcon = (core, m) =>
   m.icon
@@ -80,7 +80,7 @@ const makeAppList = (category, categoryDiv, core) => {
       captionDiv.append(appLabel);
       appDiv.appendChild(icon);
       appDiv.appendChild(captionDiv);
-      appDiv.onclick = function() {
+      appDiv.onclick = function () {
         core.run(appItem.data.name);
         document.getElementById("appmenu").classList.remove("appmenu-visible");
       };
@@ -96,10 +96,10 @@ const makeTree = (core, __, metadata) => {
   const locale = core.make("osjs/locale");
 
   metadata
-    .filter(m => m.hidden !== true)
-    .forEach(m => {
+    .filter((m) => m.hidden !== true)
+    .forEach((m) => {
       const cat =
-        Object.keys(configuredCategories).find(c => c === m.category) ||
+        Object.keys(configuredCategories).find((c) => c === m.category) ||
         "other";
       const found = configuredCategories[cat];
 
@@ -107,7 +107,7 @@ const makeTree = (core, __, metadata) => {
         categories[cat] = {
           icon: found.icon ? { name: found.icon } : defaultIcon,
           label: getCategory(locale, found.label),
-          items: []
+          items: [],
         };
       }
 
@@ -115,12 +115,12 @@ const makeTree = (core, __, metadata) => {
         icon: getIcon(core, m),
         label: getTitle(locale, m),
         data: {
-          name: m.name
-        }
+          name: m.name,
+        },
       });
     });
 
-  Object.keys(categories).forEach(k => {
+  Object.keys(categories).forEach((k) => {
     categories[k].items.sort(sortBy(sortByLabel));
   });
 
@@ -137,13 +137,13 @@ const makeTree = (core, __, metadata) => {
  */
 export default class MenuPanelItem extends PanelItem {
   attachKeybindings(el) {
-    const onkeydown = ev => {
+    const onkeydown = (ev) => {
       const checkKeys = (this.options.boundKey || "Alt+a")
         .toLowerCase()
         .split("+");
       const modifierNames = ["ctrl", "shift", "alt", "meta"];
       const keyName = String(ev.key).toLowerCase();
-      const validKeypress = checkKeys.every(k =>
+      const validKeypress = checkKeys.every((k) =>
         modifierNames.indexOf(k) !== -1 ? ev[k + "Key"] : keyName === k
       );
 
@@ -161,7 +161,9 @@ export default class MenuPanelItem extends PanelItem {
   hideMenu() {
     const _ = this.core.make("osjs/locale").translate;
     const __ = this.core.make("osjs/locale").translatable(languages);
-    const packages = this.core.make("osjs/packages").getPackages(m => m.type && m.type === "application");
+    const packages = this.core
+      .make("osjs/packages")
+      .getPackages((m) => m.type && m.type === "application");
     let appArray = makeTree(this.core, __, [].concat(packages));
     return appArray.length == 0;
   }
@@ -194,10 +196,10 @@ export default class MenuPanelItem extends PanelItem {
     //   }
     // };
 
-    const onclick = ev => {
+    const onclick = (ev) => {
       let packages = this.core
-        .make('osjs/packages')
-        .getPackages(m => m.type && m.type === "application");
+        .make("osjs/packages")
+        .getPackages((m) => m.type && m.type === "application");
       let appArray = makeTree(this.core, __, [].concat(packages));
 
       if (this.hideMenu()) {
@@ -252,17 +254,17 @@ export default class MenuPanelItem extends PanelItem {
         "div",
         {
           onclick,
-          oncreate: el => this.attachKeybindings(el),
-          className: "logo-here"
+          oncreate: (el) => this.attachKeybindings(el),
+          className: "logo-here",
         },
         [
           h("img", {
             src: menuIcon,
             alt: _("LBL_MENU"),
-            title: menu_name == "menu" ? "Applications" : null
-          })
+            title: menu_name == "menu" ? "Applications" : null,
+          }),
         ]
-      )
+      ),
     ]);
   }
 }
