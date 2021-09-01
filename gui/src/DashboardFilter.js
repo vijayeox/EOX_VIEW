@@ -375,7 +375,7 @@ const FilterFields = function (props) {
                             </div>
                         :
                         // filterMode == "CREATE" ?
-                        dataType === "select" ?
+                        dataType === "select" && multiFilters ?
                             // <Select
                             //     className="dashboardTextField"
                             //     selected={filters[index]["value"] || ""}
@@ -395,10 +395,11 @@ const FilterFields = function (props) {
                             // />
                             <MultiSelect
                                 className="dashboardTextField field-width-300"
-                                value={Array.isArray(multiFilters[index]["value"]) ? multiFilters[index]["value"] : []}
+                                selectedValues={(Array.isArray(multiFilters[index]) ? (Array.isArray(multiFilters[index]["value"]) ? multiFilters[index]["value"] : []) : [])}
                                 name="value"
                                 // key={index}
                                 id="value"
+                                displayValue="value"
                                 placeholder="Select an option"
                                 options={filterValueOption}
                                 style={{
@@ -406,7 +407,7 @@ const FilterFields = function (props) {
                                 }}
                                 styles={customStyles}
                                 isLoading={isFilterValueLoading}
-                                onChange={(e) => onSelect(e, index, "")} // create onSelect function where it assigns the value array
+                                onSelect={(e) => onSelect(e, index, "")} // create onSelect function where it assigns the value array
                                 onRemove={(e) => onRemove(e, index, "")}
                             />
                             :
