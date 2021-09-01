@@ -83,7 +83,7 @@ view()
     echo -e "${YELLOW}Build UI/view${RESET}"
     echo -e "${YELLOW}Setting up env files${RESET}"
     scp -i ${PEM} -r ${SERVER}:env/view/* ./
-    docker run -t -v ${PWD}:/app/view view ./dockerbuild.sh
+    docker run -t -v ${PWD}:/app/view viewnew ./dockerbuild.sh
     echo -e "${GREEN}Building UI/view Completed!${RESET}"
     #copy contents of view to build
     mkdir -p build/view
