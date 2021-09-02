@@ -3,10 +3,12 @@
   "name": "Analytics",
   "category": "organization",
   "singleton": true,
-  "hidden": true,
+  "hidden": false,
+  "autostart": true,
   "defaultAppforOrgs" : true,
   "icon": "icon.png", 
   "icon_white":"icon_white.png",
+  "fontIcon":"fad fa-chart-bar",
   "title": {
     "en_EN": "OI Studio"
   },

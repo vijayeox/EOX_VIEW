@@ -4,7 +4,7 @@ import { TitleBar } from "./components/titlebar";
 import Swal from "sweetalert2";
 import config from "./moduleConfig";
 
-class Kra extends React.Component {
+class Goal extends React.Component {
   constructor(props) {
     super(props);
     this.core = this.props.args;
@@ -16,15 +16,18 @@ class Kra extends React.Component {
       itemInEdit: undefined,
       visible: false,
       permission: {
-        canAdd: this.props.userProfile.privileges[
-          this.moduleConfig.permission.canAdd
-        ],
-        canEdit: this.props.userProfile.privileges[
-          this.moduleConfig.permission.canEdit
-        ],
-        canDelete: this.props.userProfile.privileges[
-          this.moduleConfig.permission.canDelete
-        ],
+        canAdd:
+          this.props.userProfile.privileges[
+            this.moduleConfig.permission.canAdd
+          ],
+        canEdit:
+          this.props.userProfile.privileges[
+            this.moduleConfig.permission.canEdit
+          ],
+        canDelete:
+          this.props.userProfile.privileges[
+            this.moduleConfig.permission.canDelete
+          ],
       },
       selectedOrg: this.props.userProfile.accountId,
     };
@@ -45,11 +48,7 @@ class Kra extends React.Component {
     let helper = this.core.make("oxzion/restClient");
     let addKraUsers = await helper.request(
       "v1",
-      "account/" +
-        this.state.selectedOrg +
-        "/kra/" +
-        dataItem +
-        "/save",
+      "account/" + this.state.selectedOrg + "/kra/" + dataItem + "/save",
       {
         userIdList: dataObject,
       },
@@ -66,18 +65,14 @@ class Kra extends React.Component {
       temp2.push(uid);
     }
     this.pushKraUsers(item, temp2).then((response) => {
-      if(response.status == 'success'){
+      if (response.status == "success") {
         this.notif.current.notify(
           "Success",
           "Operation succesfully completed",
           "success"
-        )
-      }else{
-        this.notif.current.notify(
-          "Error",
-          "Operation Failed",
-          "danger"
-        )
+        );
+      } else {
+        this.notif.current.notify("Error", "Operation Failed", "danger");
       }
       this.OX_Grid.current.refreshHandler(response);
     });
@@ -104,14 +99,14 @@ class Kra extends React.Component {
           style={{
             position: "absolute",
             top: "1px",
-            right: "10px",
+            right: "4px",
             fontSize: "14px",
-            padding: "5px 8px",
+            padding: "8px 0px 8px 8px",
           }}
         >
           <i className="fa fa-plus-circle" style={{ fontSize: "20px" }}></i>
           <p style={{ margin: "0px", paddingLeft: "10px" }}>
-            {this.listConfig.addButton.title}
+            {/* {this.listConfig.addButton.title} */}
           </p>
         </button>
       );
@@ -166,11 +161,10 @@ class Kra extends React.Component {
           "account/" + this.state.selectedOrg + config.route,
           dataItem.uuid
         ).then((response) => {
-          if (response.message == "Kra has subkras") {
+          if (response.message == "Goal has subGoals") {
             Swal.fire({
               title: "Are you sure?",
-              text:
-                "The following action will delete the kra and its subkras",
+              text: "The following action will delete the Goal and its subGoals",
               imageUrl: "https://image.flaticon.com/icons/svg/1632/1632714.svg",
               imageWidth: 75,
               imageHeight: 75,
@@ -250,7 +244,7 @@ class Kra extends React.Component {
 
   cancel = (mode) => {
     this.setState({ itemInEdit: undefined });
-    if(mode && (mode == 'save')){
+    if (mode && mode == "save") {
       this.notif.current.notify(
         "Success",
         "Operation succesfully completed",
@@ -324,7 +318,7 @@ class Kra extends React.Component {
       <div style={{ height: "inherit" }}>
         <Notification ref={this.notif} />
         <TitleBar
-          title="Manage Kras"
+          title="Manage Goals"
           menu={this.props.menu}
           args={this.core}
           orgChange={this.orgChange}
@@ -334,36 +328,33 @@ class Kra extends React.Component {
               : false
           }
         />
-          <OX_Grid
-            osjsCore={this.core}
-            ref={this.OX_Grid}
-            data={
-              "account/" +
-              this.state.selectedOrg +
-              "/" +
-              this.listConfig.route
-            }
-            wrapStyle={{
-              height: "calc(100% - 72px)",
-              margin: "15px",
-              position: "relative",
-              top: "5px",
-            }}
-            onRowClick={(e) => this.edit(e.dataItem, false)}
-            filterable={true}
-            gridDefaultFilters={this.listConfig.defaultFilters}
-            reorderable={true}
-            resizable={true}
-            sortable={true}
-            columnMenuFilter={false}
-            defaultToolBar={true}
-            pageable={{ buttonCount: 3, pageSizes: [10, 20, 30], info: true }}
-            columnConfig={this.prepareColumnData(this.listConfig)}
-            gridToolbar={[
-              this.listConfig.toolbarTemplate,
-              this.createAddButton(),
-            ]}
-          />
+        <OX_Grid
+          osjsCore={this.core}
+          ref={this.OX_Grid}
+          data={
+            "account/" + this.state.selectedOrg + "/" + this.listConfig.route
+          }
+          wrapStyle={{
+            height: "calc(100% - 72px)",
+            margin: "0px 15px",
+            position: "relative",
+            top: "5px",
+          }}
+          onRowClick={(e) => this.edit(e.dataItem, false)}
+          filterable={true}
+          gridDefaultFilters={this.listConfig.defaultFilters}
+          reorderable={true}
+          resizable={true}
+          sortable={true}
+          columnMenuFilter={false}
+          defaultToolBar={true}
+          pageable={{ buttonCount: 3, pageSizes: [10, 20, 30], info: true }}
+          columnConfig={this.prepareColumnData(this.listConfig)}
+          gridToolbar={[
+            // this.listConfig.toolbarTemplate,
+            this.createAddButton(),
+          ]}
+        />
         {this.state.itemInEdit && this.inputTemplate}
         {this.state.visible && this.addUsersTemplate}
       </div>
@@ -371,4 +362,4 @@ class Kra extends React.Component {
   }
 }
 
-export default Kra;
+export default Goal;

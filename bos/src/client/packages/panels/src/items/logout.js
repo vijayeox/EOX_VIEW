@@ -28,11 +28,11 @@
  * @licence Simplified BSD License
  */
 
-import {h} from 'hyperapp';
-import PanelItem from '../panel-item';
-const logoutIcon = require('../../../../assets/images/logout.svg');
-import Swal from 'sweetalert2';
-import withReactContent from 'sweetalert2-react-content';
+import { h } from "hyperapp";
+import PanelItem from "../panel-item";
+const logoutIcon = require("../../../../assets/images/logout.svg").default;
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 const MySwal = withReactContent(Swal);
 /**
  * Logout
@@ -40,7 +40,6 @@ const MySwal = withReactContent(Swal);
  * @desc Logout Panel Item
  */
 export default class LogoutPanelItem extends PanelItem {
-
   init() {
     if (this.inited) {
       return;
@@ -54,34 +53,39 @@ export default class LogoutPanelItem extends PanelItem {
 
   render(state, actions) {
     const logout = async () => {
-      await this.core.make('osjs/session').save();
-      await this.core.make('oxzion/usersession').set();
-      this.core.make('osjs/auth').logout();
+      await this.core.make("osjs/session").save();
+      await this.core.make("oxzion/usersession").set();
+      this.core.make("osjs/auth").logout();
     };
     const confirm = () => {
       MySwal.fire({
-        title: 'Would you like to logout?',
+        title: "Would you like to logout?",
         position: "top-end",
-        confirmButtonText: 'Yes',
-        confirmButtonColor: '#275362',
+        confirmButtonText: "Yes",
+        confirmButtonColor: "#275362",
         showCancelButton: true,
-        cancelButtonColor: '#7b7878',
-        target: ".osjs-root"
+        cancelButtonColor: "#7b7878",
+        target: ".osjs-root",
       }).then((result) => {
         if (result.value) {
           logout();
         }
-      })  
-    }
-    return super.render('logout', [
-      h('div', {
-        onclick: confirm,
-        className: 'osjs-panel-logout'
-      }, [
-        h('img', {
-          src: logoutIcon,
-          alt: 'Log Out'
-        })])
+      });
+    };
+    return super.render("logout", [
+      h(
+        "div",
+        {
+          onclick: confirm,
+          className: "osjs-panel-logout",
+        },
+        [
+          h("img", {
+            src: logoutIcon,
+            alt: "Log Out",
+          }),
+        ]
+      ),
     ]);
   }
 }

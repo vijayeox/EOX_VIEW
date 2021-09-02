@@ -5,21 +5,20 @@ const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-// const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const TerserPlugin = require("terser-webpack-plugin");
 const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
 const { DefinePlugin } = webpack;
-// const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-// const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const npm = require('./package.json');
 const plugins = [];
+// const mode = "production";
 
 module.exports = {
   mode: (mode !== 'development' ? 'production' : mode),
   devtool: 'source-map',
   resolve: {
     alias: {
-      OxzionGUI: path.resolve(__dirname, "../gui/src")
+      // OxzionGUI: path.resolve(__dirname, "../gui/src")
     }
   },
   entry: {
@@ -36,7 +35,7 @@ module.exports = {
     libraryTarget: 'umd',
     umdNamedDefine: true,
     sourceMapFilename: '[file].map',
-    filename: '[name].js'
+    filename: '[name].[contenthash].js'
   },
   performance: {
     maxEntrypointSize: 600 * 1024,
@@ -44,15 +43,8 @@ module.exports = {
   },
   optimization: {
     minimizer: [
-      new TerserPlugin()
-      // new UglifyJSPlugin({
-      //   sourceMap: true,
-      //   uglifyOptions: {
-      //     compress: {
-      //       inline: false
-      //     }
-      //   }
-      // })
+      new TerserPlugin(),
+      new CssMinimizerPlugin(),
     ],
     runtimeChunk: false,
     splitChunks: {
@@ -90,64 +82,53 @@ module.exports = {
     ...plugins
   ],
   module: {
-    rules: [{
-      test: /\.(svg|png|jpe?g|gif|webp)$/,
-      use: [{
-        loader: 'file-loader',
+    rules: [
+      {
+        test: /\.(svg|png|jpe?g|gif|webp|)$/,
+        use: [
+          {
+            loader: "file-loader",
+            options: {
+              name: "[name].[hash].[ext]",
+              outputPath: "images"
+            }
+          }
+        ]
+      },
+      {
+        test: /\.(woff(2)?|ttf|eot)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        loader: "file-loader",
         options: {
-          esModule: false 
+          name: "[name].[hash].[ext]",
+          outputPath: "font"
         }
-      }]
-    },
-    {
-      test: /\.(ttf|eot)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-      use: {
-        loader: 'file-loader',
-
-      }
-    },
-    {
-      test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-      loader: "url-loader",
-      options: {
-        limit: 10000,
-        mimetype: 'application/font-woff'
-      }
-    },
-    {
-      test: /\.(sa|sc|c)ss$/,
-      use: [
-        MiniCssExtractPlugin.loader,
-        {
-          loader: 'css-loader',
+      },
+      {
+        test: /\.(sa|sc|c)ss$/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader',
+          'sass-loader',
+        ],
+        sideEffects: true,
+      },
+      {
+        test: /\.js$/,
+        exclude: /(node_modules|bower_components)/,
+        use: {
+          loader: "babel-loader",
           options: {
-            sourceMap: true
+            generatorOpts: { compact: false },
+            presets: [
+              '@babel/react', '@babel/env'
+            ],
+            plugins: [
+              require.resolve("@babel/plugin-transform-runtime"),
+              '@babel/proposal-class-properties'
+            ]
           }
-        },
-        {
-          loader: 'sass-loader',
-          options: {
-            sourceMap: true
-          }
-        },
-      ]
-    },
-    {
-      test: /\.js$/,
-      exclude: /(node_modules|bower_components)/,
-      use: {
-        loader: "babel-loader",
-        options: {
-          presets: [
-            '@babel/react', '@babel/env'
-          ],
-          plugins: [
-            require.resolve("@babel/plugin-transform-runtime"),
-            '@babel/proposal-class-properties'
-          ]
         }
       }
-    }
     ]
   }
 };
