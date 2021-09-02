@@ -799,8 +799,12 @@ body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown) {
     margin-left: 15px;
     .k-widget {
       border-color: rgba(33, 37, 41, 0.125);
-      border-width: 1px;
+      // border-width: 1px;
       border-style: solid;
+    }
+    .k-grid-header,
+    .k-grid-footer {
+      padding-right: 0px !important;
     }
   }
   .k-header.k-grid-toolbar {
@@ -1159,11 +1163,6 @@ body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown) {
   position: fixed;
   bottom: 0;
   width: 100%;
-}
-
-.k-widget.k-grid {
-  margin-bottom: 4rem;
-  margin-top: -40px;
 }
 
 .sidenav---sidenav---_2tBP {

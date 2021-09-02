@@ -1,6 +1,6 @@
 module.exports = {
     wrapper: {
-        url: "http://192.168.225.168:8080/"
+        url: "http://127.0.0.1:8080/"
     },
     api:{
         url: "http://localhost:8080/"
