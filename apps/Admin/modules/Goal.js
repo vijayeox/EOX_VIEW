@@ -336,7 +336,9 @@ class Goal extends React.Component {
           }
           wrapStyle={{
             height: "calc(100% - 72px)",
-            margin: "0px 15px",
+            marginleft: "15px",
+            marginRight: "15px",
+            marginTop: "-40px",
             position: "relative",
             top: "5px",
           }}
