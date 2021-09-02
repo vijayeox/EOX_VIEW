@@ -63,7 +63,7 @@ class Errorlog extends React.Component {
           menu={this.props.menu}
           args={this.core}
         />
-        <div style={{ width: "100%", padding: "2px", marginTop: "40px" }}></div>
+        <div style={{ width: "100%", padding: "2px" }}></div>
         <OX_Grid
           osjsCore={this.core}
           data={"errorlog"}

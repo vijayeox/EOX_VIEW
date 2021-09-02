@@ -152,7 +152,7 @@ export default class GridTemplate extends React.Component {
     return (
       <div
         className="gridTemplateWrap"
-        style={{ height: "90%", display: "flex", marginTop: "-35px" }}
+        style={{ height: "90%", display: "flex" }}
       >
         <Notification ref={this.notif} />
         {this.rawDataPresent()}
