@@ -3,7 +3,6 @@ services:
   vw:
     build:
       context: ./docker
-      dockerfile: Dockerfile
     environment:
       IP: ${IP}
     ports:

@@ -116,7 +116,9 @@ export default class SelectComponent extends Select {
       })
     
     }
-    url += "?filter=[" + JSON.stringify(dataState) + "]";
+    if(!url.includes("filter")){
+      url += "?filter=[" + JSON.stringify(dataState) + "]";
+    }
     console.log(url);
 
     options.header = headers;
