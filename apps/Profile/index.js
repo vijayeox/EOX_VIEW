@@ -3,6 +3,7 @@ import { name as applicationName } from "./metadata.json";
 import { icon_white } from "./metadata.json";
 import Body from "./body.js";
 import { React, ReactDOM } from "oxziongui";
+import metaData from "./metadata.json";
 
 var i, finalposition, finalDimension, finalMaximised, finalMinimised;
 // Our launcher
@@ -20,7 +21,7 @@ const register = (core, args, options, metadata) => {
   for (i = 0; i < sessions.length; i++) {
     if (
       Object.keys(session[i].windows).length &&
-      session[i].name == "Profile"
+      session[i].name == metadata.name
     ) {
       finalposition = session[i].windows[0].position;
       finalDimension = session[i].windows[0].dimension;
@@ -28,10 +29,11 @@ const register = (core, args, options, metadata) => {
       finalMinimised = session[i].windows[0].minimized;
     }
   }
+  
   const createProcWindow = () => {
     var win = proc
       .createWindow({
-        id: "profileWindow",
+        id: metadata.name + "_Window",
         title: metadata.title.en_EN,
         icon: proc.resource(icon_white),
         attributes: {
@@ -49,35 +51,30 @@ const register = (core, args, options, metadata) => {
             top: 50
           },
           visibility: "restricted",
-          closeable: false
+          closeable: true,
+          maximizable: true,
+          minimizable: false,
+
         }
           
       })
+      .on("destroy", () => proc.destroy())
+      .on("render", (e) => {
+        win.maximize();
+      })
+      // .on("render", (e) => {
+      //   win.maximize();
+      // })
       .render($content => ReactDOM.render(<Body args={core} dashboardUUID={dashboardUUID} proc={proc}/>, $content))    // pass it directly to the component you create
+      if(win.$element.className.indexOf('Window_'+applicationName) == 12){
+        win.$element.className += " Window_"+applicationName;
+      } 
       if(finalMinimised){
         win.minimize(); 
       }
       if(finalMaximised){
         win.maximize();
       }
-            if (core.has('osjs/tray') && !trayInitialized) {
-        trayInitialized = true;
-        trayOptions.title = "Profile";
-        trayOptions.icon = proc.resource(metadata.icon_white);
-        trayOptions.pos = 5;
-        trayOptions.onclick = () => {
-                  console.log(proc);
-                  win.raise();
-                  win.focus();
-                  trigger()
-        }
-        tray = core.make('osjs/tray').create(trayOptions, (ev) => {
-          core.make('osjs/contextmenu').show({
-            position: ev
-          });
-        });
-      }
-
   };
   createProcWindow(proc);
   return proc;
@@ -95,4 +92,4 @@ const trigger = () => {
 };
 
 // Creates the internal callback function when OS.js launches an application
-osjs.register(applicationName, register);
+osjs.register(metaData.name, register);
