@@ -18,7 +18,7 @@ module.exports = {
   devtool: 'source-map',
   resolve: {
     alias: {
-      // OxzionGUI: path.resolve(__dirname, "../gui/src")
+      OxzionGUI: path.resolve(__dirname, "../gui/src")
     }
   },
   entry: {
