@@ -19,26 +19,141 @@ $primary-color: #275362;
     justify-content: space-between;
   }
 
-  .toolBarButton {
-    margin: 0 10px;
-    display: inline-block;
-    font-weight: 400;
-    color: #fff;
-    text-align: center;
-    vertical-align: middle;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    background-color: transparent;
-    border: 1px solid transparent;
-    padding: .375rem .75rem;
-    font-size: 1rem;
-    line-height: 1.5;
-    border-radius: 50%;
-    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  .dash-manager-buttons {
+    right: 0px;
+    width: auto;
     float: right;
+    position: relative;
   }
+
+  .dash-manager-buttons .btn-primary {
+    color: #345561;
+    background-color: #c5d2d6;
+    border-radius: 42px;
+    font-size: 13px;
+    box-shadow: 0px 0px 5px 0px grey;
+    height: auto;
+    padding: 8px 14px;
+  }
+
+  .dash-manager-buttons .btn {
+    margin-right: 7px;
+    border-color: #eaeaea;
+  }
+
+  .dashboard .btn-primary {
+    color: #fff;
+    background-color: #265160;
+    border-color: #265160;
+  }
+  .display-flex{
+    display: flex;
+  }
+  .width-100{
+    width: 100%;
+  };
+  .task-header{
+    display: flex;
+    align-items: center;
+    .go-back{
+      transform: rotate(180deg) !important;
+      cursor: pointer;
+    }
+
+    &_info{
+      flex-direction: column;
+    }
+
+    .task-header_details,.task-header_details>div,&_info{
+      display: flex;
+    }
+
+    .task-header_name{
+      margin: 3px 2px 9px 9px;
+      font-size: 1.25rem;
+      color: #1f1f67;
+    }
+
+    .task-header_details{
+      div{
+        margin-left: 10px;
+        align-items: center;
+        p{
+          margin: 0;
+          margin-left: 5px;
+        }
+        div:not(:first-child),p:not(:first-child){
+          font-size: 13.25px;
+        }
+      }
+      .owner-assignee, div>div:first-child, div>p:first-child{
+        font-size: 12px;
+        color : #696982;
+      }
+      .owner-assignee{
+        .owner-assignee-dp{
+          padding-left: .5rem;
+          font-size: 20px;
+        }
+      }
+      .task-status{
+        padding: 5px;
+        border-radius: 10px;
+        background-color: rgba(0, 128, 0, 0.83);
+        margin: 0 6px;
+      }
+
+      //PROGRESS
+
+      .task-header_progress{
+        div{
+          &:first-child{
+            justify-content: space-between;
+            padding-bottom: 6px;
+          }
+          &{
+            display: flex;
+            width: 100%;
+          }
+        }
+        &--data{
+          display: flex;
+          flex-direction: column;
+          width: 10rem;
+          margin: 0 2rem;
+        }
+      }
+    }
+
+    &_taskname{
+      padding: 1rem;
+      border-radius: 50px;
+      background: #bddce6;
+      margin-left: 7.5px;
+      font-size: 1.25rem;
+    }
+  }
+
+  // .toolBarButton {
+  //   margin: 0 10px;
+  //   display: inline-block;
+  //   font-weight: 400;
+  //   color: #fff;
+  //   text-align: center;
+  //   vertical-align: middle;
+  //   -webkit-user-select: none;
+  //   -moz-user-select: none;
+  //   -ms-user-select: none;
+  //   user-select: none;
+  //   background-color: transparent;
+  //   border: 1px solid transparent;
+  //   padding: .375rem .75rem;
+  //   font-size: 1rem;
+  //   line-height: 1.5;
+  //   border-radius: 50%;
+  //   transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  //   float: right;
+  // }
   .breadcrumbs {
     padding-top: 5px;
     padding-bottom: 0.8rem;

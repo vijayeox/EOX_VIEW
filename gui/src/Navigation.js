@@ -344,7 +344,7 @@ getElementInsideElement(baseElement, wantedElementID) {
           {this.state.pages.length > 0 ? (
             <div className="row">
                           <div className="breadcrumbs">{this.renderBreadcrumbs()}</div>
-            <div className="col-md-12 customActions" id="customActions">{this.state.customActions}</div>
+            <div className="col-md-12 customActions dash-manager-buttons" id="customActions">{this.state.customActions}</div>
             </div>
           ) : null}
         </div>
