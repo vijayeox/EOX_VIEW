@@ -1,4 +1,4 @@
-import {React,GridTemplate,MultiSelect} from "oxziongui";
+import { React, GridTemplate, MultiSelect } from "oxziongui";
 import { TitleBar } from "./components/titlebar";
 import { DeleteEntry } from "./components/apiCalls";
 import DialogContainer from "./dialog/DialogContainerOrg";
@@ -14,8 +14,8 @@ class Organization extends React.Component {
       permission: {
         canAdd: this.props.userProfile.privileges.MANAGE_ACCOUNT_CREATE,
         canEdit: this.props.userProfile.privileges.MANAGE_ACCOUNT_WRITE,
-        canDelete: this.props.userProfile.privileges.MANAGE_ACCOUNT_DELETE
-      }
+        canDelete: this.props.userProfile.privileges.MANAGE_ACCOUNT_DELETE,
+      },
     };
     this.toggleDialog = this.toggleDialog.bind(this);
     this.child = React.createRef();
@@ -27,16 +27,16 @@ class Organization extends React.Component {
       "v1",
       "/account/" + dataItem + "/save",
       {
-        userIdList: dataObject
+        userIdList: dataObject,
       },
       "post"
     );
     return addOrgUsers;
   }
 
-  addOrgUsers = dataItem => {
+  addOrgUsers = (dataItem) => {
     this.setState({
-      visible: !this.state.visible
+      visible: !this.state.visible,
     });
     this.addUsersTemplate = React.createElement(MultiSelect, {
       args: this.core,
@@ -45,12 +45,12 @@ class Organization extends React.Component {
         title: "Account",
         mainList: "users/list",
         subList: "account",
-        members: "Users"
+        members: "Users",
       },
       manage: {
         postSelected: this.sendTheData,
-        closeDialog: this.toggleDialog
-      }
+        closeDialog: this.toggleDialog,
+      },
     });
   };
 
@@ -60,7 +60,7 @@ class Organization extends React.Component {
       var uid = { uuid: selectedUsers[i].uuid };
       temp2.push(uid);
     }
-    this.pushOrgUsers(dataItem, temp2).then(response => {
+    this.pushOrgUsers(dataItem, temp2).then((response) => {
       this.child.current.refreshHandler(response);
     });
     this.toggleDialog();
@@ -68,14 +68,14 @@ class Organization extends React.Component {
 
   toggleDialog() {
     this.setState({
-      visible: !this.state.visible
+      visible: !this.state.visible,
     });
   }
 
   edit = (dataItem, required) => {
     dataItem = this.cloneItem(dataItem);
     this.setState({
-      orgInEdit: dataItem
+      orgInEdit: dataItem,
     });
 
     this.inputTemplate = React.createElement(DialogContainer, {
@@ -84,7 +84,7 @@ class Organization extends React.Component {
       cancel: this.cancel,
       formAction: "put",
       action: this.child.current.refreshHandler,
-      diableField: required.diableField
+      diableField: required.diableField,
     });
   };
 
@@ -92,8 +92,8 @@ class Organization extends React.Component {
     return Object.assign({}, item);
   }
 
-  remove = dataItem => {
-    DeleteEntry("account", dataItem.uuid).then(response => {
+  remove = (dataItem) => {
+    DeleteEntry("account", dataItem.uuid).then((response) => {
       this.child.current.refreshHandler(response);
     });
   };
@@ -109,7 +109,7 @@ class Organization extends React.Component {
       dataItem: [],
       cancel: this.cancel,
       formAction: "post",
-      action: this.child.current.refreshHandler
+      action: this.child.current.refreshHandler,
     });
   };
 
@@ -123,42 +123,44 @@ class Organization extends React.Component {
           args={this.core}
         />
         <React.Suspense fallback={<div>Loading...</div>}>
-        <GridTemplate
-          args={this.core}
-          ref={this.child}
-          config={{
-            showToolBar: true,
-            title: "Account",
-            api: "account",
-            column: [
-              {
-                title: "Logo",
-                field: "logo"
-              },
+          <div style={{ marginTop: "-35px" }}>
+            <GridTemplate
+              args={this.core}
+              ref={this.child}
+              config={{
+                showToolBar: true,
+                title: "Account",
+                api: "account",
+                column: [
+                  {
+                    title: "Logo",
+                    field: "logo",
+                  },
 
-              {
-                title: "Name",
-                field: "name"
-              },
-              {
-                title: "State",
-                field: "state"
-              },
-              {
-                title: "Zip Code",
-                field: "zip"
-              }
-            ]
-          }}
-          manageGrid={{
-            add: this.insert,
-            edit: this.edit,
-            addUsers: this.addOrgUsers,
-            remove: this.remove
-          }}
-          permission={this.state.permission}
-        />
-          </React.Suspense>
+                  {
+                    title: "Name",
+                    field: "name",
+                  },
+                  {
+                    title: "State",
+                    field: "state",
+                  },
+                  {
+                    title: "Zip Code",
+                    field: "zip",
+                  },
+                ],
+              }}
+              manageGrid={{
+                add: this.insert,
+                edit: this.edit,
+                addUsers: this.addOrgUsers,
+                remove: this.remove,
+              }}
+              permission={this.state.permission}
+            />
+          </div>
+        </React.Suspense>
         {this.state.orgInEdit && this.inputTemplate}
       </div>
     );

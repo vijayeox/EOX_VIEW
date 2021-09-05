@@ -1,8 +1,10 @@
 import $ from 'jquery';
 import { name as applicationName } from './metadata.json';
-import { React, Query, DataSource, Visualization, WidgetGrid, Suspense } from 'oxziongui';
+import { React,  Query, DataSource, Visualization, WidgetGrid, Suspense } from 'oxziongui';
+import {Fragment} from 'react';
 import { WidgetManager, Dashboard } from 'oxziongui';
 import { preparefilter, replaceCommonFilters, showDashboard, extractFilterValues } from '../../gui/src/DashboardUtils'
+import Swal from "sweetalert2";
 
 const SECTION_Profile = 'DB'; //DashBoard
 const SECTION_HTML = 'html';
@@ -40,7 +42,20 @@ class Body extends React.Component {
     // get the function call for the profile API. should wait for it to finish. 
     let response =  this.getProfileDashboardUUID().then((res) => {
       // check if dashboard UUID is present for the user.
-      if(res.data.dashboard_uuid){
+      // add a handler for dashboardUUID
+      
+      
+      /*{status: "error", errorCode: 404, message: "PROFILE does not exist", reason: "error-controller-cannot-dispatch", display_exceptions: true, …}
+controller: "Profile\\Controller\\ProfileController"
+controller_class: null
+display_exceptions: true
+errorCode: 404
+message: "PROFILE does not exist"
+reason: "error-controller-cannot-dispatch"
+status: "error"
+*/    
+      
+      if(res.data.dashboard_uuid !== undefined){
         // assign the dashboard UUID to the state so that Dashboard Component can use it using props. 
         let dashboardUUID = res.data.dashboard_uuid;
         console.log(dashboardUUID);
@@ -52,15 +67,31 @@ class Body extends React.Component {
       }
       // else it's a html page. assign the values accordingly.
       else{
-        let htmlID = res.data.html;
-              this.setState({
-          dashboard_id : dashboardUUID,
-          displaySection: 'html',
+        Swal.fire({
+          title: "Profile not found",
+          html:
+            '<div style="font-size: 17px">There is a problem with your Profile  <br /> Please contact support.</div>',
+          icon: "error",
+          confirmButtonText: "Ok",
+          showCancelButton: false
+        }).then(result => {
+          console.log(result);
         });
+        // let htmlID = res.data.html;
+        //       this.setState({
+        //   dashboard_id : dashboardUUID,
+        //   displaySection: 'html',
+        // });
       }
      
     }).then(() => {
-      this.getDashboardHtmlDataByUuid(this.state.dashboard_id)
+      if(this.state.dashboard_id === ""){
+        console.log('Stop Processing');
+      }
+      else{
+        this.getDashboardHtmlDataByUuid(this.state.dashboard_id)
+      }
+      
     })
   }
 
@@ -125,8 +156,8 @@ class Body extends React.Component {
         console.log("The UUID coming in is : ")
         console.log(this.state.dashboard_id);
     
-        
-      sectionContent =  
+        if(this.state.dashboard_id !== ""){
+          sectionContent =  
         <Dashboard
             setTitle={this.state.title}
             uuid={this.state.dashboard_id}
@@ -140,6 +171,13 @@ class Body extends React.Component {
             loadDefaultFilters={this.state.loadDefaultFilters}
           />;
           break;
+        }
+        else{
+          sectionContent = <div class="container" class="center">
+        <Fragment>Couldn't load Profile</Fragment></div>;
+          break;
+        }
+      
         //<Dashboard args={this.core} proc={this.props.proc} setTitle={this.state.title} uuid={this.dashboard_id} editDashboard={false} hideEdit={false} key={""} />;
       case SECTION_HTML:
         // Change to dashboard 
@@ -163,8 +201,9 @@ class Body extends React.Component {
         }
         <div className="page-content full-width" id="page-content">
           {
-            this.state.dashboard_id !== "" && 
-            sectionContent}
+            // this.state.dashboard_id !== "" && 
+            sectionContent
+          }
         </div>
       </div>
     );

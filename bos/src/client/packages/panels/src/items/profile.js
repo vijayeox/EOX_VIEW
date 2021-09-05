@@ -100,6 +100,13 @@ export default class ProfilePanelItem extends PanelItem {
     const openProfile = () => {
       this.core.run("Preferences");
     };
+    const openProfileApp = () => {
+      this.core.run("Profile");
+      // let helper = this.core.make("oxzion/link");
+      //   helper.launchApp({
+
+      //   },"Profile");
+    };
     return super.render("profile", [
       h(
         "div",
@@ -215,6 +222,34 @@ export default class ProfilePanelItem extends PanelItem {
                   ),
                 ]
               ),
+              h(
+                "a",
+                {
+                  className: "profileitem",
+                },
+                [
+                  h(
+                    "div",
+                    {
+                      onclick: openProfileApp,
+                      className: "profile-dropdown-item",
+                    },
+                    [
+                      h("img", {
+                        src: editIcon,
+                        alt: "Open Profile",
+                        className: "profile-dropdown-icon",
+                        title: "Open Profile",
+                      }),
+                      h("span", {
+                        title: "Open Profile",
+                        innerHTML: "Open Profile",
+                        className: "profile-dropdown-text",
+                      }),
+                    ]
+                  ),
+                ]
+              ),
             ]
           ),
           h("img", {
@@ -223,6 +258,7 @@ export default class ProfilePanelItem extends PanelItem {
             alt: profileDetails["firstname"],
             title: "My Profile",
           }),
+          
         ]
       ),
     ]);
