@@ -1,6 +1,6 @@
 
 import $ from 'jquery';
-import { React, Query, DataSource, Visualization, TemplateManager } from 'oxziongui';
+import { React, Query, DataSource, Visualization, TemplateManager, SSOCustom } from 'oxziongui';
 import { WidgetManager, DashboardManager } from 'oxziongui';
 import SideNav, { Toggle, Nav, NavItem, NavIcon, NavText } from '@trendmicro/react-sidenav';
 import "@trendmicro/react-sidenav/dist/react-sidenav.css";
@@ -12,6 +12,7 @@ const SECTION_EDIT_DASHBOARD = 'EDB'; //Edit DashBoard
 const SECTION_WIDGET = 'WD'; //Edit DashBoard
 const SECTION_VISULAIZATION = 'VS' //Visualization
 const SECTION_TEMPLATEMANGER = 'TM' //TemplateManager
+const SECTION_SSOCustom = 'SC' //TemplateManager
 
 class Body extends React.Component {
 	constructor(props) {
@@ -125,8 +126,11 @@ class Body extends React.Component {
 			case SECTION_TEMPLATEMANGER:
 				sectionContent = <TemplateManager args={this.core} setTitle={this.setTitle} />;
 				break;
+			case SECTION_SSOCustom:
+				sectionContent = <SSOCustom args={this.core} setTitle={this.setTitle} />;
+				break;
 		}
-		console.log(sectionContent);
+
 		return (
 			<div id="page-body" className={"page-body full-width LeftMenuTemplate" + (this.props.proc.metadata.hideMenu ? " hideMenu" : "")}>
 				<SideNav
@@ -180,6 +184,14 @@ class Body extends React.Component {
 							</NavIcon>
 							<NavText>
 								Template Manager
+							</NavText>
+						</NavItem>
+						<NavItem eventKey={SECTION_SSOCustom} key={SECTION_SSOCustom}>
+							<NavIcon>
+								<i className="fas fa-code" aria-hidden="true"></i>
+							</NavIcon>
+							<NavText>
+								SSO Custom
 							</NavText>
 						</NavItem>
 					</SideNav.Nav>
