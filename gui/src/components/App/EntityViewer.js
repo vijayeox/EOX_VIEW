@@ -192,7 +192,7 @@ class EntityViewer extends React.Component {
       },
     } = fileData;
     return (
-      <div className="task-header">
+      <div className="task-header width-100">
         <i className="fa fa-arrow-from-left go-back"></i>
         <div className="task-header_taskname">
           {title
@@ -201,8 +201,10 @@ class EntityViewer extends React.Component {
             .map((v) => v[0].toUpperCase())
             .join("")}
         </div>
-        <div className="task-header_info">
-          <div className="task-header_name">{title}</div>
+        <div className="task-header_info width-100">
+          <div className="task-header_name" title={title}>
+            {title}
+          </div>
           <div className="task-header_details">
             <div>
               <p>Status</p> <span className="task-status"></span>{" "}

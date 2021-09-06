@@ -68,7 +68,7 @@ $primary-color: #275362;
 
     &_info {
       flex-direction: column;
-      gap: 5px 0;
+      gap: 10px 0;
     }
 
     .task-header_details,
@@ -81,6 +81,9 @@ $primary-color: #275362;
       margin: 3px 2px 9px 9px;
       font-size: 1.25rem;
       color: #1f1f67;
+      max-width: 70%;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .task-header_details {
@@ -118,11 +121,14 @@ $primary-color: #275362;
       //PROGRESS
 
       .task-header_progress {
+        flex: 1;
+        display: flex;
+        justify-content: end;
         div {
           &:first-child {
             justify-content: space-between;
             padding-bottom: 6px;
-            width: 10rem;
+            width: 15rem;
           }
           & {
             display: flex;
