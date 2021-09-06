@@ -12,7 +12,7 @@ $primary-color: #275362;
     display: flex;
     flex-direction: column;
   }
-  .customActions{
+  .customActions {
     margin: 5px 0px 2px 0px;
     display: flex;
     align-items: center;
@@ -33,7 +33,8 @@ $primary-color: #275362;
     font-size: 13px;
     box-shadow: 0px 0px 5px 0px grey;
     height: auto;
-    padding: 8px 14px;
+    padding: 5px 10px;
+    border-radius: 100%;
   }
 
   .dash-manager-buttons .btn {
@@ -46,57 +47,68 @@ $primary-color: #275362;
     background-color: #265160;
     border-color: #265160;
   }
-  .display-flex{
+  .display-flex {
     display: flex;
   }
-  .width-100{
+  .task-header-pos-abs {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+  .width-100 {
     width: 100%;
-  };
-  .task-header{
+  }
+  .task-header {
     display: flex;
     align-items: center;
-    .go-back{
+    .go-back {
       transform: rotate(180deg) !important;
       cursor: pointer;
     }
 
-    &_info{
+    &_info {
       flex-direction: column;
+      gap: 5px 0;
     }
 
-    .task-header_details,.task-header_details>div,&_info{
+    .task-header_details,
+    .task-header_details > div,
+    &_info {
       display: flex;
     }
 
-    .task-header_name{
+    .task-header_name {
       margin: 3px 2px 9px 9px;
       font-size: 1.25rem;
       color: #1f1f67;
     }
 
-    .task-header_details{
-      div{
+    .task-header_details {
+      div {
         margin-left: 10px;
         align-items: center;
-        p{
+        p {
           margin: 0;
           margin-left: 5px;
         }
-        div:not(:first-child),p:not(:first-child){
+        div:not(:first-child),
+        p:not(:first-child) {
           font-size: 13.25px;
         }
       }
-      .owner-assignee, div>div:first-child, div>p:first-child{
+      .owner-assignee,
+      div > div:first-child,
+      div > p:first-child {
         font-size: 12px;
-        color : #696982;
+        color: #696982;
       }
-      .owner-assignee{
-        .owner-assignee-dp{
-          padding-left: .5rem;
+      .owner-assignee {
+        .owner-assignee-dp {
+          padding-left: 0.5rem;
           font-size: 20px;
         }
       }
-      .task-status{
+      .task-status {
         padding: 5px;
         border-radius: 10px;
         background-color: rgba(0, 128, 0, 0.83);
@@ -105,27 +117,34 @@ $primary-color: #275362;
 
       //PROGRESS
 
-      .task-header_progress{
-        div{
-          &:first-child{
+      .task-header_progress {
+        div {
+          &:first-child {
             justify-content: space-between;
             padding-bottom: 6px;
+            width: 10rem;
           }
-          &{
+          & {
             display: flex;
             width: 100%;
           }
         }
-        &--data{
+        &--data {
           display: flex;
           flex-direction: column;
-          width: 10rem;
-          margin: 0 2rem;
+          width: 15rem;
+          margin: 0px 20px 0rem 5rem;
+
+          p {
+            strong {
+              padding-right: 5px;
+            }
+          }
         }
       }
     }
 
-    &_taskname{
+    &_taskname {
       padding: 1rem;
       border-radius: 50px;
       background: #bddce6;
@@ -198,24 +217,25 @@ $primary-color: #275362;
     width: 100%;
   }
 
-  abbr{
+  abbr {
     text-decoration: none;
   }
 
-  .page-active , .contentDiv{
+  .page-active,
+  .contentDiv {
     height: 100%;
   }
   .activeBreadcrumb a {
-    color: #5CD4E3 !important;
+    color: #5cd4e3 !important;
   }
   .activeBreadcrumb a:hover {
-    color: #30C2D2 !important;
+    color: #30c2d2 !important;
     text-decoration: underline !important;
   }
-  .tab-link{
+  .tab-link {
     border: 1px solid transparent;
-    border-top-left-radius: .25rem;
-    border-top-right-radius: .25rem;
+    border-top-left-radius: 0.25rem;
+    border-top-right-radius: 0.25rem;
     padding: 0.5rem 2rem;
     cursor: pointer;
     margin-right: 0;
@@ -225,20 +245,21 @@ $primary-color: #275362;
     -webkit-transition: all 0.2s;
     transition: all 0.2s;
   }
-  .Navigation .tab-link:focus{
+  .Navigation .tab-link:focus {
     outline: transparent;
   }
- .tab-link:hover,.tab-link:focus{
+  .tab-link:hover,
+  .tab-link:focus {
     border-color: #e9ecef #e9ecef #dee2e6;
     outline: 0;
   }
-  .tab-link-active{
+  .tab-link-active {
     border: none;
-    -webkit-box-shadow: inset 0 -2px 0 #30C2D2;
-    box-shadow: inset 0 -2px 0 #30C2D2;
-    color: #30C2D2;
+    -webkit-box-shadow: inset 0 -2px 0 #30c2d2;
+    box-shadow: inset 0 -2px 0 #30c2d2;
+    color: #30c2d2;
   }
-  .tab-content .contentDiv{
+  .tab-content .contentDiv {
     flex: 1 1 auto;
     min-height: 1px;
     padding: 1.25rem;
@@ -322,7 +343,7 @@ $primary-color: #275362;
   margin-bottom: 0.8rem;
 }
 
-.breadcrumbHearder{
+.breadcrumbHearder {
   margin-bottom: 0px;
 }
 
@@ -358,17 +379,17 @@ $primary-color: #275362;
   text-size-adjust: 100%;
 }
 
-.page-dimmed{
+.page-dimmed {
   filter: grayscale;
   opacity: 0.7;
 }
-.page-inactive{
-  display:none;
+.page-inactive {
+  display: none;
 }
-.page-active{
+.page-active {
   display: block;
 }
-.rygBadge{
+.rygBadge {
   margin-left: auto;
   width: 80px;
   border: 3px solid lightgrey;
