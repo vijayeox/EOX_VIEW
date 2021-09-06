@@ -768,6 +768,26 @@ body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown) {
     cursor: pointer;
   }
 
+  .k-grid .btn-primary {
+    color: #345561;
+    background-color: #c5d2d6;
+    border-radius: 42px;
+    font-size: 13px;
+    box-shadow: 0px 0px 5px 0px grey;
+  }
+
+  .k-grid .btn {
+    margin-right: 7px;
+    border-color: #eaeaea;
+  }
+
+  .k-grid .btn-primary:hover {
+    color: whitesmoke;
+    background-color: #345561 !important;
+    > i {
+      color: whitesmoke !important;
+    }
+  }
   .gridTemplateWrap {
     .k-grid {
       margin: 0px 15px;
@@ -882,8 +902,8 @@ body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown) {
   }
 
   .manageIcons {
-    font-size: 19px;
-    color: #ffffff;
+    font-size: 15px;
+    color: #265160 !important;
     display: block;
   }
 
@@ -898,6 +918,7 @@ body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown) {
   }
 
   .DashBG {
+    background-color: #f1f1f1;
     height: 100%;
     overflow-y: auto;
   }

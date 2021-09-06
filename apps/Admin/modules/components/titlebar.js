@@ -32,7 +32,7 @@ export class TitleBar extends React.Component {
           <div
             style={{
               right: "65px",
-              top: "5px",
+              top: "4px",
               position: "absolute",
               zIndex: "100",
               width: "155px",
