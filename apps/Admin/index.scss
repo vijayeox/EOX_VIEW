@@ -768,6 +768,26 @@ body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown) {
     cursor: pointer;
   }
 
+  .k-grid .btn-primary {
+    color: #345561;
+    background-color: #c5d2d6;
+    border-radius: 42px;
+    font-size: 13px;
+    box-shadow: 0px 0px 5px 0px grey;
+  }
+
+  .k-grid .btn {
+    margin-right: 7px;
+    border-color: #eaeaea;
+  }
+
+  .k-grid .btn-primary:hover {
+    color: whitesmoke;
+    background-color: #345561 !important;
+    > i {
+      color: whitesmoke !important;
+    }
+  }
   .gridTemplateWrap {
     .k-grid {
       margin: 0px 15px;
@@ -1172,27 +1192,31 @@ body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown) {
 
 div.desk {
   text-align: center;
-  padding: 1px 1px 1px 1px;
-  border: none;
-  border-radius: 15px;
-  top: 12px;
-  transition: transform 0.2s ease-in;
-  left: 17px;
+  padding: 0.6em 1.2em;
+  border: 0px solid rgba(0, 0, 0, 0.125);
+  border-radius: 5px;
+  // top: 12px;
+  // left: 17px;
+  gap: 1rem;
+  flex-basis: 28%;
+  align-items: center;
   height: auto;
-  width: 140px;
-  display: inline-table;
+  justify-content: center;
+  /* width: 140px; */
+  display: flex;
   margin: 20px;
   cursor: pointer;
   background-color: white;
-  box-shadow: 5px 5px 10px #bab9b9, -5px -5px 10px #bab9b9;
+  box-shadow: rgba(50, 50, 93, 0.15) 0px 6px 10px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+  transition: transform 0.2s cubic-bezier(0.6, -0.28, 0.74, 0.05);
 }
 
 div.desk .header {
-  background-color: transparent;
+  // background-color: transparent;
   color: #275362;
-  padding: 8px;
-  font-size: 40px;
-  border-radius: 1.25rem;
+  // padding: 8px;
+  font-size: 20px;
+  // border-radius: 1.25rem;
 }
 
 div.desk .header .fad {
@@ -1203,12 +1227,16 @@ div.desk .text {
   color: #275362;
   font-weight: 100;
   font-size: 18px;
+
+  p {
+    margin-bottom: 0;
+  }
 }
 
 div.desk:hover {
-  box-shadow: 4px 0px 10px #bab9b9, -5px -5px 10px #bab9b9;
-  transform: scale(1.2);
-  transition: transform 0.2s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  transform: scale(1.05);
+  transition: transform 0.2s ease-in-out;
 }
 
 div.header {
@@ -1231,7 +1259,7 @@ div.iconTitle {
   display: flex;
   flex-wrap: wrap;
   height: fit-content;
-  justify-content: center;
+  justify-content: flex-start;
   align-content: space-between;
 }
 
@@ -1240,3 +1268,24 @@ div.iconTitle {
   flex-direction: column;
   display: contents;
 }
+
+  // Added CSS for custom scrollbar in Admin App
+  
+  #admin-outer-container nav::-webkit-scrollbar {
+    width: 13px;
+  }
+  
+  #admin-outer-container nav::-webkit-scrollbar-track {
+    border-radius: 10px;
+    box-shadow: inset 0 0 6px rgb(31 , 66 , 78);
+    background-color: #275362;
+    margin-top: 1px;
+    margin-bottom: 1px;
+  }
+  
+  #admin-outer-container nav::-webkit-scrollbar-thumb {
+    background-color: #306475;
+    border-radius: 10px;
+    box-shadow: inset 0 0 6px rgb(69 , 93 , 101);
+    height: 100px;
+  }
