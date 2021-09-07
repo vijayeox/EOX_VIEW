@@ -60,7 +60,7 @@ class CommentsView extends React.Component {
         this.getEntityPage().then((entityPage) => {
           if (entityPage.data) {
             this.setState({ entityConfig: entityPage.data });
-            this.generateViewButton(entityPage.data.enable_auditlog, this.disableHeaderButtons(entityPage.data));
+            this.generateViewButton(entityPage.data.enable_auditlog);
           }
           this.fetchCommentData();
         });
@@ -74,17 +74,6 @@ class CommentsView extends React.Component {
   closeAuditLog = () => {
     this.setState({ showAuditLog: false });
   };
-
-  disableHeaderButtons(entityData){
-   try{
-    return entityData?.content.
-    find((c) => c?.type === 'TabSegment')?.content?.tabs?.
-    find((tab) => tab?.name === 'Comments')?.content?.
-    find((c) => c.disableHeaderButtons)
-   }catch(e){
-     return false;
-   }
-  }
 
   async getComments() {
     let helper = this.core.make("oxzion/restClient");
@@ -180,7 +169,7 @@ class CommentsView extends React.Component {
       this.loader.destroy();
     });
   }
-  generateViewButton(enableAuditLog, disableHeaderButtons) {
+  generateViewButton(enableAuditLog) {
     let gridToolbarContent = [];
     let filePage = [{ type: "EntityViewer", fileId: this.state.fileId }];
     let pageContent = {
@@ -240,7 +229,6 @@ class CommentsView extends React.Component {
       detail: { customActions: gridToolbarContent },
       bubbles: true
     });
-    if(disableHeaderButtons) return;
     document.getElementById(this.appId + "_breadcrumbParent").dispatchEvent(ev);
   }
   getUserData = (query, callback) => {
