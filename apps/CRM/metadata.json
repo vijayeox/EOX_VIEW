@@ -4,6 +4,7 @@
   "category": "organization",
   "singleton":true,
   "icon": "icon.svg",
+  "fontIcon":"fad fa-handshake-alt",
   "icon_white": "icon_white.svg",
   "title": {
     "en_EN": "CRM"
