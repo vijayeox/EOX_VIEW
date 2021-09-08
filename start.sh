@@ -19,7 +19,7 @@ done
 
 chmod 777 -R ./docker/run.sh
 
-if [ $startOptions == "i" ] || [ ! -f ./view_built ]; then
+if [ "$startOptions" == "i" ] || [ ! -f ./view_built ]; then
 	IP="$IP" docker-compose up --build
 else
 	IP="$IP" docker-compose up -d --build
