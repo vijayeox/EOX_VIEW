@@ -232,7 +232,7 @@ html {
 }
 
 .osjs-panel .osjs-panel-item--icon {
-  margin: 2px;
+  margin: 0px 2px 0px 2px;
 }
 
 .osjs-window-header {
@@ -245,8 +245,8 @@ html {
   font-size: 12px;
   color: white;
   background-color: rgba(255, 255, 255, 0.4);
-  border-radius: 20px;
-  padding: 5px 10px;
+  border-radius: 0px;
+  padding: 9px 3px;
   align-self: center;
 
   img {
