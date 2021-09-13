@@ -1,4 +1,4 @@
-import { React, GridTemplate } from "oxziongui";
+import {React,GridTemplate} from "oxziongui";
 import { TitleBar } from "./components/titlebar";
 import { DeleteEntry } from "./components/apiCalls";
 import DialogContainer from "./dialog/DialogContainerRole";
@@ -13,9 +13,9 @@ class Role extends React.Component {
       permission: {
         canAdd: this.props.userProfile.privileges.MANAGE_ROLE_WRITE,
         canEdit: this.props.userProfile.privileges.MANAGE_ROLE_WRITE,
-        canDelete: this.props.userProfile.privileges.MANAGE_ROLE_WRITE,
+        canDelete: this.props.userProfile.privileges.MANAGE_ROLE_WRITE
       },
-      selectedOrg: this.props.userProfile.accountId,
+      selectedOrg: this.props.userProfile.accountId
     };
     this.child = React.createRef();
   }
@@ -23,7 +23,7 @@ class Role extends React.Component {
   edit = (dataItem, required) => {
     dataItem = this.cloneItem(dataItem);
     this.setState({
-      roleInEdit: dataItem,
+      roleInEdit: dataItem
     });
     this.inputTemplate = React.createElement(DialogContainer, {
       args: this.core,
@@ -32,7 +32,7 @@ class Role extends React.Component {
       cancel: this.cancel,
       formAction: "put",
       action: this.child.current.refreshHandler,
-      diableField: required.diableField,
+      diableField: required.diableField
     });
   };
 
@@ -40,15 +40,15 @@ class Role extends React.Component {
     return Object.assign({}, item);
   }
 
-  orgChange = (event) => {
+  orgChange = event => {
     this.setState({ selectedOrg: event.target.value });
   };
 
-  remove = (dataItem) => {
+  remove = dataItem => {
     DeleteEntry(
       "account/" + this.state.selectedOrg + "/role",
       dataItem.uuid
-    ).then((response) => {
+    ).then(response => {
       this.child.current.refreshHandler(response);
     });
   };
@@ -65,7 +65,7 @@ class Role extends React.Component {
       cancel: this.cancel,
       formAction: "post",
       action: this.child.current.refreshHandler,
-      selectedOrg: this.state.selectedOrg,
+      selectedOrg: this.state.selectedOrg
     });
   };
 
@@ -83,40 +83,38 @@ class Role extends React.Component {
               : false
           }
         />
-        <div style={{ marginTop: "-35px" }}>
-          <GridTemplate
-            args={this.core}
-            ref={this.child}
-            config={{
-              showToolBar: true,
-              title: "Role",
-              api: "role",
-              api: "account/" + this.state.selectedOrg + "/roles",
-              column: [
-                {
-                  title: "Name",
-                  field: "name",
-                },
+        <GridTemplate
+          args={this.core}
+          ref={this.child}
+          config={{
+            showToolBar: true,
+            title: "Role",
+            api: "role",
+            api: "account/" + this.state.selectedOrg + "/roles",
+            column: [
+              {
+                title: "Name",
+                field: "name"
+              },
 
-                {
-                  title: "Description",
-                  field: "description",
-                },
-                {
-                  title: "App Name",
-                  field: "appName",
-                },
-              ],
-              sortMode: [{ field: "is_system_role", dir: "desc" }],
-            }}
-            manageGrid={{
-              add: this.insert,
-              edit: this.edit,
-              remove: this.remove,
-            }}
-            permission={this.state.permission}
-          />
-        </div>
+              {
+                title: "Description",
+                field: "description"
+              },
+              {
+                title: "App Name",
+                field: "appName"
+              }
+            ],
+            sortMode: [{ field: "is_system_role", dir: "desc" }]
+          }}
+          manageGrid={{
+            add: this.insert,
+            edit: this.edit,
+            remove: this.remove
+          }}
+          permission={this.state.permission}
+        />
         {this.state.roleInEdit && this.inputTemplate}
       </div>
     );

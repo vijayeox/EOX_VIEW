@@ -1,4 +1,4 @@
-import { React, GridTemplate } from "oxziongui";
+import {React,GridTemplate} from "oxziongui";
 import { TitleBar } from "./components/titlebar";
 import { DeleteEntry } from "./components/apiCalls";
 import DialogContainer from "./dialog/DialogContainerUser";
@@ -12,21 +12,21 @@ class User extends React.Component {
       permission: {
         canAdd: this.props.userProfile.privileges.MANAGE_USER_CREATE,
         canEdit: this.props.userProfile.privileges.MANAGE_USER_WRITE,
-        canDelete: this.props.userProfile.privileges.MANAGE_USER_DELETE,
+        canDelete: this.props.userProfile.privileges.MANAGE_USER_DELETE
       },
-      selectedOrg: this.props.userProfile.accountId,
+      selectedOrg: this.props.userProfile.accountId
     };
     this.child = React.createRef();
   }
 
-  orgChange = (event) => {
+  orgChange = event => {
     this.setState({ selectedOrg: event.target.value });
   };
 
   edit = (dataItem, required) => {
     dataItem = this.cloneItem(dataItem);
     this.setState({
-      userInEdit: dataItem,
+      userInEdit: dataItem
     });
     this.inputTemplate = React.createElement(DialogContainer, {
       args: this.core,
@@ -36,7 +36,7 @@ class User extends React.Component {
       formAction: "put",
       action: this.child.current.refreshHandler,
       userPreferences: this.props.userProfile.preferences,
-      diableField: required.diableField,
+      diableField: required.diableField
     });
   };
 
@@ -44,11 +44,11 @@ class User extends React.Component {
     return Object.assign({}, item);
   }
 
-  remove = (dataItem) => {
+  remove = dataItem => {
     DeleteEntry(
       "account/" + this.state.selectedOrg + "/user",
       dataItem.uuid
-    ).then((response) => {
+    ).then(response => {
       this.child.current.refreshHandler(response);
     });
   };
@@ -66,7 +66,7 @@ class User extends React.Component {
       formAction: "post",
       selectedOrg: this.state.selectedOrg,
       userPreferences: this.props.userProfile.preferences,
-      action: this.child.current.refreshHandler,
+      action: this.child.current.refreshHandler
     });
   };
 
@@ -85,49 +85,47 @@ class User extends React.Component {
           }
         />
         <React.Suspense fallback={<div>Loading...</div>}>
-          <div style={{ marginTop: "-35px" }}>
-            <GridTemplate
-              args={this.core}
-              ref={this.child}
-              config={{
-                showToolBar: true,
-                title: "User",
-                api: "account/" + this.state.selectedOrg + "/users",
-                column: [
-                  {
-                    title: "Image",
-                    field: "logo",
-                  },
-                  {
-                    title: "Name",
-                    field: "name",
-                  },
-                  {
-                    title: "Email",
-                    field: "email",
-                  },
-                  {
-                    title: "Designation",
-                    field: "designation",
-                  },
-                  {
-                    title: "Country",
-                    field: "country",
-                  },
-                ],
-              }}
-              manageGrid={{
-                add: this.insert,
-                edit: this.edit,
-                remove: this.remove,
-                resetPassword: {
-                  icon: "far fa-redo manageIcons",
-                },
-              }}
-              permission={this.state.permission}
-            />
-          </div>
-        </React.Suspense>
+        <GridTemplate
+          args={this.core}
+          ref={this.child}
+          config={{
+            showToolBar: true,
+            title: "User",
+            api: "account/" + this.state.selectedOrg + "/users",
+            column: [
+              {
+                title: "Image",
+                field: "logo"
+              },
+              {
+                title: "Name",
+                field: "name"
+              },
+              {
+                title: "Email",
+                field: "email"
+              },
+              {
+                title: "Designation",
+                field: "designation"
+              },
+              {
+                title: "Country",
+                field: "country"
+              }
+            ]
+          }}
+          manageGrid={{
+            add: this.insert,
+            edit: this.edit,
+            remove: this.remove,
+            resetPassword: {
+              icon: "far fa-redo manageIcons"
+            }
+          }}
+          permission={this.state.permission}
+        />
+          </React.Suspense>
         {this.state.userInEdit && this.inputTemplate}
       </div>
     );

@@ -16,18 +16,15 @@ class Team extends React.Component {
       itemInEdit: undefined,
       visible: false,
       permission: {
-        canAdd:
-          this.props.userProfile.privileges[
-            this.moduleConfig.permission.canAdd
-          ],
-        canEdit:
-          this.props.userProfile.privileges[
-            this.moduleConfig.permission.canEdit
-          ],
-        canDelete:
-          this.props.userProfile.privileges[
-            this.moduleConfig.permission.canDelete
-          ],
+        canAdd: this.props.userProfile.privileges[
+          this.moduleConfig.permission.canAdd
+        ],
+        canEdit: this.props.userProfile.privileges[
+          this.moduleConfig.permission.canEdit
+        ],
+        canDelete: this.props.userProfile.privileges[
+          this.moduleConfig.permission.canDelete
+        ],
       },
       selectedOrg: this.props.userProfile.accountId,
     };
@@ -48,7 +45,11 @@ class Team extends React.Component {
     let helper = this.core.make("oxzion/restClient");
     let addTeamUsers = await helper.request(
       "v1",
-      "account/" + this.state.selectedOrg + "/team/" + dataItem + "/save",
+      "account/" +
+        this.state.selectedOrg +
+        "/team/" +
+        dataItem +
+        "/save",
       {
         userIdList: dataObject,
       },
@@ -65,16 +66,20 @@ class Team extends React.Component {
       temp2.push(uid);
     }
     this.pushTeamUsers(item, temp2).then((response) => {
-      if (response.status == "success") {
+      if(response.status == 'success'){
         this.notif.current.notify(
           "Success",
           "Operation succesfully completed",
           "success"
-        );
-      } else {
-        this.notif.current.notify("Error", "Operation Failed", "danger");
-      }
-      this.OX_Grid.current.refreshHandler(response);
+        )
+      }else{
+        this.notif.current.notify(
+          "Error",
+          "Operation Failed",
+          "danger"
+        )
+      }   
+      this.OX_Grid.current.refreshHandler(response);   
     });
     this.toggleDialog();
   };
@@ -99,14 +104,14 @@ class Team extends React.Component {
           style={{
             position: "absolute",
             top: "1px",
-            right: "4px",
+            right: "10px",
             fontSize: "14px",
-            padding: "8px 0px 8px 8px",
+            padding: "5px 8px",
           }}
         >
           <i className="fa fa-plus-circle" style={{ fontSize: "20px" }}></i>
           <p style={{ margin: "0px", paddingLeft: "10px" }}>
-            {/* {this.listConfig.addButton.title} */}
+            {this.listConfig.addButton.title}
           </p>
         </button>
       );
@@ -164,7 +169,8 @@ class Team extends React.Component {
           if (response.message == "Team has subteams") {
             Swal.fire({
               title: "Are you sure?",
-              text: "The following action will delete the team and its subteams",
+              text:
+                "The following action will delete the team and its subteams",
               imageUrl: "https://image.flaticon.com/icons/svg/1632/1632714.svg",
               imageWidth: 75,
               imageHeight: 75,
@@ -244,7 +250,7 @@ class Team extends React.Component {
 
   cancel = (mode) => {
     this.setState({ itemInEdit: undefined });
-    if (mode && mode == "save") {
+    if(mode && (mode == 'save')){
       this.notif.current.notify(
         "Success",
         "Operation succesfully completed",
@@ -354,41 +360,42 @@ class Team extends React.Component {
               : false
           }
         />
-        <OX_Grid
-          osjsCore={this.core}
-          ref={this.OX_Grid}
-          rowTemplate={
-            this.listConfig.expandable
-              ? (e) => this.renderRow(e, this.listConfig.expandable)
-              : undefined
-          }
-          expandable={this.listConfig.expandable ? true : undefined}
-          data={
-            "account/" + this.state.selectedOrg + "/" + this.listConfig.route
-          }
-          wrapStyle={{
-            height: "calc(100% - 72px)",
-            marginleft: "15px",
-            marginRight: "15px",
-            marginTop: "-40px",
-            position: "relative",
-            top: "5px",
-          }}
-          onRowClick={(e) => this.edit(e.dataItem, false)}
-          filterable={true}
-          gridDefaultFilters={this.listConfig.defaultFilters}
-          reorderable={true}
-          resizable={true}
-          sortable={true}
-          columnMenuFilter={false}
-          defaultToolBar={true}
-          pageable={{ buttonCount: 3, pageSizes: [10, 20, 30], info: true }}
-          columnConfig={this.prepareColumnData(this.listConfig)}
-          gridToolbar={[
-            // this.listConfig.toolbarTemplate,
-            this.createAddButton(),
-          ]}
-        />
+          <OX_Grid
+            osjsCore={this.core}
+            ref={this.OX_Grid}
+            rowTemplate={
+              this.listConfig.expandable
+                ? (e) => this.renderRow(e, this.listConfig.expandable)
+                : undefined
+            }
+            expandable={this.listConfig.expandable ? true : undefined}
+            data={
+              "account/" +
+              this.state.selectedOrg +
+              "/" +
+              this.listConfig.route
+            }
+            wrapStyle={{
+              height: "calc(100% - 72px)",
+              margin: "15px",
+              position: "relative",
+              top: "5px",
+            }}
+            onRowClick={(e) => this.edit(e.dataItem, false)}
+            filterable={true}
+            gridDefaultFilters={this.listConfig.defaultFilters}
+            reorderable={true}
+            resizable={true}
+            sortable={true}
+            columnMenuFilter={false}
+            defaultToolBar={true}
+            pageable={{ buttonCount: 3, pageSizes: [10, 20, 30], info: true }}
+            columnConfig={this.prepareColumnData(this.listConfig)}
+            gridToolbar={[
+              this.listConfig.toolbarTemplate,
+              this.createAddButton(),
+            ]}
+          />
         {this.state.itemInEdit && this.inputTemplate}
         {this.state.visible && this.addUsersTemplate}
       </div>
