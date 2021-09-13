@@ -278,7 +278,7 @@ class Goal extends React.Component {
         <abbr title={action[key].title} key={index}>
           <button
             type="button"
-            className="btn manage-btn"
+            className="btn btn-primary manage-btn"
             onClick={() => {
               switch (action[key].type) {
                 case "edit":
