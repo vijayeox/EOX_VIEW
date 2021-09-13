@@ -59,6 +59,7 @@ $primary-color: #275362;
     width: 100%;
   }
   .task-header {
+    padding: 5px 0;
     display: flex;
     align-items: center;
     .go-back {
@@ -250,6 +251,7 @@ $primary-color: #275362;
     color: #444;
     -webkit-transition: all 0.2s;
     transition: all 0.2s;
+    padding-bottom: 1.125rem;
   }
   .Navigation .tab-link:focus {
     outline: transparent;
@@ -262,8 +264,8 @@ $primary-color: #275362;
   .tab-link-active {
     border: none;
     -webkit-box-shadow: inset 0 -2px 0 #30c2d2;
-    box-shadow: inset 0 -2px 0 #30c2d2;
-    color: #30c2d2;
+    box-shadow: inset 0 -2px 0 #0a6ed1;
+    color: #0a6ed1;
   }
   .tab-content .contentDiv {
     flex: 1 1 auto;

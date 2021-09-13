@@ -280,9 +280,9 @@ class EntityViewer extends React.Component {
         var file = fileData.data.data ? fileData.data.data : fileData.data;
         this.setState({ entityId: fileData.data.entity_id, fileData: file });
         this.getEntityPage().then((entityPage) => {
-          console.log(`entityPage.data`);
-          console.log(entityPage);
-          console.log(fileData);
+          if(!fileData?.data?.data?.uuid){
+            fileData.data.data.uuid = fileData?.data?.uuid;
+          }
           this.setState({ entityConfig: entityPage.data });
           this.generateEditButton(
             entityPage.data.enable_documents,
