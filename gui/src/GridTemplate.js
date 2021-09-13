@@ -251,18 +251,18 @@ class AddButton extends React.Component {
     return this.props.permission ? (
       <button
         onClick={this.props.args}
-        className="k-button"
+        className="k-button btn btn-primary"
         style={{
           position: "absolute",
-          top: "1px",
-          right: "4px",
+          top: "2px",
+          right: "0px",
           fontSize: "14px",
-          padding: "8px 0px 8px 8px",
+          padding: "8px 6px 5px 10px",
         }}
       >
-        <i className="fa fa-plus-circle" style={{ fontSize: "20px" }}></i>
+        <i className="fad fa-plus" style={{ fontSize: "18px" }}></i>
 
-        <p style={{ margin: "0px", paddingLeft: "10px" }}>
+        <p style={{ margin: "0px", paddingLeft: "0px" }}>
           {/* Add {this.props.label} */}
         </p>
       </button>
@@ -350,7 +350,7 @@ function CellWithEditing(
         <abbr title={"Delete " + title}>
           <button
             type="button"
-            className="btn manage-btn k-grid-remove-command"
+            className="btn btn-primary manage-btn k-grid-remove-command"
             onClick={(e) => {
               e.preventDefault();
               Swal.fire({
@@ -416,7 +416,7 @@ function CellWithEditing(
           <abbr title={"Edit " + title + " Details"}>
             <button
               type="button"
-              className=" btn manage-btn k-grid-edit-command"
+              className=" btn btn-primary manage-btn k-grid-edit-command"
               onClick={() => {
                 edit(this.props.dataItem, { diableField: false });
               }}
@@ -437,7 +437,7 @@ function CellWithEditing(
               >
                 <button
                   type="button"
-                  className="btn manage-btn"
+                  className="btn btn-primary manage-btn"
                   onClick={() => {
                     addUsers(this.props.dataItem);
                   }}
