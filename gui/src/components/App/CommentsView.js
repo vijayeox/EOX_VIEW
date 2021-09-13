@@ -59,13 +59,20 @@ class CommentsView extends React.Component {
         this.getEntityPage().then((entityPage) => {
           if (entityPage.data) {
             this.setState({ entityConfig: entityPage.data });
-            this.generateViewButton(entityPage.data.enable_auditlog);
+            this.generateViewButton(entityPage.data.enable_auditlog, this.disableHeaderButtons(entityData));
           }
           this.fetchCommentData();
         });
       }
     });
     this.setState({ emojis: emojisData });
+  }
+
+  disableHeaderButtons(entityData){
+    return entityData?.content.
+      find((c) => c?.type === 'TabSegment')?.content?.tabs?.
+      find((tab) => tab?.name === 'Comments')?.content?.
+      find((c) => c.disableHeaderButtons)
   }
 
   async getComments() {
@@ -162,7 +169,7 @@ class CommentsView extends React.Component {
       this.loader.destroy();
     });
   }
-  generateViewButton(enableAuditLog) {
+  generateViewButton(enableAuditLog, disableHeaderButtons) {
     let gridToolbarContent = [];
     let filePage = [{ type: "EntityViewer", fileId: this.state.fileId }];
     let pageContent = {
@@ -222,6 +229,7 @@ class CommentsView extends React.Component {
       detail: { customActions: gridToolbarContent },
       bubbles: true
     });
+    if(disableHeaderButtons) return;
     document.getElementById(this.appId + "_breadcrumbParent").dispatchEvent(ev);
   }
   getUserData = (query, callback) => {
