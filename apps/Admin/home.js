@@ -1,16 +1,23 @@
 import { React, ReactDOM } from "oxziongui";
-import $ from "jquery";
 import Organization from "./modules/Organization";
 import Project from "./modules/Project";
 import User from "./modules/User";
 import Team from "./modules/Team";
-import Kra from "./modules/Kra";
+import Goal from "./modules/Goal";
 import Role from "./modules/Roles";
 import Announcement from "./modules/Announcement";
 import Errorlog from "./modules/Errorlog";
-// import { slide as Menu } from "react-burger-menu";
+import SideNav, {
+  Toggle,
+  Nav,
+  NavItem,
+  NavIcon,
+  NavText,
+} from "@trendmicro/react-sidenav";
+import "@trendmicro/react-sidenav/dist/react-sidenav.css";
+import Menu from "./modules/Menu";
 
-class Home extends React.Component {
+export default class Home extends React.Component {
   showSettings(event) {
     event.preventDefault();
   }
@@ -22,13 +29,12 @@ class Home extends React.Component {
     this.userProfile = this.userProfile.key;
     this.state = {
       windowSize: undefined,
-      showMenu: false
+      displaySection: "Menu",
     };
     this.resizeEvent = this.resizeEvent.bind(this);
     document
       .getElementsByClassName("Window_Admin")[0]
       .addEventListener("windowResize", this.resizeEvent, false);
-    this.hideMenu = this.hideMenu.bind(this);
   }
 
   resizeEvent = () => {
@@ -41,235 +47,292 @@ class Home extends React.Component {
     }, 100);
   };
 
-  componentDidMount() {
-    $(document).ready(function () {
-      $("#componentsBox").hide();
-
-      $(document).on("click", ".moduleBtn", function () {
-        $(".DashBG").fadeOut(), $("#componentsBox").show();
-      });
-
-      $(document).on("click", ".moduleBtn", function () {
-        $(".DashBG").fadeOut(), $("#componentsBox").show();
-      });
+  onSelect = (selected) => {
+    this.setState({
+      displaySection: selected,
     });
-    this.resizeEvent();
+  };
+
+  onIconClickHandler = (content) => {
+    this.onSelect(content)
   }
 
-  showMainPage = () => {
-    this.hideMenu();
-    $("#componentsBox").hide(), $(".DashBG").show();
-    ReactDOM.render(<div />, document.getElementById("componentsBox"));
-  };
-
-  hideMenu = () => {
-    this.setState({
-      showMenu: false
-    });
-  };
-
-  showMenu = () => {
-    this.setState({
-      showMenu: true
-    });
-  };
-
-  createBlock = () => {
-    var appsList = [
-      {
-        name: "Account",
-        api: "ACCOUNT",
-        icon: "apps/Admin/org.svg",
-        component: Organization
-      },
-      {
-        name: "Users",
-        api: "USER",
-        icon: "apps/Admin/115-manager.svg",
-        component: User
-      },
-      {
-        name: "Roles",
-        api: "ROLE",
-        icon: "apps/Admin/005-workflow.svg",
-        component: Role
-      },
-      {
-        name: "Teams",
-        api: "TEAM",
-        icon: "apps/Admin/group.svg",
-        component: Team
-      },
-      {
-        name: "Kras",
-        api: "KRA",
-        icon: "apps/Admin/icons8-target-100.png",
-        component: Kra
-      },
-      {
-        name: "Projects",
-        api: "PROJECT",
-        icon: "apps/Admin/101-project.svg",
-        component: Project
-      },
-      {
-        name: "Announcement",
-        api: "ANNOUNCEMENT",
-        icon: "apps/Admin/131-laptop.svg",
-        component: Announcement,
-        type: "internal"
-      }
-    ];
-    let table = [];
-
-    appsList.map((currentValue, index) => {
-      table.push(
-        this.userProfile.privileges["MANAGE_" + currentValue.api + "_WRITE"] ? (
-          <div
-            key={index}
-            className="moduleBtn"
-            onClick={() => {
-              this.hideMenu();
-              ReactDOM.render(
-                React.createElement(currentValue.component, {
-                  args: this.core,
-                  userProfile: this.userProfile,
-                  menu: this.showMenu,
-                  name: currentValue.name
-                }),
-                document.getElementById("componentsBox")
-              );
-            }}
-          >
-            <div className="block d1">
-              <img src={currentValue.icon} />
-            </div>
-            <div className="titles">{currentValue.name}</div>
-          </div>
-        ) : null
-      );
-    });
-    table.push(
-      <React.Fragment key={15}>
-        {this.userProfile.privileges.MANAGE_ERROR_WRITE ? (
-          <div onClick={this.errorLogAdminClick} className="moduleBtn">
-            <div className="block d1">
-              <img src="apps/Admin/org.svg" />
-            </div>
-            <div className="titles">Errorlog</div>
-          </div>
-        ) : null}
-        {this.userProfile.privileges.MANAGE_MAILADMIN_WRITE ? (
-          <div key={10} onClick={() => this.launchExternalApp("MailAdmin")}>
-            <div className="block d1">
-              <img src="apps/Admin/091-email-1.svg" />
-            </div>
-            <div className="titles">Mail Admin</div>
-          </div>
-        ) : null}
-
-        {this.userProfile.privileges.MANAGE_CRMADMIN_WRITE ? (
-          <div onClick={() => this.launchExternalApp("CRMAdmin")}>
-            <div className="block d1">
-              <img src="apps/Admin/crm-icon.svg" />
-            </div>
-            <div className="titles">CRM Admin</div>
-          </div>
-        ) : null}
-
-        {this.userProfile.privileges.MANAGE_TASKADMIN_WRITE ? (
-          <div onClick={() => this.launchExternalApp("TaskAdmin")}>
-            <div className="block d1">
-              <img src="apps/Admin/008-development-2.svg" />
-            </div>
-            <div className="titles">PM Admin</div>
-          </div>
-        ) : null}
-        {this.userProfile.privileges.MANAGE_APPBUILDER_READ ? (
-          <div onClick={() => this.launchExternalApp("EOXAppBuilder")}>
-            <div className="block d1">
-              <img src="apps/Admin/008-development-2.svg" />
-            </div>
-            <div className="titles">App Builder</div>
-          </div>
-        ) : null}
-
-        {this.userProfile.privileges.MANAGE_OIBUILDER_READ ? (
-          <div onClick={() => this.launchExternalApp("Analytics")}>
-            <div className="block d1">
-              <img src="apps/Admin/014-analytics.svg" />
-            </div>
-            <div className="titles">OI Studio</div>
-          </div>
-        ) : null}
-      </React.Fragment>
-    );
-    return table;
-  };
-
-  launchExternalApp = appName => {
-    this.hideMenu();
+  launchExternalApp = (appName) => {
     this.core.run(appName);
-  };
-
-  errorLogAdminClick = e => {
-    this.hideMenu();
-    ReactDOM.render(
-      React.createElement(Errorlog, {
-        args: this.core,
-        userProfile: this.userProfile,
-        menu: this.showMenu
-      }),
-      document.getElementById("componentsBox")
-    );
+    let name = document.getElementsByClassName("Window_Admin");
+    if (onClick(name)) {
+      this.state.displaySection = "Menu";
+    }
   };
 
   render() {
+    let sectionContent;
+    switch (this.state.displaySection) {
+      case "Menu":
+        sectionContent = (
+          <Menu
+            args={this.core}
+            setTitle={this.setTitle}
+            userProfile={this.userProfile}
+            name="Menu"
+            key={"Menu"}
+            onIconClick={this.onIconClickHandler}
+          />
+        );
+        break;
+      case "Account":
+        if (this.userProfile.privileges["MANAGE_ACCOUNT_WRITE"]) {
+          sectionContent = (
+            <Organization
+              args={this.core}
+              setTitle={this.setTitle}
+              key={""}
+              userProfile={this.userProfile}
+              name="Account"
+              key="Account"
+            />
+          );
+        }
+        break;
+      case "User":
+        if (this.userProfile.privileges["MANAGE_USER_WRITE"]) {
+          sectionContent = (
+            <User
+              args={this.core}
+              setTitle={this.setTitle}
+              userProfile={this.userProfile}
+              name="Users"
+              key="Users"
+            />
+          );
+        }
+        break;
+      case "Role":
+        if (this.userProfile.privileges["MANAGE_ROLE_WRITE"]) {
+          sectionContent = (
+            <Role
+              args={this.core}
+              setTitle={this.setTitle}
+              userProfile={this.userProfile}
+              name="Roles"
+              key="Roles"
+            />
+          );
+        }
+        break;
+      case "Team":
+        if (this.userProfile.privileges["MANAGE_TEAM_WRITE"]) {
+          sectionContent = (
+            <Team
+              args={this.core}
+              setTitle={this.setTitle}
+              userProfile={this.userProfile}
+              name="Teams"
+              key="Teams"
+            />
+          );
+        }
+        break;
+      case "Goal":
+        if (this.userProfile.privileges["MANAGE_KRA_WRITE"]) {
+          sectionContent = (
+            <Goal
+              args={this.core}
+              setTitle={this.setTitle}
+              userProfile={this.userProfile}
+              name="Kras"
+              key="Kras"
+            />
+          );
+        }
+        break;
+      case "Project":
+        if (this.userProfile.privileges["MANAGE_PROJECT_WRITE"]) {
+          sectionContent = (
+            <Project
+              args={this.core}
+              setTitle={this.setTitle}
+              userProfile={this.userProfile}
+              name="Projects"
+              key="Projects"
+            />
+          );
+        }
+        break;
+      case "Announcement":
+        if (this.userProfile.privileges["MANAGE_ANNOUNCEMENT_WRITE"]) {
+          sectionContent = (
+            <Announcement
+              args={this.core}
+              setTitle={this.setTitle}
+              userProfile={this.userProfile}
+              name="Announcement"
+              key="Announcement"
+            />
+          );
+        }
+        break;
+      case "Errorlog":
+        if (this.userProfile.privileges["MANAGE_ERROR_WRITE"]) {
+          sectionContent = (
+            <Errorlog
+              args={this.core}
+              setTitle={this.setTitle}
+              userProfile={this.userProfile}
+              name="Errorlog"
+              key="Errorlog"
+            />
+          );
+        }
+        break;
+    }
+
     return (
       <div
         id="admin-outer-container"
         style={{
           backgroundColor: "#ffffff",
           backgroundSize: "cover",
-          height: this.state.windowSize || "32rem"
+          height: this.state.windowSize || "32rem",
         }}
       >
-        {/* <Menu
-          width={"15rem"}
-          isOpen={this.state.showMenu}
-          disableAutoFocus
-          pageWrapId={"admin-page-wrap"}
-          outerContainerId={"admin-outer-container"}
-          customBurgerIcon={false}
-          onStateChange={e => {
-            this.setState({
-              showMenu: e.isOpen
-            });
-          }}
-          styles={{
-            bmOverlay: {
-              height: this.state.windowSize,
-              display: this.state.showMenu ? "flex" : "none"
-            },
-            bmMenu: { height: this.state.windowSize }
-          }}
+        <SideNav
+          onSelect={this.onSelect}
+          style={({ overflowY: "scroll" }, { overflowX: "hidden" })}
         >
-          <div
-            onClick={this.showMainPage}
-            style={{ padding: "0.5rem 0 0.5rem 0px", outline: "none" }}
-          >
-            <div className="titles">Main Page</div>
-          </div>
+          <SideNav.Toggle />
+          <SideNav.Nav defaultSelected={this.state.displaySection}>
+            <NavItem eventKey="Menu" key="Menu" title="Home">
+              <NavIcon>
+                <i className="fad fa-home" aria-hidden="true"></i>
+              </NavIcon>
+              <NavText>Home</NavText>
+            </NavItem>
 
-          <div className="dashIcons">{this.createBlock()}</div>
-        </Menu> */}
+            <NavItem eventKey="Account" key="Account" title="Account">
+              <NavIcon>
+                <i className="fad fa-users-cog" aria-hidden="true"></i>
+              </NavIcon>
+              <NavText>Account</NavText>
+            </NavItem>
 
-        <div className="DashBG" style={{ height: "100%" }} id="admin-page-wrap">
-          <div className="dashIcons">{this.createBlock()}</div>
+            <NavItem eventKey="User" key="User" title="Users">
+              <NavIcon>
+                <i className="fad fa-user" aria-hidden="true"></i>
+              </NavIcon>
+              <NavText>Users</NavText>
+            </NavItem>
+
+            <NavItem eventKey="Role" key="Role" title="Roles">
+              <NavIcon>
+                <i className="fad fa-person-sign" aria-hidden="true"></i>
+              </NavIcon>
+              <NavText>Roles</NavText>
+            </NavItem>
+
+            <NavItem eventKey="Team" key="Team" title="Teams">
+              <NavIcon>
+                <i className="fad fa-users" aria-hidden="true"></i>
+              </NavIcon>
+              <NavText>Teams</NavText>
+            </NavItem>
+
+            <NavItem eventKey="Errorlog" key="Errorlog" title="Errorlog">
+              <NavIcon>
+                <i
+                  className="fad fa-bug faa-bug animated-hover"
+                  aria-hidden="true"
+                ></i>
+              </NavIcon>
+              <NavText>Errorlog</NavText>
+            </NavItem>
+
+            <NavItem eventKey="Goal" key="Goal" title="Goals">
+              <NavIcon>
+                <i className="fad fa-bullseye-arrow" aria-hidden="true"></i>
+              </NavIcon>
+              <NavText>Goals</NavText>
+            </NavItem>
+
+            <NavItem eventKey="Project" key="Project" title="Projects">
+              <NavIcon>
+                <i className="fad fa-cogs" aria-hidden="true"></i>
+              </NavIcon>
+              <NavText>Projects</NavText>
+            </NavItem>
+
+            <NavItem eventKey="Announcement" key="Announcement" title="Announcement">
+              <NavIcon>
+                <i className="fad fa-bullhorn" aria-hidden="true"></i>
+              </NavIcon>
+              <NavText>Announcement</NavText>
+            </NavItem>
+
+            <NavItem
+              eventKey={this.userProfile.privileges.MANAGE_MAILADMIN_WRITE}
+              key={this.userProfile.privileges.MANAGE_MAILADMIN_WRITE}
+              onClick={() => this.launchExternalApp("MailAdmin")} title="Mail Admin"
+            >
+              <NavIcon>
+                <i className="fad fa-mail-bulk" aria-hidden="true"></i>
+              </NavIcon>
+              <NavText>Mail Admin</NavText>
+            </NavItem>
+
+            <NavItem
+              eventKey={this.userProfile.privileges.MANAGE_CRMADMIN_WRITE}
+              key={this.userProfile.privileges.MANAGE_CRMADMIN_WRITE}
+              onClick={() => this.launchExternalApp("CRMAdmin")} title="CRM Admin"
+            >
+              <NavIcon>
+                <i className="fad fa-user-tie" aria-hidden="true"></i>
+              </NavIcon>
+              <NavText>CRM Admin</NavText>
+            </NavItem>
+
+            <NavItem
+              eventKey={this.userProfile.privileges.MANAGE_TASKADMIN_WRITE}
+              key={this.userProfile.privileges.MANAGE_TASKADMIN_WRITE}
+              onClick={() => this.launchExternalApp("TaskAdmin")} title="PM Admin"
+            >
+              <NavIcon>
+                <i className="fad fa-project-diagram" aria-hidden="true"></i>
+              </NavIcon>
+              <NavText>PM Admin</NavText>
+            </NavItem>
+
+            <NavItem
+              eventKey={this.userProfile.privileges.MANAGE_APPBUILDER_READ}
+              key={this.userProfile.privileges.MANAGE_APPBUILDER_READ}
+              onClick={() => this.launchExternalApp("EOXAppBuilder")} title="App Builder"
+            >
+              <NavIcon>
+                <i className="fad fa-desktop-alt" aria-hidden="true"></i>
+              </NavIcon>
+              <NavText>App Builder</NavText>
+            </NavItem>
+
+            <NavItem
+              eventKey={this.userProfile.privileges.MANAGE_OIBUILDER_READ}
+              key={this.userProfile.privileges.MANAGE_OIBUILDER_READ}
+              onClick={() => this.launchExternalApp("Analytics")} title="OI Studio"
+            >
+              <NavIcon>
+                <i className="fad fa-chart-bar" aria-hidden="true"></i>
+              </NavIcon>
+              <NavText>OI Studio</NavText>
+            </NavItem>
+          </SideNav.Nav>
+        </SideNav>
+
+        <div
+          className="DashBG"
+          style={({ height: "100%" }, { paddingLeft: "65px" })}
+          id="admin-page-wrap"
+        >
+          {sectionContent}
         </div>
-        <div id="componentsBox" style={{ height: "inherit" }} />
       </div>
     );
   }
 }
-export default Home;

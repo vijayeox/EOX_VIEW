@@ -743,7 +743,9 @@ export default class OX_Grid extends React.Component {
           true,
           action.name,
           mergeRowData,
-          copyPageContent
+          copyPageContent,
+          undefined,
+          action.popupConfig
         );
       }
     }
@@ -1040,8 +1042,8 @@ OX_Grid.defaultProps = {
   scrollable: "scrollable",
   filterOperators: {
     text: [
-      { text: "grid.filterStartsWithOperator", operator: "startswith" },
       { text: "grid.filterContainsOperator", operator: "contains" },
+      { text: "grid.filterStartsWithOperator", operator: "startswith" },
       { text: "grid.filterEqOperator", operator: "eq" },
       { text: "grid.filterNotContainsOperator", operator: "doesnotcontain" },
       { text: "grid.filterNotEqOperator", operator: "neq" },

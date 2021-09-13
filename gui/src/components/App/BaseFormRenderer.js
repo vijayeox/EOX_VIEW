@@ -559,12 +559,21 @@ class BaseFormRenderer extends React.Component {
                 }
                 route = route + "/submit";
             } else {
-                route = that.appUrl + "/form/" + that.state.formId + "/file";
+                route = that.appUrl + "/file/crud";
                 method = "post";
 
                 if (that.props.route) {
-                    route = that.props.route;
-                    method = "post"
+                    route = that.props.absoluteUrl
+                      ? that.props.route
+                      : that.appUrl + "/" + that.props.route;
+                    method = "post";
+                }
+                if(that.state.fileId){
+                    data.uuid = that.state.fileId;
+                    method = "put"
+                }
+                if (that.state.entity_name) {
+                    data.entity_name = that.state.entity_name;
                 }
                 if (that.state.instanceId) {
                     route = that.appUrl + "/form/" + that.state.formId + "/file/" + that.state.instanceId;
@@ -1490,6 +1499,10 @@ class BaseFormRenderer extends React.Component {
             </div>
         );
     }
+}
+
+BaseFormRenderer.defaultProps = {
+    absoluteUrl : true
 }
 
 export default BaseFormRenderer;

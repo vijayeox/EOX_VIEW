@@ -33,7 +33,7 @@ class Body extends React.Component {
 		this.onToggle = this.onToggle.bind(this);
 		this.state = {
 			isMenuOpen: false,
-			displaySection: SECTION_DATA_SOURCE,
+			displaySection: SECTION_DASHBOARD,
 			sectionData: null,
 			title: ''
 		};
@@ -133,7 +133,7 @@ class Body extends React.Component {
 					onSelect={this.onSelect}
 				>
 					<SideNav.Toggle />
-					<SideNav.Nav defaultSelected={SECTION_DATA_SOURCE}>
+					<SideNav.Nav defaultSelected={SECTION_DASHBOARD}>
 						<NavItem eventKey={SECTION_DATA_SOURCE} key={SECTION_DATA_SOURCE}>
 							<NavIcon>
 								<i className="fad fa-database" aria-hidden="true"></i>
