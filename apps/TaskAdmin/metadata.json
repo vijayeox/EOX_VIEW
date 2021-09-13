@@ -5,7 +5,6 @@
   "server": "server.js",
   "icon": "icon.svg",
   "hidden": true,
-  "fontIcon":"fad fa-project-diagram",
   "icon_white": "icon_white.svg",
   "title": {
     "en_EN": "PPM Admin"

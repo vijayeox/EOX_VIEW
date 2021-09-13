@@ -206,20 +206,7 @@ class PageContent extends React.Component {
             }
           }
         });
-        action.updateOnly
-          ? null
-          : PageNavigation.loadPage(
-              this.appId,
-              this.pageId,
-              pageId,
-              action.icon,
-              true,
-              action.name,
-              mergeRowData,
-              copyPageContent,
-              undefined,
-              action.popupConfig
-            );
+        action.updateOnly ? null : PageNavigation.loadPage(this.appId, this.pageId, pageId, action.icon, true, action.name, mergeRowData, copyPageContent);
       }
     }
   }
@@ -593,10 +580,7 @@ class PageContent extends React.Component {
           />
         );
       } else if (item.type == "Document" || item.type == "HTMLViewer") {
-        var fileData = {
-          ...this.state.currentRow,
-          ...this.state.fileData
-        }
+        var fileData = this.state.fileData ? this.state.fileData : this.state.currentRow;
         var fileId = item.fileId ? item.fileId : item.uuid;
         content.push(
           <HTMLViewer

@@ -29,13 +29,13 @@
  */
 
 .osjs-panel-item[data-name=menu] {
-  display: contents;
+  display: flex;
   align-items: center;
   padding: 0;
   cursor:pointer;
 
   & > div {
-    padding: 0px 0px !important;
+    padding: $base-margin / 1.5;
   }
 }
 
@@ -45,7 +45,7 @@
   padding: 0;
 
   & > div {
-    padding: 0px 5px !important;
+    padding: $base-margin / 1.5;
   }
 }
 

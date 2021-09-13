@@ -27,7 +27,9 @@
  * @author  Anders Evenrud <andersevenrud@gCRM.com>
  * @licence Simplified BSD License
  */
-import { name as applicationName } from "./metadata.json";
+import {
+  name as applicationName
+} from "./metadata.json";
 const baseUrl = process.env.SERVER;
 
 var i, finalposition, finalDimension, finalMaximised, finalMinimised;
@@ -47,11 +49,11 @@ const createIframe = (bus, proc, win, cb) => {
     win.on("blur", () => ref.blur());
 
     // Create message sending wrapper
-    const sendMessage = (msg) => ref.postMessage(msg, baseUrl);
+    const sendMessage = msg => ref.postMessage(msg, baseUrl);
 
     // After connection is established, this handler will process
     // all events coming from iframe.
-    proc.on("message", (data) => {
+    proc.on("message", data => {
       console.warn("[Application", "Iframe sent", data);
       bus.emit(data.method, sendMessage, ...data.args);
     });
@@ -89,16 +91,13 @@ OSjs.make("osjs/packages").register(
     const proc = core.make("osjs/application", {
       args,
       options,
-      metadata,
+      metadata
     });
 
-    let session = core.make("osjs/settings").get("osjs/session");
+    let session = core.make('osjs/settings').get('osjs/session');
     let sessions = Object.entries(session);
     for (i = 0; i < sessions.length; i++) {
-      if (
-        Object.keys(session[i].windows).length &&
-        session[i].name == "CRMAdmin"
-      ) {
+      if (Object.keys(session[i].windows).length && session[i].name == "CRMAdmin"){
         finalposition = session[i].windows[0].position;
         finalDimension = session[i].windows[0].dimension;
         finalMaximised = session[i].windows[0].maximized;
@@ -110,56 +109,48 @@ OSjs.make("osjs/packages").register(
     const win = proc
       .createWindow({
         id: "CRMAdminApplicationWindow",
-        // icon: proc.resource(proc.metadata.icon_white),
-        icon: metadata.fontIcon,
+        icon: proc.resource(proc.metadata.icon_white),
         title: metadata.title.en_EN,
-        dimension: finalDimension
-          ? finalDimension
-          : { width: 860, height: 550 },
+        dimension: finalDimension ? finalDimension : {width: 860, height: 550},
         attributes: {
-          minDimension: { width: 800, height: 500 },
+           minDimension: { width: 800, height: 500 }
         },
         // dimension: {width: 400, height: 400},
-        position: finalposition ? finalposition : { left: 250, top: 0 },
+          position:  finalposition ? finalposition :{left: 250, top: 0}
       })
       .on("destroy", () => proc.destroy())
       // .on('init', () => ref.maximize())
       .render(($content, win) => {
         // win.maximize();
 
-        if (finalMinimised) {
+        if(finalMinimised){
           win.minimize();
         }
-        if (finalMaximised) {
+        if(finalMaximised){
           win.maximize();
         }
         win.attributes.maximizable = true;
         // Create a new bus for our messaging
-        const bus = core.make(
-          "osjs/event-handler",
-          "CRMAdminApplicationWindow"
-        );
+        const bus = core.make("osjs/event-handler", "CRMAdminApplicationWindow");
 
-        const user = core.make("osjs/auth").user();
+        const user = core.make('osjs/auth').user();
         const suffix = `?pid=${proc.pid}&wid=${win.wid}`;
-        // Get path to iframe content
-        const src = proc.resource(
-          baseUrl + "/public/index.php/user/login" + suffix
-        );
-        console.log(src);
+          // Get path to iframe content
+        const src = proc.resource( baseUrl + "/public/index.php/user/login" + suffix);
+        console.log(src)
         // Create DOM element
-        const iframe = createIframe(bus, proc, win, (send) => {
+        const iframe = createIframe(bus, proc, win, send => {
           bus.on("yo", (send, args) =>
             send({
               method: "yo",
-              args: ["OX CRMAdmin says hello"],
+              args: ["OX CRMAdmin says hello"]
             })
           );
 
           // Send the process ID to our iframe to establish communication
           send({
             method: "init",
-            args: [proc.pid],
+            args: [proc.pid]
           });
         });
 

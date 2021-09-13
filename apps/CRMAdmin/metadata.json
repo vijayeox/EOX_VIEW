@@ -6,7 +6,6 @@
   "icon": "icon.svg",
   "hidden": true,
   "icon_white": "icon_white.svg",
-  "fontIcon": "fad fa-user-tie",
   "title": {
     "en_EN": "CRMAdmin"
   },

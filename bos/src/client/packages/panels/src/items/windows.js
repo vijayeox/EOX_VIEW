@@ -28,14 +28,13 @@
  * @licence Simplified BSD License
  */
 
-import { h } from "hyperapp";
-import PanelItem from "../panel-item";
+import {h} from 'hyperapp';
+import PanelItem from '../panel-item';
 
-const mapWindow = (win) => {
+const mapWindow = win => {
   return {
     wid: win.wid,
     icon: win.state.icon,
-    fontIcon: win.state.fontIcon,
     title: win.state.title,
     focused: win.state.focused,
     attributes: Object.assign({}, win.attributes),
@@ -47,7 +46,7 @@ const mapWindow = (win) => {
     restore: () => win.restore(),
     maximize: () => win.maximize(),
     minimize: () => win.minimize(),
-    close: () => win.close(),
+    close: () => win.close()
   };
 };
 
@@ -57,78 +56,69 @@ const mapWindow = (win) => {
  * @desc Window List Panel Item. Also displays launching applications.
  */
 export default class WindowsPanelItem extends PanelItem {
+
   init() {
     if (this.inited) {
       return;
     }
 
-    const filterVisibility = (win) =>
-      typeof win.attributes.visibility === "undefined" ||
-      win.attributes.visibility === "global";
+    const filterVisibility = win => typeof win.attributes.visibility === 'undefined' ||
+      win.attributes.visibility === 'global';
 
-    const actions = super.init(
-      {
-        launchers: [],
-        windows: this.core
-          .make("osjs/windows")
-          .list()
-          .filter((win) => win.inited || win.rendered)
-          .filter(filterVisibility)
-          .map(mapWindow),
+    const actions = super.init({
+      launchers: [],
+      windows: this.core.make('osjs/windows').list()
+        .filter(win => win.inited || win.rendered)
+        .filter(filterVisibility)
+        .map(mapWindow)
+    }, {
+      add: win => state => {
+        const found = state.windows.find(w => w.wid === win.wid);
+        if (found) {
+          return state;
+        }
+
+        const windows = state.windows
+          .concat([win])
+          .filter(win => !win.inited || !win.rendered)
+          .filter(filterVisibility);
+
+        return {windows};
       },
-      {
-        add: (win) => (state) => {
-          const found = state.windows.find((w) => w.wid === win.wid);
-          if (found) {
-            return state;
-          }
 
-          const windows = state.windows
-            .concat([win])
-            .filter((win) => !win.inited || !win.rendered)
-            .filter(filterVisibility);
+      remove: win => ({windows}) => {
+        const foundIndex = windows.findIndex(w => w.wid === win.wid);
+        if (foundIndex !== -1) {
+          windows.splice(foundIndex, 1);
 
-          return { windows };
-        },
+          return {windows};
+        }
 
-        remove:
-          (win) =>
-          ({ windows }) => {
-            const foundIndex = windows.findIndex((w) => w.wid === win.wid);
-            if (foundIndex !== -1) {
-              windows.splice(foundIndex, 1);
+        return {};
+      },
 
-              return { windows };
-            }
+      change: win => state => {
+        const windows = state.windows;
+        const foundIndex = state.windows.findIndex(w => w.wid === win.wid);
+        if (foundIndex !== -1) {
+          windows[foundIndex] = win;
+        }
 
-            return {};
-          },
+        return {windows};
+      },
 
-        change: (win) => (state) => {
-          const windows = state.windows;
-          const foundIndex = state.windows.findIndex((w) => w.wid === win.wid);
-          if (foundIndex !== -1) {
-            windows[foundIndex] = win;
-          }
+      addLauncher: name => state => ({launchers: [...state.launchers, name]}),
 
-          return { windows };
-        },
+      removeLauncher: name => state => {
+        const foundIndex = state.launchers.findIndex(n => n === name);
+        const launchers = [...state.launchers];
+        if (foundIndex !== -1) {
+          launchers.splice(foundIndex, 1);
+        }
 
-        addLauncher: (name) => (state) => ({
-          launchers: [...state.launchers, name],
-        }),
-
-        removeLauncher: (name) => (state) => {
-          const foundIndex = state.launchers.findIndex((n) => n === name);
-          const launchers = [...state.launchers];
-          if (foundIndex !== -1) {
-            launchers.splice(foundIndex, 1);
-          }
-
-          return { launchers };
-        },
+        return {launchers};
       }
-    );
+    });
 
     const onlaunch = (name) => actions.addLauncher(name);
     const onlaunched = (name) => actions.removeLauncher(name);
@@ -136,87 +126,67 @@ export default class WindowsPanelItem extends PanelItem {
     const oncreate = (win) => actions.add(mapWindow(win));
     const onchange = (win) => actions.change(mapWindow(win));
 
-    this.core.on("osjs/application:launch", onlaunch);
-    this.core.on("osjs/application:launched", onlaunched);
-    this.core.on("osjs/window:destroy", ondestroy);
-    this.core.on("osjs/window:render", oncreate);
-    this.core.on("osjs/window:change", onchange);
+    this.core.on('osjs/application:launch', onlaunch);
+    this.core.on('osjs/application:launched', onlaunched);
+    this.core.on('osjs/window:destroy', ondestroy);
+    this.core.on('osjs/window:render', oncreate);
+    this.core.on('osjs/window:change', onchange);
 
-    this.on("destroy", () => {
-      this.core.off("osjs/application:launch", onlaunch);
-      this.core.off("osjs/application:launched", onlaunched);
-      this.core.off("osjs/window:destroy", ondestroy);
-      this.core.off("osjs/window:render", oncreate);
-      this.core.off("osjs/window:change", onchange);
+    this.on('destroy', () => {
+      this.core.off('osjs/application:launch', onlaunch);
+      this.core.off('osjs/application:launched', onlaunched);
+      this.core.off('osjs/window:destroy', ondestroy);
+      this.core.off('osjs/window:render', oncreate);
+      this.core.off('osjs/window:change', onchange);
     });
   }
 
   render(state, actions) {
-    const _ = this.core.make("osjs/locale").translate;
-    const windows = state.windows.map((w) =>
-      h(
-        "div",
-        {
-          // "data-has-image": w.icon ? true : undefined,
-          "data-focused": w.focused ? "true" : "false",
-          onclick: () => w.raise(),
-          oncontextmenu: (ev) => {
-            ev.stopPropagation();
-            ev.preventDefault();
-            this.core.make("osjs/contextmenu").show({
-              position: ev.target,
-              menu: [
-                {
-                  label: w.state.maximized
-                    ? _("LBL_RESTORE")
-                    : _("LBL_MAXIMIZE"),
-                  onclick: () =>
-                    w.attributes.maximizable
-                      ? w.state.maximized
-                        ? w.restore()
-                        : w.maximize()
-                      : null,
-                  disabled: !w.attributes.maximizable,
-                },
-                {
-                  label: w.state.minimized ? _("LBL_RAISE") : _("LBL_MINIMIZE"),
-                  onclick: () =>
-                    w.attributes.minimizable
-                      ? w.state.minimized
-                        ? w.raise()
-                        : w.minimize()
-                      : null,
-                  disabled: !w.attributes.minimizable,
-                },
-                { type: "separator" },
-                {
-                  label: _("LBL_CLOSE"),
-                  onclick: () => (w.attributes.closeable ? w.close() : null),
-                  disabled: !w.attributes.closeable,
-                },
-              ],
-            });
-          },
-          className:
-            "osjs-panel-item--clickable osjs-panel-item--icon in-window",
-        },
-        [
-          h("i", {
-            className: w.icon,
-            // src: w.icon,
-            alt: w.title || "(window)",
-          }),
-          h("span", {}, w.title || "(window)"),
-        ]
-      )
-    );
+    const _ = this.core.make('osjs/locale').translate;
+    const windows = state.windows.map(w => h('div', {
+      'data-has-image': w.icon ? true : undefined,
+      'data-focused': w.focused ? 'true' : 'false',
+      onclick: () => w.raise(),
+      oncontextmenu: ev => {
+        ev.stopPropagation();
+        ev.preventDefault();
+        this.core.make('osjs/contextmenu').show({
+          position: ev.target,
+          menu: [
+            {
+              label: w.state.maximized ? _('LBL_RESTORE') : _('LBL_MAXIMIZE'),
+              onclick: () => w.attributes.maximizable ? (w.state.maximized ? w.restore() : w.maximize()) : null,
+              disabled: !w.attributes.maximizable
+            },
+            {
+              label: w.state.minimized ? _('LBL_RAISE') : _('LBL_MINIMIZE'),
+              onclick: () => w.attributes.minimizable ? (w.state.minimized ? w.raise() : w.minimize()) : null,
+              disabled: !w.attributes.minimizable
+            },
+            {type: 'separator'},
+            {
+              label: _('LBL_CLOSE'),
+              onclick: () => w.attributes.closeable ? w.close() : null,
+              disabled: !w.attributes.closeable
+            }
+          ]
+        });
+      },
+      className: 'osjs-panel-item--clickable osjs-panel-item--icon in-window'
+    }, [
+      h('img', {
+        src: w.icon,
+        alt: w.title || '(window)',
+      }),
+      h('span', {}, w.title || '(window)'),
+    ]));
 
-    const special = state.launchers.map((name) =>
-      h("div", {}, h("div", {}, h("span", {}, `Launching '${name}'`)))
-    );
+    const special = state.launchers.map(name => h('div', {
+    }, h('div', {}, h('span', {}, `Launching '${name}'`))));
 
     const children = [...windows, ...special];
 
-    return super.render("windows", children);
+    return super.render('windows', children);
   }
+
 }

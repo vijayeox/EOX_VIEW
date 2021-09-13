@@ -18,7 +18,7 @@ body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown) {
 
 .Window_Admin {
   $primary-color: #275362;
-  @import "~@fortawesome/fontawesome-pro/css/all.css";
+
   @import url("https://fonts.googleapis.com/css?family=Didact+Gothic");
   @import "./node_modules/bootstrap/dist/css/bootstrap.css";
 
@@ -770,47 +770,21 @@ body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown) {
 
   .gridTemplateWrap {
     .k-grid {
-      margin: 0px 15px;
+      margin: 15px;
       width: 100%;
       font-size: 14px;
-
-      .k-grid-header,
-      .k-grid-footer {
-        padding-right: 0px !important;
-      }
-
-      .k-toolbar {
-        padding-bottom: 10px;
-      }
 
       .k-pager-wrap .k-pager-sizes > select {
         width: 5rem;
       }
     }
   }
-  .GridToolBar {
-    margin-bottom: 25px;
-    > h5 {
-      margin-right: auto !important;
-    }
-  }
 
-  .GridCustomStyle {
-    margin-left: 15px;
-    .k-widget {
-      border-color: rgba(33, 37, 41, 0.125);
-      border-width: 1px;
-      border-style: solid;
-    }
-  }
   .k-header.k-grid-toolbar {
     border: unset;
-    padding: 10px;
+    padding: 10px 10px 10px 10px;
   }
 
-  .k-grid-header .k-grid-draggable-header {
-    margin-top: 20px;
-  }
   .k-tooltip-validation {
     color: rgb(212, 206, 206);
     display: none !important;
@@ -915,10 +889,9 @@ body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown) {
   #pageTitle {
     font-size: 25px;
     color: #183651;
-    padding-top: 1px;
+    padding-top: 5px;
     font-family: "Century Gothic", "Futura", "Didact Gothic", san-serif;
     font-weight: 500;
-    z-index: 99;
   }
 
   .adminTitleBar {
@@ -1163,79 +1136,4 @@ body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown) {
 
 .k-widget.k-grid {
   margin-bottom: 4rem;
-  margin-top: -40px;
-}
-
-.sidenav---sidenav---_2tBP {
-  background: #275362 !important;
-}
-
-div.desk {
-  text-align: center;
-  padding: 1px 1px 1px 1px;
-  border: 0px solid rgba(0, 0, 0, 0.125);
-  border-radius: 1.25rem;
-  top: 12px;
-  left: 17px;
-  height: auto;
-  width: 140px;
-  display: inline-table;
-  margin: 20px;
-  cursor: pointer;
-  background-color: white;
-  box-shadow: #26394d 0px 10px 30px 0px;
-}
-
-div.desk .header {
-  background-color: transparent;
-  color: #275362;
-  padding: 8px;
-  font-size: 40px;
-  border-radius: 1.25rem;
-}
-
-div.desk .header .fad {
-  font-weight: lighter !important;
-}
-
-div.desk .text {
-  color: #275362;
-  font-weight: 100;
-  font-size: 18px;
-}
-
-div.desk:hover {
-  box-shadow: 0px 0px 20px 0px #26394d, 0px 10px 20px 0px #26394d;
-  transform: scale(1.2);
-  transition: all 0.2s ease-in-out;
-}
-
-div.header {
-  background-color: white;
-  color: #275362;
-  padding: 10px;
-  font-size: 40px;
-  border-radius: 1.25rem;
-}
-
-div.text {
-  color: #275362;
-  font-weight: 600;
-  font-size: 22px;
-}
-
-div.iconTitle {
-  padding: 10px;
-  text-align: center;
-  display: flex;
-  flex-wrap: wrap;
-  height: fit-content;
-  justify-content: center;
-  align-content: space-between;
-}
-
-.icon-title {
-  margin: 10px;
-  flex-direction: column;
-  display: contents;
 }

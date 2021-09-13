@@ -1,15 +1,23 @@
 const Dotenv = require('dotenv-webpack')
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+// const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const TerserPlugin = require("terser-webpack-plugin");
+// const NodePolyfillPlugin = require("node-polyfill-webpack-plugin")
 
 const mode = process.env.NODE_ENV || 'development';
 const minimize = mode === 'production';
 const plugins = [];
 
-if (mode === 'production') { }
+if (mode === 'production') {
+  // plugins.push(new OptimizeCSSAssetsPlugin({
+  //   cssProcessorOptions: {
+  //     discardComments: true
+  //   },
+  // }));
+}
+
 module.exports = {
   mode: (mode !== 'development' ? 'production' : mode),
   devtool: 'source-map',
@@ -18,12 +26,10 @@ module.exports = {
       path.resolve(__dirname, 'index.js'),
       path.resolve(__dirname, 'index.scss')
     ],
-    'widgetEditor': [
-      path.resolve(__dirname, '../../gui/src/components/widget/editor/widgetEditorApp.js'),
-    ]
+    'widgetEditor': path.resolve(__dirname, '../../gui/src/components/widget/editor/widgetEditorApp.js')
   },
   output: {
-    filename: '[name].js', //main.[contentHash].js
+    filename: '[name].js',
     path: __dirname + '/dist'
   },
   externals: {
@@ -34,27 +40,23 @@ module.exports = {
     modules: ['node_modules'],
     alias: {
       react: path.resolve(__dirname, 'node_modules/react'),
-      // OxzionGUI: path.resolve(__dirname, "node_modules/@oxzion/gui/src/")
+      OxzionGUI: path.resolve(__dirname, "../../gui/src/")
     }
   },
   optimization: {
     minimizer: [
-      new CssMinimizerPlugin(),
-      new TerserPlugin(),
+      new TerserPlugin()
     ],
   },
   plugins: [
-    new CopyWebpackPlugin({
-      patterns: [
-        // 'icon.png',
-        // 'icon_white.png',
-        // 'images/',
-        {
-          from: 'node_modules/@progress/kendo-theme-default/dist/all.css',
-          to: 'kendo-theme-default-all.css'
-        },
-      ]
-    }),
+    new CopyWebpackPlugin([
+      'icon.png',
+      'icon_white.png',
+      'images/',
+      { from: path.resolve(__dirname, "../../gui/src/ckeditor/") },
+      { from: 'node_modules/@progress/kendo-theme-default/dist/all.css', to: 'kendo-theme-default-all.css' }
+    ]
+    ),
     new MiniCssExtractPlugin({
       filename: '[name].css',
       chunkFilename: '[id].css'
@@ -63,42 +65,51 @@ module.exports = {
       path: './.env',
       safe: true
     }),
+    // new NodePolyfillPlugin(),
     ...plugins
   ],
   module: {
     rules: [
       {
-        test: /\.html$/,
-        use: ["html-loader"]
-      },
-      {
-        test: /\.(svg|png|jpe?g|gif|webp|)$/,
+        test: /\.(svg|png|jpe?g|gif|webp)$/,
         use: [
           {
             loader: "file-loader",
             options: {
-              name: "[name].[hash].[ext]",
-              outputPath: "images"
+              publicPath: "/apps/Analytics"
             }
           }
         ]
       },
       {
-        test: /\.(woff(2)?|ttf|eot)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        loader: "file-loader",
+        test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        loader: "url-loader",
         options: {
-          name: "[name].[hash].[ext]",
-          outputPath: "font"
+          limit: 10000,
+          mimetype: 'application/font-woff'
         }
+      },
+      {
+        test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        loader: "file-loader"
       },
       {
         test: /\.(sa|sc|c)ss$/,
         use: [
           MiniCssExtractPlugin.loader,
-          'css-loader',
-          'sass-loader',
-        ],
-        sideEffects: true,
+          {
+            loader: "css-loader",
+            options: {
+              sourceMap: true
+            }
+          },
+          {
+            loader: "sass-loader",
+            options: {
+              sourceMap: true
+            }
+          }
+        ]
       },
       {
         test: /\.js$/,
@@ -119,6 +130,12 @@ module.exports = {
             ]
           }
         }
+      },
+      {
+        test: /\.(svg|png|jpe?g|gif|webp)$/,
+        use: [{
+          loader: 'file-loader'
+        }]
       }
     ]
   }

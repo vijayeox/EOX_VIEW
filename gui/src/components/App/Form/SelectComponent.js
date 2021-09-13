@@ -102,20 +102,6 @@ export default class SelectComponent extends Select {
       take: limit,
       skip: skip,
     };
-    let additionalFilters = headers.map;
-    if(Object.keys(additionalFilters).length > 0){
-      Object.keys(additionalFilters).map(item => {
-        let value = this.form.data[item];
-        if(value != "" && value != null && value != undefined){
-          dataState.filter.filters.push({
-            field: additionalFilters[item],
-            operator: "contains",
-            value: value,
-          })
-        }
-      })
-    
-    }
     url += "?filter=[" + JSON.stringify(dataState) + "]";
     console.log(url);
 

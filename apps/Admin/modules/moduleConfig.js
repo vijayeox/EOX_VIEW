@@ -107,7 +107,8 @@ export default {
           },
           width: "150px",
           sortable: false,
-          cell: '{item.media_type=="image"?<td className="tdImage"><img className="text-center circle gridBanner" src={baseUrl+"resource/"+item.media+"?"+new Date()} alt="Logo"/></td>:<td className="flexColCenter"><video className="text-center circle gridBanner"><source src={baseUrl+"resource/"+item.media+"?"+new Date()} type="video/mp4"/></video></td>}',
+          cell:
+            '{item.media_type=="image"?<td className="tdImage"><img className="text-center circle gridBanner" src={baseUrl+"resource/"+item.media+"?"+new Date()} alt="Logo"/></td>:<td className="flexColCenter"><video className="text-center circle gridBanner"><source src={baseUrl+"resource/"+item.media+"?"+new Date()} type="video/mp4"/></video></td>}',
         },
         {
           title: "Name",
@@ -116,7 +117,8 @@ export default {
         {
           title: "Description",
           field: "description",
-          cell: '<td>{item.description ? item.description.slice(0, 150) : "No Description Added"}</td>',
+          cell:
+            '<td>{item.description ? item.description.slice(0, 150) : "No Description Added"}</td>',
         },
         {
           title: "Type",
@@ -227,17 +229,17 @@ export default {
     },
   },
   Kras: {
-    title: "Manage Goals",
+    title: "Manage Kras",
     dialogWindow: DialogContainerKra,
     listConfig: {
       route: "kra",
       defaultFilters: { sort: [{ field: "date_created", dir: "desc" }] },
       toolbarTemplate: (
         <h5 key={Math.random()} style={{ margin: "0px" }}>
-          Goal's List
+          Kra's List
         </h5>
       ),
-      addButton: { title: "Add Goal" },
+      addButton: { title: "Add Kra" },
       columnConfig: [
         {
           title: "Name",
@@ -245,9 +247,9 @@ export default {
         },
       ],
       actions: [
-        { name: "Edit Goal Details", type: "edit", icon: "fa fa-pencil" },
+        { name: "Edit Kra Details", type: "edit", icon: "fa fa-pencil" },
         {
-          name: "Delete Goal",
+          name: "Delete Kra",
           type: "delete",
           icon: "fa fa-trash manageIcons",
           route: "/kra",

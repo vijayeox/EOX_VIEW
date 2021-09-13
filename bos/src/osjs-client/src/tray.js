@@ -42,6 +42,7 @@
  * @desc Handles OS.js Tray Icons
  */
 export default class Tray {
+
   /**
    * Creates the Tray Handler
    *
@@ -78,52 +79,51 @@ export default class Tray {
    * @return {TrayEntry}
    */
   create(options, handler) {
-    const defaultTitle = this.core.make("osjs/locale").translate("LBL_TRAY");
+    const defaultTitle = this.core.make('osjs/locale')
+      .translate('LBL_TRAY');
 
     handler = handler || (() => {});
 
-    const entry = Object.assign(
-      {},
-      {
-        icon: require("./styles/logo-blue-32x32.png").default,
-        title: defaultTitle,
-        onclick: handler,
-        oncontextmenu: handler,
-        handler,
-      },
-      options
-    );
+    const entry = Object.assign({}, {
+      icon: require('./styles/logo-blue-32x32.png'),
+      title: defaultTitle,
+      onclick: handler,
+      oncontextmenu: handler,
+      handler
+    }, options);
 
-    console.debug("Created new tray entry", entry);
+    console.debug('Created new tray entry', entry);
 
     var pos = options.pos;
     var app_array = this.entries;
-    if (pos) {
-      if (app_array[pos]) {
-        do {
+    if (pos) { 
+      if (app_array[pos]){
+        do{
           pos++;
-        } while (app_array[pos]);
+        }while(app_array[pos]);
         app_array[pos] = entry;
-      } else app_array[pos] = entry;
-    } else {
+      }else
+      app_array[pos] = entry;
+    }
+    else{
       app_array.push(entry);
     }
     this.trayEntries[0] = app_array[0];
     for (let index = app_array.length - 1; index > 0; index--) {
-      this.trayEntries[app_array.length - index] = app_array[index];
+      this.trayEntries[ app_array.length - index] = app_array[index];      
     }
-
-    this.core.emit("osjs/tray:create", entry);
-    this.core.emit("osjs/tray:update", this.trayEntries);
+  
+    this.core.emit('osjs/tray:create', entry);
+    this.core.emit('osjs/tray:update', this.trayEntries);
 
     const obj = {
       entry,
-      update: (u) => {
-        Object.keys(u).forEach((k) => (entry[k] = u[k]));
+      update: u => {
+        Object.keys(u).forEach(k => (entry[k] = u[k]));
 
-        this.core.emit("osjs/tray:update", this.trayEntries);
+        this.core.emit('osjs/tray:update', this.trayEntries);
       },
-      destroy: () => this.remove(entry),
+      destroy: () => this.remove(entry)
     };
 
     return obj;
@@ -134,12 +134,13 @@ export default class Tray {
    * @param {TrayEntry} entry The tray entry
    */
   remove(entry) {
-    const foundIndex = this.entries.findIndex((e) => e === entry);
+    const foundIndex = this.entries.findIndex(e => e === entry);
     if (foundIndex !== -1) {
       this.entries.splice(foundIndex, 1);
 
-      this.core.emit("osjs/tray:remove", entry);
-      this.core.emit("osjs/tray:update", this.entries);
+      this.core.emit('osjs/tray:remove', entry);
+      this.core.emit('osjs/tray:update', this.entries);
     }
   }
+
 }

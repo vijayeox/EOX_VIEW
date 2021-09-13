@@ -16,20 +16,17 @@ class Announcement extends React.Component {
       itemInEdit: undefined,
       visible: false,
       permission: {
-        canAdd:
-          this.props.userProfile.privileges[
-            this.moduleConfig.permission.canAdd
-          ],
-        canEdit:
-          this.props.userProfile.privileges[
-            this.moduleConfig.permission.canEdit
-          ],
-        canDelete:
-          this.props.userProfile.privileges[
-            this.moduleConfig.permission.canDelete
-          ],
+        canAdd: this.props.userProfile.privileges[
+          this.moduleConfig.permission.canAdd
+        ],
+        canEdit: this.props.userProfile.privileges[
+          this.moduleConfig.permission.canEdit
+        ],
+        canDelete: this.props.userProfile.privileges[
+          this.moduleConfig.permission.canDelete
+        ]
       },
-      selectedOrg: this.props.userProfile.accountId,
+      selectedOrg: this.props.userProfile.accountId
     };
 
     this.notif = React.createRef();
@@ -47,7 +44,7 @@ class Announcement extends React.Component {
       cancel: this.cancel,
       formAction: "post",
       action: this.OX_Grid.current.refreshHandler,
-      userPreferences: this.props.userProfile.preferences,
+      userPreferences: this.props.userProfile.preferences
     });
   };
 
@@ -61,7 +58,7 @@ class Announcement extends React.Component {
         dataItem +
         "/save",
       {
-        teams: dataObject,
+        teams: dataObject
       },
       "post"
     );
@@ -89,16 +86,16 @@ class Announcement extends React.Component {
           title: "Announcement",
           mainList: "account/" + this.state.selectedOrg + "/teams/list",
           subList: response.data,
-          members: "Teams",
+          members: "Teams"
         },
         manage: {
           postSelected: this.sendTheData,
-          closeDialog: this.toggleDialog,
-        },
+          closeDialog: this.toggleDialog
+        }
       });
       this.setState(
         {
-          visible: !this.state.visible,
+          visible: !this.state.visible
         },
         this.loader.destroy()
       );
@@ -119,14 +116,14 @@ class Announcement extends React.Component {
 
   toggleDialog() {
     this.setState({
-      visible: !this.state.visible,
+      visible: !this.state.visible
     });
   }
 
   edit = (dataItem, required) => {
     dataItem = this.cloneItem(dataItem);
     this.setState({
-      itemInEdit: dataItem,
+      itemInEdit: dataItem
     });
     this.inputTemplate = React.createElement(this.moduleConfig.dialogWindow, {
       args: this.core,
@@ -136,7 +133,7 @@ class Announcement extends React.Component {
       formAction: "put",
       action: this.OX_Grid.current.refreshHandler,
       userPreferences: this.props.userProfile.preferences,
-      diableField: required.diableField,
+      diableField: required.diableField
     });
   };
 
@@ -160,7 +157,7 @@ class Announcement extends React.Component {
       confirmButtonColor: "#d33",
       showCancelButton: true,
       cancelButtonColor: "#3085d6",
-      target: adminWindow,
+      target: adminWindow
     }).then((result) => {
       if (result.value) {
         DeleteEntry(
@@ -184,8 +181,8 @@ class Announcement extends React.Component {
       title: "Actions",
       cell: (e) => this.renderButtons(e, this.listConfig.actions),
       filterCell: {
-        type: "empty",
-      },
+        type: "empty"
+      }
     });
     return columnInfo;
   }
@@ -230,15 +227,15 @@ class Announcement extends React.Component {
           className="k-button"
           style={{
             position: "absolute",
-            top: "1px",
-            right: "4px",
+            top: "7px",
+            right: "10px",
             fontSize: "14px",
-            padding: "8px 0px 8px 8px",
+            padding: "5px 8px"
           }}
         >
           <i className="fa fa-plus-circle" style={{ fontSize: "20px" }}></i>
           <p style={{ margin: "0px", paddingLeft: "10px" }}>
-            {/* {this.listConfig.addButton.title} */}
+            {this.listConfig.addButton.title}
           </p>
         </button>
       );
@@ -247,7 +244,7 @@ class Announcement extends React.Component {
 
   render = () => {
     return (
-      <div style={{ height: "auto" }}>
+      <div style={{ height: "inherit" }}>
         <Notification ref={this.notif} />
         <TitleBar
           title={this.moduleConfig.title}
@@ -264,13 +261,16 @@ class Announcement extends React.Component {
           osjsCore={this.core}
           ref={this.OX_Grid}
           data={
-            "account/" + this.state.selectedOrg + "/" + this.listConfig.route
+            "account/" +
+            this.state.selectedOrg +
+            "/" +
+            this.listConfig.route
           }
           wrapStyle={{
             height: "calc(100% - 72px)",
-            margin: " 0px 0px 0px 15px",
+            margin: "15px",
             position: "relative",
-            top: "5px",
+            top: "5px"
           }}
           onRowClick={(e) => this.edit(e.dataItem, false)}
           filterable={true}
@@ -282,8 +282,8 @@ class Announcement extends React.Component {
           pageable={{ buttonCount: 3, pageSizes: [10, 20, 30], info: true }}
           columnConfig={this.prepareColumnData()}
           gridToolbar={[
-            // this.listConfig.toolbarTemplate,
-            this.createAddButton(),
+            this.listConfig.toolbarTemplate,
+            this.createAddButton()
           ]}
         />
         {this.state.visible && this.addUsersTemplate}

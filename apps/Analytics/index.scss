@@ -4,10 +4,6 @@
   @import "./components/burger-menu.css";
 }
 
-@import "../../gui/src/public/css/dashboardEditor.scss";
-@import "../../gui/src/public/css/sweetalert.css";
-@import "../../gui/src/components/widget/editor/widgetEditorApp.scss";
-
 .osjs-window-header {
   background: #265160;
 }
@@ -82,8 +78,4 @@
 
 .dashboard-filter-field .form-group {
   margin-bottom: 0px !important;
-}
-
-.sidenav---navicon---3gCRo > i {
-  font-size: 20px;
 }
