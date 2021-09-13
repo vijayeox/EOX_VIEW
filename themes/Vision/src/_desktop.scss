@@ -15,19 +15,18 @@ div#appmenu {
 .osjs-panel-item[data-name="windows"] {
   padding: 0px;
   > div {
-    margin: 0px;
+    margin-left: 4px;
   }
 
   & > div[data-focused="false"] {
     opacity: 0.5;
-    border-top: 1px solid #275362;
-    box-shadow: inset 0px 5px 0px -3px #275362;
+    box-shadow: 0px 2px 0px 0px #275362;
+    // color: white;
+    // background-color: #ffffff29;
   }
   & > div[data-focused="true"] {
-    border-top: 1px solid white;
-    box-shadow: inset 0px 5px 0px -3px white;
-    border-top-right-radius: 2px;
-    border-top-left-radius: 1px;
+    box-shadow: 0px 2px 0px 0px white;
+    background-color: #ffffff29;
   }
 }
 .profile-content {

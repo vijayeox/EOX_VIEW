@@ -183,11 +183,16 @@ html {
 }
 
 .osjs-panel-item[data-name="windows"] > div {
-  border: 0px solid #333;
-  background-color: transparent;
-  color: #fff;
+  font-size: 12px;
+  color: white;
+  background-color: #275362;
   border-radius: 0px;
-  border-right: 1px solid rgb(99, 97, 97);
+  padding: 9px 3px;
+  align-self: center;
+
+  img {
+    max-height: 20px;
+  }
 }
 
 .osjs-panel .osjs-panel-item--icon > img {
@@ -198,22 +203,22 @@ html {
   padding: 20px;
 }
 
-.osjs-panel-item[data-name="windows"] {
-  .osjs-panel-item--clickable:hover img {
-    // -webkit-transition: all 200ms ease-in;
-    // -webkit-transform: scale(1.1);
-    // -ms-transition: all 200ms ease-in;
-    // -ms-transform: scale(1.1);
-    // -moz-transition: all 200ms ease-in;
-    // -moz-transform: scale(1.1);
-    // transition: all 200ms ease-in;
-    // transform: scale(1.1);
-  }
+// .osjs-panel-item[data-name="windows"] {
+//   .osjs-panel-item--clickable:hover img {
+//     -webkit-transition: all 200ms ease-in;
+//     -webkit-transform: scale(1.1);
+//     -ms-transition: all 200ms ease-in;
+//     -ms-transform: scale(1.1);
+//     -moz-transition: all 200ms ease-in;
+//     -moz-transform: scale(1.1);
+//     transition: all 200ms ease-in;
+//     transform: scale(1.1);
+//   }
 
-  .osjs-panel-item--clickable:hover {
-    background: #588fa26e;
-  }
-}
+//   .osjs-panel-item--clickable:hover {
+//     background: #588fa26e;
+//   }
+// }
 
 .osjs-panel-item--clickable:hover img {
   // -webkit-transition: all 200ms ease-in;
@@ -239,19 +244,6 @@ html {
   min-height: 2em;
   height: auto;
   align-items: center;
-}
-
-.osjs-panel-item[data-name="windows"] > div {
-  font-size: 12px;
-  color: white;
-  background-color: rgba(255, 255, 255, 0.4);
-  border-radius: 0px;
-  padding: 9px 3px;
-  align-self: center;
-
-  img {
-    max-height: 20px;
-  }
 }
 
 .osjs-panel-item[data-name="menu"] {
