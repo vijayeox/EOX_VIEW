@@ -97,14 +97,15 @@ $primary-color: #275362;
         }
         div:not(:first-child),
         p:not(:first-child) {
-          font-size: 13.25px;
+          font-size: 12px !important;
+          color: #696982;
         }
       }
       .owner-assignee,
       div > div:first-child,
       div > p:first-child {
-        font-size: 12px;
-        color: #696982;
+        font-size: 13.25px !important;
+        color: #000  !important;
       }
       .owner-assignee {
         .owner-assignee-dp {

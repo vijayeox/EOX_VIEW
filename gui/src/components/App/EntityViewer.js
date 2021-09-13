@@ -75,6 +75,12 @@ class EntityViewer extends React.Component {
     const isTaskApp = this.appId === "454a1ec4-eeab-4dc2-8a3f-6a4255ffaee1";
     if (isTaskApp) {
       gridToolbarContent.push(this.getTaskHeader(fileData));
+      setTimeout(() => {
+        const appDescription = document.getElementById(`${this.appId}_description`);
+        if(appDescription){
+          appDescription.innerHTML = fileData?.data?.data?.description;
+        }
+      })
     }
     if (this.state.entityConfig && !this.state.entityConfig.has_workflow) {
       filePage = [
@@ -280,6 +286,7 @@ class EntityViewer extends React.Component {
         var file = fileData.data.data ? fileData.data.data : fileData.data;
         this.setState({ entityId: fileData.data.entity_id, fileData: file });
         this.getEntityPage().then((entityPage) => {
+          console.log(`fileData-`,fileData)
           if(!fileData?.data?.data?.uuid){
             fileData.data.data.uuid = fileData?.data?.uuid;
           }
