@@ -59,7 +59,7 @@ class CommentsView extends React.Component {
         this.getEntityPage().then((entityPage) => {
           if (entityPage.data) {
             this.setState({ entityConfig: entityPage.data });
-            this.generateViewButton(entityPage.data.enable_auditlog, this.disableHeaderButtons(entityData));
+            this.generateViewButton(entityPage.data.enable_auditlog, this.disableHeaderButtons(entityPage.data));
           }
           this.fetchCommentData();
         });
@@ -69,10 +69,14 @@ class CommentsView extends React.Component {
   }
 
   disableHeaderButtons(entityData){
+   try{
     return entityData?.content.
-      find((c) => c?.type === 'TabSegment')?.content?.tabs?.
-      find((tab) => tab?.name === 'Comments')?.content?.
-      find((c) => c.disableHeaderButtons)
+    find((c) => c?.type === 'TabSegment')?.content?.tabs?.
+    find((tab) => tab?.name === 'Comments')?.content?.
+    find((c) => c.disableHeaderButtons)
+   }catch(e){
+     return false;
+   }
   }
 
   async getComments() {
