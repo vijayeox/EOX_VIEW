@@ -11,7 +11,7 @@ import CommentsAttachments from "./CommentsAttachments";
 import { Smile } from 'react-feather'
 import { Picker } from 'emoji-mart'
 import 'emoji-mart/css/emoji-mart.css'
-
+import ActivityLog from "./ActivityLog";
 class CommentsView extends React.Component {
   constructor(props) {
     super(props);
@@ -42,7 +42,8 @@ class CommentsView extends React.Component {
       userList: [],
       emojis: [],
       showModal: false,
-      imageDetails: {}
+      imageDetails: {},
+      showAuditLog: false
     };
   }
 
@@ -67,6 +68,12 @@ class CommentsView extends React.Component {
     });
     this.setState({ emojis: emojisData });
   }
+  callAuditLog() {
+    this.setState({ showAuditLog: true });
+  }
+  closeAuditLog = () => {
+    this.setState({ showAuditLog: false });
+  };
 
   async getComments() {
     let helper = this.core.make("oxzion/restClient");
@@ -474,7 +481,15 @@ class CommentsView extends React.Component {
     var that = this;
     if (this.state.dataReady) {
       return (
-        <div className='commentsPage'>          
+        <div className='commentsPage'> 
+          {this.state.showAuditLog ? (
+            <ActivityLog
+              cancel={this.closeAuditLog}
+              appId={this.appId}
+              fileId={this.state.fileId}
+              core={this.core}
+            />
+          ) : <div>
           <FileAttachment
             show={this.state.showModal}
             onHide={() => this.setModalShow(false, null)}
@@ -662,7 +677,9 @@ class CommentsView extends React.Component {
             >
               <i className='fa fa-paper-plane'></i>
             </Button>
-          </div>
+          </div></div>}
+          
+          
         </div>
       );
     } else {

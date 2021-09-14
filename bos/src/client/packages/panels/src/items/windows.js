@@ -207,6 +207,16 @@ export default class WindowsPanelItem extends PanelItem {
             alt: w.title || "(window)",
           }),
           h("span", {}, w.title || "(window)"),
+          //onclosing the app through panel causes contains(null)issue -In progress
+          // h("i", {
+          //   className: "fad fa-times",
+          //   style: {
+          //     marginLeft: "0.3em",
+          //     marginRight: "0px",
+          //     lineHeight: "13px",
+          //   },
+          //   onclick: () => w.close(),
+          // }),
         ]
       )
     );

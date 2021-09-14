@@ -39,7 +39,7 @@ $direction-list: "nw" "sw" "ne" "se" "n" "s" "w" "e";
   z-index: 10;
   position: absolute;
   min-width: 4px;
-  min-height: 1em;
+  min-height: 0.1em;
 
   &[data-direction^="n"] {
     top: -$resize-handle-size;
@@ -94,7 +94,7 @@ $direction-list: "nw" "sw" "ne" "se" "n" "s" "w" "e";
 
   & > div {
     height: auto;
-    padding: 5px;
+    padding: 0px 5px 0px 5px;
   }
 }
 

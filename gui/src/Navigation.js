@@ -6,7 +6,7 @@ import { Chip } from "@progress/kendo-react-buttons";
 import Requests from "./Requests";
 import Notification from "./Notification";
 import ReactDOM from 'react-dom';
-import {render} from 'react-dom';
+import { render } from 'react-dom';
 
 class Navigation extends React.Component {
   constructor(props) {
@@ -34,10 +34,10 @@ class Navigation extends React.Component {
         this.homepage = this.props.menus[0];
       }
     } else {
-      Requests.getMenulist(this.core,this.appId).then((response) => {
+      Requests.getMenulist(this.core, this.appId).then((response) => {
         this.props.menuLoad(response["data"]);
         if (response["data"] && response["data"][0]) {
-          if(response["data"][0].submenu){
+          if (response["data"][0].submenu) {
             this.homepage = response["data"][0].submenu[0];
           } else {
             this.homepage = response["data"][0];
@@ -57,7 +57,7 @@ class Navigation extends React.Component {
           history.push("/");
         } else if (this.params && this.params.fileId) {
           this.props.selectLoad(this.homepage);
-          this.addPage({detail:{pageContent:[{type:"EntityViewer",fileId: this.params.fileId}],title: "View",icon: "fa fa-eye",fileId:this.params.fileId}})
+          this.addPage({ detail: { pageContent: [{ type: "EntityViewer", fileId: this.params.fileId }], title: "View", icon: "fa fa-eye", fileId: this.params.fileId } })
           // this.pageActive(this.params.page);
           history.push("/");
         } else if (this.params && this.params.activityId) {
@@ -103,7 +103,7 @@ class Navigation extends React.Component {
       });
     }
   }
-  
+
   pageActive(pageId) {
     if (document.getElementById(pageId + "_page")) {
       document.getElementById(pageId + "_page").classList.remove("page-inactive");
@@ -126,39 +126,39 @@ class Navigation extends React.Component {
   addPage = (e) => {
     var pages = this.state.pages;
     var that = this;
-    if(e.detail.fileId){
-      var filePage = [{type:"EntityViewer",fileId:e.detail.fileId}]
-      var pageContent = {pageContent: filePage,title: "View",icon: "fa fa-eye",fileId: e.detail.fileId};
-      if(!this.checkIfEntityViewerPageExists(pageContent)){
+    if (e.detail.fileId) {
+      var filePage = [{ type: "EntityViewer", fileId: e.detail.fileId }]
+      var pageContent = { pageContent: filePage, title: "View", icon: "fa fa-eye", fileId: e.detail.fileId };
+      if (!this.checkIfEntityViewerPageExists(pageContent)) {
         pages.push(pageContent)
       } else {
         pages.splice(pages.length - 1, 1);
         this.setState({
           pages: pages,
         });
-        setTimeout(function(){ 
-          that.addPage({detail: pageContent});
+        setTimeout(function () {
+          that.addPage({ detail: pageContent });
         }, 1000);
       }
     } else {
-      if(!this.checkIfEntityViewerPageExists(e.detail)){
+      if (!this.checkIfEntityViewerPageExists(e.detail)) {
         pages.push(e.detail)
       } else {
         pages.splice(pages.length - 1, 1);
         this.setState({
           pages: pages,
         });
-        setTimeout(function(){ 
-          that.addPage({detail: e.detail});
+        setTimeout(function () {
+          that.addPage({ detail: e.detail });
         }, 1000);
       }
     }
     if (e.detail.parentPage && document.getElementById(e.detail.parentPage + "_page")) {
       this.pageInActive(e.detail.parentPage,
         e.detail.popupConfig ? true : false
-        );
+      );
     } else {
-      if(pages[pages.length - 2] && pages[pages.length - 2].pageId){
+      if (pages[pages.length - 2] && pages[pages.length - 2].pageId) {
         pages.length > 0 ? this.pageInActive(pages[pages.length - 2].pageId) : null;
       }
     }
@@ -171,21 +171,21 @@ class Navigation extends React.Component {
     this.pageActive(e.detail.parentPage);
   };
   addcustomActions = (e) => {
-    this.setState({customActions:e.detail.customActions});
+    this.setState({ customActions: e.detail.customActions });
   };
-  checkIfEntityViewerPageExists(page){
+  checkIfEntityViewerPageExists(page) {
     var last_page_key = this.state.pages.length - 1;
     var pages = this.state.pages;
-    if(this.state.pages[last_page_key] && this.state.pages[last_page_key].pageContent && this.state.pages[last_page_key].pageContent[0] && this.state.pages[last_page_key].pageContent[0].type=="EntityViewer" && page.pageContent && (page.pageContent[0].type=="Form" || page.pageContent[0].type=="Comment")){
+    if (this.state.pages[last_page_key] && this.state.pages[last_page_key].pageContent && this.state.pages[last_page_key].pageContent[0] && this.state.pages[last_page_key].pageContent[0].type == "EntityViewer" && page.pageContent && (page.pageContent[0].type == "Form" || page.pageContent[0].type == "Comment")) {
       return true;
     }
-    if(this.state.pages[last_page_key] && this.state.pages[last_page_key].pageContent && this.state.pages[last_page_key].pageContent[0] && this.state.pages[last_page_key].pageContent[0].type=="Form" && page.pageContent && (page.pageContent[0].type=="EntityViewer" || page.pageContent[0].type=="Comment")){
+    if (this.state.pages[last_page_key] && this.state.pages[last_page_key].pageContent && this.state.pages[last_page_key].pageContent[0] && this.state.pages[last_page_key].pageContent[0].type == "Form" && page.pageContent && (page.pageContent[0].type == "EntityViewer" || page.pageContent[0].type == "Comment")) {
       return true;
     }
-    if(this.state.pages[last_page_key] &&this.state.pages[last_page_key].pageContent  && this.state.pages[last_page_key].pageContent[0] && this.state.pages[last_page_key].pageContent[0].type=="Comment" && page.pageContent && (page.pageContent[0].type=="EntityViewer" || page.pageContent[0].type=="Form")){
+    if (this.state.pages[last_page_key] && this.state.pages[last_page_key].pageContent && this.state.pages[last_page_key].pageContent[0] && this.state.pages[last_page_key].pageContent[0].type == "Comment" && page.pageContent && (page.pageContent[0].type == "EntityViewer" || page.pageContent[0].type == "Form")) {
       return true;
     }
-    if(this.state.pages[last_page_key] &&this.state.pages[last_page_key].pageContent  && this.state.pages[last_page_key].pageContent[0] && this.state.pages[last_page_key].pageContent[0].type=="EntityViewer" && page.pageContent && page.pageContent[0].type=="EntityViewer"){
+    if (this.state.pages[last_page_key] && this.state.pages[last_page_key].pageContent && this.state.pages[last_page_key].pageContent[0] && this.state.pages[last_page_key].pageContent[0].type == "EntityViewer" && page.pageContent && page.pageContent[0].type == "EntityViewer") {
       return true;
     }
     return false;
@@ -194,9 +194,9 @@ class Navigation extends React.Component {
     if (prevProps.selected != this.props.selected) {
       var item = this.props.selected;
       if (item && item.page_id) {
-        this.setState({ pages: [],selected:this.props.selected });
+        this.setState({ pages: [], selected: this.props.selected });
         var page = [{ pageId: item.page_id, title: item.name }];
-        this.setState({ pages: page },()=>{
+        this.setState({ pages: page }, () => {
           this.pageActive(item.page_id);
         });
       }
@@ -220,37 +220,37 @@ class Navigation extends React.Component {
     }
     this.resetCustomActions();
   };
-  resetCustomActions(){
-    this.setState({customActions:null});
+  resetCustomActions() {
+    this.setState({ customActions: null });
     let ev = new CustomEvent("getCustomActions", {
       detail: {},
       bubbles: true,
     });
-    var navigationElement = document.getElementById('navigation_'+this.appId);
-    if(navigationElement && navigationElement.getElementsByClassName('page-active') && navigationElement.getElementsByClassName('page-active')[0] ){
-      var foundElement = this.getElementInsideElement(navigationElement.getElementsByClassName('page-active')[0],'customActionsToolbar');
-      if(foundElement){
+    var navigationElement = document.getElementById('navigation_' + this.appId);
+    if (navigationElement && navigationElement.getElementsByClassName('page-active') && navigationElement.getElementsByClassName('page-active')[0]) {
+      var foundElement = this.getElementInsideElement(navigationElement.getElementsByClassName('page-active')[0], 'customActionsToolbar');
+      if (foundElement) {
         foundElement.dispatchEvent(ev);
       }
     }
   }
-  resetPageCustomActions(){
-    this.setState({customActions:[]});
+  resetPageCustomActions() {
+    this.setState({ customActions: [] });
   }
-getElementInsideElement(baseElement, wantedElementID) {
-  var elementToReturn;
-  for (var i = 0; i < baseElement.childNodes.length; i++) {
+  getElementInsideElement(baseElement, wantedElementID) {
+    var elementToReturn;
+    for (var i = 0; i < baseElement.childNodes.length; i++) {
       elementToReturn = baseElement.childNodes[i];
       if (elementToReturn.id == wantedElementID) {
-          return elementToReturn;
+        return elementToReturn;
       } else {
-          elementToReturn = this.getElementInsideElement(elementToReturn, wantedElementID);
-          if(elementToReturn){
-            return elementToReturn;
-          }
+        elementToReturn = this.getElementInsideElement(elementToReturn, wantedElementID);
+        if (elementToReturn) {
+          return elementToReturn;
+        }
       }
+    }
   }
-}
   breadcrumbClick = (currentValue, index) => {
     let data = this.state.pages.slice();
     data.splice(index + 1, data.length);
@@ -271,31 +271,31 @@ getElementInsideElement(baseElement, wantedElementID) {
       }
       currentValue.title
         ? breadcrumbsList.push(
-            <>
-              {index == "0" ? null : ( <div style={{ marginLeft: "5px" }} /> )}
-              {childNode}
-              <i class="fas fa-angle-right" style={{ marginRight: "5px"}}></i>
-              <div value={""} disabled={!clickable} className={ clickable ? "activeBreadcrumb" : "disabledBreadcrumb" } type={clickable || index == 0 ? "none" : "info"} selected={false} >
-                  <a onClick={() => { clickable ? this.breadcrumbClick(currentValue, index) : null;}}>
-                    <i className={currentValue.icon}style={{ marginRight: "5px"}} />
-                    {currentValue.title}
-                  </a>
-              </div>
-            </>
-          )
+          <>
+            {index == "0" ? null : (<div style={{ marginLeft: "5px" }} />)}
+            {childNode}
+            <i class="fas fa-angle-right" style={{ marginRight: "5px" }}></i>
+            <div value={""} disabled={!clickable} className={clickable ? "activeBreadcrumb" : "disabledBreadcrumb"} type={clickable || index == 0 ? "none" : "info"} selected={false} >
+              <a onClick={() => { clickable ? this.breadcrumbClick(currentValue, index) : null; }}>
+                <i className={currentValue.icon} style={{ marginRight: "5px" }} />
+                {currentValue.title}
+              </a>
+            </div>
+          </>
+        )
         : null;
 
       var list = document.getElementsByClassName("osjs-window-breadcrumb");
-      var name= this.props.proc.metadata.name;
-      var appName= 'Window_' + name;
+      var name = this.props.proc.metadata.name;
+      var appName = 'Window_' + name;
       for (let i = 0; i < list.length; i++) {
-          const listItems = list[i].parentNode.parentNode.parentNode;
-          var breadcrumbClassName = listItems.className;
-          if (breadcrumbClassName == 'osjs-window'+' '+ appName){ 
-              ReactDOM.unmountComponentAtNode(list[i]); 
-              ReactDOM.render(breadcrumbsList,list[i]);
-            }
-  	   }
+        const listItems = list[i].parentNode.parentNode.parentNode;
+        var breadcrumbClassName = listItems.className;
+        if (breadcrumbClassName == 'osjs-window' + ' ' + appName) {
+          ReactDOM.unmountComponentAtNode(list[i]);
+          ReactDOM.render(breadcrumbsList, list[i]);
+        }
+      }
     });
     return null;
   };
@@ -321,14 +321,14 @@ getElementInsideElement(baseElement, wantedElementID) {
                 params={item.params}
                 pageContent={item.pageContent}
                 currentRow={item.currentRow}
-                popupConfig = {item.popupConfig}
+                popupConfig={item.popupConfig}
               />
             </div>
           );
         } else {
           pageList.push(
-          <div></div>
-            )
+            <div></div>
+          )
         }
       });
     }
@@ -344,7 +344,7 @@ getElementInsideElement(baseElement, wantedElementID) {
           {this.state.pages.length > 0 ? (
             <div className="row">
                           <div className="breadcrumbs">{this.renderBreadcrumbs()}</div>
-            <div className="col-md-12 customActions" id="customActions">{this.state.customActions}</div>
+            <div className="col-md-12 customActions dash-manager-buttons" id="customActions">{this.state.customActions}</div>
             </div>
           ) : null}
         </div>
@@ -352,7 +352,7 @@ getElementInsideElement(baseElement, wantedElementID) {
           {this.state.pages.length > 0 ? this.renderPages() : null}
           {(this.state.selected.activityInstanceId &&
             this.state.selected.activityInstanceId) ||
-          this.state.selected.pipeline ? (
+            this.state.selected.pipeline ? (
             <div id={this.contentDivID} className="AppBuilderPage">
               <FormRender
                 core={this.core}

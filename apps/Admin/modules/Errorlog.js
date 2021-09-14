@@ -35,7 +35,7 @@ class Errorlog extends React.Component {
         <abbr title={action[key].name} key={index}>
           <button
             type="button"
-            className=" btn manage-btn k-grid-edit-command"
+            className=" btn btn-primary manage-btn k-grid-edit-command"
             onClick={() => this.retryCall(e)}
             style={buttonStyles}
           >

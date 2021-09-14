@@ -289,6 +289,8 @@ img.profile-dropdown-icon {
   border-color: rgba(255, 255, 255, 0);
   border-width: 8px;
   margin-left: -8px;
+  pointer-events: auto;
+  cursor: pointer;
 }
 .profile-dropdown-div {
   padding: 0;

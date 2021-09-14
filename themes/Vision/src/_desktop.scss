@@ -6,35 +6,47 @@
   background: #275362;
 }
 div#appmenu {
-    background-color: #e1eff4;
+  background-color: #e1eff4;
 }
-.profile-visible{
+.profile-visible {
   background-color: #e1eff4;
 }
 
-.osjs-panel-item[data-name=windows] {
-  & > div[data-focused=false] {
+.osjs-panel-item[data-name="windows"] {
+  padding: 0px;
+  > div {
+    margin-left: 4px;
+  }
+
+  & > div[data-focused="false"] {
     opacity: 0.5;
+    box-shadow: 0px 2px 0px 0px #275362;
+    // color: white;
+    // background-color: #ffffff29;
+  }
+  & > div[data-focused="true"] {
+    box-shadow: 0px 2px 0px 0px white;
+    background-color: #ffffff29;
   }
 }
-.profile-content{
-    background: #e1eff4;
+.profile-content {
+  background: #e1eff4;
 }
-.appmenu .app-bar .category .caption{
+.appmenu .app-bar .category .caption {
   background-color: rgb(67, 145, 146);
 }
-.appmenu .app-search-bar-div{
-  background: rgba(67, 145, 146, .5);
+.appmenu .app-search-bar-div {
+  background: rgba(67, 145, 146, 0.5);
 }
 .osjs-panel-item--clickable {
   cursor: pointer;
   transition: all $transition-duration $transition-timing-function;
 }
 input#appsearch::placeholder {
-    color: white;
+  color: white;
 }
 input#appsearch {
-    border-bottom: 1px solid #2e7374;
+  border-bottom: 1px solid #2e7374;
 }
 
 //

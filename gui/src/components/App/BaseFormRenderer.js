@@ -1051,8 +1051,8 @@ class BaseFormRenderer extends React.Component {
                 let pageContent = {pageContent: filePage,title: "View",icon: "fa fa-eye",fileId:this.state.fileId};
                 let commentPage = [{type:"Comment",fileId:this.state.fileId}];
                 let commentContent = {pageContent: commentPage,title: "Comment",icon: "fa fa-comment"};
-                gridToolbarContent.push(<Button title={"View"} className={"toolBarButton"} primary={true} onClick={(e) => this.updatePageContent(pageContent)} ><i className={"fa fa-eye"}></i></Button>);
-                gridToolbarContent.push(<Button title={"Comments"} className={"toolBarButton"} primary={true} onClick={(e) => this.updatePageContent(commentContent)} ><i className={"fa fa-comment"}></i></Button>);
+                gridToolbarContent.push(<Button title={"View"} className={"btn btn-primary"} primary={true} onClick={(e) => this.updatePageContent(pageContent)} ><i className={"fa fa-eye"}></i></Button>);
+                gridToolbarContent.push(<Button title={"Comments"} className={"btn btn-primary"} primary={true} onClick={(e) => this.updatePageContent(commentContent)} ><i className={"fa fa-comment"}></i></Button>);
                 let ev = new CustomEvent("addcustomActions", { detail: { customActions: gridToolbarContent }, bubbles: true });
                 document.getElementById(this.state.appId+"_breadcrumbParent").dispatchEvent(ev);
             }
