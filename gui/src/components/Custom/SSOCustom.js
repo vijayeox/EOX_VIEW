@@ -4,7 +4,6 @@ import { Button } from 'react-bootstrap';
 
 class SSOCustom extends Component {
 
-// 
     constructor(props) {
         super(props);
         this.core = this.props.args;
