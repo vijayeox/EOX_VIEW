@@ -48,6 +48,7 @@
   height: calc(100%);
   margin-left: 0em;
   margin-right: 0em;
+  background-color: #F3F3F3;
 }
 
 //menu css
@@ -86,4 +87,12 @@
 
 .sidenav---navicon---3gCRo > i {
   font-size: 20px;
+}
+
+.breadcrumbHeader {
+  display: contents;
+}
+
+.breadcrumbHeader > .row{
+  display: contents;
 }
