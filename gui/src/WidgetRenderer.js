@@ -133,7 +133,7 @@ class WidgetRenderer {
         element.classList.remove("red");
         element.classList.remove("yellow");
         element.classList.remove("green");
-        if (isset(widget) && widget.targets) {
+        if (widget && widget.targets) {
             element.classList.add(widget.targets.color);
         }
         if (!dashboardEditMode && WidgetDrillDownHelper.setupDrillDownContextStack(element, configuration, hasDashboardFilters)) {

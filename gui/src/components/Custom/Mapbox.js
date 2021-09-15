@@ -5,12 +5,9 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 // import 'mapbox-gl-direction-location/dist/mapbox-gl-directions.css';
 import './index.css';
 // import MapboxDirections from "mapbox-gl-direction-location/dist/mapbox-gl-directions"
-
 mapboxgl.accessToken = 'pk.eyJ1IjoicmFrczA3IiwiYSI6ImNrc2EyNHltbTIybmcydnBoaXE0aDNiczIifQ.6YWWVlG659FRbsNFHU367Q';
 
 export default function Mapbox() {
-
-
     const mapContainer = useRef(null);
     const map = useRef(null);
     const [lng, setLng] = useState(-122.483696);
