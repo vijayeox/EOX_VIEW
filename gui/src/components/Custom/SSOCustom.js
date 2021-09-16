@@ -42,6 +42,7 @@ class SSOCustom extends Component {
     if (this.state.config.email) {
       url += '?emailForSSO=' + this.state.config.email;
     }
+
     this.getURL(url).then((response) => {
       if (response.status == "success") {
         if (response.data.authorizedUrl) {
@@ -50,6 +51,9 @@ class SSOCustom extends Component {
         this.setState({ awaitingResponse: false });
       }
     });
+
+    // let urlId = "https://www.speedgauge.net/access/jwt?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJha3RydWNraW5nODJAeWFob28uY29tIiwiaXNzIjoicnNpLWluc3VyYW5jZS1icm9rZXJzLTEiLCJpYXQiOjE2MzE3MTA0OTYsImV4cCI6MTYzMTc5Njg5Nn0.mn33sG32XAzw0NYNChX7VDvOHd64g3U_DisEoHwOiMs&redirect_to=https://www.speedgauge.net/insurance";
+    // window.open(urlId, '_blank');
 
     if (this.state.authorizedUrl !== '') {
       this.stepDownPage();
