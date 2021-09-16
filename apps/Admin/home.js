@@ -86,7 +86,6 @@ export default class Home extends React.Component {
             <Organization
               args={this.core}
               setTitle={this.setTitle}
-              key={""}
               userProfile={this.userProfile}
               name="Account"
               key="Account"

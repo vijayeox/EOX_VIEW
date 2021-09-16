@@ -123,7 +123,7 @@ class Organization extends React.Component {
           args={this.core}
         />
         <React.Suspense fallback={<div>Loading...</div>}>
-          <div style={{ marginTop: "-35px" }}>
+          <div style={{ marginTop: "-25px" }}>
             <GridTemplate
               args={this.core}
               ref={this.child}
