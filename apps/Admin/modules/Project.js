@@ -356,7 +356,7 @@ class Project extends React.Component {
             // marginRight: "15px",
             // marginTop: "-40px",
             position: "relative",
-            top: "-35px",
+            top: "-33px",
           }}
           onRowClick={(e) => this.edit(e.dataItem, false)}
           filterable={true}
