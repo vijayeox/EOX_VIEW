@@ -351,12 +351,12 @@ class Project extends React.Component {
             "account/" + this.state.selectedOrg + "/" + this.listConfig.route
           }
           wrapStyle={{
-            height: "calc(100% - 72px)",
-            marginleft: "15px",
-            marginRight: "15px",
-            marginTop: "-40px",
+            // height: "calc(100% - 72px)",
+            // marginleft: "15px",
+            // marginRight: "15px",
+            // marginTop: "-40px",
             position: "relative",
-            top: "5px",
+            top: "-35px",
           }}
           onRowClick={(e) => this.edit(e.dataItem, false)}
           filterable={true}

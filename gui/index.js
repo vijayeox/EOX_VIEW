@@ -43,6 +43,7 @@ import Visualization from "./src/Visualization";
 import WidgetManager from "./src/WidgetManager";
 import TemplateManager from "./src/TemplateManager";
 import SSOCustom from "./src/components/Custom/SSOCustom";
+//import Mapbox from "./src/components/Custom/Mapbox";
 
 const LazyLoad = ({ component: Component, ...rest }) => (
   <React.Suspense fallback={<div className="spinner"><div className="bounce1"></div><div className="bounce2"></div><div className="bounce3"></div></div>}>
@@ -125,4 +126,5 @@ export {
   AntdIcons,
   TemplateManager,
   SSOCustom
+//  Mapbox
 };
