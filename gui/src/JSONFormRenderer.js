@@ -2,11 +2,12 @@ import React, { useState, useEffect, useImperativeHandle, forwardRef, useRef } f
 import { Form, Col, Row, Button, Tab, Tabs, InputGroup } from "react-bootstrap";
 import PropTypes from "prop-types";
 import "./public/css/JSONFormRenderer.scss";
+import querySchemaJson from "./components/Modals/QueryModalSchema.json"
 
 const JSONFormRenderer = forwardRef((props, ref) => {
   const [input, setInput] = useState({});
   const [formValues, setFormValues] = useState("{}");
-  const [formFields, setFormFields] = useState(props.formSchema!=undefined ? props.formSchema : {})
+  const [formFields, setFormFields] = useState({});
   const [optionalFields, setOptionalFields] = useState(null);
   const el = useRef(null);
   useEffect(() => {
@@ -16,14 +17,13 @@ const JSONFormRenderer = forwardRef((props, ref) => {
   }, [props.values]);
 
   useEffect(() => {
-    setFormFields(props.formSchema!=undefined ? props.formSchema : {})
-  }, [props.formSchema]);
+    setFormFields(querySchemaJson.FormSchema["_DEFAULT_OPTIONAL_FIELDS"])
+  }, []);
 
   useEffect(() => {
     generateOptionalFieldsDropDown()
     scrollToBottom()
   }, [formFields])
-
 
   useImperativeHandle(ref, () => ({
     getFormConfig(embedData) {
@@ -52,7 +52,11 @@ const JSONFormRenderer = forwardRef((props, ref) => {
   const generateOptionalFieldsDropDown = () => {
     let options = formFields["optionalFields"] && Object.keys(formFields["optionalFields"]).map((element) => {
       if(formFields["optionalFields"][element]){
-        return <option key={element} value={formFields["optionalFields"][element].control.name}>{element}</option>
+        return {
+          element,
+          value: formFields["optionalFields"][element].control.name
+        }
+        // return <option key={element} value={formFields["optionalFields"][element].control.name}>{element}</option>
       }
     })
     setOptionalFields(options)
@@ -144,7 +148,10 @@ const JSONFormRenderer = forwardRef((props, ref) => {
               })}
               <select id="optionalFields" name="optionalFields" className="form-control form-control-sm" value={input["optionalFields"]} placeholder="Select Fields" onChange={handleChange} >
                 <option key="" value="-1" >--Select Fields--</option>
-                {optionalFields}
+                {optionalFields && optionalFields.map((option)=>{
+                 return <option key={option.element} value={option.value} >{option.element}</option>
+                })}
+                
               </select>
             </Form>
             :
@@ -165,7 +172,9 @@ const JSONFormRenderer = forwardRef((props, ref) => {
               }
               <select id="optionalFields" name="optionalFields" className="form-control form-control-sm" value={input["optionalFields"]} placeholder="Select Fields" onChange={handleChange} >
               <option key="" value="-1" >--Select Fields--</option>
-                {optionalFields}
+              {optionalFields && optionalFields.map((option)=>{
+                 return <option key={option.element} value={option.value} >{option.element}</option>
+                })}
               </select>
             </div>
           }
@@ -181,6 +190,7 @@ const JSONFormRenderer = forwardRef((props, ref) => {
       </Tabs>
     </div>
   );
+
 })
 
 
