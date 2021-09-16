@@ -86,7 +86,6 @@ export default class Home extends React.Component {
             <Organization
               args={this.core}
               setTitle={this.setTitle}
-              key={""}
               userProfile={this.userProfile}
               name="Account"
               key="Account"
@@ -271,7 +270,7 @@ export default class Home extends React.Component {
             <NavItem
               eventKey={this.userProfile.privileges.MANAGE_MAILADMIN_WRITE}
               key={this.userProfile.privileges.MANAGE_MAILADMIN_WRITE}
-              onClick={() => this.launchExternalApp("MailAdmin")} title="Mail Admin"
+              onClick={() => this.launchExternalApp("MailAdmin")} title="Mail Admin" key="MailAdmin" 
             >
               <NavIcon>
                 <i className="fad fa-mail-bulk" aria-hidden="true"></i>
@@ -282,7 +281,7 @@ export default class Home extends React.Component {
             <NavItem
               eventKey={this.userProfile.privileges.MANAGE_CRMADMIN_WRITE}
               key={this.userProfile.privileges.MANAGE_CRMADMIN_WRITE}
-              onClick={() => this.launchExternalApp("CRMAdmin")} title="CRM Admin"
+              onClick={() => this.launchExternalApp("CRMAdmin")} title="CRM Admin" key="CRMAdmin" 
             >
               <NavIcon>
                 <i className="fad fa-user-tie" aria-hidden="true"></i>
@@ -293,7 +292,7 @@ export default class Home extends React.Component {
             <NavItem
               eventKey={this.userProfile.privileges.MANAGE_TASKADMIN_WRITE}
               key={this.userProfile.privileges.MANAGE_TASKADMIN_WRITE}
-              onClick={() => this.launchExternalApp("TaskAdmin")} title="PM Admin"
+              onClick={() => this.launchExternalApp("TaskAdmin")} title="PM Admin" key="PMAdmin" 
             >
               <NavIcon>
                 <i className="fad fa-project-diagram" aria-hidden="true"></i>
@@ -304,7 +303,7 @@ export default class Home extends React.Component {
             <NavItem
               eventKey={this.userProfile.privileges.MANAGE_APPBUILDER_READ}
               key={this.userProfile.privileges.MANAGE_APPBUILDER_READ}
-              onClick={() => this.launchExternalApp("EOXAppBuilder")} title="App Builder"
+              onClick={() => this.launchExternalApp("EOXAppBuilder")} title="App Builder" key="AppBuilder" 
             >
               <NavIcon>
                 <i className="fad fa-desktop-alt" aria-hidden="true"></i>
@@ -315,7 +314,7 @@ export default class Home extends React.Component {
             <NavItem
               eventKey={this.userProfile.privileges.MANAGE_OIBUILDER_READ}
               key={this.userProfile.privileges.MANAGE_OIBUILDER_READ}
-              onClick={() => this.launchExternalApp("Analytics")} title="OI Studio"
+              onClick={() => this.launchExternalApp("Analytics")} title="OI Studio" key="OI" 
             >
               <NavIcon>
                 <i className="fad fa-chart-bar" aria-hidden="true"></i>

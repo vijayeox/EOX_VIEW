@@ -15,7 +15,7 @@ $primary-color: #275362;
   .customActions {
     margin: 5px 0px 2px 0px;
     display: flex;
-    align-items: center;
+    align-items: contents;
     justify-content: flex-end;
     gap: 12px;
   }
@@ -23,7 +23,7 @@ $primary-color: #275362;
   .dash-manager-buttons {
     right: 0px;
     width: auto;
-    float: right;
+    float: left;
     position: relative;
   }
 

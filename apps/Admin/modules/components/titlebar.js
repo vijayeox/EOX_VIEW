@@ -5,7 +5,15 @@ export class TitleBar extends React.Component {
   render() {
     return (
       <div
-        style={{ paddingTop: "12px", marginLeft: "0px" }}
+        style={{
+          // paddingTop: "12px",
+          marginLeft: "0px",
+          display: "flex",
+          alignItems: "center",
+          position: "relative",
+          width: "92%",
+          top: "5px",
+        }}
         className="adminTitleBar"
       >
         {/* <div> */}
@@ -31,10 +39,10 @@ export class TitleBar extends React.Component {
         {this.props.orgSwitch ? (
           <div
             style={{
-              right: "65px",
-              top: "4px",
-              position: "absolute",
-              zIndex: "100",
+              // right: "65px",
+              // top: "4px",
+              // position: "absolute",
+              zIndex: "1",
               width: "155px",
             }}
           >

@@ -777,7 +777,7 @@ body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown) {
   }
 
   .k-grid .btn {
-    margin-right: 7px;
+    margin-right: 3px;
     border-color: #eaeaea;
   }
 
@@ -1187,7 +1187,7 @@ body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown) {
 }
 
 .sidenav---sidenav---_2tBP {
-  background: #275362bf !important
+  background: #183e4b !important;
 }
 
 div.desk {
@@ -1207,7 +1207,8 @@ div.desk {
   margin: 20px;
   cursor: pointer;
   background-color: white;
-  box-shadow: rgba(50, 50, 93, 0.15) 0px 6px 10px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+  box-shadow: rgba(50, 50, 93, 0.15) 0px 6px 10px -2px,
+    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
   transition: transform 0.2s cubic-bezier(0.6, -0.28, 0.74, 0.05);
 }
 
