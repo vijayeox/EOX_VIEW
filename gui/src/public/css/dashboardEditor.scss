@@ -105,7 +105,6 @@
   width: 12vw;
 }
 
-
 .dates-container input {
   width: 140px;
 }
@@ -212,7 +211,7 @@ div#filter-form-container.show-filter-panel {
 
 .dashboard-viewer-div {
   position: realtive;
-  margin-top: 0em;
+  margin-top: 0em !important;
   width: 100%;
 }
 
@@ -256,19 +255,18 @@ div#filter-form-container.show-filter-panel {
     display: flex;
     align-items: center;
     position: relative;
-    margin-bottom: 2em;
+    margin-bottom: 0px;
   }
 }
 
 .dasboard-viewer-content {
-  // border: 1px solid#1d6165;
-  min-height: 20px;
-  border-radius: 0px;
-  box-shadow: none;
-  padding: 1em;
+  background-color: #f3f3f3;
   border: none;
-  width: max-content;
-  max-width: 100%;
+  border-radius: 0;
+  box-shadow: none;
+  min-width: 100%;
+  margin-top: 1em;
+  margin-top: 3em;
 }
 
 .dashboard-rollup-button {

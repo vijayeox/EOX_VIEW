@@ -1,6 +1,6 @@
 
 import $ from 'jquery';
-import { React, Query, DataSource, Visualization, TemplateManager, SSOCustom } from 'oxziongui';
+import { React, Query, DataSource, Visualization, TemplateManager, SSOCustom, Mapbox } from 'oxziongui';
 import { WidgetManager, DashboardManager } from 'oxziongui';
 import SideNav, { Toggle, Nav, NavItem, NavIcon, NavText } from '@trendmicro/react-sidenav';
 import "@trendmicro/react-sidenav/dist/react-sidenav.css";
@@ -12,7 +12,8 @@ const SECTION_EDIT_DASHBOARD = 'EDB'; //Edit DashBoard
 const SECTION_WIDGET = 'WD'; //Edit DashBoard
 const SECTION_VISULAIZATION = 'VS' //Visualization
 const SECTION_TEMPLATEMANGER = 'TM' //TemplateManager
-const SECTION_SSOCustom = 'SC' //TemplateManager
+const SECTION_SSOCustom = 'SC' //SSO
+// const SECTION_Mapbox = 'MB' //MapBox
 
 class Body extends React.Component {
 	constructor(props) {
@@ -129,6 +130,9 @@ class Body extends React.Component {
 			case SECTION_SSOCustom:
 				sectionContent = <SSOCustom args={this.core} setTitle={this.setTitle} />;
 				break;
+			// case SECTION_Mapbox:
+			// 	sectionContent = <Mapbox args={this.core} setTitle={this.setTitle} />;
+			// 	break;
 		}
 
 		return (
@@ -194,6 +198,14 @@ class Body extends React.Component {
 								SSO Custom
 							</NavText>
 						</NavItem>
+						{/* <NavItem eventKey={SECTION_Mapbox} key={SECTION_Mapbox}>
+							<NavIcon>
+								<i class="fas fa-map-marked-alt" aria-hidden="true"></i>
+							</NavIcon>
+							<NavText>
+								SSO Custom
+							</NavText>
+						</NavItem> */}
 					</SideNav.Nav>
 				</SideNav>
 				<div className="page-content full-width" id="page-content">
