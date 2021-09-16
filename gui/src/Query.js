@@ -8,7 +8,6 @@ import Switch from 'react-switch'
 import QueryModal from './components/Modals/QueryModal'
 import QueryResult from './components/Query/QueryResult'
 // import { FormSchema } from "./components/Modals/QueryModalSchema.json"
-import querySchemaJson from "./components/Modals/QueryModalSchema.json"
 import JSONFormRenderer from "./JSONFormRenderer"
 import ReactDOM from 'react-dom'
 import "./public/css/query.scss";
@@ -369,7 +368,7 @@ class Query extends React.Component {
                   value={this.state.inputs["configuration"] || ''}
                   onChange={(e) => this.handleChange(e, this)}
                 /> */}
-                <JSONFormRenderer formSchema={querySchemaJson.FormSchema["_DEFAULT_OPTIONAL_FIELDS"]} values={this.ref.current ? JSON.parse(this.ref.current.getFormConfig(false)) : {}} subForm={true} ref={this.ref} />
+                <JSONFormRenderer values={this.ref.current ? JSON.parse(this.ref.current.getFormConfig(false)) : {}} subForm={true} ref={this.ref} />
                 <Form.Text className="text-muted errorMsg">
                   {this.state.errors["configuration"]}
                 </Form.Text>
