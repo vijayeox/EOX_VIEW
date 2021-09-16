@@ -31,7 +31,8 @@ class ActivityLog extends React.Component {
   renderRow(e) {
     var childColumnConfig = [
         { title: "Field", field: "text", editable: false },
-        { title: "Value", field: "submittedValue" },
+        { title: "Previous Value", field: "initialValue" },
+        { title: "Updated Value", field: "submittedValue" },
     ];
     return (
       <OX_Grid
