@@ -89,6 +89,7 @@ class User extends React.Component {
             <GridTemplate
               args={this.core}
               ref={this.child}
+              key={Math.random()}
               config={{
                 showToolBar: true,
                 title: "User",

@@ -50,10 +50,10 @@ export default class DocumentViewer extends Component {
     }
     fileError
       ? this.notif.current.notify(
-          "Unsupported File",
-          "Please choose a different file.",
-          "danger"
-        )
+        "Unsupported File",
+        "Please choose a different file.",
+        "danger"
+      )
       : null;
   };
 
@@ -189,114 +189,114 @@ export default class DocumentViewer extends Component {
       this.state.documentTypes.map((docType, index) => {
         this.state.documentsList[docType]
           ? accordionHTML.push(
-              <Card key={index}>
-                <Card.Header>
-                  <CustomToggle
-                    eventKey={docType}
-                    currentSelected={this.state.activeCard}
-                    type={this.state.folderType[docType]}
-                    update={(item) => {
-                      this.state.documentsList[item].length !== 0
-                        ? this.setState({
-                            activeCard: item,
-                            selectedDocument: this.state.documentsList[item][0],
-                          })
-                        : this.setState({
-                            activeCard: item,
-                          });
-                    }}
-                  >
-                    {docType}
-                  </CustomToggle>
-                </Card.Header>
-                <Accordion.Collapse eventKey={docType}>
-                  <Card.Body>
-                    {this.state.documentsList[docType].map((doc, i) => {
-                      return (
-                        <Card
-                          className="docItems"
-                          onClick={(e) => {
-                            doc.file != this.state.selectedDocument
-                              ? this.state.selectedDocument.file
-                                ? this.handleDocumentClick(doc)
-                                : null
-                              : null;
-                          }}
-                          key={i}
-                        >
-                          <div
-                            className={
-                              this.state.selectedDocument &&
-                              this.state.selectedDocument.file
-                                ? doc.file == this.state.selectedDocument.file
-                                  ? "docListBody borderActive"
-                                  : "docListBody border"
-                                : "docListBody border"
-                            }
-                          >
-                            <i
-                              className={"docIcon " + this.getDocIcon(doc.type)}
-                            ></i>
-                            <p>
-                              <a href={doc.url}  target="_blank" rel="noopener noreferrer" >{doc.originalName && doc.originalName.length > 30
-                                ? this.chopFileName(doc.originalName)
-                                : doc.originalName}</a>
-                            </p>
-                          </div>
-                        </Card>
-                      );
-                    })}
-                    {this.state.folderType[docType] == "file" ? (
-                      <div className="popupWindow">
-                        <Upload
-                          batch={false}
-                          multiple={true}
-                          autoUpload={false}
-                          files={this.state.uploadFiles}
-                          onAdd={this.onFileChange}
-                          onRemove={this.onFileChange}
-                          restrictions={{
-                            allowedExtensions: [
-                              ".jpg",
-                              ".jpeg",
-                              ".png",
-                              ".gif",
-                              ".pdf",
-                              ".doc",
-                              ".docx",
-                              ".xlsx",
-                              ".xls",
-                              ".txt",
-                              ".pst",
-                              ".ost",
-                              ".msg",
-                            ],
-                            maxFileSize: 25000000,
-                          }}
-                        />
-                        <button
+            <Card key={index}>
+              <Card.Header>
+                <CustomToggle
+                  eventKey={docType}
+                  currentSelected={this.state.activeCard}
+                  type={this.state.folderType[docType]}
+                  update={(item) => {
+                    this.state.documentsList[item].length !== 0
+                      ? this.setState({
+                        activeCard: item,
+                        selectedDocument: this.state.documentsList[item][0],
+                      })
+                      : this.setState({
+                        activeCard: item,
+                      });
+                  }}
+                >
+                  {docType}
+                </CustomToggle>
+              </Card.Header>
+              <Accordion.Collapse eventKey={docType}>
+                <Card.Body>
+                  {this.state.documentsList[docType].map((doc, i) => {
+                    return (
+                      <Card
+                        className="docItems"
+                        onClick={(e) => {
+                          doc.file != this.state.selectedDocument
+                            ? this.state.selectedDocument.file
+                              ? this.handleDocumentClick(doc)
+                              : null
+                            : null;
+                        }}
+                        key={i}
+                      >
+                        <div
                           className={
-                            this.state.uploadFiles.length == 0
-                              ? "uploadButton invalidButton"
-                              : "uploadButton"
+                            this.state.selectedDocument &&
+                              this.state.selectedDocument.file
+                              ? doc.file == this.state.selectedDocument.file
+                                ? "docListBody borderActive"
+                                : "docListBody border"
+                              : "docListBody border"
                           }
-                          disabled={this.state.uploadFiles.length == 0}
-                          onClick={(e) => {
-                            e.preventDefault();
-                            this.loader.show();
-                            this.uploadAttachments(
-                              this.state.uploadFiles.length - 1
-                            );
-                          }}
                         >
-                          Upload
-                        </button>
-                      </div>
-                    ) : null}
-                  </Card.Body>
-                </Accordion.Collapse>
-              </Card>
-            )
+                          <i
+                            className={"docIcon " + this.getDocIcon(doc.type)}
+                          ></i>
+                          <p>
+                            <a href={doc.url} target="_blank" rel="noopener noreferrer" >{doc.originalName && doc.originalName.length > 30
+                              ? this.chopFileName(doc.originalName)
+                              : doc.originalName}</a>
+                          </p>
+                        </div>
+                      </Card>
+                    );
+                  })}
+                  {this.state.folderType[docType] == "file" ? (
+                    <div className="popupWindow">
+                      <Upload
+                        batch={false}
+                        multiple={true}
+                        autoUpload={false}
+                        files={this.state.uploadFiles}
+                        onAdd={this.onFileChange}
+                        onRemove={this.onFileChange}
+                        restrictions={{
+                          allowedExtensions: [
+                            ".jpg",
+                            ".jpeg",
+                            ".png",
+                            ".gif",
+                            ".pdf",
+                            ".doc",
+                            ".docx",
+                            ".xlsx",
+                            ".xls",
+                            ".txt",
+                            ".pst",
+                            ".ost",
+                            ".msg",
+                          ],
+                          maxFileSize: 25000000,
+                        }}
+                      />
+                      <button
+                        className={
+                          this.state.uploadFiles.length == 0
+                            ? "uploadButton invalidButton"
+                            : "uploadButton"
+                        }
+                        disabled={this.state.uploadFiles.length == 0}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          this.loader.show();
+                          this.uploadAttachments(
+                            this.state.uploadFiles.length - 1
+                          );
+                        }}
+                      >
+                        Upload
+                      </button>
+                    </div>
+                  ) : null}
+                </Card.Body>
+              </Accordion.Collapse>
+            </Card>
+          )
           : null;
       });
     }
@@ -349,8 +349,8 @@ export default class DocumentViewer extends Component {
       <div className="row">
         <div className="col-md-12">
           {rename &&
-          this.state.activeCard != "Documents" &&
-          documentData.uuid ? (
+            this.state.activeCard != "Documents" &&
+            documentData.uuid ? (
             <>
               <input
                 type="text"
@@ -631,8 +631,8 @@ function CustomToggle(props) {
       onClick={
         props.currentSelected !== props.eventKey
           ? useAccordionToggle(props.eventKey, () =>
-              props.update.call(undefined, props.eventKey)
-            )
+            props.update.call(undefined, props.eventKey)
+          )
           : null
       }
     >
