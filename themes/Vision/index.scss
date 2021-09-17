@@ -109,8 +109,8 @@ html {
 }
 
 .osjs-window-title {
-  font-size: 16px;
-  margin: 0px 8px;
+  font-size: 14px;
+  margin: 0px 0px 0px 9px;
   height: auto !important;
   color: white;
 }
@@ -125,7 +125,11 @@ html {
   flex-grow: 50;
   height: auto !important;
   align-items: baseline;
-  font-size: 16px !important;
+  font-size: 11px !important;
+
+  .disabledBreadcrumb {
+    font-weight: bold;
+  }
 }
 .activeBreadcrumb > a > i {
   font-size: 0px;
@@ -233,7 +237,7 @@ html {
 
 .customActions > .btn.btn-primary {
   color: #345561 !important;
-  background-color: #e4e7eb;
+  background-color: #e4e7eb !important;
   border-radius: 42px;
   font-size: 13px;
   box-shadow: 0px 0px 4px 0px grey;
