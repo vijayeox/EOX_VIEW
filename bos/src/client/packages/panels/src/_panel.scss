@@ -85,7 +85,7 @@
 
     > i {
       height: $base-margin;
-      margin-right: $base-margin / 2;
+      margin-right: ($base-margin / 2) + 0.3;
     }
   }
 }

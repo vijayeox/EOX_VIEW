@@ -5,8 +5,8 @@ import { createBrowserHistory } from "history";
 import { Chip } from "@progress/kendo-react-buttons";
 import Requests from "./Requests";
 import Notification from "./Notification";
-import ReactDOM from 'react-dom';
-import { render } from 'react-dom';
+import ReactDOM from "react-dom";
+import { render } from "react-dom";
 
 class Navigation extends React.Component {
   constructor(props) {
@@ -57,7 +57,16 @@ class Navigation extends React.Component {
           history.push("/");
         } else if (this.params && this.params.fileId) {
           this.props.selectLoad(this.homepage);
-          this.addPage({ detail: { pageContent: [{ type: "EntityViewer", fileId: this.params.fileId }], title: "View", icon: "fa fa-eye", fileId: this.params.fileId } })
+          this.addPage({
+            detail: {
+              pageContent: [
+                { type: "EntityViewer", fileId: this.params.fileId },
+              ],
+              title: "View",
+              icon: "fa fa-eye",
+              fileId: this.params.fileId,
+            },
+          });
           // this.pageActive(this.params.page);
           history.push("/");
         } else if (this.params && this.params.activityId) {
@@ -87,7 +96,9 @@ class Navigation extends React.Component {
                   detail: { pageContent: appParams.detail },
                   bubbles: true,
                 });
-                document.getElementsByClassName(this.breadcrumbDiv)[0].dispatchEvent(ev);
+                document
+                  .getElementsByClassName(this.breadcrumbDiv)[0]
+                  .dispatchEvent(ev);
               }
             } catch (e) {
               console.log("No params!");
@@ -106,31 +117,48 @@ class Navigation extends React.Component {
 
   pageActive(pageId) {
     if (document.getElementById(pageId + "_page")) {
-      document.getElementById(pageId + "_page").classList.remove("page-inactive");
+      document
+        .getElementById(pageId + "_page")
+        .classList.remove("page-inactive");
       document.getElementById(pageId + "_page").classList.add("page-active");
     }
   }
   pageInActive(pageId, dimPage) {
     if (document.getElementById(pageId + "_page")) {
-      document.getElementById(pageId + "_page").classList.add(dimPage ? "page-dimmed" : "page-inactive");
+      document
+        .getElementById(pageId + "_page")
+        .classList.add(dimPage ? "page-dimmed" : "page-inactive");
       document.getElementById(pageId + "_page").classList.remove("page-active");
     }
   }
   componentDidMount() {
-    document.getElementById(this.appNavigationDiv).addEventListener("addPage", this.addPage, false);
-    document.getElementById(this.appNavigationDiv).addEventListener("stepDownPage", this.stepDownPage, false);
-    document.getElementById(this.appNavigationDiv).addEventListener("selectPage", this.selectPage, false);
-    document.getElementById(this.breadcrumbDiv).addEventListener("addcustomActions", this.addcustomActions, false);
+    document
+      .getElementById(this.appNavigationDiv)
+      .addEventListener("addPage", this.addPage, false);
+    document
+      .getElementById(this.appNavigationDiv)
+      .addEventListener("stepDownPage", this.stepDownPage, false);
+    document
+      .getElementById(this.appNavigationDiv)
+      .addEventListener("selectPage", this.selectPage, false);
+    document
+      .getElementById(this.breadcrumbDiv)
+      .addEventListener("addcustomActions", this.addcustomActions, false);
   }
 
   addPage = (e) => {
     var pages = this.state.pages;
     var that = this;
     if (e.detail.fileId) {
-      var filePage = [{ type: "EntityViewer", fileId: e.detail.fileId }]
-      var pageContent = { pageContent: filePage, title: "View", icon: "fa fa-eye", fileId: e.detail.fileId };
+      var filePage = [{ type: "EntityViewer", fileId: e.detail.fileId }];
+      var pageContent = {
+        pageContent: filePage,
+        title: "View",
+        icon: "fa fa-eye",
+        fileId: e.detail.fileId,
+      };
       if (!this.checkIfEntityViewerPageExists(pageContent)) {
-        pages.push(pageContent)
+        pages.push(pageContent);
       } else {
         pages.splice(pages.length - 1, 1);
         this.setState({
@@ -142,7 +170,7 @@ class Navigation extends React.Component {
       }
     } else {
       if (!this.checkIfEntityViewerPageExists(e.detail)) {
-        pages.push(e.detail)
+        pages.push(e.detail);
       } else {
         pages.splice(pages.length - 1, 1);
         this.setState({
@@ -153,13 +181,19 @@ class Navigation extends React.Component {
         }, 1000);
       }
     }
-    if (e.detail.parentPage && document.getElementById(e.detail.parentPage + "_page")) {
-      this.pageInActive(e.detail.parentPage,
+    if (
+      e.detail.parentPage &&
+      document.getElementById(e.detail.parentPage + "_page")
+    ) {
+      this.pageInActive(
+        e.detail.parentPage,
         e.detail.popupConfig ? true : false
       );
     } else {
       if (pages[pages.length - 2] && pages[pages.length - 2].pageId) {
-        pages.length > 0 ? this.pageInActive(pages[pages.length - 2].pageId) : null;
+        pages.length > 0
+          ? this.pageInActive(pages[pages.length - 2].pageId)
+          : null;
       }
     }
     this.setState({ pages: pages });
@@ -176,16 +210,47 @@ class Navigation extends React.Component {
   checkIfEntityViewerPageExists(page) {
     var last_page_key = this.state.pages.length - 1;
     var pages = this.state.pages;
-    if (this.state.pages[last_page_key] && this.state.pages[last_page_key].pageContent && this.state.pages[last_page_key].pageContent[0] && this.state.pages[last_page_key].pageContent[0].type == "EntityViewer" && page.pageContent && (page.pageContent[0].type == "Form" || page.pageContent[0].type == "Comment")) {
+    if (
+      this.state.pages[last_page_key] &&
+      this.state.pages[last_page_key].pageContent &&
+      this.state.pages[last_page_key].pageContent[0] &&
+      this.state.pages[last_page_key].pageContent[0].type == "EntityViewer" &&
+      page.pageContent &&
+      (page.pageContent[0].type == "Form" ||
+        page.pageContent[0].type == "Comment")
+    ) {
       return true;
     }
-    if (this.state.pages[last_page_key] && this.state.pages[last_page_key].pageContent && this.state.pages[last_page_key].pageContent[0] && this.state.pages[last_page_key].pageContent[0].type == "Form" && page.pageContent && (page.pageContent[0].type == "EntityViewer" || page.pageContent[0].type == "Comment")) {
+    if (
+      this.state.pages[last_page_key] &&
+      this.state.pages[last_page_key].pageContent &&
+      this.state.pages[last_page_key].pageContent[0] &&
+      this.state.pages[last_page_key].pageContent[0].type == "Form" &&
+      page.pageContent &&
+      (page.pageContent[0].type == "EntityViewer" ||
+        page.pageContent[0].type == "Comment")
+    ) {
       return true;
     }
-    if (this.state.pages[last_page_key] && this.state.pages[last_page_key].pageContent && this.state.pages[last_page_key].pageContent[0] && this.state.pages[last_page_key].pageContent[0].type == "Comment" && page.pageContent && (page.pageContent[0].type == "EntityViewer" || page.pageContent[0].type == "Form")) {
+    if (
+      this.state.pages[last_page_key] &&
+      this.state.pages[last_page_key].pageContent &&
+      this.state.pages[last_page_key].pageContent[0] &&
+      this.state.pages[last_page_key].pageContent[0].type == "Comment" &&
+      page.pageContent &&
+      (page.pageContent[0].type == "EntityViewer" ||
+        page.pageContent[0].type == "Form")
+    ) {
       return true;
     }
-    if (this.state.pages[last_page_key] && this.state.pages[last_page_key].pageContent && this.state.pages[last_page_key].pageContent[0] && this.state.pages[last_page_key].pageContent[0].type == "EntityViewer" && page.pageContent && page.pageContent[0].type == "EntityViewer") {
+    if (
+      this.state.pages[last_page_key] &&
+      this.state.pages[last_page_key].pageContent &&
+      this.state.pages[last_page_key].pageContent[0] &&
+      this.state.pages[last_page_key].pageContent[0].type == "EntityViewer" &&
+      page.pageContent &&
+      page.pageContent[0].type == "EntityViewer"
+    ) {
       return true;
     }
     return false;
@@ -226,9 +291,16 @@ class Navigation extends React.Component {
       detail: {},
       bubbles: true,
     });
-    var navigationElement = document.getElementById('navigation_' + this.appId);
-    if (navigationElement && navigationElement.getElementsByClassName('page-active') && navigationElement.getElementsByClassName('page-active')[0]) {
-      var foundElement = this.getElementInsideElement(navigationElement.getElementsByClassName('page-active')[0], 'customActionsToolbar');
+    var navigationElement = document.getElementById("navigation_" + this.appId);
+    if (
+      navigationElement &&
+      navigationElement.getElementsByClassName("page-active") &&
+      navigationElement.getElementsByClassName("page-active")[0]
+    ) {
+      var foundElement = this.getElementInsideElement(
+        navigationElement.getElementsByClassName("page-active")[0],
+        "customActionsToolbar"
+      );
       if (foundElement) {
         foundElement.dispatchEvent(ev);
       }
@@ -244,7 +316,10 @@ class Navigation extends React.Component {
       if (elementToReturn.id == wantedElementID) {
         return elementToReturn;
       } else {
-        elementToReturn = this.getElementInsideElement(elementToReturn, wantedElementID);
+        elementToReturn = this.getElementInsideElement(
+          elementToReturn,
+          wantedElementID
+        );
         if (elementToReturn) {
           return elementToReturn;
         }
@@ -271,27 +346,45 @@ class Navigation extends React.Component {
       }
       currentValue.title
         ? breadcrumbsList.push(
-          <>
-            {index == "0" ? null : (<div style={{ marginLeft: "5px" }} />)}
-            {childNode}
-            <i class="fas fa-angle-right" style={{ marginRight: "5px" }}></i>
-            <div value={""} disabled={!clickable} className={clickable ? "activeBreadcrumb" : "disabledBreadcrumb"} type={clickable || index == 0 ? "none" : "info"} selected={false} >
-              <a onClick={() => { clickable ? this.breadcrumbClick(currentValue, index) : null; }}>
-                <i className={currentValue.icon} style={{ marginRight: "5px" }} />
-                {currentValue.title}
-              </a>
-            </div>
-          </>
-        )
+            <>
+              {index == "0" ? null : <div style={{ marginLeft: "7px" }} />}
+              {childNode}
+              <i class="fad fa-angle-right" style={{ marginRight: "-5px" }}></i>
+              <div
+                value={""}
+                disabled={!clickable}
+                className={
+                  clickable ? "activeBreadcrumb" : "disabledBreadcrumb"
+                }
+                type={clickable || index == 0 ? "none" : "info"}
+                selected={false}
+              >
+                <a
+                  onClick={() => {
+                    clickable
+                      ? this.breadcrumbClick(currentValue, index)
+                      : null;
+                  }}
+                  id={`${this.appId}_${currentValue.title}`}
+                >
+                  <i
+                    className={currentValue.icon}
+                    style={{ marginRight: "0px" }}
+                  />
+                  {currentValue.title}
+                </a>
+              </div>
+            </>
+          )
         : null;
 
       var list = document.getElementsByClassName("osjs-window-breadcrumb");
       var name = this.props.proc.metadata.name;
-      var appName = 'Window_' + name;
+      var appName = "Window_" + name;
       for (let i = 0; i < list.length; i++) {
         const listItems = list[i].parentNode.parentNode.parentNode;
         var breadcrumbClassName = listItems.className;
-        if (breadcrumbClassName == 'osjs-window' + ' ' + appName) {
+        if (breadcrumbClassName == "osjs-window" + " " + appName) {
           ReactDOM.unmountComponentAtNode(list[i]);
           ReactDOM.render(breadcrumbsList, list[i]);
         }
@@ -326,9 +419,7 @@ class Navigation extends React.Component {
             </div>
           );
         } else {
-          pageList.push(
-            <div></div>
-          )
+          pageList.push(<div></div>);
         }
       });
     }
@@ -340,11 +431,19 @@ class Navigation extends React.Component {
     return (
       <div id={this.appNavigationDiv} className="Navigation">
         <Notification ref={this.notif} />
-        <div className={this.breadcrumbDiv + " breadcrumbHeader"} id={this.breadcrumbDiv}>
+        <div
+          className={this.breadcrumbDiv + " breadcrumbHeader"}
+          id={this.breadcrumbDiv}
+        >
           {this.state.pages.length > 0 ? (
             <div className="row">
-                          <div className="breadcrumbs">{this.renderBreadcrumbs()}</div>
-            <div className="col-md-12 customActions dash-manager-buttons" id="customActions">{this.state.customActions}</div>
+              <div className="breadcrumbs">{this.renderBreadcrumbs()}</div>
+              <div
+                className="col-md-12 customActions dash-manager-buttons"
+                id="customActions"
+              >
+                {this.state.customActions}
+              </div>
             </div>
           ) : null}
         </div>
@@ -352,7 +451,7 @@ class Navigation extends React.Component {
           {this.state.pages.length > 0 ? this.renderPages() : null}
           {(this.state.selected.activityInstanceId &&
             this.state.selected.activityInstanceId) ||
-            this.state.selected.pipeline ? (
+          this.state.selected.pipeline ? (
             <div id={this.contentDivID} className="AppBuilderPage">
               <FormRender
                 core={this.core}

@@ -770,23 +770,24 @@ body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown) {
 
   .k-grid .btn-primary {
     color: #345561;
-    background-color: #c5d2d6;
+    background-color: #e4e7eb;
     border-radius: 42px;
     font-size: 13px;
-    box-shadow: 0px 0px 5px 0px grey;
+    box-shadow: 0px 0px 4px 0px grey;
   }
 
   .k-grid .btn {
-    margin-right: 7px;
-    border-color: #eaeaea;
+    margin-right: 3px;
+    border-color: #c5d2d6;
   }
 
   .k-grid .btn-primary:hover {
-    color: whitesmoke;
-    background-color: #345561 !important;
-    > i {
-      color: whitesmoke !important;
-    }
+    // color: whitesmoke;
+    border-color: #c7cdd5;
+    background-color: #c5d2d6 !important;
+    // > i {
+    //   color: whitesmoke !important;
+    // }
   }
   .gridTemplateWrap {
     .k-grid {
@@ -1187,7 +1188,7 @@ body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown) {
 }
 
 .sidenav---sidenav---_2tBP {
-  background: #275362 !important;
+  background: #183e4b !important;
 }
 
 div.desk {
@@ -1207,7 +1208,8 @@ div.desk {
   margin: 20px;
   cursor: pointer;
   background-color: white;
-  box-shadow: rgba(50, 50, 93, 0.15) 0px 6px 10px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+  box-shadow: rgba(50, 50, 93, 0.15) 0px 6px 10px -2px,
+    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
   transition: transform 0.2s cubic-bezier(0.6, -0.28, 0.74, 0.05);
 }
 
@@ -1269,23 +1271,23 @@ div.iconTitle {
   display: contents;
 }
 
-  // Added CSS for custom scrollbar in Admin App
-  
-  #admin-outer-container nav::-webkit-scrollbar {
-    width: 13px;
-  }
-  
-  #admin-outer-container nav::-webkit-scrollbar-track {
-    border-radius: 10px;
-    box-shadow: inset 0 0 6px rgb(31 , 66 , 78);
-    background-color: #275362;
-    margin-top: 1px;
-    margin-bottom: 1px;
-  }
-  
-  #admin-outer-container nav::-webkit-scrollbar-thumb {
-    background-color: #306475;
-    border-radius: 10px;
-    box-shadow: inset 0 0 6px rgb(69 , 93 , 101);
-    height: 100px;
-  }
+// Added CSS for custom scrollbar in Admin App
+
+#admin-outer-container nav::-webkit-scrollbar {
+  width: 8px;
+}
+
+#admin-outer-container nav::-webkit-scrollbar-track {
+  border-radius: 10px;
+  box-shadow: inset 0 0 6px rgb(31, 66, 78);
+  background-color: #275362;
+  margin-top: 1px;
+  margin-bottom: 1px;
+}
+
+#admin-outer-container nav::-webkit-scrollbar-thumb {
+  background-color: #306475;
+  border-radius: 10px;
+  box-shadow: inset 0 0 6px rgb(69, 93, 101);
+  height: 100px;
+}

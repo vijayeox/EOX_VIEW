@@ -60,7 +60,7 @@ class CommentsView extends React.Component {
         this.getEntityPage().then((entityPage) => {
           if (entityPage.data) {
             this.setState({ entityConfig: entityPage.data });
-            this.generateViewButton(entityPage.data.enable_auditlog);
+            this.generateViewButton(entityPage.data.enable_auditlog, this.getDisableHeaderButtons(entityPage.data));
           }
           this.fetchCommentData();
         });
@@ -68,6 +68,7 @@ class CommentsView extends React.Component {
     });
     this.setState({ emojis: emojisData });
   }
+  
   callAuditLog() {
     this.setState({ showAuditLog: true });
   }
@@ -169,7 +170,7 @@ class CommentsView extends React.Component {
       this.loader.destroy();
     });
   }
-  generateViewButton(enableAuditLog) {
+  generateViewButton(enableAuditLog, disableHeaderButtons) {
     let gridToolbarContent = [];
     let filePage = [{ type: "EntityViewer", fileId: this.state.fileId }];
     let pageContent = {
@@ -225,6 +226,7 @@ class CommentsView extends React.Component {
         </Button>
       );
     }
+    if(disableHeaderButtons) return;
     let ev = new CustomEvent("addcustomActions", {
       detail: { customActions: gridToolbarContent },
       bubbles: true
@@ -476,6 +478,16 @@ class CommentsView extends React.Component {
       showModal: flag,
       imageDetails: { data: imageDetails, index }
     });
+  }
+  getDisableHeaderButtons(entityData){
+    //disableHeaderButtons
+    console.log(`disableHeaderButtons-`,entityData)
+    try{
+      return entityData?.content?.find((c) => c.type === 'TabSegment')?.content?.tabs?.find((tab) => tab.name === 'Comments')?.content?.find((c) => c.disableHeaderButtons)
+    }catch(e){
+      console.error(`disableHeaderButtons `,e)
+      return false;
+    }
   }
   render() {
     var that = this;

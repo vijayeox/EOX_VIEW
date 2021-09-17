@@ -109,8 +109,8 @@ html {
 }
 
 .osjs-window-title {
-  font-size: 16px;
-  margin: 0px 8px;
+  font-size: 14px;
+  margin: 0px 0px 0px 9px;
   height: auto !important;
   color: white;
 }
@@ -125,7 +125,11 @@ html {
   flex-grow: 50;
   height: auto !important;
   align-items: baseline;
-  font-size: 16px !important;
+  font-size: 11px !important;
+
+  .disabledBreadcrumb {
+    font-weight: bold;
+  }
 }
 .activeBreadcrumb > a > i {
   font-size: 0px;
@@ -220,15 +224,37 @@ html {
 //   }
 // }
 
-.osjs-panel-item--clickable:hover img {
-  // -webkit-transition: all 200ms ease-in;
-  // -webkit-transform: scale(1.1);
-  // -ms-transition: all 200ms ease-in;
-  // -ms-transform: scale(1.1);
-  // -moz-transition: all 200ms ease-in;
-  // -moz-transform: scale(1.1);
-  // transition: all 200ms ease-in;
-  // transform: scale(1.1);
+// .osjs-panel-item--clickable:hover img {
+// -webkit-transition: all 200ms ease-in;
+// -webkit-transform: scale(1.1);
+// -ms-transition: all 200ms ease-in;
+// -ms-transform: scale(1.1);
+// -moz-transition: all 200ms ease-in;
+// -moz-transform: scale(1.1);
+// transition: all 200ms ease-in;
+// transform: scale(1.1);
+// }
+
+.customActions > .btn.btn-primary {
+  color: #345561 !important;
+  background-color: #e4e7eb !important;
+  border-radius: 42px;
+  font-size: 13px;
+  box-shadow: 0px 0px 4px 0px grey;
+}
+
+.customActions .btn {
+  margin-right: 7px;
+  border-color: #c5d2d6 !important;
+}
+.customActions > .btn.btn-primary:hover {
+  // color: #345561 !important;
+  // border: 0px solid #c7cdd5;
+  border-color: #c7cdd5;
+  background-color: #c5d2d6 !important;
+  // > i {
+  //   color: whitesmoke !important;
+  // }
 }
 
 .osjs-panel {

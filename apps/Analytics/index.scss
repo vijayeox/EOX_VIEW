@@ -48,6 +48,7 @@
   height: calc(100%);
   margin-left: 0em;
   margin-right: 0em;
+  background-color: #f3f3f3;
 }
 
 //menu css
@@ -86,4 +87,42 @@
 
 .sidenav---navicon---3gCRo > i {
   font-size: 20px;
+}
+
+.breadcrumbHeader {
+  display: contents;
+}
+
+.breadcrumbHeader > .row {
+  display: contents;
+}
+
+.k-indicator-container {
+  height: 30px;
+  font-size: 12px;
+}
+
+.k-grid-header .k-header > .k-link {
+}
+
+.k-grid th {
+  padding: 4px;
+}
+
+.k-filter-row td,
+.k-filter-row th {
+  padding: 2px;
+}
+
+.k-grid {
+  font-size: 12px;
+}
+
+.k-grid {
+  font-size: 12px !important;
+}
+
+.k-grid th,
+.k-grid td {
+  padding: 4px !important;
 }

@@ -16,6 +16,8 @@ import * as am4plugins_forceDirected from "../amcharts/plugins/forceDirected";
 import am4geodata_worldLow from "@amcharts/amcharts4-geodata/worldLow";
 am4core.useTheme(am4themes_animated);
 am4core.options.commercialLicense = true;
+// import Mapbox from './components/Custom/Mapbox';
+import ComponentIndex from './components/Custom/ComponentIndex';
 // import WidgetcustomReport from './components/Custom/WidgetCustom'
 // import WidgetCustom from './components/Custom/WidgetCustom';
 
@@ -87,11 +89,11 @@ class WidgetRenderer {
                 break;
 
             case 'Report':
-                // if ((widgetTagName !== 'SPAN') && (widgetTagName !== 'DIV')) {
-                //     console.log(`Unexpected inline Report value widget tag "${widgetTagName}"`);
-                //     // throw (`Unexpected inline aggregate value widget tag "${widgetTagName}"`);
-                // }
-                // widgetReturnParams = WidgetRenderer.renderReport(element,widget.configuration, core, widget.data);
+                if ((widgetTagName !== 'SPAN') && (widgetTagName !== 'DIV')) {
+                    console.log(`Unexpected inline Report value widget tag "${widgetTagName}"`);
+                    // throw (`Unexpected inline aggregate value widget tag "${widgetTagName}"`);
+                }
+                widgetReturnParams = WidgetRenderer.renderReport(element, widget.configuration, core, widget.data);
                 break;
             // add a case for jsGrid for the server grid loading
             default:
@@ -100,15 +102,15 @@ class WidgetRenderer {
         return widgetReturnParams;
     }
 
-    static renderReport(element){
-        let canvasElement = null;
-        // let elementTagName = element.tagName.toUpperCase();
-        canvasElement = element.querySelector('div.oxzion-widget-content');
-        console.log("report case working....",canvasElement);
-
-        ReactDOM.render(<WidgetcustomReport />,canvasElement);
-        // <WidgetcustomReport />  ---- calling custom json table report file not rendering
-        // return null;
+    static renderReport(element, config, core, data) {
+        let ComponentType = config['report'];
+        // let reportInfo = Components.renderReport(ComponentType)
+        let canvasElement = document.getElementById(element.id);
+        ReactDOM.render(
+            <ComponentIndex
+                element={element} config={config} core={core} data={data} canvasElement={canvasElement}
+            />, canvasElement
+        );
     }
 
     static renderAggregateValue(element, configuration, props, data, hasDashboardFilters, dashboardEditMode, widget) {
@@ -131,7 +133,7 @@ class WidgetRenderer {
         element.classList.remove("red");
         element.classList.remove("yellow");
         element.classList.remove("green");
-        if (widget.targets) {
+        if (widget && widget.targets) {
             element.classList.add(widget.targets.color);
         }
         if (!dashboardEditMode && WidgetDrillDownHelper.setupDrillDownContextStack(element, configuration, hasDashboardFilters)) {
@@ -165,23 +167,22 @@ class WidgetRenderer {
             if (configuration.uuid) {
                 let format = configuration.uuid;
                 let uuid = data;
-                let encodedKey = btoa( "wrapper.url" );
+                let encodedKey = btoa("wrapper.url");
                 let imageUrl = '';
                 const imageSrcTag = '<img alt="" title="Profile Picture" width="140px" height="100px" src="';
 
                 displayValue = data[0][format];
 
-                if( core !== undefined ){
+                if (core !== undefined) {
                     imageUrl = core.config("wrapper.url") + "user/profile/" + displayValue;
-                    if( window.localStorage.getItem( encodedKey) == null )
-                    {
-                        let encodedVal = btoa( core.config("wrapper.url") );
-                        window.localStorage.setItem( encodedKey, encodedVal );
+                    if (window.localStorage.getItem(encodedKey) == null) {
+                        let encodedVal = btoa(core.config("wrapper.url"));
+                        window.localStorage.setItem(encodedKey, encodedVal);
                     }
                 }
-                else{
+                else {
                     let encodedVal = window.localStorage.getItem(encodedKey);
-                    imageUrl = atob( encodedVal ) + "user/profile/" + displayValue;
+                    imageUrl = atob(encodedVal) + "user/profile/" + displayValue;
                 }
                 imageHtml = imageSrcTag + imageUrl + '">';
             }

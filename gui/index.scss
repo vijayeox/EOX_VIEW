@@ -11,3 +11,55 @@
 .sidenav---navicon---3gCRo > i {
   font-size: 20px;
 }
+
+.k-grid-header .k-header > .k-link {
+}
+
+.k-grouping-header-flex > .k-indicator-container:last-child {
+  line-height: 10px !important;
+}
+
+.k-grid th {
+  padding: 4px !important;
+}
+
+.k-filter-row td,
+.k-filter-row th {
+  padding: 2px !important;
+}
+
+.k-grid {
+  font-size: 12px !important;
+  font-family: Roboto, sans-serif !important;
+}
+
+.k-grid th,
+.k-grid td {
+  padding: 4px !important;
+  font-family: Roboto, sans-serif !important;
+}
+
+.row-container-items,
+.row-container-items figure {
+  margin: 0px !important;
+  padding: 0px !important;
+  border-radius: 0px !important;
+}
+
+.k-textbox {
+  height: 20px !important;
+}
+
+.k-filtercell .k-filtercell-operator {
+  height: 20px !important;
+}
+
+.k-filtercell-operator {
+  display: grid !important;
+}
+
+.k-select {
+  padding: 10px !important;
+  height: 10px !important;
+  width: fit-content !important;
+}

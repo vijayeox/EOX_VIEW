@@ -194,7 +194,7 @@ const FilterFields = function (props) {
             }
 
             {visibility &&
-                <div className="dashboard-filter-field field-width-200">
+                <div className="dashboard-filter-field field-width-150">
                     <Form.Group className="dashboard-filter-field" >
                         <Form.Label>Filter DataSource</Form.Label>
                         <Select
@@ -206,13 +206,12 @@ const FilterFields = function (props) {
                             // selected={filterIndex}
                             options={dataSourceOptions}
                             styles={customStyles}
-                            className="field-width-200"
                         />
                     </Form.Group>
                 </div>
             }
             {visibility &&
-                <div className="dashboard-filter-field field-width-200">
+                <div className="dashboard-filter-field field-width-150">
                     <Form.Group className="dashboard-filter-field">
                         <Form.Label>Filter Index</Form.Label>
                         <Select
@@ -226,7 +225,6 @@ const FilterFields = function (props) {
                             styles={customStyles}
                             isLoading={isFilterIndexLoading}
                             isDisabled={(filters[index]["filterDataSource"] === undefined || filters[index]["filterDataSource"] == "") ? true : false}
-                            className="field-width-200"
                         />
                     </Form.Group>
                 </div>

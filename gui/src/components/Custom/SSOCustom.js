@@ -1,74 +1,91 @@
 import React, { Component } from "react";
+import $ from "jquery";
 import ReactDOM from 'react-dom';
+import Swal from "sweetalert2";
+import { Button } from 'react-bootstrap';
 
 class SSOCustom extends Component {
 
-    constructor(props) {
-        super(props);
-        this.core = this.props.args;
-        this.appId = this.props.appId;
-        this.params = this.props.params;
+  constructor(props) {
+    super(props);
+    this.core = this.props.core;
+    this.helper = this.core.make("oxzion/restClient");
+    this.state = {
+      authorizedUrl: '',
+      redirectUrl: '',
+      element: this.props.element,
+      config: this.props.config,
+      core: this.props.core,
+      data: this.props.data,
+      awaitingResponse: '',
+      appUuid: (this.props.config.appId) ? this.props.config.appId : '51c59337-9ac2-40d5-9775-d76094c1e861' //hardcoded val
+    }
+  }
 
-        this.state = {
-            authorizedUrl: '',
-            externalUrl: this.props.item.externalUrl ? this.props.item.externalUrl : undefined,
-            redirectUrl: this.props.item.redirectUrl ? this.props.item.redirectUrl : undefined,
-            emailForSSO: this.props.item.emailForSSO ? this.props.item.emailForSSO : false,
-            awaitingResponse: true,
-            content: this.props.content
+  async getURL(url) {
+    let fileContent = await this.helper.request("v1", url, {}, "get");
+    return fileContent;
+  }
+
+  async getExternalURL(url) {
+    let uiUrl = this.core.config("ui.url");
+    let externalUrl = uiUrl + url;
+    let resp = await fetch(externalUrl, {
+      method: "post",
+    });
+    return resp;
+  }
+
+  generateToken() {
+    // Code to generate the URL
+    let url = 'app/' + this.state.appUuid + '/delegate/GenerateSpeedgaugeAuth';
+    if (this.state.config.email) {
+      url += '?emailForSSO=' + this.state.config.email;
+    }
+
+    this.getURL(url).then((response) => {
+      if (response.status == "success") {
+        if (response.data.authorizedUrl) {
+          this.setState({ authorizedUrl: response.data.authorizedUrl });
         }
-    }
+        this.setState({ awaitingResponse: false });
+      }
+    });
 
-    async getExternalURL(url) {
-        let uiUrl = this.core.config("ui.url");
-        let externalUrl = uiUrl + url;
-        let resp = await fetch(externalUrl, {
-            method: "post",
-        });
-        return resp;
-    }
+    // let urlId = "https://www.speedgauge.net/access/jwt?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJha3RydWNraW5nODJAeWFob28uY29tIiwiaXNzIjoicnNpLWluc3VyYW5jZS1icm9rZXJzLTEiLCJpYXQiOjE2MzE3MTA0OTYsImV4cCI6MTYzMTc5Njg5Nn0.mn33sG32XAzw0NYNChX7VDvOHd64g3U_DisEoHwOiMs&redirect_to=https://www.speedgauge.net/insurance";
+    // window.open(urlId, '_blank');
 
-    componentDidMount() {
-        if (this.state.externalUrl != undefined) {
-            this.getExternalURL(this.state.externalUrl)
-                .then((response) => {
-                    if (response.ok) {
-                        response.text().then((value) => {
-                            this.setState({
-                                content: value,
-                            });
-                        });
-                    }
-                }).catch((e) => {
-                    console.log("Error " + e);
-                });
-        } else if (this.state.redirectUrl) {
-            let url = this.state.redirectUrl;
-            if (this.state.emailForSSO) {
-                url += '?emailForSSO=' + this.profile.key.email;
-            }
-            this.getURL(url).then((response) => {
-                if (response.status == "success") {
-                    if (response.data.authorizedUrl) {
-                        this.setState({ authorizedUrl: response.data.authorizedUrl });
-                    }
-                    this.setState({ awaitingResponse: false });
-                }
-            });
-        } else if (this.state.content) {
-            this.preRender();
-        }
+    if (this.state.authorizedUrl !== '') {
+      this.stepDownPage();
+      window.open(this.state.authorizedUrl, '_blank');
+      return null;
+    } else if (this.state.authorizedUrl === ''
+      // && this.props.config.redirectUrl && !this.state.awaitingResponse
+    ) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Could not redirect to the requested site. Please contact customer support.",
+      });
+      return null;
     }
+  }
 
-    render() {
-        return (
-            <div>
-                <div className="sidebar">
-                    Click to Login
-                </div>
-            </div >
-        );
-    }
+  onSSOClicked = () => {
+    this.generateToken();
+  }
+
+  render() {
+    $('.dash-manager-buttons').parent('div').css('outline', 'none');
+    $('.dash-manager-buttons').parent('div').css('background', 'none');
+    return (
+      <div class="dash-manager-buttons">
+        <Button onClick={() => this.onSSOClicked()} title="Open SpeedGuage Dashboard">
+          <i className="fa fa-external-link"></i>
+        </Button>
+      </div >
+    );
+  }
 }
 
 export default SSOCustom;

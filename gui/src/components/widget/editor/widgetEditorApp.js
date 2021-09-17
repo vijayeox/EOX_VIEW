@@ -399,6 +399,7 @@ class WidgetEditorApp extends React.Component {
                 type = 'block';
                 break;
             case 'html':
+            case 'report':
                 type = 'html';
                 break;
         }
@@ -619,7 +620,7 @@ class WidgetEditorApp extends React.Component {
                         </div>
                         {!this.state.flipped &&
                             <div className="row">
-                                {((this.state.widget.type === 'chart' || this.state.widget.type === 'table' || this.state.widget.type === 'inline' || this.state.widget.type === 'html' || this.state.widget.type === 'profile') && (this.state.selectableWidgetOptions.length > 0) && (this.state.selectableDashboardOptions.length > 0) && (this.state.selectableAppOptions.length > 0)) &&
+                                {((this.state.widget.type === 'chart' || this.state.widget.type === 'table' || this.state.widget.type === 'inline' || this.state.widget.type === 'html' || this.state.widget.type === 'profile' || this.state.widget.type === 'report') && (this.state.selectableWidgetOptions.length > 0) && (this.state.selectableDashboardOptions.length > 0) && (this.state.selectableAppOptions.length > 0)) &&
                                     <WidgetEditorBody
                                         ref="editor"
                                         type={this.state.widget.type}
@@ -678,7 +679,7 @@ class WidgetEditorApp extends React.Component {
                                 </div>
 
                                 <div className="row">
-                                    {(this.state.widget.type === 'chart' || this.state.widget.type === 'table' || this.state.widget.type === 'inline' || this.state.widget.type === 'html' || this.state.widget.type === 'profile') &&
+                                    {(this.state.widget.type === 'chart' || this.state.widget.type === 'table' || this.state.widget.type === 'inline' || this.state.widget.type === 'html' || this.state.widget.type === 'profile' || this.state.widget.type === 'report') &&
                                         <WidgetEditorBody
                                             ref="editor"
                                             type={this.state.widget.type}

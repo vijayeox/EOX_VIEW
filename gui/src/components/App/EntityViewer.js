@@ -201,9 +201,20 @@ class EntityViewer extends React.Component {
         data: { status, start_date, next_action_date },
       },
     } = fileData;
+    const goBack = () => {
+      const previousBreadcrumbsTitles = ['Total Tasks','Delayed Tasks', 'In Progress', 'Completed', 'Snoozed'];
+      let previousBreadcrumb = null;
+      for(let i = 0; i<previousBreadcrumbsTitles.length; i++){
+        if(!previousBreadcrumb){
+          previousBreadcrumb = document.getElementById(`${this.appId}_${previousBreadcrumbsTitles[i]}`);
+          if(previousBreadcrumb) break;
+        }
+      }
+      previousBreadcrumb?.click();
+    }
     return (
       <div className="task-header width-100">
-        <i className="fa fa-arrow-from-left go-back"></i>
+        <i className="fa fa-arrow-from-left go-back" onClick={goBack}></i>
         <div className="task-header_taskname">
           {title
             .split(" ")
