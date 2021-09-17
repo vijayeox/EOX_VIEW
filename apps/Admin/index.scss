@@ -770,23 +770,24 @@ body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown) {
 
   .k-grid .btn-primary {
     color: #345561;
-    background-color: #c5d2d6;
+    background-color: #e4e7eb;
     border-radius: 42px;
     font-size: 13px;
-    box-shadow: 0px 0px 5px 0px grey;
+    box-shadow: 0px 0px 4px 0px grey;
   }
 
   .k-grid .btn {
     margin-right: 3px;
-    border-color: #eaeaea;
+    border-color: #c5d2d6;
   }
 
   .k-grid .btn-primary:hover {
-    color: whitesmoke;
-    background-color: #345561 !important;
-    > i {
-      color: whitesmoke !important;
-    }
+    // color: whitesmoke;
+    border-color: #c7cdd5;
+    background-color: #c5d2d6 !important;
+    // > i {
+    //   color: whitesmoke !important;
+    // }
   }
   .gridTemplateWrap {
     .k-grid {
