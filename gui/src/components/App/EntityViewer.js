@@ -77,7 +77,7 @@ class EntityViewer extends React.Component {
       gridToolbarContent.push(this.getTaskHeader(fileData));
       setTimeout(() => {
         const appDescription = document.getElementById(`${this.appId}_description`);
-        if(appDescription){
+        if (appDescription) {
           appDescription.innerHTML = fileData?.data?.data?.description;
         }
       })
@@ -156,16 +156,16 @@ class EntityViewer extends React.Component {
             .make("oxzion/link")
             .copyToClipboard(
               '<a eoxapplication="' +
-                this.state.entityConfig.app_name +
-                '" file-id="' +
-                fileId +
-                '" href="' +
-                this.core.config("ui.url") +
-                "?app=" +
-                this.state.entityConfig.app_name +
-                "&fileId=" +
-                fileId +
-                '" >Link</a>'
+              this.state.entityConfig.app_name +
+              '" file-id="' +
+              fileId +
+              '" href="' +
+              this.core.config("ui.url") +
+              "?app=" +
+              this.state.entityConfig.app_name +
+              "&fileId=" +
+              fileId +
+              '" >Link</a>'
             )
         }
       >
@@ -194,16 +194,16 @@ class EntityViewer extends React.Component {
     const {
       data: {
         title,
-        data: { status, start_date, next_action_date },
+        data: { status, start_date, next_action_date, username, assignedToName },
       },
     } = fileData;
     const goBack = () => {
-      const previousBreadcrumbsTitles = ['Total Tasks','Delayed Tasks', 'In Progress', 'Completed', 'Snoozed'];
+      const previousBreadcrumbsTitles = ['Total Tasks', 'Delayed Tasks', 'In Progress', 'Completed', 'Snoozed'];
       let previousBreadcrumb = null;
-      for(let i = 0; i<previousBreadcrumbsTitles.length; i++){
-        if(!previousBreadcrumb){
+      for (let i = 0; i < previousBreadcrumbsTitles.length; i++) {
+        if (!previousBreadcrumb) {
           previousBreadcrumb = document.getElementById(`${this.appId}_${previousBreadcrumbsTitles[i]}`);
-          if(previousBreadcrumb) break;
+          if (previousBreadcrumb) break;
         }
       }
       previousBreadcrumb?.click();
@@ -234,10 +234,12 @@ class EntityViewer extends React.Component {
               <p>Due On</p> <p>{next_action_date}</p>
             </div>
             <div className="owner-assignee">
-              Owner <i className="fa fa-user owner-assignee-dp"></i>
+              Owner <i className="fad fa-user owner-assignee-dp"></i>
+              {/* <p>{username}</p> */}
             </div>
             <div className="owner-assignee">
-              Assigned To <i className="fa fa-user owner-assignee-dp"></i>
+              Assigned To <i className="fad fa-user owner-assignee-dp"></i>
+              {/* <p>{assignedToName}</p> */}
             </div>
             <div className="task-header_progress">
               <div className="task-header_progress--data">
@@ -297,8 +299,8 @@ class EntityViewer extends React.Component {
         var file = fileData.data.data ? fileData.data.data : fileData.data;
         this.setState({ entityId: fileData.data.entity_id, fileData: file });
         this.getEntityPage().then((entityPage) => {
-          console.log(`fileData-`,fileData)
-          if(!fileData?.data?.data?.uuid){
+          console.log(`fileData-`, fileData)
+          if (!fileData?.data?.data?.uuid) {
             fileData.data.data.uuid = fileData?.data?.uuid;
           }
           this.setState({ entityConfig: entityPage.data });
