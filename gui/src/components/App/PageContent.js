@@ -639,6 +639,7 @@ class PageContent extends React.Component {
           appId={this.appId}
           fileId={fileId}
           core={this.core}
+          disableControls={item?.disableControls}
         />
         );
       } else {
