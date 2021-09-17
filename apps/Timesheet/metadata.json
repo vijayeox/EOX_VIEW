@@ -12,7 +12,5 @@
   "files": [
     "main.js",
     "main.css"
-  ],
-  "autostart": false,
-  "defaultAppforOrgs": false
+  ]
 }
