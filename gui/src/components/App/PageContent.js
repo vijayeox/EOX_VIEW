@@ -210,17 +210,17 @@ class PageContent extends React.Component {
         action.updateOnly
           ? null
           : PageNavigation.loadPage(
-              this.appId,
-              this.pageId,
-              pageId,
-              action.icon,
-              true,
-              action.name,
-              mergeRowData,
-              copyPageContent,
-              undefined,
-              action.popupConfig
-            );
+            this.appId,
+            this.pageId,
+            pageId,
+            action.icon,
+            true,
+            action.name,
+            mergeRowData,
+            copyPageContent,
+            undefined,
+            action.popupConfig
+          );
       }
     }
   }
@@ -441,8 +441,8 @@ class PageContent extends React.Component {
             gridDefaultFilters={
               itemContent.defaultFilters
                 ? typeof itemContent.defaultFilters == "string"
-                  ? JSON.parse(ParameterHandler.replaceParams(this.appId,itemContent.defaultFilters,mergeRowData))
-                  : JSON.parse(ParameterHandler.replaceParams(this.appId, JSON.stringify(itemContent.defaultFilters),mergeRowData))
+                  ? JSON.parse(ParameterHandler.replaceParams(this.appId, itemContent.defaultFilters, mergeRowData))
+                  : JSON.parse(ParameterHandler.replaceParams(this.appId, JSON.stringify(itemContent.defaultFilters), mergeRowData))
                 : undefined
             }
             gridOperations={operations}
@@ -632,15 +632,15 @@ class PageContent extends React.Component {
             className={item.className}
           />
         );
-      }else if (item.type == "History") {
+      } else if (item.type == "History") {
         var fileId = this.props.fileId ? this.props.fileId : this.state.currentRow.uuid;
         content.push(
           <ActivityLog
-          appId={this.appId}
-          fileId={fileId}
-          core={this.core}
-          disableControls={item?.disableControls}
-        />
+            appId={this.appId}
+            fileId={fileId}
+            core={this.core}
+            disableControls={item?.disableControls}
+          />
         );
       } else {
         if (this.extGUICompoents && this.extGUICompoents[item.type]) {

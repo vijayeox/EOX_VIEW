@@ -32,6 +32,11 @@ export default function Mapbox() {
             setZoom(map.current.getZoom().toFixed(15));
         });
 
+        const marker = new mapboxgl.Marker()
+            .setLngLat([-122.483568, 37.832056])
+            .addTo(map.current);
+
+            
         map.current.on('load', () => {
             map.current.addSource('route', {
                 'type': 'geojson',
