@@ -365,6 +365,7 @@ class Navigation extends React.Component {
                       ? this.breadcrumbClick(currentValue, index)
                       : null;
                   }}
+                  id={`${this.appId}_${currentValue.title}`}
                 >
                   <i
                     className={currentValue.icon}

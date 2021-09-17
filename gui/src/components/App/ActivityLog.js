@@ -16,6 +16,7 @@ class ActivityLog extends React.Component {
     this.reorderable = false;
     this.resizable = false;
     this.sortable = true;
+    this.disableControls = this.props.disableControls
     this.api = "app/" + this.appId + "/file/"+this.fileId+"/audit";
 
     var columnConfig = [{field:"version",title:"Version"},{field:"file_date_modified",title:"Performed On", filter: "date", filterFormat: "YYYY-MM-DD", cell: "<td>{formatDate(item.file_date_modified,'YYYY-MM-DD, h:mm:ss a')}</td>"},{field:"modifiedUser",title:"Modified By"},{field:"action",title:"Action Performed"}]
@@ -49,12 +50,12 @@ class ActivityLog extends React.Component {
     return (
         
         <div className="activityLogWindow">
-        <div id="audit-controls">
+        {!this.disableControls && <div id="audit-controls">
         <div style={{textAlign: "end"}}>
         <button type="button" className="btn btn-danger" onClick={this.props.cancel} >
                     <i className="fa fa-close"></i>
                 </button></div>
-        </div>
+        </div>}
         <div id="loading-animation" className="blockUI blockMsg blockElement loadingdivcss hide">
         <div className="loading-message ">
         <div className="block-spinner-bar">
