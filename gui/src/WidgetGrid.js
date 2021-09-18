@@ -1,4 +1,3 @@
-
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Grid, GridColumn, GridToolbar } from '@progress/kendo-react-grid';
@@ -202,7 +201,6 @@ export default class WidgetGrid extends React.Component {
         }
     }
 
-
     launchApplication(event, selectedApplication) {
         if (event.uuid) {
             this.helper.launchApp({
@@ -282,7 +280,6 @@ export default class WidgetGrid extends React.Component {
         } return <td></td>
     }
 
-
     render() {
         let thiz = this;
         let hasBackButton = this.hasBackButton()
@@ -297,7 +294,6 @@ export default class WidgetGrid extends React.Component {
             }
             return columns;
         }
-
         let gridTag = <Grid
             style={{ height: this.height, width: this.width }}
             className={this.isDrillDownTable ? "drillDownStyle" : ""}
