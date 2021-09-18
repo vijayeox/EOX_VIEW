@@ -1,8 +1,7 @@
-
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Grid, GridColumn as Column, GridToolbar } from '@progress/kendo-react-grid';
-import { filterBy, orderBy, process } from '@progress/kendo-data-query';
+// import { filterBy, orderBy, process } from '@progress/kendo-data-query';
 import { IntlService } from '@progress/kendo-react-intl'
 import { ExcelExport } from '@progress/kendo-react-excel-export';
 import WidgetDrillDownHelper from './WidgetDrillDownHelper';
@@ -39,6 +38,7 @@ export default class WidgetGridNew extends React.Component {
         let oxzionMeta = configuration ? (configuration['oxzion-meta'] ? configuration['oxzion-meta'] : null) : null;
         this.exportToExcel = oxzionMeta ? (oxzionMeta['exportToExcel'] ? oxzionMeta['exportToExcel'] : false) : false;
         this.total_count = props.total_count
+        this.helper = this.core.make("oxzion/link");
         // data can be assigned as allData since the first call needs to be assigned here.
         this.state = {
             displayedData: { data: this.allData, total: this.total_count },
@@ -56,7 +56,6 @@ export default class WidgetGridNew extends React.Component {
             this.state.group = beginWith.group ? beginWith.group : null;
             this.state.filter = beginWith.filter ? beginWith.filter : null;
         }
-
     }
 
     dataStateChange = (e) => {
@@ -86,7 +85,7 @@ export default class WidgetGridNew extends React.Component {
         let fieldDataTypeMap = new Map();
         for (const config of this.columnConfig) {
             if (config['dataType']) {
-                fieldDataTypeMap.set(config['field'], config['dataType']);  
+                fieldDataTypeMap.set(config['field'], config['dataType']);
             }
         }
         for (let dataItem of this.allData) {
@@ -109,8 +108,28 @@ export default class WidgetGridNew extends React.Component {
     }
 
     drillDownClick = (evt) => {
-        WidgetDrillDownHelper.drillDownClicked(WidgetDrillDownHelper.findWidgetElement(evt.nativeEvent ? evt.nativeEvent.target : evt.target), evt.dataItem)
-        ReactDOM.unmountComponentAtNode(this.props.canvasElement)
+        // console.log(this.props.configuration);
+        let drillDownTarget = this.props.configuration["oxzion-meta"]['drillDown']['target'];
+        if (drillDownTarget == 'file') {
+            let appName = this.props.configuration["oxzion-meta"]['drillDown']['nextWidgetId'];
+            let eventData = evt.dataItem;
+            // console.log("Inside the file log Content" + eventData); //Need to open a URL
+            this.launchApplication(eventData, appName)
+        } else {
+            WidgetDrillDownHelper.drillDownClicked(WidgetDrillDownHelper.findWidgetElement(evt.nativeEvent ? evt.nativeEvent.target : evt.target), evt.dataItem)
+            ReactDOM.unmountComponentAtNode(this.props.canvasElement)
+        }
+    }
+
+    launchApplication(event, selectedApplication) {
+        if (event.uuid) {
+            this.helper.launchApp({
+                // pageId: event.target.getAttribute("page-id"),
+                pageTitle: event.name,
+                // pageIcon: event.target.getAttribute("icon"),
+                fileId: event.uuid,
+            }, selectedApplication);
+        }
     }
 
     hasBackButton() {
@@ -234,7 +253,6 @@ export default class WidgetGridNew extends React.Component {
             onDataStateChange={this.dataStateChange}
             onRowClick={this.drillDownClick}
             cellRender={(tdelement, cellProps) => this.cellRender(tdelement, cellProps, this)}
-
         >
             {/* comment all the columns for testing with our api  */}
             {/* <GridColumn field="ProductID" filter="numeric" title="Id" />
@@ -243,7 +261,6 @@ export default class WidgetGridNew extends React.Component {
             <GridColumn field="UnitsInStock" filter="numeric" title="In stock" /> */}
             {getColumns()}
         </Grid>;
-
         let gridLoader = <WidgetGridLoader
             dataState={this.state.dataState}
             onDataRecieved={this.dataRecieved}
@@ -255,7 +272,7 @@ export default class WidgetGridNew extends React.Component {
         return (
             <>
                 {gridLoader.length === 0 && loadingPanel}
-                { this.isDrillDownTable &&
+                {this.isDrillDownTable &&
                     <div className="oxzion-widget-drilldown-table-icon" style={hasBackButton ? { right: "5%" } : { right: "7px" }} title="Drilldown Table">
                         <i className="fas fa-angle-double-down fa-lg"></i>
                     </div>
