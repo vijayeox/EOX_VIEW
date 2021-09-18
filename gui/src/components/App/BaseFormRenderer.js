@@ -435,10 +435,11 @@ class BaseFormRenderer extends React.Component {
     }
 
     async callDelegate(delegate, params) {
+        var delegateParams = {...this.props.params , ...params, bos: this.getBOSData() };
         if (this.hasCore) {
-            return await this.helper.request("v1", this.appUrl + "/command/delegate/" + delegate, { ...params, bos: this.getBOSData() }, "post");
+            return await this.helper.request("v1", this.appUrl + "/command/delegate/" + delegate, delegateParams, "post");
         } else {
-            return await axios.post(this.appUrl + "/command/delegate/" + delegate, { ...params, bos: this.getBOSData() });
+            return await axios.post(this.appUrl + "/command/delegate/" + delegate, delegateParams);
         }
     }
 
@@ -497,9 +498,10 @@ class BaseFormRenderer extends React.Component {
                 form.submission.data.fileId = this.props.fileId ? this.props.fileId : this.state.fileId;
                 form.submission.data["workflow_instance_id"] = undefined;
             }
-            if(this.props.parentFileId){
-              form.submission.data.fileId = undefined;
-              form.submission.data["workflow_instance_id"] = undefined;
+            if(this.props.params){
+                Object.keys(this.props.params).map((i) => {
+                    form.submission.data[i]=this.props.params[i];
+                          });
             }
             if (that.props.parentFileId) {
                 form.submission.data.fileId = undefined;
