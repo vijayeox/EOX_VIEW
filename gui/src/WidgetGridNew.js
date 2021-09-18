@@ -109,25 +109,26 @@ export default class WidgetGridNew extends React.Component {
 
     drillDownClick = (evt) => {
         // console.log(this.props.configuration);
-        let drillDownTarget = this.props.configuration["oxzion-meta"]['drillDown']['target'];
+        let drillDownTarget = this.state.props.configuration["oxzion-meta"]['drillDown']['target'];
+        let drillDownField = this.state.props.configuration["oxzion-meta"]['drillDown']['drillDownField'];
         if (drillDownTarget == 'file') {
-            let appName = this.props.configuration["oxzion-meta"]['drillDown']['nextWidgetId'];
+            let appName = this.state.props.configuration["oxzion-meta"]['drillDown']['nextWidgetId'];
             let eventData = evt.dataItem;
             // console.log("Inside the file log Content" + eventData); //Need to open a URL
-            this.launchApplication(eventData, appName)
+            this.launchApplication(eventData, appName, drillDownField)
         } else {
             WidgetDrillDownHelper.drillDownClicked(WidgetDrillDownHelper.findWidgetElement(evt.nativeEvent ? evt.nativeEvent.target : evt.target), evt.dataItem)
-            ReactDOM.unmountComponentAtNode(this.props.canvasElement)
+            ReactDOM.unmountComponentAtNode(this.state.props.canvasElement)
         }
     }
 
-    launchApplication(event, selectedApplication) {
-        if (event.uuid) {
+    launchApplication(event, selectedApplication, drillDownField) {
+        if (drillDownField) {
             this.helper.launchApp({
                 // pageId: event.target.getAttribute("page-id"),
                 pageTitle: event.name,
                 // pageIcon: event.target.getAttribute("icon"),
-                fileId: event.uuid,
+                fileId: (event.drillDownField) ? event.drillDownField : event.uuid,
             }, selectedApplication);
         }
     }
