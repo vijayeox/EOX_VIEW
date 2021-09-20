@@ -13,7 +13,6 @@ class EntityViewer extends React.Component {
     this.appId = this.props.appId;
     this.fileId = this.props.fileId;
     this.proc = this.props.proc;
-    this.filePanelUuid = this.uuidv4();
     this.state = {
       content: this.props.content,
       fileData: this.props.fileData,
@@ -23,7 +22,9 @@ class EntityViewer extends React.Component {
       dataReady: false,
       editButton: null,
       entityConfig: null,
-    };
+      filePanelUuid : this.uuidv4(),
+      tabPanel : 'tabpanel-',
+  };
   }
 
   async getFileDetails(fileId) {
@@ -79,6 +80,7 @@ class EntityViewer extends React.Component {
         const appDescription = document.getElementById(`${this.appId}_description`);
         if (appDescription) {
           appDescription.innerHTML = fileData?.data?.data?.description;
+          this.setState({filePanelUuid : `${this.appId}_description`, tabPanel : ''})
         }
       })
     }
@@ -344,7 +346,7 @@ class EntityViewer extends React.Component {
     if (finalContentArray && enableView) {
       tabs.push({
         name: "View",
-        uuid: that.filePanelUuid,
+        uuid: that.state.filePanelUuid,
         content: finalContentArray,
       });
     }
@@ -384,7 +386,7 @@ class EntityViewer extends React.Component {
           {this.state.showPDF ? (
             <PrintPdf
               cancel={this.closePDF}
-              idSelector={"tabpanel-" + this.filePanelUuid}
+              idSelector={this.state.tabPanel+""+this.state.filePanelUuid}
               osjsCore={this.core}
             />
           ) : null}
