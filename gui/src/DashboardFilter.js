@@ -194,7 +194,7 @@ const FilterFields = function (props) {
             }
 
             {visibility &&
-                <div className="dashboard-filter-field field-width-150">
+                <div className="dashboard-filter-field" style={{ minWidth: "auto" }}>
                     <Form.Group className="dashboard-filter-field" >
                         <Form.Label>Filter DataSource</Form.Label>
                         <Select
@@ -211,7 +211,7 @@ const FilterFields = function (props) {
                 </div>
             }
             {visibility &&
-                <div className="dashboard-filter-field field-width-150">
+                <div className="dashboard-filter-field" style={{ minWidth: "auto" }}>
                     <Form.Group className="dashboard-filter-field">
                         <Form.Label>Filter Index</Form.Label>
                         <Select
@@ -230,15 +230,15 @@ const FilterFields = function (props) {
                 </div>
             }
             {visibility &&
-                <div className="dashboard-filter-field" id="">
+                <div className="dashboard-filter-field" id="" style={{ minWidth: "auto" }}>
                     <Form.Group className="dashboard-filter-field">
                         <Form.Label>Field Description</Form.Label>
-                        <Form.Control className="dashboardTextField" type="text" name="filterName" title={disabledFields ? "*The entered description will bdisplayed in dashboard viewer as filter name" : null} value={filterName} disabled={disabledFields} onChange={(e) => onUpdate(e, index)} />
+                        <Form.Control className="dashboardTextField" style={{width:"100%"}} type="text" name="filterName" title={disabledFields ? "*The entered description will bdisplayed in dashboard viewer as filter name" : null} value={filterName} disabled={disabledFields} onChange={(e) => onUpdate(e, index)} />
                     </Form.Group>
                 </div>
             }
             {visibility &&
-                <div className="dashboard-filter-field  field-width-150">
+                <div className="dashboard-filter-field" style={{ minWidth: "auto" }}>
                     <Form.Group className="dashboard-filter-field">
                         <Form.Label>Field Name</Form.Label>
                         {
@@ -253,40 +253,40 @@ const FilterFields = function (props) {
                                 styles={customStyles}
                                 isLoading={isFilterNameLoading}
                                 isDisabled={(filters[index]["filterIndex"] === undefined || filters[index]["filterIndex"] == "") ? true : false}
-                                className="field-width-150"
+                                className=""
                             />
                         }
                     </Form.Group>
                 </div>
             }
             {visibility &&
-                <div className="dashboard-filter-field field-width-75">
+                <div className="dashboard-filter-field" style={{ minWidth: "auto" }}>
                     <Form.Group className="dashboard-filter-field">
                         <Form.Label>Data Type</Form.Label>
-                        <Form.Control className="dashboardTextField field-width-75" type="text" value={fieldType} disabled />
+                        <Form.Control className="dashboardTextField" style={{width:"100%"}} type="text" value={fieldType} disabled />
                     </Form.Group>
                 </div>
             }
             {visibility &&
-                <div className="dashboard-filter-field field-width-100">
+                <div className="dashboard-filter-field" style={{ minWidth: "auto" }}>
                     <Form.Group className="dashboard-filter-field">
                         <Form.Label>Operator</Form.Label>
                         {
                             dataType === "date" || dataType === "text" || dataType === "numeric" || dataType === "select" ?
-                                <Form.Control className="dashboardTextField field-width-100" as="select" name={"operator"} onChange={(e) => onUpdate(e, index)} value={filters[index] !== undefined ? filters[index]["operator"] : ""}>
+                                <Form.Control className="dashboardTextField" as="select" name={"operator"} onChange={(e) => onUpdate(e, index)} value={filters[index] !== undefined ? filters[index]["operator"] : ""}>
                                     <option disabled key="-1" value=""></option>
                                     {filtersOptions[dataType + 'operator'].map((item, mapindex) => {
                                         return (<option key={mapindex} value={Object.values(item)[0]}>{Object.keys(item)[0]}</option>)
                                     })}
                                 </Form.Control> :
-                                <Form.Control className="dashboardTextField field-width-75" as="select" name={"operator"} onChange={(e) => onUpdate(e, index)} value={filters[index] !== undefined ? filters[index]["operator"] : ""}>
+                                <Form.Control className="dashboardTextField" as="select" name={"operator"} onChange={(e) => onUpdate(e, index)} value={filters[index] !== undefined ? filters[index]["operator"] : ""}>
                                     <option disabled key="-1" value=""></option>
                                 </Form.Control>
                         }
                     </Form.Group>
                 </div>
             }
-            <div className="dashboard-filter-field filterFieldsfilter-section-two">
+            <div className="dashboard-filter-field filterFieldsfilter-section-two" style={{ minWidth: "auto" }} >
                 <Form.Group className="dashboard-filter-field" controlId="formGridPassword">
                     {/* <Form.Label>Default Value</Form.Label><br /> */}
                     {dataType === "date" ?
@@ -392,7 +392,7 @@ const FilterFields = function (props) {
                             //     isLoading={isFilterValueLoading}
                             // />
                             <MultiSelect
-                                className="dashboardTextField field-width-300"
+                                className="dashboardTextField"
                                 selectedValues={(Array.isArray(multiFilters[index]) ? (Array.isArray(multiFilters[index]["value"]) ? multiFilters[index]["value"] : []) : [])}
                                 name="value"
                                 // key={index}
@@ -640,7 +640,7 @@ class DashboardFilter extends React.Component {
     }
 
     multiselectFilterRow(e, index, type) {
-        let multiFilter = this.state.multiFilters;
+        let multiFilter = this.state.multiFilters; // getting empty because filterconfig is empty; -> because UUID is undefined in DashboardManager.js 
         let itemFilter = []
         let name = "value"
         e.map((item, key) => {
@@ -660,13 +660,11 @@ class DashboardFilter extends React.Component {
         e.map((item) =>
             value.push(item.value)
         );
-        console.log(value);
         this.setState({ showing: true })
         let name = "value"
         //deep cloning react state to avoid mutation
         let filters = JSON.parse(JSON.stringify(this.state.filters));
         filters[index][name] = value
-        console.log(filters)
         this.setState({ filters })
     };
 
