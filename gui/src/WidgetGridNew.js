@@ -19,12 +19,12 @@ export default class WidgetGridNew extends React.Component {
         super(props);
         this.core = props.core;
         this.excelExporter = null;
-        this.allData = props.data ? props.data : [];
+        this.allData = this.props.data ? props.data : [];
         // this.filteredData = null;
         this.filterParams = props.filterParams
-        this.uuid = props.uuid
-        let configuration = props.configuration;
-        this.isDrillDownTable = props.isDrillDownTable;
+        this.uuid = this.props.uuid
+        let configuration = this.props.configuration;
+        this.isDrillDownTable = this.props.isDrillDownTable;
         this.resizable = configuration ? (configuration.resizable ? configuration.resizable : false) : false;
         this.filterable = configuration ? (configuration.filterable ? configuration.filterable : false) : false;
         this.groupable = configuration ? (configuration.groupable ? configuration.groupable : false) : false;
@@ -37,12 +37,21 @@ export default class WidgetGridNew extends React.Component {
         this.pageSize = configuration ? (configuration.pageSize ? configuration.pageSize : 10) : 10;
         let oxzionMeta = configuration ? (configuration['oxzion-meta'] ? configuration['oxzion-meta'] : null) : null;
         this.exportToExcel = oxzionMeta ? (oxzionMeta['exportToExcel'] ? oxzionMeta['exportToExcel'] : false) : false;
-        this.total_count = props.total_count
+        this.total_count = this.props.total_count
         this.helper = this.core.make("oxzion/link");
         // data can be assigned as allData since the first call needs to be assigned here.
         this.state = {
+            props: this.props,
             displayedData: { data: this.allData, total: this.total_count },
-            dataState: { take: this.pageSize, skip: 0 }
+            dataState: { take: this.pageSize, skip: 0 },
+            filter: null,
+            pagination: {
+                skip: 0,
+                take: this.pageSize
+            },
+            sort: (configuration ? (configuration.sort ? configuration.sort : null) : null),
+            group: null,
+            exportFilterData: []
         };
 
         let beginWith = configuration ? configuration.beginWith : null;
@@ -123,12 +132,13 @@ export default class WidgetGridNew extends React.Component {
     }
 
     launchApplication(event, selectedApplication, drillDownField) {
+        console.log(event[drillDownField]);
         if (drillDownField) {
             this.helper.launchApp({
                 // pageId: event.target.getAttribute("page-id"),
                 pageTitle: event.name,
                 // pageIcon: event.target.getAttribute("icon"),
-                fileId: (event.drillDownField) ? event.drillDownField : event.uuid,
+                fileId: (event[drillDownField]) ? event[drillDownField] : event.uuid,
             }, selectedApplication);
         }
     }
@@ -217,12 +227,11 @@ export default class WidgetGridNew extends React.Component {
         let gridTag = <Grid
             style={{ height: this.height, width: this.width }}
             className={this.isDrillDownTable ? "drillDownStyle" : ""}
-            filterable={true}
-            sortable={true}
-            pageable={true}
+            filterable={this.filterable}
             filterOperators={{
                 'text': [
                     { text: 'grid.filterStartsWithOperator', operator: 'startswith' },
+                    { text: 'grid.filterStartsWithOperator', operator: 'endswith' },
                     { text: 'grid.filterContainsOperator', operator: 'contains' },
                     { text: 'grid.filterNotContainsOperator', operator: 'doesnotcontain' },
                     { text: 'grid.filterEqOperator', operator: 'eq' },
