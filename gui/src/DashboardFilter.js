@@ -3,7 +3,7 @@ import DatePicker from 'react-datepicker'
 import dashboardFilterJson from '../metadata.json';
 import { Form, Row, Button } from 'react-bootstrap'
 import "react-datepicker/dist/react-datepicker.css";
-import Select from 'react-select/creatable'; 
+import Select from 'react-select/creatable';
 import { MultiSelect } from "react-multi-select-component";
 // import "./FilterFields";
 // import Multiselect from 'multiselect-react-dropdown';
@@ -391,23 +391,26 @@ const FilterFields = function (props) {
                             //     styles={customStyles}
                             //     isLoading={isFilterValueLoading}
                             // />
-                            <MultiSelect
-                                className="dashboardTextField"
-                                selectedValues={(Array.isArray(multiFilters[index]) ? (Array.isArray(multiFilters[index]["value"]) ? multiFilters[index]["value"] : []) : [])}
-                                name="value"
-                                // key={index}
-                                id="value"
-                                displayValue="value"
-                                placeholder="Select an option"
-                                options={filterValueOption}
-                                style={{
-                                    width: "50px"
-                                }}
-                                styles={customStyles}
-                                isLoading={isFilterValueLoading}
-                                onSelect={(e) => onSelect(e, index, "")} // create onSelect function where it assigns the value array
-                                onRemove={(e) => onRemove(e, index, "")}
-                            />
+                            <div>
+                                {/* <pre>{JSON.stringify(((multiFilters[index]) ? (Array.isArray(multiFilters[index]["value"]) ? multiFilters[index]["value"] : []) : []))}</pre> */}
+                                <MultiSelect
+                                    className="dashboardTextField field-width-300"
+                                    name="value"
+                                    value={((multiFilters[index]) ? (Array.isArray(multiFilters[index]["value"]) ? multiFilters[index]["value"] : []) : [])}
+                                    id="value"
+                                    key={index}
+                                    displayValue="value"
+                                    placeholder="Select an option"
+                                    options={filterValueOption}
+                                    style={{
+                                        width: "50px"
+                                    }}
+                                    styles={customStyles}
+                                    isLoading={isFilterValueLoading}
+                                    onChange={(e) => onSelect(e, index, "")} // create onSelect function where it assigns the value array
+                                    onRemove={(e) => onRemove(e, index, "")}
+                                />
+                            </div>
                             :
                             <Form.Control className="dashboardTextField field-width-150" id="value"
                                 type="text"
@@ -416,7 +419,7 @@ const FilterFields = function (props) {
                                 name="value"
                                 styles={customStyles}
                                 onChange={(e) => onUpdate(e, index, "value")}
-                            // key={index}
+                                key={index}
                             />
                     }
                 </Form.Group>
