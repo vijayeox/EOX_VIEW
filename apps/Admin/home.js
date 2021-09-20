@@ -54,8 +54,8 @@ export default class Home extends React.Component {
   };
 
   onIconClickHandler = (content) => {
-    this.onSelect(content)
-  }
+    this.onSelect(content);
+  };
 
   launchExternalApp = (appName) => {
     this.core.run(appName);
@@ -208,119 +208,174 @@ export default class Home extends React.Component {
               <NavText>Home</NavText>
             </NavItem>
 
-            <NavItem eventKey="Account" key="Account" title="Account">
-              <NavIcon>
-                <i className="fad fa-users-cog" aria-hidden="true"></i>
-              </NavIcon>
-              <NavText>Account</NavText>
-            </NavItem>
+            {this.userProfile.privileges.MANAGE_ACCOUNT_WRITE ? (
+              <NavItem eventKey="Account" key="Account" title="Account">
+                <NavIcon>
+                  <i className="fad fa-users-cog" aria-hidden="true"></i>
+                </NavIcon>
+                <NavText>Account</NavText>
+              </NavItem>
+            ) : (
+              ""
+            )}
+            {this.userProfile.privileges.MANAGE_USER_WRITE ? (
+              <NavItem eventKey="User" key="User" title="Users">
+                <NavIcon>
+                  <i className="fad fa-user" aria-hidden="true"></i>
+                </NavIcon>
+                <NavText>Users</NavText>
+              </NavItem>
+            ) : (
+              ""
+            )}
+            {this.userProfile.privileges.MANAGE_ROLE_WRITE ? (
+              <NavItem eventKey="Role" key="Role" title="Roles">
+                <NavIcon>
+                  <i className="fad fa-person-sign" aria-hidden="true"></i>
+                </NavIcon>
+                <NavText>Roles</NavText>
+              </NavItem>
+            ) : (
+              ""
+            )}
+            {this.userProfile.privileges.MANAGE_TEAM_WRITE ? (
+              <NavItem eventKey="Team" key="Team" title="Teams">
+                <NavIcon>
+                  <i className="fad fa-users" aria-hidden="true"></i>
+                </NavIcon>
+                <NavText>Teams</NavText>
+              </NavItem>
+            ) : (
+              ""
+            )}
+            {this.userProfile.privileges.MANAGE_KRA_WRITE ? (
+              <NavItem eventKey="Goal" key="Goal" title="Goals">
+                <NavIcon>
+                  <i className="fad fa-bullseye-arrow" aria-hidden="true"></i>
+                </NavIcon>
+                <NavText>Goals</NavText>
+              </NavItem>
+            ) : (
+              ""
+            )}
+            {this.userProfile.privileges.MANAGE_ERROR_WRITE ? (
+              <NavItem eventKey="Errorlog" key="Errorlog" title="Errorlog">
+                <NavIcon>
+                  <i
+                    className="fad fa-bug faa-bug animated-hover"
+                    aria-hidden="true"
+                  ></i>
+                </NavIcon>
+                <NavText>Errorlog</NavText>
+              </NavItem>
+            ) : (
+              ""
+            )}
+            {this.userProfile.privileges.MANAGE_PROJECT_WRITE ? (
+              <NavItem eventKey="Project" key="Project" title="Projects">
+                <NavIcon>
+                  <i className="fad fa-cogs" aria-hidden="true"></i>
+                </NavIcon>
+                <NavText>Projects</NavText>
+              </NavItem>
+            ) : (
+              ""
+            )}
+            {this.userProfile.privileges.MANAGE_ANNOUNCEMENT_WRITE ? (
+              <NavItem
+                eventKey="Announcement"
+                key="Announcement"
+                title="Announcement"
+              >
+                <NavIcon>
+                  <i className="fad fa-bullhorn" aria-hidden="true"></i>
+                </NavIcon>
+                <NavText>Announcement</NavText>
+              </NavItem>
+            ) : (
+              ""
+            )}
+            {this.userProfile.privileges.MANAGE_MAILADMIN_WRITE ? (
+              <NavItem
+                eventKey={this.userProfile.privileges.MANAGE_MAILADMIN_WRITE}
+                key={this.userProfile.privileges.MANAGE_MAILADMIN_WRITE}
+                onClick={() => this.launchExternalApp("MailAdmin")}
+                title="Mail Admin"
+                key="MailAdmin"
+              >
+                <NavIcon>
+                  <i className="fad fa-mail-bulk" aria-hidden="true"></i>
+                </NavIcon>
+                <NavText>Mail Admin</NavText>
+              </NavItem>
+            ) : (
+              ""
+            )}
+            {this.userProfile.privileges.MANAGE_CRMADMIN_WRITE ? (
+              <NavItem
+                eventKey={this.userProfile.privileges.MANAGE_CRMADMIN_WRITE}
+                key={this.userProfile.privileges.MANAGE_CRMADMIN_WRITE}
+                onClick={() => this.launchExternalApp("CRMAdmin")}
+                title="CRM Admin"
+                key="CRMAdmin"
+              >
+                <NavIcon>
+                  <i className="fad fa-user-tie" aria-hidden="true"></i>
+                </NavIcon>
+                <NavText>CRM Admin</NavText>
+              </NavItem>
+            ) : (
+              ""
+            )}
+            {this.userProfile.privileges.MANAGE_TASKADMIN_WRITE ? (
+              <NavItem
+                eventKey={this.userProfile.privileges.MANAGE_TASKADMIN_WRITE}
+                key={this.userProfile.privileges.MANAGE_TASKADMIN_WRITE}
+                onClick={() => this.launchExternalApp("TaskAdmin")}
+                title="PM Admin"
+                key="PMAdmin"
+              >
+                <NavIcon>
+                  <i className="fad fa-project-diagram" aria-hidden="true"></i>
+                </NavIcon>
+                <NavText>PM Admin</NavText>
+              </NavItem>
+            ) : (
+              ""
+            )}
+            {this.userProfile.privileges.MANAGE_APPBUILDER_READ ? (
+              <NavItem
+                eventKey={this.userProfile.privileges.MANAGE_APPBUILDER_READ}
+                key={this.userProfile.privileges.MANAGE_APPBUILDER_READ}
+                onClick={() => this.launchExternalApp("EOXAppBuilder")}
+                title="App Builder"
+                key="AppBuilder"
+              >
+                <NavIcon>
+                  <i className="fad fa-desktop-alt" aria-hidden="true"></i>
+                </NavIcon>
+                <NavText>App Builder</NavText>
+              </NavItem>
+            ) : (
+              ""
+            )}
 
-            <NavItem eventKey="User" key="User" title="Users">
-              <NavIcon>
-                <i className="fad fa-user" aria-hidden="true"></i>
-              </NavIcon>
-              <NavText>Users</NavText>
-            </NavItem>
-
-            <NavItem eventKey="Role" key="Role" title="Roles">
-              <NavIcon>
-                <i className="fad fa-person-sign" aria-hidden="true"></i>
-              </NavIcon>
-              <NavText>Roles</NavText>
-            </NavItem>
-
-            <NavItem eventKey="Team" key="Team" title="Teams">
-              <NavIcon>
-                <i className="fad fa-users" aria-hidden="true"></i>
-              </NavIcon>
-              <NavText>Teams</NavText>
-            </NavItem>
-
-            <NavItem eventKey="Errorlog" key="Errorlog" title="Errorlog">
-              <NavIcon>
-                <i
-                  className="fad fa-bug faa-bug animated-hover"
-                  aria-hidden="true"
-                ></i>
-              </NavIcon>
-              <NavText>Errorlog</NavText>
-            </NavItem>
-
-            <NavItem eventKey="Goal" key="Goal" title="Goals">
-              <NavIcon>
-                <i className="fad fa-bullseye-arrow" aria-hidden="true"></i>
-              </NavIcon>
-              <NavText>Goals</NavText>
-            </NavItem>
-
-            <NavItem eventKey="Project" key="Project" title="Projects">
-              <NavIcon>
-                <i className="fad fa-cogs" aria-hidden="true"></i>
-              </NavIcon>
-              <NavText>Projects</NavText>
-            </NavItem>
-
-            <NavItem eventKey="Announcement" key="Announcement" title="Announcement">
-              <NavIcon>
-                <i className="fad fa-bullhorn" aria-hidden="true"></i>
-              </NavIcon>
-              <NavText>Announcement</NavText>
-            </NavItem>
-
-            <NavItem
-              eventKey={this.userProfile.privileges.MANAGE_MAILADMIN_WRITE}
-              key={this.userProfile.privileges.MANAGE_MAILADMIN_WRITE}
-              onClick={() => this.launchExternalApp("MailAdmin")} title="Mail Admin" key="MailAdmin" 
-            >
-              <NavIcon>
-                <i className="fad fa-mail-bulk" aria-hidden="true"></i>
-              </NavIcon>
-              <NavText>Mail Admin</NavText>
-            </NavItem>
-
-            <NavItem
-              eventKey={this.userProfile.privileges.MANAGE_CRMADMIN_WRITE}
-              key={this.userProfile.privileges.MANAGE_CRMADMIN_WRITE}
-              onClick={() => this.launchExternalApp("CRMAdmin")} title="CRM Admin" key="CRMAdmin" 
-            >
-              <NavIcon>
-                <i className="fad fa-user-tie" aria-hidden="true"></i>
-              </NavIcon>
-              <NavText>CRM Admin</NavText>
-            </NavItem>
-
-            <NavItem
-              eventKey={this.userProfile.privileges.MANAGE_TASKADMIN_WRITE}
-              key={this.userProfile.privileges.MANAGE_TASKADMIN_WRITE}
-              onClick={() => this.launchExternalApp("TaskAdmin")} title="PM Admin" key="PMAdmin" 
-            >
-              <NavIcon>
-                <i className="fad fa-project-diagram" aria-hidden="true"></i>
-              </NavIcon>
-              <NavText>PM Admin</NavText>
-            </NavItem>
-
-            <NavItem
-              eventKey={this.userProfile.privileges.MANAGE_APPBUILDER_READ}
-              key={this.userProfile.privileges.MANAGE_APPBUILDER_READ}
-              onClick={() => this.launchExternalApp("EOXAppBuilder")} title="App Builder" key="AppBuilder" 
-            >
-              <NavIcon>
-                <i className="fad fa-desktop-alt" aria-hidden="true"></i>
-              </NavIcon>
-              <NavText>App Builder</NavText>
-            </NavItem>
-
-            <NavItem
-              eventKey={this.userProfile.privileges.MANAGE_OIBUILDER_READ}
-              key={this.userProfile.privileges.MANAGE_OIBUILDER_READ}
-              onClick={() => this.launchExternalApp("Analytics")} title="OI Studio" key="OI" 
-            >
-              <NavIcon>
-                <i className="fad fa-chart-bar" aria-hidden="true"></i>
-              </NavIcon>
-              <NavText>OI Studio</NavText>
-            </NavItem>
+            {this.userProfile.privileges.MANAGE_OIBUILDER_READ ? (
+              <NavItem
+                eventKey={this.userProfile.privileges.MANAGE_OIBUILDER_READ}
+                key={this.userProfile.privileges.MANAGE_OIBUILDER_READ}
+                onClick={() => this.launchExternalApp("Analytics")}
+                title="OI Studio"
+                key="OI"
+              >
+                <NavIcon>
+                  <i className="fad fa-chart-bar" aria-hidden="true"></i>
+                </NavIcon>
+                <NavText>OI Studio</NavText>
+              </NavItem>
+            ) : (
+              ""
+            )}
           </SideNav.Nav>
         </SideNav>
 

@@ -15,29 +15,32 @@
     flex-flow: column wrap;
     justify-content: space-between;
     width: 100%;
-    height: calc(100% - 50px);
-    border: var(--border);
+    height: 98%;
+    // border: var(--border);
     border-radius: 5px;
     background: var(--msger-bg);
-    box-shadow: 0 15px 15px -5px rgba(0, 0, 0, 0.2);
-    .msger-inputarea{
+    // box-shadow: 0 15px 15px -5px rgba(0, 0, 0, 0.2);
+    .msger-inputarea {
       display: flex;
-      padding: 10px;
-      border-top: var(--border);
-      background: #eee;
+      padding: 0px;
+      border-top: 0px;
+      background: transparent;
     }
-    #chat-container{
+    #chat-container {
       flex: 1;
       overflow-y: auto;
       padding: 10px;
+      min-height: 12rem;
+      height: 250px;
     }
 
     #emoji-list {
-
       z-index: 50;
       margin-bottom: -400px;
       right: 15%;
       position: absolute;
+      bottom: 27rem;
+      right: 8rem;
     }
 
     .commentsSaveButton {
@@ -131,6 +134,7 @@
       border: none;
       border-radius: 3px;
       font-size: 1em;
+      background: transparent;
     }
     .sendButton {
       color: #fff;
@@ -138,66 +142,69 @@
       cursor: pointer;
       transition: background 0.23s;
     }
-.msg {
-    display: flex;
-    align-items: flex-end;
-    margin-bottom: 10px;
-}
-.msg-bubble {
-    max-width: 450px;
-    padding: 15px;
-    border-radius: 15px;
-    background: var(--left-msg-bg);
-    word-break: break-word;
-}
-.msg-text {
-  white-space: pre-wrap;
-}
-.msg-info {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-}
-.right-msg .msg-bubble {
-    background: var(--right-msg-bg);
-    color: #fff;
-    border-bottom-right-radius: 0;
-}
-.msg-info-time {
-    font-size: 0.85em;
-}
-.msg-info-name {
-    margin-right: 10px;
-    font-weight: bold;
-}
-.right-msg {
-    flex-direction: row-reverse;
-}
-.right-msg .msg-bubble {
-  background: var(--right-msg-bg);
-  color: #fff;
-  border-bottom-right-radius: 0;
-}
-.right-msg .msg-img {
-  margin: 0 0 0 10px;
-}
-.msg-bubble {
-    max-width: 450px;
-    padding: 15px;
-    border-radius: 15px;
-    background: var(--left-msg-bg);
-}
-.msg-img {
-    width: 50px;
-    height: 50px;
-    margin-right: 10px;
-    background: #ddd;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-    border-radius: 50%;
-}
+    .msg {
+      display: flex;
+      align-items: flex-end;
+      margin-bottom: 10px;
+    }
+    .msg-bubble {
+      max-width: 100%;
+      padding: 5px;
+      border-radius: 15px;
+      background: var(--left-msg-bg);
+      word-break: break-word;
+    }
+    .msg-text {
+      white-space: pre-wrap;
+      display: grid;
+    }
+    .msg-info {
+      display: inline-flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .right-msg .msg-bubble {
+      background: transparent;
+      color: #275362;
+      width: 50%;
+      // border: 1px solid #275362;
+      border-radius: 5px;
+    }
+    .left-msg .msg-bubble {
+      background: transparent;
+      color: #275362;
+      width: 100%;
+      display:table-column-group;
+      // border-bottom: 1px solid #275362;
+      // border-radius: 0px;
+    }
+    .msg-info-time {
+      font-size: 0.85em;
+    }
+    .msg-info-name {
+      margin-right: 10px;
+      font-weight: bold;
+    }
+    .right-msg {
+      // flex-direction: row-reverse;
+    }
+    .right-msg .msg-img {
+      // margin: 5px;
+      float: left;
+    }
+    .msg-img {
+      width: 25px;
+      height: 25px;
+      margin-right: 10px;
+      background: #ddd;
+      background-repeat: no-repeat !important;
+      background-position: center;
+      background-size: cover;
+      border-radius: 50%;
+      float: left;
+      padding: 15px;
+    }
     thead {
       display: none;
     }
@@ -241,7 +248,7 @@
       border-bottom: 1px solid rgba(0, 0, 0, 0.15);
     }
 
-    .comment-date{
+    .comment-date {
       padding-bottom: 5px;
       font-size: 13px;
     }
@@ -252,7 +259,7 @@
     }
 
     html {
-      font-family: Arial, Helvetica, sans-serif;
+      font-family: Roboto, sans-serif;
       background: linear-gradient(to right, #57c1eb 0%, #246fa8 100%);
       font-size: 10px;
     }
