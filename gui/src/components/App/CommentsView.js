@@ -47,7 +47,10 @@ class CommentsView extends React.Component {
     };
   }
 
-  componentDidMount() {
+  componentWillUnmount() {
+    document.removeEventListener('click',this.togglePicker.bind(this))
+  }
+    componentDidMount() {
     this.loader.show();
     this.getFileDetails(this.state.fileId).then(fileData => {
       if (
@@ -67,6 +70,18 @@ class CommentsView extends React.Component {
       }
     });
     this.setState({ emojis: emojisData });
+    document.addEventListener('click',this.togglePicker.bind(this))
+  }
+
+  togglePicker(e){
+      try{
+        if(e?.path?.find((p) => p?.id === 'toggleEmojiButton')) return;
+          if(this.state.showEmojiPicker){
+          this.setState({showEmojiPicker : e?.path?.find((p) => p?.id === 'emoji-list')})
+        }
+      }catch(err){
+        console.error(`togglePicker ${e}`)
+      }
   }
   
   callAuditLog() {
@@ -675,7 +690,7 @@ class CommentsView extends React.Component {
                 {this.state.value.length + "/1000"}
               </div>
             </div>
-            <button type="button" onClick={this.toggleEmojiPicker} >
+            <button type="button" onClick={this.toggleEmojiPicker} id='toggleEmojiButton' >
               <Smile />
             </button>
             <Button
