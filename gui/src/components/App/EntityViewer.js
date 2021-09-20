@@ -13,7 +13,6 @@ class EntityViewer extends React.Component {
     this.appId = this.props.appId;
     this.fileId = this.props.fileId;
     this.proc = this.props.proc;
-    this.filePanelUuid = this.uuidv4();
     this.state = {
       content: this.props.content,
       fileData: this.props.fileData,
@@ -23,6 +22,8 @@ class EntityViewer extends React.Component {
       dataReady: false,
       editButton: null,
       entityConfig: null,
+      filePanelUuid: this.uuidv4(),
+      tabPanel: 'tabpanel-',
     };
   }
 
@@ -79,6 +80,7 @@ class EntityViewer extends React.Component {
         const appDescription = document.getElementById(`${this.appId}_description`);
         if (appDescription) {
           appDescription.innerHTML = fileData?.data?.data?.description;
+          this.setState({ filePanelUuid: `${this.appId}_description`, tabPanel: '' })
         }
       })
     }
@@ -194,21 +196,19 @@ class EntityViewer extends React.Component {
     const {
       data: {
         title,
-        data: { status, start_date, next_action_date, username, assignedToName },
+        data: { status, start_date, next_action_date, username, assignedto, ownerid },
       },
     } = fileData;
+    var imageAssigned = this.core.config("wrapper.url") + "user/profile/" + assignedto;
+    var imageOwner = this.core.config("wrapper.url") + "user/profile/" + ownerid;
     const goBack = () => {
-      const previousBreadcrumbsTitles = ['Total Tasks', 'Delayed Tasks', 'In Progress', 'Completed', 'Snoozed'];
-      let previousBreadcrumb = null;
-      for (let i = 0; i < previousBreadcrumbsTitles.length; i++) {
-        if (!previousBreadcrumb) {
-          previousBreadcrumb = document.getElementById(`${this.appId}_${previousBreadcrumbsTitles[i]}`);
-          if (previousBreadcrumb) break;
-        }
+      const activeBreadcrumbs = document.getElementsByClassName('activeBreadcrumb');
+      if(activeBreadcrumbs && activeBreadcrumbs?.length > 0){
+        activeBreadcrumbs?.[activeBreadcrumbs.length-1]?.children?.[0]?.click()
       }
-      previousBreadcrumb?.click();
     }
     return (
+
       <div className="task-header width-100">
         <i className="fa fa-arrow-from-left go-back" onClick={goBack}></i>
         <div className="task-header_taskname">
@@ -234,11 +234,13 @@ class EntityViewer extends React.Component {
               <p>Due On</p> <p>{next_action_date}</p>
             </div>
             <div className="owner-assignee">
-              Owner <i className="fad fa-user owner-assignee-dp"></i>
+              Assigned To {(imageAssigned) ? <div className='msg-img' style={{ background: `url(${imageAssigned})`, backgroundSize: "contain", height: "20px", width: "20px", borderRadius: "50%" }}></div> : <i className="fad fa-user owner-assignee-dp"></i>}
+              {/* <div className='msg-img' style={{ background: `url(${imageAssigned})`, backgroundSize: "contain" }}></div> */}
               {/* <p>{username}</p> */}
             </div>
             <div className="owner-assignee">
-              Assigned To <i className="fad fa-user owner-assignee-dp"></i>
+              Owner {(imageOwner != null) ? <div className='msg-img' style={{ background: `url(${imageOwner})`, backgroundSize: "contain", height: "20px", width: "20px", borderRadius: "50%"  }}></div> : <i className="fad fa-user owner-assignee-dp"></i>}
+              {/* <div className='msg-img' style={{ background: `url(${image})`, backgroundSize: "contain" }}></div> */}
               {/* <p>{assignedToName}</p> */}
             </div>
             <div className="task-header_progress">
@@ -344,7 +346,7 @@ class EntityViewer extends React.Component {
     if (finalContentArray && enableView) {
       tabs.push({
         name: "View",
-        uuid: that.filePanelUuid,
+        uuid: that.state.filePanelUuid,
         content: finalContentArray,
       });
     }
@@ -384,7 +386,7 @@ class EntityViewer extends React.Component {
           {this.state.showPDF ? (
             <PrintPdf
               cancel={this.closePDF}
-              idSelector={"tabpanel-" + this.filePanelUuid}
+              idSelector={this.state.tabPanel + "" + this.state.filePanelUuid}
               osjsCore={this.core}
             />
           ) : null}

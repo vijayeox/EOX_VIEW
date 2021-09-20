@@ -44,7 +44,8 @@ class PageContent extends React.Component {
         showLoader: false
       });
     });
-    this.contentDivID = "content_" + this.appId + "_" + this.props.pageId;
+    this.contentDivID = "content_" + this.appId + "_" +
+      (this.pageId ? this.pageId : this.generateUUID());
     this.state = {
       pageContent: this.props.pageContent ? this.props.pageContent : [],
       pageId: this.props.pageId,
@@ -59,6 +60,22 @@ class PageContent extends React.Component {
       displaySection: 'DB',
       sectionData: null,
     };
+  }
+
+  generateUUID() { // Public Domain/MIT
+    let d = new Date().getTime();//Timestamp
+    let d2 = (performance && performance.now && (performance.now() * 1000)) || 0;//Time in microseconds since page-load or 0 if unsupported
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+      let r = Math.random() * 16;//random number between 0 and 16
+      if (d > 0) {  //Use timestamp until depleted
+        r = (d + r) % 16 | 0;
+        d = Math.floor(d / 16);
+      } else {    //Use microseconds since page-load if supported
+        r = (d2 + r) % 16 | 0;
+        d2 = Math.floor(d2 / 16);
+      }
+      return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+    });
   }
 
   async fetchExternalComponents() {
@@ -195,15 +212,9 @@ class PageContent extends React.Component {
           } else {
             if (item.params && item.params.page_id) {
               pageId = item.params.page_id;
-              if (item.params.params && typeof item.params.params === "string") {
+              if (item.params.params) {
                 var newParams = ParameterHandler.replaceParams(this.appId, item.params.params, mergeRowData);
                 mergeRowData = { ...newParams, ...mergeRowData };
-              }else if(item.params.params && typeof item.params.params === "object"){
-                var params = {};
-                Object.keys(item.params.params).map((i) => {
-                            params[i] = ParameterHandler.replaceParams(this.appId, item.params.params[i], mergeRowData);
-                          });
-                mergeRowData = { ...params, ...mergeRowData };
               }
               copyPageContent = [];
             } else {
@@ -213,20 +224,7 @@ class PageContent extends React.Component {
             }
           }
         });
-        action.updateOnly
-          ? null
-          : PageNavigation.loadPage(
-            this.appId,
-            this.pageId,
-            pageId,
-            action.icon,
-            true,
-            action.name,
-            mergeRowData,
-            copyPageContent,
-            undefined,
-            action.popupConfig
-          );
+        action.updateOnly ? null : PageNavigation.loadPage(this.appId, this.pageId, pageId, action.icon, true, action.name, mergeRowData, copyPageContent);
       }
     }
   }
@@ -440,6 +438,7 @@ class PageContent extends React.Component {
             sortable={sortable}
             resizable={resizable}
             reorderable={reorderable}
+            customActions={this.props.customActions}
             parentData={this.state.currentRow}
             pageId={this.pageId}
             notif={this.notif}
@@ -447,8 +446,8 @@ class PageContent extends React.Component {
             gridDefaultFilters={
               itemContent.defaultFilters
                 ? typeof itemContent.defaultFilters == "string"
-                  ? JSON.parse(ParameterHandler.replaceParams(this.appId, itemContent.defaultFilters, mergeRowData))
-                  : JSON.parse(ParameterHandler.replaceParams(this.appId, JSON.stringify(itemContent.defaultFilters), mergeRowData))
+                  ? JSON.parse(ParameterHandler.replaceParams(this.appId, itemContent.defaultFilters))
+                  : ParameterHandler.replaceParams(this.appId, itemContent.defaultFilters)
                 : undefined
             }
             gridOperations={operations}
@@ -548,6 +547,7 @@ class PageContent extends React.Component {
             appId={this.appId}
             notif={this.notif}
             proc={this.props.proc}
+            fileId={fileId}
             tabs={item.content.tabs}
             pageId={this.state.pageId}
             currentRow={this.state.currentRow}
@@ -565,6 +565,26 @@ class PageContent extends React.Component {
           />
         );
       } else if (item.type == "DashboardManager") {
+        var itemContent = item.gridContent ? item.gridContent : item.content;
+        if (itemContent.dashboardoperations) {
+          if (itemContent.dashboardoperations.dashboardactions) {
+            itemContent.dashboardoperations.dashboardactions.map((action, j) => {
+              var act = action;
+              if (Array.isArray(act.details)) {
+                act.details.map((detail, k) => {
+                  if (detail.params) {
+                    Object.keys(detail.params).map(function (key, index) {
+                      detail.params[key] = ParameterHandler.replaceParams(this.appId, detail.params[key], mergeRowData);
+                    });
+                  }
+                });
+              }
+            });
+          }
+        }
+        var dashboardoperations = ParameterHandler.replaceParams(this.appId,
+          itemContent.dashboardoperations
+        );
         var uuid = item.content ? (item.content.uuid ? item.content.uuid : null) : null;
         content.push(
           <DashboardManager
@@ -579,6 +599,9 @@ class PageContent extends React.Component {
             proc={this.proc}
             editDashboard="EDB"
             hideEdit={true}
+            dashboardoperations={dashboardoperations}
+            parentDiv={this.contentDivID}
+            customActions={this.props.customActions}
           />
         );
       } else if (item.type == "Page") {
@@ -600,11 +623,11 @@ class PageContent extends React.Component {
           />
         );
       } else if (item.type == "Document" || item.type == "HTMLViewer") {
-        var fileData = {
-          ...this.state.currentRow,
-          ...this.state.fileData
-        }
+        var fileData = this.state.fileData ? this.state.fileData : this.state.currentRow;
         var fileId = item.fileId ? item.fileId : item.uuid;
+        if (item.useRowData) {
+          item.content = ParameterHandler.replaceParams(this.appId, item.content, this.state.currentRow);
+        }
         content.push(
           <HTMLViewer
             key={i}
@@ -621,6 +644,8 @@ class PageContent extends React.Component {
             fileData={fileData}
             notif={this.notif}
             className={item.className}
+            item={item}
+            currentRow={this.state.currentRow}
           />
         );
       } else if (item.type == "EntityViewer") {
@@ -641,7 +666,7 @@ class PageContent extends React.Component {
       } else if (item.type == "History") {
         var fileId = this.props.fileId ? this.props.fileId : this.state.currentRow.uuid;
         content.push(
-          <ActivityLog
+          <ActivityLog 
             appId={this.appId}
             fileId={fileId}
             core={this.core}
