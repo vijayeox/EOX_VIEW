@@ -60,8 +60,8 @@ class SSOCustom extends Component {
     $('.dash-manager-buttons').parent('div').css('background', 'none');
     return (
       <div class="dash-manager-buttons">
-        <Button onClick={() => this.onSSOClicked()} title="Open SpeedGuage Dashboard">
-          <i className="fa fa-external-link"></i>
+        <Button onClick={() => this.onSSOClicked()} title={this.props.config.title}>
+          <i class={this.props.config.fontIcon}></i>
         </Button>
       </div >
     );
