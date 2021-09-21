@@ -600,13 +600,8 @@ class CommentsView extends React.Component {
 											.slice(0)
 											.reverse()
 											.map(commentItem => {
-												commentItem.text = this.bubbleEmoticonCheck(
-													commentItem.text
-												);
-												var image =
-													this.core.config("wrapper.url") +
-													"user/profile/" +
-													commentItem.user_id;
+												commentItem.text = this.bubbleEmoticonCheck(commentItem.text);
+												var image = this.core.config("wrapper.url") + "user/profile/" + commentItem.user_id;
 												if (commentItem.user_id == that.currentUserId) {
 													return (
 														<div className='msg right-msg'>
@@ -694,7 +689,7 @@ class CommentsView extends React.Component {
 											})}
 								</div>
 							</div>
-							
+
 						</div>}
 
 
