@@ -229,7 +229,9 @@ $primary-color: #275362;
   abbr {
     text-decoration: none;
   }
-
+  .contentDiv {
+    position: relative;
+  }
   .page-active,
   .contentDiv {
     height: 100%;
