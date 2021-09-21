@@ -1054,7 +1054,9 @@ class BaseFormRenderer extends React.Component {
                 let commentPage = [{type:"Comment",fileId:this.state.fileId}];
                 let commentContent = {pageContent: commentPage,title: "Comment",icon: "fa fa-comment"};
                 gridToolbarContent.push(<Button title={"View"} className={"btn btn-primary"} primary={true} onClick={(e) => this.updatePageContent(pageContent)} ><i className={"fa fa-eye"}></i></Button>);
-                gridToolbarContent.push(<Button title={"Comments"} className={"btn btn-primary"} primary={true} onClick={(e) => this.updatePageContent(commentContent)} ><i className={"fa fa-comment"}></i></Button>);
+                if(entityPage?.data?.enable_comments == 1){
+                    gridToolbarContent.push(<Button title={"Comments"} className={"btn btn-primary"} primary={true} onClick={(e) => this.updatePageContent(commentContent)} ><i className={"fa fa-comment"}></i></Button>);
+                }
                 let ev = new CustomEvent("addcustomActions", { detail: { customActions: gridToolbarContent }, bubbles: true });
                 document.getElementById(this.state.appId+"_breadcrumbParent").dispatchEvent(ev);
             }
