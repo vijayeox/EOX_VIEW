@@ -30,6 +30,7 @@
       flex: 1;
       overflow-y: auto;
       padding: 10px;
+      min-height: 12rem;
     }
 
     #emoji-list {
@@ -38,6 +39,8 @@
       margin-bottom: -400px;
       right: 15%;
       position: absolute;
+      bottom: 27rem;
+      right: 8rem;
     }
 
     .commentsSaveButton {
