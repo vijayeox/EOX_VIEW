@@ -203,12 +203,13 @@ export default class WidgetGrid extends React.Component {
     }
 
     launchApplication(event, selectedApplication, drillDownField) {
+        console.log(event[drillDownField]);
         if (drillDownField) {
             this.helper.launchApp({
                 // pageId: event.target.getAttribute("page-id"),
                 pageTitle: event.name,
                 // pageIcon: event.target.getAttribute("icon"),
-                fileId: (event.drillDownField) ? event.drillDownField : event.uuid,
+                fileId: (event[drillDownField]) ? event[drillDownField] : event.uuid,
             }, selectedApplication);
         }
     }

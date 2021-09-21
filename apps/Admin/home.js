@@ -208,7 +208,7 @@ export default class Home extends React.Component {
               <NavText>Home</NavText>
             </NavItem>
 
-            {this.userProfile.privileges["MANAGE_ACCOUNT_WRITE"] ? (
+            {this.userProfile.privileges.MANAGE_ACCOUNT_WRITE ? (
               <NavItem eventKey="Account" key="Account" title="Account">
                 <NavIcon>
                   <i className="fad fa-users-cog" aria-hidden="true"></i>
@@ -218,7 +218,7 @@ export default class Home extends React.Component {
             ) : (
               ""
             )}
-            {this.userProfile.privileges["MANAGE_USER_WRITE"] ? (
+            {this.userProfile.privileges.MANAGE_USER_WRITE ? (
               <NavItem eventKey="User" key="User" title="Users">
                 <NavIcon>
                   <i className="fad fa-user" aria-hidden="true"></i>
@@ -228,7 +228,7 @@ export default class Home extends React.Component {
             ) : (
               ""
             )}
-            {this.userProfile.privileges["MANAGE_ROLE_WRITE"] ? (
+            {this.userProfile.privileges.MANAGE_ROLE_WRITE ? (
               <NavItem eventKey="Role" key="Role" title="Roles">
                 <NavIcon>
                   <i className="fad fa-person-sign" aria-hidden="true"></i>
@@ -238,7 +238,7 @@ export default class Home extends React.Component {
             ) : (
               ""
             )}
-            {this.userProfile.privileges["MANAGE_TEAM_WRITE"] ? (
+            {this.userProfile.privileges.MANAGE_TEAM_WRITE ? (
               <NavItem eventKey="Team" key="Team" title="Teams">
                 <NavIcon>
                   <i className="fad fa-users" aria-hidden="true"></i>
@@ -248,7 +248,7 @@ export default class Home extends React.Component {
             ) : (
               ""
             )}
-            {this.userProfile.privileges["MANAGE_KRA_WRITE"] ? (
+            {this.userProfile.privileges.MANAGE_KRA_WRITE ? (
               <NavItem eventKey="Goal" key="Goal" title="Goals">
                 <NavIcon>
                   <i className="fad fa-bullseye-arrow" aria-hidden="true"></i>
@@ -258,7 +258,7 @@ export default class Home extends React.Component {
             ) : (
               ""
             )}
-            {this.userProfile.privileges["MANAGE_ERROR_WRITE"] ? (
+            {this.userProfile.privileges.MANAGE_ERROR_WRITE ? (
               <NavItem eventKey="Errorlog" key="Errorlog" title="Errorlog">
                 <NavIcon>
                   <i
@@ -271,7 +271,7 @@ export default class Home extends React.Component {
             ) : (
               ""
             )}
-            {this.userProfile.privileges["MANAGE_PROJECT_WRITE"] ? (
+            {this.userProfile.privileges.MANAGE_PROJECT_WRITE ? (
               <NavItem eventKey="Project" key="Project" title="Projects">
                 <NavIcon>
                   <i className="fad fa-cogs" aria-hidden="true"></i>
@@ -281,7 +281,7 @@ export default class Home extends React.Component {
             ) : (
               ""
             )}
-            {this.userProfile.privileges["MANAGE_ANNOUNCEMENT_WRITE"] ? (
+            {this.userProfile.privileges.MANAGE_ANNOUNCEMENT_WRITE ? (
               <NavItem
                 eventKey="Announcement"
                 key="Announcement"
