@@ -36,6 +36,10 @@ const logoutIcon = require("../../../../assets/images/logout.png");
 const profileIcon = require("../../../../assets/images/profile.png");
 const settingsIcon = require("../../../../assets/images/settings.png");
 const editIcon = require("../../../../assets/images/edit.svg").default;
+const edit_account = require("../../../../assets/images/Edit_account.svg").default;
+const Switch_account = require("../../../../assets/images/Switch_account.svg").default;
+const open_profile = require("../../../../assets/images/View_Profile.svg").default;
+
 
 // const profileIcon = require('../../../../assets/images/profile_pic.png');
 /**
@@ -179,7 +183,7 @@ export default class ProfilePanelItem extends PanelItem {
                         },
                         [
                           h("img", {
-                            src: editIcon,
+                            src: Switch_account,
                             alt: "Switch Account",
                             className: "profile-dropdown-icon",
                             title: "Switch Account",
@@ -208,7 +212,7 @@ export default class ProfilePanelItem extends PanelItem {
                     },
                     [
                       h("img", {
-                        src: editIcon,
+                        src: edit_account,
                         alt: "Edit Profile",
                         className: "profile-dropdown-icon",
                         title: "Edit Profile",
@@ -236,7 +240,7 @@ export default class ProfilePanelItem extends PanelItem {
                     },
                     [
                       h("img", {
-                        src: editIcon,
+                        src: open_profile,
                         alt: "Open Profile",
                         className: "profile-dropdown-icon",
                         title: "Open Profile",
