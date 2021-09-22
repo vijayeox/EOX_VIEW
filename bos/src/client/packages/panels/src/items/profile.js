@@ -32,13 +32,16 @@ import PanelItem from "../panel-item";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 const MySwal = withReactContent(Swal);
-const logoutIcon = require("../../../../assets/images/logout.png");
-const profileIcon = require("../../../../assets/images/profile.png");
-const settingsIcon = require("../../../../assets/images/settings.png");
-const editIcon = require("../../../../assets/images/edit.svg").default;
-const edit_account = require("../../../../assets/images/Edit_account.svg").default;
-const Switch_account = require("../../../../assets/images/Switch_account.svg").default;
-const open_profile = require("../../../../assets/images/View_Profile.svg").default;
+// const logoutIcon = require("../../../../assets/images/logout.png");
+// const profileIcon = require("../../../../assets/images/profile.png");
+// const settingsIcon = require("../../../../assets/images/settings.png");
+// const editIcon = require("../../../../assets/images/edit.svg").default;
+// const edit_account = require("../../../../assets/images/Edit_account.svg").default;
+// const Switch_account = require("../../../../assets/images/Switch_account.svg").default;
+// const open_profile = require("../../../../assets/images/View_Profile.svg").default;
+const edit_account = 'fad fa-user-edit';
+const switch_account = 'fad fa-toggle-off';
+const open_profile = 'fad fa-file-chart';
 
 
 // const profileIcon = require('../../../../assets/images/profile_pic.png');
@@ -170,33 +173,33 @@ export default class ProfilePanelItem extends PanelItem {
               ),
               Object.keys(profileAccounts).length > 1
                 ? h(
-                    "a",
-                    {
-                      className: "profileitem",
-                    },
-                    [
-                      h(
-                        "div",
-                        {
-                          onclick: switchaccountPopup,
-                          className: "profile-dropdown-item",
-                        },
-                        [
-                          h("img", {
-                            src: Switch_account,
-                            alt: "Switch Account",
-                            className: "profile-dropdown-icon",
-                            title: "Switch Account",
-                          }),
-                          h("span", {
-                            title: "Switch Account",
-                            innerHTML: "Switch Account",
-                            className: "profile-dropdown-text",
-                          }),
-                        ]
-                      ),
-                    ]
-                  )
+                  "a",
+                  {
+                    className: "profileitem",
+                  },
+                  [
+                    h(
+                      "div",
+                      {
+                        onclick: switchaccountPopup,
+                        className: "profile-dropdown-item",
+                      },
+                      [
+                        h("i", {
+                          // src: Switch_account,
+                          alt: "Switch Account",
+                          className: switch_account,
+                          title: "Switch Account",
+                        }),
+                        h("span", {
+                          title: "Switch Account",
+                          innerHTML: "Switch Account",
+                          className: "profile-dropdown-text",
+                        }),
+                      ]
+                    ),
+                  ]
+                )
                 : null,
               h(
                 "a",
@@ -211,10 +214,10 @@ export default class ProfilePanelItem extends PanelItem {
                       className: "profile-dropdown-item",
                     },
                     [
-                      h("img", {
-                        src: edit_account,
+                      h("i", {
+                        // src: edit_account,
                         alt: "Edit Profile",
-                        className: "profile-dropdown-icon",
+                        className: edit_account,
                         title: "Edit Profile",
                       }),
                       h("span", {
@@ -239,10 +242,10 @@ export default class ProfilePanelItem extends PanelItem {
                       className: "profile-dropdown-item",
                     },
                     [
-                      h("img", {
-                        src: open_profile,
+                      h("i", {
+                        // src: open_profile,
                         alt: "Open Profile",
-                        className: "profile-dropdown-icon",
+                        className: open_profile,
                         title: "Open Profile",
                       }),
                       h("span", {
@@ -262,7 +265,7 @@ export default class ProfilePanelItem extends PanelItem {
             alt: profileDetails["firstname"],
             title: "My Profile",
           }),
-          
+
         ]
       ),
     ]);

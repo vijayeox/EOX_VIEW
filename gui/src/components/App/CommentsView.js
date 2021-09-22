@@ -49,11 +49,7 @@ class CommentsView extends React.Component {
 	componentDidMount() {
 		this.loader.show();
 		this.getFileDetails(this.state.fileId).then(fileData => {
-			if (
-				fileData.status == "success" &&
-				fileData.data &&
-				fileData.data.entity_id
-			) {
+			if (fileData.status == "success" && fileData.data && fileData.data.entity_id) {
 				var file = fileData.data.data ? fileData.data.data : fileData.data;
 				this.setState({ entityId: fileData.data.entity_id, fileData: file });
 				this.getEntityPage().then((entityPage) => {
