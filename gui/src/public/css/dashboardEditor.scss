@@ -201,7 +201,7 @@ div#filter-form-container.show-filter-panel {
   // padding: 1em;
   padding-top: 12px;
   padding-bottom: 0px;
-  position: absolute;
+  position: relative;
   width: auto;
   float: right;
   right: 0;
@@ -212,6 +212,7 @@ div#filter-form-container.show-filter-panel {
 .dashboard-viewer-div {
   position: realtive;
   margin-top: 0em !important;
+  float: left;
   width: 100%;
 }
 

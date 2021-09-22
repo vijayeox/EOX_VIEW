@@ -49,11 +49,7 @@ class CommentsView extends React.Component {
 	componentDidMount() {
 		this.loader.show();
 		this.getFileDetails(this.state.fileId).then(fileData => {
-			if (
-				fileData.status == "success" &&
-				fileData.data &&
-				fileData.data.entity_id
-			) {
+			if (fileData.status == "success" && fileData.data && fileData.data.entity_id) {
 				var file = fileData.data.data ? fileData.data.data : fileData.data;
 				this.setState({ entityId: fileData.data.entity_id, fileData: file });
 				this.getEntityPage().then((entityPage) => {
@@ -492,9 +488,9 @@ class CommentsView extends React.Component {
 	}
 	getDisableHeaderButtons(entityData) {
 		//disableHeaderButtons
-		console.log(`disableHeaderButtons-`, entityData)
 		try {
-			return entityData?.content?.find((c) => c.type === 'TabSegment')?.content?.tabs?.find((tab) => tab.name === 'Comments')?.content?.find((c) => c.disableHeaderButtons)
+			const disableCommentHeader = entityData?.content?.find((c) => c.type === 'TabSegment')?.content?.tabs?.map((tab) => tab)?.map((t) => t?.content?.find(c => c?.disableHeaderButtons))?.filter(v => v)?.length > 0
+			return disableCommentHeader;
 		} catch (e) {
 			console.error(`disableHeaderButtons `, e)
 			return false;
