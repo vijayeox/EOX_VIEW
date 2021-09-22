@@ -106,7 +106,7 @@ const FilterFields = function (props) {
 
     const changeName = async (e, Index, type) => {
         onUpdate(e, Index, type)
-        let filter_name = e.value
+        let filter_name = e.value;
         setFilterValueList(filter_name)
     }
 
@@ -643,19 +643,21 @@ class DashboardFilter extends React.Component {
     }
 
     multiselectFilterRow(e, index, type) {
-        let multiFilter = this.state.multiFilters; // getting empty because filterconfig is empty; -> because UUID is undefined in DashboardManager.js 
+        let multiFilter = this.state.multiFilters; // getting empty because filterconfig is empty;
         let itemFilter = []
         let name = "value"
         e.map((item, key) => {
-            // itemFilter.push({ key: { "label": item.value, "value": item.value } })
+            itemFilter.push({ key: { "label": item.value, "value": item.value } })
             itemFilter[key] = ({ "label": item.value, "value": item.value })
-            // multiFilter.push(itemFilter)
+            multiFilter.push(itemFilter)
         });
-        multiFilter[index][name] = itemFilter
-        let filters = JSON.parse(JSON.stringify(this.state.filters));
-        this.setState({ multiFilters: multiFilter })
-        filters[index][name] = multiFilter[index][name]
-        this.setState({ filters })
+        if(multiFilter[index]){
+            multiFilter[index][name] = itemFilter
+            let filters = JSON.parse(JSON.stringify(this.state.filters));
+            this.setState({ multiFilters: multiFilter })
+            filters[index][name] = multiFilter[index][name]
+            this.setState({ filters })
+        }
     }
 
     multiremoveFilterRow(e, index, type) {
