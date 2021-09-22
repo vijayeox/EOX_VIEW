@@ -43,7 +43,15 @@ export default class WidgetGridNew extends React.Component {
         this.state = {
             props: this.props,
             displayedData: { data: this.allData, total: this.total_count },
-            dataState: { take: this.pageSize, skip: 0 }
+            dataState: { take: this.pageSize, skip: 0 },
+            filter: null,
+            pagination: {
+                skip: 0,
+                take: this.pageSize
+            },
+            sort: (configuration ? (configuration.sort ? configuration.sort : null) : null),
+            group: null,
+            exportFilterData: []
         };
 
         let beginWith = configuration ? configuration.beginWith : null;
@@ -219,12 +227,11 @@ export default class WidgetGridNew extends React.Component {
         let gridTag = <Grid
             style={{ height: this.height, width: this.width }}
             className={this.isDrillDownTable ? "drillDownStyle" : ""}
-            filterable={true}
-            sortable={true}
-            pageable={true}
+            filterable={this.filterable}
             filterOperators={{
                 'text': [
                     { text: 'grid.filterStartsWithOperator', operator: 'startswith' },
+                    { text: 'grid.filterStartsWithOperator', operator: 'endswith' },
                     { text: 'grid.filterContainsOperator', operator: 'contains' },
                     { text: 'grid.filterNotContainsOperator', operator: 'doesnotcontain' },
                     { text: 'grid.filterEqOperator', operator: 'eq' },
