@@ -20,6 +20,7 @@ import PageNavigation from "../PageNavigation";
 import EntityViewer from "./EntityViewer";
 import Dashboard from "../../Dashboard";
 import DashboardManager from "../../DashboardManager";
+import ActivityLog from "./ActivityLog";
 
 class PageContent extends React.Component {
   constructor(props) {
@@ -665,7 +666,7 @@ class PageContent extends React.Component {
       } else if (item.type == "History") {
         var fileId = this.props.fileId ? this.props.fileId : this.state.currentRow.uuid;
         content.push(
-          <ActivityLog
+          <ActivityLog 
             appId={this.appId}
             fileId={fileId}
             core={this.core}
