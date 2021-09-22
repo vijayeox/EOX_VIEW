@@ -202,15 +202,10 @@ class EntityViewer extends React.Component {
     var imageAssigned = this.core.config("wrapper.url") + "user/profile/" + assignedto;
     var imageOwner = this.core.config("wrapper.url") + "user/profile/" + ownerid;
     const goBack = () => {
-      const previousBreadcrumbsTitles = ['Total Tasks', 'Delayed Tasks', 'In Progress', 'Completed', 'Snoozed'];
-      let previousBreadcrumb = null;
-      for (let i = 0; i < previousBreadcrumbsTitles.length; i++) {
-        if (!previousBreadcrumb) {
-          previousBreadcrumb = document.getElementById(`${this.appId}_${previousBreadcrumbsTitles[i]}`);
-          if (previousBreadcrumb) break;
-        }
+      const activeBreadcrumbs = document.getElementsByClassName('activeBreadcrumb');
+      if(activeBreadcrumbs && activeBreadcrumbs?.length > 0){
+        activeBreadcrumbs?.[activeBreadcrumbs.length-1]?.children?.[0]?.click()
       }
-      previousBreadcrumb?.click();
     }
     return (
 
