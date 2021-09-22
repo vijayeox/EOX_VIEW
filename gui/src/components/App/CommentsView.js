@@ -496,10 +496,10 @@ class CommentsView extends React.Component {
   }
   getDisableHeaderButtons(entityData){
     //disableHeaderButtons
-    console.log(`disableHeaderButtons-`,entityData)
     try{
-      return entityData?.content?.find((c) => c.type === 'TabSegment')?.content?.tabs?.find((tab) => tab.name === 'Comments')?.content?.find((c) => c.disableHeaderButtons)
-    }catch(e){
+      const disableCommentHeader =  entityData?.content?.find((c) => c.type === 'TabSegment')?.content?.tabs?.map((tab) => tab)?.map((t) => t?.content?.find(c => c?.disableHeaderButtons))?.filter(v => v)?.length > 0
+	  return disableCommentHeader;
+	}catch(e){
       console.error(`disableHeaderButtons `,e)
       return false;
     }
