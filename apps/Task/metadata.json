@@ -5,6 +5,7 @@
   "server": "server.js",
   "icon": "icon.png",
   "hidden": false,
+  "fontIcon":"fad fa-folder-tree",
   "icon_white": "icon_white.png",
   "title": {
     "en_EN": "Project Management"
