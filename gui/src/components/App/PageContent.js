@@ -212,9 +212,15 @@ class PageContent extends React.Component {
           } else {
             if (item.params && item.params.page_id) {
               pageId = item.params.page_id;
-              if (item.params.params) {
+              if (item.params.params && typeof item.params.params === "string") {
                 var newParams = ParameterHandler.replaceParams(this.appId, item.params.params, mergeRowData);
                 mergeRowData = { ...newParams, ...mergeRowData };
+              }else if(item.params.params && typeof item.params.params === "object"){
+                var params = {};
+                Object.keys(item.params.params).map((i) => {
+                            params[i] = ParameterHandler.replaceParams(this.appId, item.params.params[i], mergeRowData);
+                          });
+                mergeRowData = { ...params, ...mergeRowData };
               }
               copyPageContent = [];
             } else {
