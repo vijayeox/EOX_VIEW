@@ -651,11 +651,16 @@ class DashboardFilter extends React.Component {
             itemFilter[key] = ({ "label": item.value, "value": item.value })
             // multiFilter.push(itemFilter)
         });
-        multiFilter[index][name] = itemFilter
-        let filters = JSON.parse(JSON.stringify(this.state.filters));
-        this.setState({ multiFilters: multiFilter })
-        filters[index][name] = multiFilter[index][name]
-        this.setState({ filters })
+        console.log("multifilter", multiFilter);
+        if(multiFilter[index]){
+            console.log("Hi");
+            multiFilter[index][name] = itemFilter
+            let filters = JSON.parse(JSON.stringify(this.state.filters));
+            this.setState({ multiFilters: multiFilter })
+            filters[index][name] = multiFilter[index][name]
+            this.setState({ filters })
+        }
+        
     }
 
     multiremoveFilterRow(e, index, type) {
@@ -674,7 +679,9 @@ class DashboardFilter extends React.Component {
     handleSelect(e) {
         let name = e.value;
         let value = e.label;
+        console.log("this.props.filterMode", this.props.filterMode);
         if (this.props.filterMode === "CREATE") {
+            console.log("Surya_ CREATE Mode / HandleSelect",this.props);
             if (e.__isNew__) {
                 let filters = [...this.state.filters]
                 let length = filters !== undefined ? filters.length : 0
@@ -685,6 +692,7 @@ class DashboardFilter extends React.Component {
                 this.setState({ input: { ...this.state.input, "filtertype": "" } })
             }
         } else if (this.props.filterMode === "APPLY") {
+            console.log("Surya_ APPLY Mode / HandleSelect",this.props);
             let filters = [...this.state.filters]
             let applyFilterOption = [...this.state.applyFilterOption]
             filters.push(e.value)
