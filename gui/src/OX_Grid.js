@@ -25,6 +25,7 @@ import DataLoader from "./components/Grid/DataLoader";
 import DataOperation from "./components/Grid/DataOperation";
 import CustomFilter from "./components/Grid/CustomFilter";
 import "./components/Grid/customStyles.scss";
+import "@progress/kendo-theme-bootstrap/dist/all.css";
 import InlineComponent from "./components/Grid/InlineComponent";
 const util = require("util");
 import { Popup } from "@progress/kendo-react-popup";
@@ -81,12 +82,12 @@ export default class OX_Grid extends React.Component {
   componentDidMount() {
     document.getElementById(this.appNavigationDiv)
       ? document
-        .getElementById(this.appNavigationDiv)
-        .addEventListener(
-          "handleGridRefresh",
-          () => this.refreshHandler(),
-          false
-        )
+          .getElementById(this.appNavigationDiv)
+          .addEventListener(
+            "handleGridRefresh",
+            () => this.refreshHandler(),
+            false
+          )
       : null;
     $(document).ready(function () {
       $(".k-textbox").attr("placeholder", "Search");
@@ -118,11 +119,11 @@ export default class OX_Grid extends React.Component {
     // Write different props which when changed we need to trigger a setState
     if (
       util.inspect(this.props.data, { depth: 2 }) !=
-      util.inspect(nextProps.data) ||
+        util.inspect(nextProps.data) ||
       util.inspect(this.props.gridDefaultFilters, { depth: 4 }) !=
-      util.inspect(nextProps.gridDefaultFilters, { depth: 4 }) ||
+        util.inspect(nextProps.gridDefaultFilters, { depth: 4 }) ||
       util.inspect(this.props.columnConfig) !=
-      util.inspect(nextProps.columnConfig)
+        util.inspect(nextProps.columnConfig)
     ) {
       if (nextProps.gridDefaultFilters) {
         let mergedFilters = {
@@ -172,21 +173,21 @@ export default class OX_Grid extends React.Component {
     let table = [];
     this.props.checkBoxSelection
       ? table.push(
-        <GridColumn
-          field="selected"
-          filterable={false}
-          columnMenu={
-            this.props.columnMenuFilter != false
-              ? GridColumnMenuCheckboxFilter
-              : undefined
-          }
-          key={Math.random() * 20}
-          locked={true}
-          reorderable={false}
-          orderIndex={0}
-          width="50px"
-        />
-      )
+          <GridColumn
+            field="selected"
+            filterable={false}
+            columnMenu={
+              this.props.columnMenuFilter != false
+                ? GridColumnMenuCheckboxFilter
+                : undefined
+            }
+            key={Math.random() * 20}
+            locked={true}
+            reorderable={false}
+            orderIndex={0}
+            width="50px"
+          />
+        )
       : null;
     columnConfig.map((dataItem, i) => {
       table.push(
@@ -194,14 +195,14 @@ export default class OX_Grid extends React.Component {
           cell={
             dataItem.cell || dataItem.rygRule
               ? (item) => (
-                <CustomCell
-                  cellTemplate={dataItem.cell}
-                  dataItem={item.dataItem}
-                  type={"cellTemplate"}
-                  userProfile={this.userprofile}
-                  baseUrl={this.baseUrl}
-                />
-              )
+                  <CustomCell
+                    cellTemplate={dataItem.cell}
+                    dataItem={item.dataItem}
+                    type={"cellTemplate"}
+                    userProfile={this.userprofile}
+                    baseUrl={this.baseUrl}
+                  />
+                )
               : undefined
           }
           children={dataItem.children ? dataItem.children : undefined}
@@ -217,8 +218,8 @@ export default class OX_Grid extends React.Component {
             dataItem.columnMenuFilter == false
               ? undefined
               : this.props.columnMenuFilter != false
-                ? ColumnMenu
-                : undefined
+              ? ColumnMenu
+              : undefined
           }
           filterCell={
             dataItem.filterCell ? CustomFilter(dataItem.filterCell) : undefined
@@ -240,22 +241,22 @@ export default class OX_Grid extends React.Component {
             this.props.reorderable
               ? this.props.reorderable
               : dataItem.reorderable
-                ? dataItem.reorderable
-                : undefined
+              ? dataItem.reorderable
+              : undefined
           }
           resizable={
             this.props.resizable
               ? this.props.resizable
               : dataItem.resizable
-                ? dataItem.resizable
-                : undefined
+              ? dataItem.resizable
+              : undefined
           }
           sortable={
             this.props.sortable
               ? this.props.sortable
               : dataItem.sortable
-                ? dataItem.sortable
-                : undefined
+              ? dataItem.sortable
+              : undefined
           }
           width={dataItem.width ? dataItem.width : undefined}
           title={dataItem.title ? dataItem.title : undefined}
@@ -265,19 +266,19 @@ export default class OX_Grid extends React.Component {
 
     this.props.inlineEdit
       ? table.push(
-        <GridColumn
-          filterable={false}
-          key={Math.random() * 20}
-          reorderable={false}
-          width="175px"
-          title={"Actions"}
-          cell={InlineComponent(
-            this.props.inlineActions,
-            this.inlineEdit,
-            this.refreshHandler
-          )}
-        />
-      )
+          <GridColumn
+            filterable={false}
+            key={Math.random() * 20}
+            reorderable={false}
+            width="175px"
+            title={"Actions"}
+            cell={InlineComponent(
+              this.props.inlineActions,
+              this.inlineEdit,
+              this.refreshHandler
+            )}
+          />
+        )
       : null;
     return table;
   };
@@ -388,10 +389,10 @@ export default class OX_Grid extends React.Component {
         var buttonStyles = action[key].icon
           ? { width: "auto" }
           : {
-            width: "auto",
-            color: "white",
-            fontWeight: "600",
-          };
+              width: "auto",
+              color: "white",
+              fontWeight: "600",
+            };
         const itemRender = (props) => {
           return (
             <div style={{ padding: "5px" }} text={action[key].name}>
@@ -405,8 +406,8 @@ export default class OX_Grid extends React.Component {
         };
         showButton
           ? actionButtons.push(
-            <MenuItem text={action[key].name} render={itemRender} />
-          )
+              <MenuItem text={action[key].name} render={itemRender} />
+            )
           : null;
       }, this);
       this.setState({
@@ -666,7 +667,7 @@ export default class OX_Grid extends React.Component {
           {operationsList[0].icon ? (
             <i
               className={operationsList[0].icon}
-            // style={{ paddingRight: "5px" }}
+              // style={{ paddingRight: "5px" }}
             />
           ) : null}
           {/* {operationsList[0].name} */}
@@ -781,12 +782,12 @@ export default class OX_Grid extends React.Component {
               }
               item.params.successNotification
                 ? that.state.notif.current.notify(
-                  "Success",
-                  item.params.successNotification.length > 0
-                    ? item.params.successNotification
-                    : "Update Completed",
-                  "success"
-                )
+                    "Success",
+                    item.params.successNotification.length > 0
+                      ? item.params.successNotification
+                      : "Update Completed",
+                    "success"
+                  )
                 : null;
               this.props.postSubmitCallback();
               this.setState({ showLoader: false });
@@ -880,13 +881,27 @@ export default class OX_Grid extends React.Component {
           } else {
             if (item.params && item.params.page_id) {
               pageId = item.params.page_id;
-              if (item.params.params && typeof item.params.params === "string") {
-                var newParams = ParameterHandler.replaceParams(this.appId, item.params.params, mergeRowData);
+              if (
+                item.params.params &&
+                typeof item.params.params === "string"
+              ) {
+                var newParams = ParameterHandler.replaceParams(
+                  this.appId,
+                  item.params.params,
+                  mergeRowData
+                );
                 mergeRowData = { ...newParams, ...mergeRowData };
-              } else if (item.params.params && typeof item.params.params === "object") {
+              } else if (
+                item.params.params &&
+                typeof item.params.params === "object"
+              ) {
                 var params = {};
                 Object.keys(item.params.params).map((i) => {
-                  params[i] = ParameterHandler.replaceParams(this.appId, item.params.params[i], mergeRowData);
+                  params[i] = ParameterHandler.replaceParams(
+                    this.appId,
+                    item.params.params[i],
+                    mergeRowData
+                  );
                 });
                 mergeRowData = { ...params, ...mergeRowData };
               }
@@ -906,17 +921,17 @@ export default class OX_Grid extends React.Component {
         action.updateOnly
           ? null
           : PageNavigation.loadPage(
-            this.appId,
-            this.pageId,
-            pageId,
-            action.icon,
-            true,
-            action.name,
-            mergeRowData,
-            copyPageContent,
-            undefined,
-            action.popupConfig
-          );
+              this.appId,
+              this.pageId,
+              pageId,
+              action.icon,
+              true,
+              action.name,
+              mergeRowData,
+              copyPageContent,
+              undefined,
+              action.popupConfig
+            );
       }
     }
   }
@@ -1053,20 +1068,20 @@ export default class OX_Grid extends React.Component {
     this.dataItem = dataItem;
     this.state.actions[key].confirmationMessage
       ? Swal.fire({
-        title: this.state.actions[key].confirmationMessage,
-        confirmButtonText: "Agree",
-        confirmButtonColor: "#275362",
-        showCancelButton: true,
-        cancelButtonColor: "#7b7878",
-        target: ".PageRender",
-      }).then((result) => {
-        result.value
-          ? this.buttonAction(this.state.actions[key], this.dataItem)
-          : null;
-      })
+          title: this.state.actions[key].confirmationMessage,
+          confirmButtonText: "Agree",
+          confirmButtonColor: "#275362",
+          showCancelButton: true,
+          cancelButtonColor: "#7b7878",
+          target: ".PageRender",
+        }).then((result) => {
+          result.value
+            ? this.buttonAction(this.state.actions[key], this.dataItem)
+            : null;
+        })
       : this.state.actions[key].details
-        ? this.buttonAction(this.state.actions[key], this.dataItem)
-        : null;
+      ? this.buttonAction(this.state.actions[key], this.dataItem)
+      : null;
   }
   handleOnSelect = (e) => {
     var dataItem = this.dataItem;
@@ -1113,6 +1128,16 @@ export default class OX_Grid extends React.Component {
             >
               {this.state.menu}
             </Menu>
+            <i
+              style={{
+                color: "#8d8f92",
+                cursor: "pointer",
+              }}
+              className={"fad fa-times"}
+              onClick={() => {
+                this.setState({ contextMenuOpen: false });
+              }}
+            ></i>
           </div>
         </Popup>
         {this.rawDataPresent ? (
@@ -1150,11 +1175,11 @@ export default class OX_Grid extends React.Component {
           detail={
             this.props.rowTemplate
               ? (dataItem) => (
-                <DetailComponent
-                  rowTemplate={this.props.rowTemplate}
-                  dataItem={dataItem.dataItem}
-                />
-              )
+                  <DetailComponent
+                    rowTemplate={this.props.rowTemplate}
+                    dataItem={dataItem.dataItem}
+                  />
+                )
               : undefined
           }
           filterable={this.props.filterable}
@@ -1181,8 +1206,8 @@ export default class OX_Grid extends React.Component {
           onItemChange={this.itemChange}
         >
           {this.props.defaultToolBar &&
-            this.generateGridToolbar() &&
-            this.state.apiActivityCompleted ? (
+          this.generateGridToolbar() &&
+          this.state.apiActivityCompleted ? (
             <GridToolbar>
               <div className={"GridToolBar"}>{this.generateGridToolbar()}</div>
             </GridToolbar>
@@ -1204,12 +1229,12 @@ export default class OX_Grid extends React.Component {
             <Grid
               data={
                 this.props.exportToPDF.defaultFilters &&
-                  this.state.gridData.data &&
-                  typeof this.state.gridData.data == "array"
+                this.state.gridData.data &&
+                typeof this.state.gridData.data == "array"
                   ? process(
-                    this.state.gridData.data,
-                    JSON.parse(this.props.exportToPDF.defaultFilters)
-                  )
+                      this.state.gridData.data,
+                      JSON.parse(this.props.exportToPDF.defaultFilters)
+                    )
                   : this.state.gridData.data
               }
             >
@@ -1233,14 +1258,14 @@ export default class OX_Grid extends React.Component {
           >
             {this.props.exportToExcel.columnConfig
               ? this.props.exportToExcel.columnConfig.map((item) => (
-                <ExcelExportColumn
-                  field={item.field}
-                  title={item.title}
-                  cellOptions={item.cellOptions}
-                  locked={item.locked}
-                  width={item.width}
-                />
-              ))
+                  <ExcelExportColumn
+                    field={item.field}
+                    title={item.title}
+                    cellOptions={item.cellOptions}
+                    locked={item.locked}
+                    width={item.width}
+                  />
+                ))
               : null}
           </ExcelExport>
         ) : null}
@@ -1316,8 +1341,8 @@ class CustomCell extends React.Component {
             this.props.cellTemplate
               ? this.props.cellTemplate
               : this.props.dataItem.rygRule
-                ? this.props.dataItem.rygRule
-                : "<td></td>"
+              ? this.props.dataItem.rygRule
+              : "<td></td>"
           }
         />
       );
