@@ -1130,7 +1130,7 @@ export default class OX_Grid extends React.Component {
             </Menu>
             <i
               style={{
-                color: "#8d8f92",
+                color: "#212529b3",
                 cursor: "pointer",
               }}
               className={"fad fa-times"}
