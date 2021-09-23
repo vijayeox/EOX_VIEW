@@ -4,6 +4,7 @@ import TabSegment from "./TabSegment";
 import { Button, DropDownButton } from "@progress/kendo-react-buttons";
 import PrintPdf from "./../print/printpdf";
 import ActivityLog from "./ActivityLog";
+import moment from "moment";
 class EntityViewer extends React.Component {
   constructor(props) {
     super(props);
@@ -196,7 +197,7 @@ class EntityViewer extends React.Component {
     const {
       data: {
         title,
-        data: { status, start_date, next_action_date, username, assignedto, ownerid },
+        data: { status, start_date, next_action_date, username, assignedto, ownerid, end_date },
       },
     } = fileData;
     var imageAssigned = this.core.config("wrapper.url") + "user/profile/" + assignedto;
@@ -207,6 +208,32 @@ class EntityViewer extends React.Component {
         activeBreadcrumbs?.[activeBreadcrumbs.length-1]?.children?.[0]?.click()
       }
     }
+    let completedHours = 0;
+    let remainingHours = 0;
+    let finishedPercentage = 0;
+    try{
+      const start = new Date(start_date).getTime(); //WHEN WORK STARTED
+      const today = new Date().getTime(); // NOW
+      const end = new Date(end_date).getTime(); //END DATE
+      if(status.toLowerCase() !== 'completed'){
+        if(start <= today && today <= end){
+          completedHours = moment.duration(moment(today).diff(moment(start))).asHours();
+          remainingHours = moment.duration(moment(end).diff(moment(today))).asHours();
+        }
+        else{
+          remainingHours = moment.duration(moment(start).diff(moment(end))).asHours();
+        }
+      }else{
+        finishedPercentage = 100;
+        completedHours = moment.duration(moment(end).diff(moment(start))).asHours();
+      }
+      remainingHours = Math.floor(Math.abs(remainingHours))
+      completedHours = Math.floor(Math.abs(completedHours))
+      finishedPercentage = Math.floor(completedHours/(completedHours+remainingHours)*100);
+    }catch(e){
+      console.error(`Time cal error : ${e}`)
+    }
+
     return (
 
       <div className="task-header width-100">
@@ -247,24 +274,16 @@ class EntityViewer extends React.Component {
               <div className="task-header_progress--data">
                 <div>
                   <span>
-                    <strong>10H</strong> Done
+                    <strong>{completedHours}H</strong> Done
                   </span>
                   <span>
-                    <strong>26H</strong> To do
+                    <strong>{remainingHours}H</strong> To do
                   </span>
                 </div>
                 <div>
                   <div
                     style={{
-                      width: "60%",
-                      background: "red",
-                      padding: "1.5px",
-                      margin: 0,
-                    }}
-                  ></div>
-                  <div
-                    style={{
-                      width: "30%",
+                      width: `${Math.floor(completedHours/(completedHours+remainingHours) * 100)}%`,
                       background: "green",
                       padding: "1.5px",
                       margin: 0,
@@ -272,8 +291,8 @@ class EntityViewer extends React.Component {
                   ></div>
                   <div
                     style={{
-                      width: "10%",
-                      background: "#888",
+                      width: `${Math.floor(remainingHours/(completedHours+remainingHours) * 100).toFixed(0)}%`,
+                      background: "red",
                       padding: "1.5px",
                       margin: 0,
                     }}
@@ -281,7 +300,7 @@ class EntityViewer extends React.Component {
                 </div>
               </div>
               <p className="display-flex">
-                <strong>30%</strong>
+                <strong>{Math.floor(completedHours/(completedHours+remainingHours) * 100)}%</strong>
                 <p>Done</p>
               </p>
             </div>

@@ -6,6 +6,7 @@ import { IntlService } from '@progress/kendo-react-intl'
 import { ExcelExport } from '@progress/kendo-react-excel-export';
 import WidgetDrillDownHelper from './WidgetDrillDownHelper';
 import { WidgetGridLoader } from './WidgetGridLoader.js';
+import "@progress/kendo-theme-bootstrap/dist/all.css";
 
 const loadingPanel = (
     <div className="k-loading-mask">
