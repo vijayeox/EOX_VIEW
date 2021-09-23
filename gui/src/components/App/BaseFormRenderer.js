@@ -435,10 +435,11 @@ class BaseFormRenderer extends React.Component {
     }
 
     async callDelegate(delegate, params) {
+        var delegateParams = {...this.props.params , ...params, bos: this.getBOSData() };
         if (this.hasCore) {
-            return await this.helper.request("v1", this.appUrl + "/command/delegate/" + delegate, { ...params, bos: this.getBOSData() }, "post");
+            return await this.helper.request("v1", this.appUrl + "/command/delegate/" + delegate, delegateParams, "post");
         } else {
-            return await axios.post(this.appUrl + "/command/delegate/" + delegate, { ...params, bos: this.getBOSData() });
+            return await axios.post(this.appUrl + "/command/delegate/" + delegate, delegateParams);
         }
     }
 
@@ -497,9 +498,10 @@ class BaseFormRenderer extends React.Component {
                 form.submission.data.fileId = this.props.fileId ? this.props.fileId : this.state.fileId;
                 form.submission.data["workflow_instance_id"] = undefined;
             }
-            if(this.props.parentFileId){
-              form.submission.data.fileId = undefined;
-              form.submission.data["workflow_instance_id"] = undefined;
+            if(this.props.params){
+                Object.keys(this.props.params).map((i) => {
+                    form.submission.data[i]=this.props.params[i];
+                          });
             }
             if (that.props.parentFileId) {
                 form.submission.data.fileId = undefined;
@@ -1052,7 +1054,9 @@ class BaseFormRenderer extends React.Component {
                 let commentPage = [{type:"Comment",fileId:this.state.fileId}];
                 let commentContent = {pageContent: commentPage,title: "Comment",icon: "fa fa-comment"};
                 gridToolbarContent.push(<Button title={"View"} className={"btn btn-primary"} primary={true} onClick={(e) => this.updatePageContent(pageContent)} ><i className={"fa fa-eye"}></i></Button>);
-                gridToolbarContent.push(<Button title={"Comments"} className={"btn btn-primary"} primary={true} onClick={(e) => this.updatePageContent(commentContent)} ><i className={"fa fa-comment"}></i></Button>);
+                if(entityPage?.data?.enable_comments == 1){
+                    gridToolbarContent.push(<Button title={"Comments"} className={"btn btn-primary"} primary={true} onClick={(e) => this.updatePageContent(commentContent)} ><i className={"fa fa-comment"}></i></Button>);
+                }
                 let ev = new CustomEvent("addcustomActions", { detail: { customActions: gridToolbarContent }, bubbles: true });
                 document.getElementById(this.state.appId+"_breadcrumbParent").dispatchEvent(ev);
             }

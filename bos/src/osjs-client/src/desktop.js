@@ -39,12 +39,12 @@ import Swal from "sweetalert2";
 const TEMPLATE = (subtract) => `
   .osjs-root[data-mobile=true] .osjs-window,
   .osjs-window[data-maximized=true] {
-    top: 2px !important;
+    top: ${subtract.top + 1}px !important;
     left: ${subtract.left}px !important;
     right: ${subtract.right}px !important;
     bottom: ${subtract.bottom}px !important;
     width: calc(100% -  ${subtract.left + subtract.right}px) !important;
-    height: calc(100% - ${subtract.top + subtract.bottom - 34}px) !important;
+    height: calc(100% - ${subtract.top + subtract.bottom}px) !important;
   }
 `;
 

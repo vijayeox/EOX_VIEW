@@ -1,4 +1,3 @@
-
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Grid, GridColumn, GridToolbar } from '@progress/kendo-react-grid';
@@ -19,10 +18,10 @@ export default class WidgetGrid extends React.Component {
     constructor(props) {
         super(props);
         this.excelExporter = null;
-        this.allData = props.data ? props.data : [];
+        this.allData = this.props.data ? this.props.data : [];
         this.filteredData = null;
-        let configuration = props.configuration;
-        this.isDrillDownTable = props.isDrillDownTable;
+        let configuration = this.props.configuration;
+        this.isDrillDownTable = this.props.isDrillDownTable;
         this.resizable = configuration ? (configuration.resizable ? configuration.resizable : false) : false;
         this.filterable = configuration ? (configuration.filterable ? configuration.filterable : false) : false;
         this.groupable = configuration ? (configuration.groupable ? configuration.groupable : false) : false;
@@ -35,10 +34,11 @@ export default class WidgetGrid extends React.Component {
         this.pageSize = configuration ? (configuration.pageSize ? configuration.pageSize : 10) : 10;
         let oxzionMeta = configuration ? (configuration['oxzion-meta'] ? configuration['oxzion-meta'] : null) : null;
         this.exportToExcel = oxzionMeta ? (oxzionMeta['exportToExcel'] ? oxzionMeta['exportToExcel'] : false) : false;
-        this.core = props.core;
+        this.core = this.props.core;
         this.helper = this.core.make("oxzion/link");
         this.state = {
             filter: null,
+            props: this.props,
             pagination: {
                 skip: 0,
                 take: this.pageSize
@@ -189,27 +189,27 @@ export default class WidgetGrid extends React.Component {
 
     drillDownClick = (evt) => {
         // console.log(this.props.configuration);
-        let drillDownTarget = this.props.configuration["oxzion-meta"]['drillDown']['target'];
-
+        let drillDownTarget = this.state.props.configuration["oxzion-meta"]['drillDown']['target'];
+        let drillDownField = this.state.props.configuration["oxzion-meta"]['drillDown']['drillDownField'];
         if (drillDownTarget == 'file') {
-            let appName = this.props.configuration["oxzion-meta"]['drillDown']['nextWidgetId'];
+            let appName = this.state.props.configuration["oxzion-meta"]['drillDown']['nextWidgetId'];
             let eventData = evt.dataItem;
             // console.log("Inside the file log Content" + eventData); //Need to open a URL
-            this.launchApplication(eventData, appName)
+            this.launchApplication(eventData, appName, drillDownField)
         } else {
             WidgetDrillDownHelper.drillDownClicked(WidgetDrillDownHelper.findWidgetElement(evt.nativeEvent ? evt.nativeEvent.target : evt.target), evt.dataItem)
-            ReactDOM.unmountComponentAtNode(this.props.canvasElement)
+            ReactDOM.unmountComponentAtNode(this.state.props.canvasElement)
         }
     }
 
-
-    launchApplication(event, selectedApplication) {
-        if (event.uuid) {
+    launchApplication(event, selectedApplication, drillDownField) {
+        console.log(event[drillDownField]);
+        if (drillDownField) {
             this.helper.launchApp({
                 // pageId: event.target.getAttribute("page-id"),
                 pageTitle: event.name,
                 // pageIcon: event.target.getAttribute("icon"),
-                fileId: event.uuid,
+                fileId: (event[drillDownField]) ? event[drillDownField] : event.uuid,
             }, selectedApplication);
         }
     }
@@ -282,7 +282,6 @@ export default class WidgetGrid extends React.Component {
         } return <td></td>
     }
 
-
     render() {
         let thiz = this;
         let hasBackButton = this.hasBackButton()
@@ -297,7 +296,6 @@ export default class WidgetGrid extends React.Component {
             }
             return columns;
         }
-
         let gridTag = <Grid
             style={{ height: this.height, width: this.width }}
             className={this.isDrillDownTable ? "drillDownStyle" : ""}

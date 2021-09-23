@@ -346,7 +346,7 @@ class Navigation extends React.Component {
       }
       currentValue.title
         ? breadcrumbsList.push(
-            <>
+            <span className="page-inactive">
               {index == "0" ? null : <div style={{ marginLeft: "7px" }} />}
               {childNode}
               <i class="fad fa-angle-right" style={{ marginRight: "-5px" }}></i>
@@ -374,7 +374,7 @@ class Navigation extends React.Component {
                   {currentValue.title}
                 </a>
               </div>
-            </>
+            </span>
           )
         : null;
 
@@ -438,6 +438,8 @@ class Navigation extends React.Component {
           {this.state.pages.length > 0 ? (
             <div className="row">
               <div className="breadcrumbs">{this.renderBreadcrumbs()}</div>
+              <div className="breadcrumbs"></div>
+
               <div
                 className="col-md-12 customActions dash-manager-buttons"
                 id="customActions"
