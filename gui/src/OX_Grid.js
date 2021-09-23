@@ -25,6 +25,7 @@ import DataLoader from "./components/Grid/DataLoader";
 import DataOperation from "./components/Grid/DataOperation";
 import CustomFilter from "./components/Grid/CustomFilter";
 import "./components/Grid/customStyles.scss";
+import "@progress/kendo-theme-bootstrap/dist/all.css";
 import InlineComponent from "./components/Grid/InlineComponent";
 const util = require("util");
 import { Popup } from "@progress/kendo-react-popup";
