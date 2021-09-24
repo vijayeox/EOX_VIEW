@@ -175,7 +175,7 @@
       background: transparent;
       color: #275362;
       width: 100%;
-      display:table-column-group;
+      display: table-column-group;
       // border-bottom: 1px solid #275362;
       // border-radius: 0px;
     }
@@ -219,6 +219,26 @@
 
       .k-grid td {
         border-width: 0px;
+      }
+    }
+    .k-grid-header,
+    .k-grid-table {
+      .k-grid .k-alt {
+        background-color: transparent !important;
+      }
+
+      th {
+        background-color: #f6f8fa;
+        color: #8f9bb3;
+      }
+
+      td {
+        border-bottom: 1px solid #ebeff2;
+      }
+
+      .k-grid th,
+      .k-grid td {
+        padding: 10px !important;
       }
     }
 
