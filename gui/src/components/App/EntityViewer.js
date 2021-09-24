@@ -73,7 +73,9 @@ class EntityViewer extends React.Component {
         fileId = this.state.fileId;
       }
     }
-    const isTaskApp = this.appId === "454a1ec4-eeab-4dc2-8a3f-6a4255ffaee1";
+    const isTaskApp = this.appId === "454a1ec4-eeab-4dc2-8a3f-6a4255ffaee1" || this.appId === "ff1ecbb7-3a45-4966-b38c-bf203f171423";
+    console.log('FileData', this.appId, this.state);
+    
     if (isTaskApp) {
       gridToolbarContent.push(this.getTaskHeader(fileData));
       setTimeout(() => {

@@ -543,6 +543,7 @@ class PageContent extends React.Component {
             url={url}
             notif={this.notif}
             fileId={fileId}
+            currentRow={this.state.currentRow}
           />
         );
       } else if (item.type == "TabSegment") {
