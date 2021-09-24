@@ -215,11 +215,11 @@ class PageContent extends React.Component {
               if (item.params.params && typeof item.params.params === "string") {
                 var newParams = ParameterHandler.replaceParams(this.appId, item.params.params, mergeRowData);
                 mergeRowData = { ...newParams, ...mergeRowData };
-              }else if(item.params.params && typeof item.params.params === "object"){
+              } else if (item.params.params && typeof item.params.params === "object") {
                 var params = {};
                 Object.keys(item.params.params).map((i) => {
-                            params[i] = ParameterHandler.replaceParams(this.appId, item.params.params[i], mergeRowData);
-                          });
+                  params[i] = ParameterHandler.replaceParams(this.appId, item.params.params[i], mergeRowData);
+                });
                 mergeRowData = { ...params, ...mergeRowData };
               }
               copyPageContent = [];
@@ -452,8 +452,8 @@ class PageContent extends React.Component {
             gridDefaultFilters={
               itemContent.defaultFilters
                 ? typeof itemContent.defaultFilters == "string"
-                  ? JSON.parse(ParameterHandler.replaceParams(this.appId, itemContent.defaultFilters))
-                  : ParameterHandler.replaceParams(this.appId, itemContent.defaultFilters)
+                  ? JSON.parse(ParameterHandler.replaceParams(this.appId, itemContent.defaultFilters, mergeRowData))
+                  : JSON.parse(ParameterHandler.replaceParams(this.appId, JSON.stringify(itemContent.defaultFilters), mergeRowData))
                 : undefined
             }
             gridOperations={operations}
@@ -672,7 +672,7 @@ class PageContent extends React.Component {
       } else if (item.type == "History") {
         var fileId = this.props.fileId ? this.props.fileId : this.state.currentRow.uuid;
         content.push(
-          <ActivityLog 
+          <ActivityLog
             appId={this.appId}
             fileId={fileId}
             core={this.core}
