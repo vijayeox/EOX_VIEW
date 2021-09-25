@@ -186,6 +186,9 @@ class CommentsView extends React.Component {
 			icon: "fa fa-eye",
 			fileId: this.state.fileId
 		};
+		if(this.appId === 'ff1ecbb7-3a45-4966-b38c-bf203f171423'){
+            gridToolbarContent.push(GetCrmHeader(this.props.currentRow, this.appId,this.loader, this.core.make("oxzion/restClient")))
+        }
 		gridToolbarContent.push(
 			<Button
 				title={"View"}
@@ -695,6 +698,77 @@ class CommentsView extends React.Component {
 			return <div></div>;
 		}
 	}
+}
+
+function GetCrmHeader(crmData, appId, loader, helper){
+    let {name,created_by, date_modified, status} = crmData;
+    // const [_status, setStatus] = useState(status)
+    const breadCrumb = document.getElementById(
+      appId + "_breadcrumbParent"
+    );
+    const breadCrumbClassList = breadCrumb?.children[0]?.classList;
+    breadCrumbClassList?.add("display-flex");
+    breadCrumbClassList?.add("width-100");
+    const goBack = () => {
+        const activeBreadcrumbs = document.getElementsByClassName('activeBreadcrumb');
+        if(activeBreadcrumbs && activeBreadcrumbs?.length > 0){
+          activeBreadcrumbs?.[activeBreadcrumbs.length-1]?.children?.[0]?.click()
+        }
+    }
+
+    const convertLeadsToOpportunity = async () => {
+        try{
+            const {result : {value}} = await Swal.fire({
+                text: "Are you sure you want to convert this Lead into an Opportunity?",
+                showCancelButton: true,
+            })
+            if(value){
+                loader.show()
+                await helper.request("v1", `/app/${appId}/command/delegate/ConvertToOpportunity`, crmData, "post");
+                status = 'Converted to Opportunity';
+                loader.destroy()
+            }
+        }catch(e){
+            loader.destroy()
+        }
+    }
+    return (
+        <div className="task-header width-100">
+            <i className="fa fa-arrow-from-left go-back" onClick={goBack}></i>
+            <div className="task-header_taskname">
+            {name
+                .split(" ")
+                .slice(0, 2)
+                .map((v) => v[0].toUpperCase())
+                .join("")}
+            </div>
+            <div className="task-header_info width-100">
+            <div className="task-header_name" title={name}>
+                {name}
+            </div>
+            <div className="task-header_details">
+                <div>
+                <p>Status</p> <span className="task-status"></span>{" "}
+                <p>{status}</p>
+                </div>
+                <div>
+                <p>Created By</p> <p>{created_by}</p>
+                </div>
+                <div>
+                {date_modified && <><p>Last Updated On</p> <p>{date_modified}</p></>}
+                </div>    
+            </div>
+            </div>
+            {status !== 'Converted to Opportunity' && 
+            <button 
+                style={{background: '#007bff',
+                color: '#FFF',
+                fontWeight: 'bold',
+                padding: '8px',
+                border: 'none',
+                borderRadius: '5px'}} onClick={convertLeadsToOpportunity}>Convert</button>}
+        </div>
+        );
 }
 
 export default CommentsView;
