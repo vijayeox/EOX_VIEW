@@ -1120,6 +1120,7 @@ export default class OX_Grid extends React.Component {
             onBlur={this.onBlurHandler}
             tabIndex={-1}
             ref={(el) => (this.menuWrapperRef = el)}
+            style={{ backgroundColor: "#f8f9fa" }}
           >
             <Menu
               vertical={true}
