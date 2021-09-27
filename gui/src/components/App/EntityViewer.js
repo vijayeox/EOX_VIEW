@@ -216,7 +216,7 @@ class EntityViewer extends React.Component {
     let finishedPercentage = 0;
     try{
       const start = new Date(start_date).getTime(); //WHEN WORK STARTED
-      const today = new Date().getTime(); // NOW
+      const today = Date.now() + (5.3 * 60 * 60 * 1000); // NOW + UTC
       const end = new Date(end_date).getTime(); //END DATE
       if(status.toLowerCase() !== 'completed'){
         if(start <= today && today <= end){
@@ -261,7 +261,7 @@ class EntityViewer extends React.Component {
               <p>Created On</p> <p>{start_date}</p>
             </div>
             <div>
-              <p>Due On</p> <p>{next_action_date}</p>
+              <p>Due On</p> <p>{end_date}</p>
             </div>
             <div className="owner-assignee">
               Assigned To {(imageAssigned) ? <div className='msg-img' style={{ background: `url(${imageAssigned})`, backgroundSize: "contain", height: "20px", width: "20px", borderRadius: "50%" }}></div> : <i className="fad fa-user owner-assignee-dp"></i>}
