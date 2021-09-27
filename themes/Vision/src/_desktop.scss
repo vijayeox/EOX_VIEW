@@ -25,8 +25,9 @@ div#appmenu {
     // background-color: #ffffff29;
   }
   & > div[data-focused="true"] {
-    box-shadow: 0px 2px 0px 0px white;
-    background-color: #ffffff29;
+    box-shadow: inset 0px 3px 0px 0px #275362 !important;
+    background-color: white !important;
+    color: #275362 !important;
   }
 }
 .profile-content {

@@ -188,12 +188,11 @@ html {
 
 .osjs-panel-item[data-name="windows"] > div {
   font-size: 12px;
-  color: white;
-  background-color: #275362;
+  color: white !important;
+  background-color: #275362 !important;
   border-radius: 0px;
-  padding: 9px 3px;
+  padding: 14px 3px !important;
   align-self: center;
-
   img {
     max-height: 20px;
   }
