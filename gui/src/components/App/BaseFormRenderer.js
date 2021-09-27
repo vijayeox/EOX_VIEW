@@ -1045,7 +1045,7 @@ class BaseFormRenderer extends React.Component {
         let fileContent = await helper.request("v1","/app/" + this.state.appId + "/entity/"+this.state.entityId+"/page",{},"get");
         return fileContent;
     }
-     setEntityId(){
+    setEntityId(){
         return new Promise(async(r) => {
             try{
                 let helper = this.core.make("oxzion/restClient");
