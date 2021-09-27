@@ -3,7 +3,7 @@ import { v4 } from "uuid";
 import PageContent from "./PageContent";
 import { Tabs, TabLink, TabContent } from "react-tabs-redux";
 import "./Styles/TabStyles.scss";
-
+import { GetCrmHeader } from "./CommentsView";
 class TabSegment extends React.Component {
   constructor(props) {
     super(props);

@@ -700,7 +700,7 @@ class CommentsView extends React.Component {
 	}
 }
 
-function GetCrmHeader(crmData, appId, loader, helper){
+export function GetCrmHeader(crmData, appId, loader, helper){
     let {name,created_by, date_modified, status} = crmData;
     // const [_status, setStatus] = useState(status)
     const breadCrumb = document.getElementById(
