@@ -166,18 +166,18 @@ export default class WindowsPanelItem extends PanelItem {
             this.core.make("osjs/contextmenu").show({
               position: ev.target,
               menu: [
-                // {
-                //   label: w.state.maximized
-                //     ? _("LBL_RESTORE")
-                //     : _("LBL_MAXIMIZE"),
-                //   onclick: () =>
-                //     w.attributes.maximizable
-                //       ? w.state.maximized
-                //         ? w.restore()
-                //         : w.maximize()
-                //       : null,
-                //   disabled: !w.attributes.maximizable,
-                // },
+                {
+                  label: w.state.maximized
+                    ? _("LBL_RESTORE")
+                    : _("LBL_MAXIMIZE"),
+                  onclick: () =>
+                    w.attributes.maximizable
+                      ? w.state.maximized
+                        ? w.restore()
+                        : w.maximize()
+                      : null,
+                  disabled: !w.attributes.maximizable,
+                },
                 {
                   label: w.state.minimized ? _("LBL_RAISE") : _("LBL_MINIMIZE"),
                   onclick: () =>
@@ -207,17 +207,17 @@ export default class WindowsPanelItem extends PanelItem {
             alt: w.title || "(window)",
           }),
           h("span", {}, w.title || "(window)"),
-          h("i", {
-           //label: _("LBL_CLOSE"),
-            className: "fad fa-times",
-            style: {
-              marginLeft: "0.3em",
-              marginRight: "0px",
-              lineHeight: "13px",
-            },
-            onclick: () => (w.attributes.closeable ? w.close() : null),
-            // disabled: !w.attributes.closeable,
-          }),
+          // h("i", {
+          //label: _("LBL_CLOSE"),
+          //   className: "fad fa-times",
+          //   style: {
+          //     marginLeft: "0.3em",
+          //     marginRight: "0px",
+          //     lineHeight: "13px",
+          //   },
+          //   onclick: () => (w.attributes.closeable ? w.close() : null),
+          //   // disabled: !w.attributes.closeable,
+          // }),
         ]
       )
     );
