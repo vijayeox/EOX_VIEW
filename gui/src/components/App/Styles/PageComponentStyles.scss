@@ -154,11 +154,15 @@ $primary-color: #275362;
     }
 
     &_taskname {
-      padding: 1rem;
       border-radius: 50px;
       background: #bddce6;
       margin-left: 7.5px;
       font-size: 1.25rem;
+      min-height: 50px;
+      display: flex;
+      min-width: 50px;
+      justify-content: center;
+      align-items: center;
     }
   }
 

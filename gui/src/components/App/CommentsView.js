@@ -747,12 +747,14 @@ function GetCrmHeader(crmData, appId, loader, helper){
                 {name}
             </div>
             <div className="task-header_details">
-                <div>
+                {status && <div>
                 <p>Status</p> <span className="task-status"></span>{" "}
                 <p>{status}</p>
-                </div>
+                </div>}
                 <div>
-                <p>Created By</p> <p>{created_by}</p>
+                {created_by && 
+					<><p>Created By</p> <p>{created_by}</p></>
+				}
                 </div>
                 <div>
                 {date_modified && <><p>Last Updated On</p> <p>{date_modified}</p></>}
