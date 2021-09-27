@@ -200,10 +200,11 @@ class EntityViewer extends React.Component {
       data: {
         title,
         data: { status, start_date, next_action_date, username, assignedto, ownerid, end_date },
+        ownerId
       },
     } = fileData;
     var imageAssigned = this.core.config("wrapper.url") + "user/profile/" + assignedto;
-    var imageOwner = this.core.config("wrapper.url") + "user/profile/" + ownerid;
+    var imageOwner = this.core.config("wrapper.url") + "user/profile/" + ownerId;
     const goBack = () => {
       const activeBreadcrumbs = document.getElementsByClassName('activeBreadcrumb');
       if(activeBreadcrumbs && activeBreadcrumbs?.length > 0){
