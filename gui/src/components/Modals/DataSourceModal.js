@@ -20,7 +20,6 @@ function DataSourceModal(props) {
       return FormSchema.FormSchema[props.content.type]
     } else {
       // return FormSchema["_DEFAULT_OPTIONAL_FIELDS"] 
-      // Query.js -> querySchemaJson.FormSchema["_DEFAULT_OPTIONAL_FIELDS"]
       return FormSchema.FormSchema._DEFAULT_OPTIONAL_FIELDS //working
     }
 
