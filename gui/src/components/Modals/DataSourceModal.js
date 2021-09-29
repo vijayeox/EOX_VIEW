@@ -16,10 +16,11 @@ function DataSourceModal(props) {
     DELETE: "Deleted"
   }
   function getFormSchema() {
-    if (props.content && FormSchema[props.content.type]) {
-      return FormSchema[props.content.type]
+    if (props.content && FormSchema.FormSchema[props.content.type]) {
+      return FormSchema.FormSchema[props.content.type]
     } else {
-      return FormSchema["_DEFAULT_OPTIONAL_FIELDS"]
+      // return FormSchema["_DEFAULT_OPTIONAL_FIELDS"] 
+      return FormSchema.FormSchema._DEFAULT_OPTIONAL_FIELDS //working
     }
 
   }
@@ -30,7 +31,7 @@ function DataSourceModal(props) {
       setInput({ ...input, ["name"]: name, ["type"]: type, ["configuration"]: configuration })
       setFormConfiguration(props.content.configuration.data || {})
       if (formSchema == {} || formSchema == undefined) {
-        let schema = FormSchema["_DEFAULT_OPTIONAL_FIELDS"]
+        let schema = FormSchema.FormSchema["_DEFAULT_OPTIONAL_FIELDS"]
         if (schema) {
           setFormSchema(schema)
         }
