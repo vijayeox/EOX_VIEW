@@ -700,7 +700,7 @@ class CommentsView extends React.Component {
 	}
 }
 
-export function GetCrmHeader(crmData, appId, loader, helper){
+export function GetCrmHeader(crmData, appId, loader, helper, dontAllowConversion){
     let {name,created_by, date_modified, status} = crmData;
     // const [_status, setStatus] = useState(status)
     const breadCrumb = document.getElementById(
@@ -718,15 +718,15 @@ export function GetCrmHeader(crmData, appId, loader, helper){
 
     const convertLeadsToOpportunity = async () => {
         try{
-            const {result : {value}} = await Swal.fire({
+            const value = await Swal.fire({
                 text: "Are you sure you want to convert this Lead into an Opportunity?",
                 showCancelButton: true,
             })
             if(value){
                 loader.show()
                 await helper.request("v1", `/app/${appId}/command/delegate/ConvertToOpportunity`, crmData, "post");
-                status = 'Converted to Opportunity';
                 loader.destroy()
+				document.querySelector('div[title="Opportunities"]')?.click()
             }
         }catch(e){
             loader.destroy()
@@ -761,7 +761,7 @@ export function GetCrmHeader(crmData, appId, loader, helper){
                 </div>    
             </div>
             </div>
-            {status !== 'Converted to Opportunity' && 
+            {status !== 'Converted to Opportunity' && !dontAllowConversion && 
             <button 
                 style={{background: '#007bff',
                 color: '#FFF',
