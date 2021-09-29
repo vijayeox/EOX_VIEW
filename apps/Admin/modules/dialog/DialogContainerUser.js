@@ -1,4 +1,15 @@
-import {React,ReactDOM,Notification,KendoReactDropDowns,countryStateList,KendoReactInput,KendoReactRipple,KendoReactWindow,Moment} from "oxziongui";
+import {
+  React,
+  ReactDOM,
+  Notification,
+  KendoReactDropDowns,
+  countryStateList,
+  KendoReactInput,
+  KendoReactRipple,
+  KendoReactWindow,
+  Moment,
+} from "oxziongui";
+import { MultiSelect } from "@progress/kendo-react-dropdowns";
 import { PushData } from "../components/apiCalls";
 import { DateComponent, SaveCancel, DropDown } from "../components/index";
 import ReactTooltip from "react-tooltip";
@@ -9,13 +20,13 @@ export default class DialogContainer extends React.Component {
     this.core = this.props.args;
     let countryList = countryStateList.map((item) => item.country);
     console.log(countryList);
-    
+
     this.state = {
       userInEdit: [],
       roleList: [],
       projectList: [],
       countryList: countryList,
-      stateList: []
+      stateList: [],
     };
     this.notif = React.createRef();
     this.loader = this.core.make("oxzion/splash");
@@ -50,10 +61,10 @@ export default class DialogContainer extends React.Component {
           apiResponse.project = tempProjects;
           apiResponse.manager_name = {
             id: apiResponse.managerId,
-            name: apiResponse.manager_name
+            name: apiResponse.manager_name,
           };
           this.setState({
-            userInEdit: apiResponse
+            userInEdit: apiResponse,
           });
         });
       });
@@ -70,7 +81,7 @@ export default class DialogContainer extends React.Component {
           tempUsers.push({ uuid: userid, name: userName });
         }
         this.setState({
-          roleList: tempUsers
+          roleList: tempUsers,
         });
       }
     );
@@ -84,7 +95,7 @@ export default class DialogContainer extends React.Component {
           tempProjects.push({ uuid: prjId, name: prjName });
         }
         this.setState({
-          projectList: tempProjects
+          projectList: tempProjects,
         });
         this.loader.destroy();
       }
@@ -150,12 +161,13 @@ export default class DialogContainer extends React.Component {
     edited[name] = value;
 
     this.setState({
-      userInEdit: edited
+      userInEdit: edited,
     });
   };
 
   validateEmail(emailText) {
-    var pattern = /^[a-zA-Z0-9\-_]+(\.[a-zA-Z0-9\-_]+)*@[a-z0-9]+(\-[a-z0-9]+)*(\.[a-z0-9]+(\-[a-z0-9]+)*)*\.[a-z]{2,4}$/;
+    var pattern =
+      /^[a-zA-Z0-9\-_]+(\.[a-zA-Z0-9\-_]+)*@[a-z0-9]+(\-[a-z0-9]+)*(\.[a-z0-9]+(\-[a-z0-9]+)*)*\.[a-z]{2,4}$/;
     if (!pattern.test(emailText)) {
       this.notif.current.notify(
         "Invalid Email ID",
@@ -167,7 +179,8 @@ export default class DialogContainer extends React.Component {
   }
 
   validateUserName(username) {
-    var pattern = /^[a-zA-Z0-9\-_]+(\.[a-zA-Z0-9\-_]+)*@[a-z0-9]+(\-[a-z0-9]+)*(\.[a-z0-9]+(\-[a-z0-9]+)*)*\.[a-z]{2,4}$/;
+    var pattern =
+      /^[a-zA-Z0-9\-_]+(\.[a-zA-Z0-9\-_]+)*@[a-z0-9]+(\-[a-z0-9]+)*(\.[a-z0-9]+(\-[a-z0-9]+)*)*\.[a-z]{2,4}$/;
     if (!pattern.test(username)) {
       this.notif.current.notify(
         "Invalid Email ID",
@@ -214,7 +227,7 @@ export default class DialogContainer extends React.Component {
           city: this.state.userInEdit.city,
           state: this.state.userInEdit.state,
           zip: this.state.userInEdit.zip,
-          country: this.state.userInEdit.country
+          country: this.state.userInEdit.country,
         }
       ).then((response) => {
         this.loader.destroy();
@@ -250,7 +263,7 @@ export default class DialogContainer extends React.Component {
         city: this.state.userInEdit.city,
         state: this.state.userInEdit.state,
         zip: this.state.userInEdit.zip,
-        country: this.state.userInEdit.country
+        country: this.state.userInEdit.country,
       }).then((response) => {
         this.loader.destroy();
         if (response.status == "success") {
@@ -283,7 +296,7 @@ export default class DialogContainer extends React.Component {
 
   render() {
     return (
-      <KendoReactWindow.Window onClose={this.props.cancel}>
+      <KendoReactWindow onClose={this.props.cancel}>
         <Notification ref={this.notif} />
         <div id="tooltip" />
         <div className="container-fluid">
@@ -299,7 +312,7 @@ export default class DialogContainer extends React.Component {
               <div className="form-row">
                 <div className="col-sm-6">
                   <label className="required-label">First Name</label>
-                  <KendoReactInput.Input
+                  <KendoReactInput
                     type="text"
                     className="form-control"
                     name="firstname"
@@ -314,7 +327,7 @@ export default class DialogContainer extends React.Component {
                 </div>
                 <div className="col-sm-6">
                   <label className="required-label">Last Name</label>
-                  <KendoReactInput.Input
+                  <KendoReactInput
                     type="text"
                     className="form-control"
                     name="lastname"
@@ -334,7 +347,7 @@ export default class DialogContainer extends React.Component {
               <div className="form-row">
                 <div className="col-sm-6">
                   <label className="required-label">Email</label>
-                  <KendoReactInput.Input
+                  <KendoReactInput
                     type="text"
                     className="form-control"
                     id="email-id"
@@ -351,7 +364,7 @@ export default class DialogContainer extends React.Component {
 
                 <div className="col-sm-6">
                   <label className="required-label">User Name</label>
-                  <KendoReactInput.Input
+                  <KendoReactInput
                     type="text"
                     className="form-control"
                     name="username"
@@ -374,9 +387,7 @@ export default class DialogContainer extends React.Component {
                   <div>
                     <DropDown
                       args={this.core}
-                      mainList={
-                        "account/" + this.props.selectedOrg + "/users"
-                      }
+                      mainList={"account/" + this.props.selectedOrg + "/users"}
                       preFetch={true}
                       selectedItem={this.state.userInEdit.manager_name}
                       selectedEntityType={"object"}
@@ -389,7 +400,7 @@ export default class DialogContainer extends React.Component {
                 </div>
                 <div className="col-sm-6">
                   <label className="required-label">Designation</label>
-                  <KendoReactInput.Input
+                  <KendoReactInput
                     type="text"
                     className="form-control"
                     name="designation"
@@ -447,7 +458,7 @@ export default class DialogContainer extends React.Component {
                 <div className="col-sm-6">
                   <label className="required-label">Gender</label>
                   <div>
-                    <KendoReactRipple.Ripple>
+                    <KendoReactRipple>
                       <span className="col-sm-6">
                         <input
                           type="radio"
@@ -486,7 +497,7 @@ export default class DialogContainer extends React.Component {
                           Female
                         </label>
                       </span>
-                    </KendoReactRipple.Ripple>
+                    </KendoReactRipple>
                   </div>
                 </div>
 
@@ -526,7 +537,7 @@ export default class DialogContainer extends React.Component {
               <div className="form-row">
                 <div className="col-6">
                   <label className="required-label">Role</label>
-                  <KendoReactDropDowns.MultiSelect
+                  <MultiSelect
                     data={this.state.roleList}
                     onChange={(e) => {
                       this.valueChange("role", e);
@@ -547,7 +558,7 @@ export default class DialogContainer extends React.Component {
 
                 <div className="col-6">
                   <label>Add User To Projects</label>
-                  <KendoReactDropDowns.MultiSelect
+                  <MultiSelect
                     data={this.state.projectList}
                     onChange={(e) => {
                       this.valueChange("project", e);
@@ -568,7 +579,7 @@ export default class DialogContainer extends React.Component {
           </form>
         </div>
         <SaveCancel save="userForm" cancel={this.props.cancel} />
-      </KendoReactWindow.Window>
+      </KendoReactWindow>
     );
   }
 }
