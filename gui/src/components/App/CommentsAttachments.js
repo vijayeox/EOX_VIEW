@@ -2,6 +2,12 @@ import { func } from "prop-types";
 import React, { useEffect, useState } from "react";
 import { Button, Modal, Form, Row, Col } from "react-bootstrap";
 import FileAttachment from "./FileAttachment";
+import pdfImg from "./Img/PdfIcon.png";
+import codingImg from "./Img/CodingIcon.png";
+import csvImg from "./Img/CsvIcon.jpeg";
+import docImg from "./Img/DocumentIcon.png";
+import movieImg from "./Img/MovIcon.png";
+import pptImg from "./Img/PptIcon.png";
 
 function CommentsAttachments(props) {
   const [commentPath, setCommentPath] = useState("");
@@ -11,17 +17,18 @@ function CommentsAttachments(props) {
       `${props.config.wrapper.url}comment/${props.commentData.comment_id}/attachment/${props.commentData.fileName}`
     );
   }, []);
-  //   var extension = props.commentData.fileName[props.index]
-  //     .split(".")
-  //     .pop()
-  //     .toUpperCase();
-  //   console.log(extension);
+    var extension = props.commentData.fileName[props.index]
+      .split(".")
+      .pop()
+      .toUpperCase();
+    console.log(extension);
   return (
     <>
       <FileAttachment
         show={showModal}
         onHide={() => setShowModal(false)}
         imagePath={commentPath}
+        extension={extension}
       />
       <div
         style={{
@@ -40,7 +47,7 @@ function CommentsAttachments(props) {
             float: "left"
           }}
         >
-          <img src={commentPath} style={{ width: "100%", height: "100%" }} />
+          <img src={extension =='PDF' ? pdfImg: (extension =='PPT' || extension == 'PPTX') ? pptImg:extension =='CSV' ? csvImg:(extension =='MP4' || extension =='MOV' || extension == 'MKV')? movieImg:(extension =='DOC' || extension =='DOCX' || extension == 'TXT')? docImg: (extension =='PHP' || extension =='JS' || extension == 'CSS' || extension == 'SCSS' || extension == 'JSX')? codingImg: commentPath} style={(extension =='PDF' || extension =='PPT' || extension == 'PPTX' || extension =='CSV'  || extension =='MP4' || extension =='MOV' || extension == 'MKV' || extension =='DOC' || extension =='DOCX' || extension == 'TXT'|| extension =='PHP' || extension =='JS' || extension == 'CSS' || extension == 'SCSS' || extension == 'JSX')? { width: "70%", height: "100%" }:{ width: "100%", height: "100%" }} />
         </div>
         <div className='attachment_info'>
           <div
