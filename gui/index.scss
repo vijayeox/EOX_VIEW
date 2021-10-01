@@ -7,7 +7,9 @@
 .k-dialog-buttongroup {
   position: relative !important;
 }
-
+.k-detail-row:last-child > .k-detail-cell > .GridCustomStyle {
+  margin-bottom: 10rem;
+}
 .sidenav---navicon---3gCRo > i {
   font-size: 20px;
 }
