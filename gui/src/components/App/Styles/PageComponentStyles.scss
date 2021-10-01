@@ -413,3 +413,8 @@ $primary-color: #275362;
   width: 80px;
   border: 3px solid lightgrey;
 }
+
+// Hide extra upload button in attachment section [BUG] #26242 by Mukul
+div[class="k-actions k-hstack k-justify-content-end"] > button[class="k-button k-primary k-upload-selected"]{
+  display: none;
+}
