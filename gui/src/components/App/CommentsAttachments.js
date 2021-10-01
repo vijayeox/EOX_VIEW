@@ -8,6 +8,7 @@ import csvImg from "./Img/CsvIcon.jpeg";
 import docImg from "./Img/DocumentIcon.png";
 import movieImg from "./Img/MovIcon.png";
 import pptImg from "./Img/PptIcon.png";
+import excelImg from "./Img/ExcelIcon.jpg";
 
 function CommentsAttachments(props) {
   const [commentPath, setCommentPath] = useState("");
@@ -47,7 +48,7 @@ function CommentsAttachments(props) {
             float: "left"
           }}
         >
-          <img src={extension =='PDF' ? pdfImg: (extension =='PPT' || extension == 'PPTX') ? pptImg:extension =='CSV' ? csvImg:(extension =='MP4' || extension =='MOV' || extension == 'MKV')? movieImg:(extension =='DOC' || extension =='DOCX' || extension == 'TXT')? docImg: (extension =='PHP' || extension =='JS' || extension == 'CSS' || extension == 'SCSS' || extension == 'JSX')? codingImg: commentPath} style={(extension =='PDF' || extension =='PPT' || extension == 'PPTX' || extension =='CSV'  || extension =='MP4' || extension =='MOV' || extension == 'MKV' || extension =='DOC' || extension =='DOCX' || extension == 'TXT'|| extension =='PHP' || extension =='JS' || extension == 'CSS' || extension == 'SCSS' || extension == 'JSX')? { width: "70%", height: "100%" }:{ width: "100%", height: "100%" }} />
+          <img src={(extension =='XLSX' || extension == 'XLSM' || extension == 'XLSB' || extension == 'XLTX')? excelImg : extension =='PDF' ? pdfImg: (extension =='PPT' || extension == 'PPTX') ? pptImg:extension =='CSV' ? csvImg:(extension =='MP4' || extension =='MOV' || extension == 'MKV')? movieImg:(extension =='DOC' || extension =='DOCX' || extension == 'TXT')? docImg: (extension =='PHP' || extension =='JS' || extension == 'CSS' || extension == 'SCSS' || extension == 'JSX')? codingImg: commentPath} style={(extension =='XLSX' || extension == 'XLSM' || extension == 'XLSB' || extension == 'XLTX' || extension =='PDF' || extension =='PPT' || extension == 'PPTX' || extension =='CSV'  || extension =='MP4' || extension =='MOV' || extension == 'MKV' || extension =='DOC' || extension =='DOCX' || extension == 'TXT'|| extension =='PHP' || extension =='JS' || extension == 'CSS' || extension == 'SCSS' || extension == 'JSX')? { width: "70%", height: "100%" }:{ width: "100%", height: "100%" }} />
         </div>
         <div className='attachment_info'>
           <div
