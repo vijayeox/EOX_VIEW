@@ -39,7 +39,8 @@ $primary-color: #275362;
   }
 
   .dash-manager-buttons .btn {
-    margin-right: 7px;
+    // margin-right: 7px;
+    margin: 0px 4px;
     border-color: #eaeaea;
   }
 
@@ -260,6 +261,7 @@ $primary-color: #275362;
     -webkit-transition: all 0.2s;
     transition: all 0.2s;
     padding-bottom: 1.125rem;
+    width: 20%;
   }
   .Navigation .tab-link:focus {
     outline: transparent;
@@ -278,7 +280,8 @@ $primary-color: #275362;
   .tab-content .contentDiv {
     flex: 1 1 auto;
     min-height: 1px;
-    padding: 1.25rem;
+    // padding: 1.25rem;
+    padding: 0.2rem 1.1rem 1.1rem 0.2rem;
   }
 
   .searchBar {

@@ -1133,6 +1133,9 @@ export default class OX_Grid extends React.Component {
               style={{
                 color: "#212529b3",
                 cursor: "pointer",
+                position: "absolute",
+                top: "1px",
+                right: "-2px",
               }}
               className={"fad fa-times"}
               onClick={() => {
