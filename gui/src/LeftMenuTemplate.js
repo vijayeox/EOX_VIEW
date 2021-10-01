@@ -36,6 +36,7 @@ export default class LeftMenuTemplate extends React.Component {
   }
 
   onSelect(selected) {
+    if(selected?.page_id === this.state.selected?.page_id) return;
     this.navigation.current.resetPageCustomActions();
     this.setState({
       selected: selected,
