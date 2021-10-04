@@ -270,10 +270,10 @@ class EntityViewer extends React.Component {
               <p>{(status || exitStatus || pipStatus || statusResignationForm || transportStatus).toUpperCase()}</p>
             </div>
             <div>
-              <p>Created On</p> <p>{(start_date || exitHireDate || pipCommencementDate || startDate || transportationStartDate).substring(0,10)}</p>
+              <p>Created On</p> <p>{ start_date ? start_date : (exitHireDate || pipCommencementDate || startDate || transportationStartDate).substring(0,10)}</p>
             </div>
             <div>
-              <p>Due On</p> <p>{(end_date || exitTerminationDate || pipCompletionDate || endDate || transportationEndDate).substring(0,10)}</p>
+              <p>Due On</p> <p>{ end_date ? end_date : (exitTerminationDate || pipCompletionDate || endDate || transportationEndDate).substring(0,10)}</p>
             </div>
             <div className="owner-assignee">
               Assigned To {(imageAssigned) ? <div className='msg-img' style={{ background: `url(${imageAssigned})`, backgroundSize: "contain", height: "20px", width: "20px", borderRadius: "50%" }}></div> : <i className="fad fa-user owner-assignee-dp"></i>}
