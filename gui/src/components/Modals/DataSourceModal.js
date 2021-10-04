@@ -17,7 +17,8 @@ function DataSourceModal(props) {
   }
   function getFormSchema() {
     if (props.content && FormSchema.FormSchema[props.content.type]) {
-      return FormSchema.FormSchema[props.content.type]
+      let type = props.content.type;
+      return FormSchema.FormSchema[`"`,type,`"`];
     } else {
       // return FormSchema["_DEFAULT_OPTIONAL_FIELDS"] 
       return FormSchema.FormSchema._DEFAULT_OPTIONAL_FIELDS //working
