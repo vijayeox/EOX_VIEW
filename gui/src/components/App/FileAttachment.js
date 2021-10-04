@@ -31,7 +31,7 @@ function FileAttachment(props) {
               <i className="fa fa-window-close" aria-hidden="true"></i></button>
             <img
               style={{ maxHeight: "91vh", maxWidth: "100%" }}
-              src={(props.extension =='XLSX' || props.extension == 'XLSM' || props.extension == 'XLSB' || props.extension == 'XLTX')? excelImg : props.extension =='PDF' ? pdfImg: (props.extension =='PPT' || props.extension == 'PPTX') ? pptImg:props.extension =='CSV' ? csvImg:(props.extension =='MP4' || props.extension =='MOV' || props.extension == 'MKV')? movieImg:(props.extension =='DOC' || props.extension =='DOCX' || props.extension == 'TXT')? docImg: (props.extension =='PHP' || props.extension =='JS' || props.extension == 'CSS' || props.extension == 'SCSS' || props.extension == 'JSX')? codingImg:imagePath}
+              src={(props.extension =='XLSX' || props.extension == 'XLS' || props.extension == 'XLSM' || props.extension == 'XLSB' || props.extension == 'XLTX')? excelImg : props.extension =='PDF' ? pdfImg: (props.extension =='PPT' || props.extension == 'PPTX') ? pptImg:props.extension =='CSV' ? csvImg:(props.extension =='MP4' || props.extension =='MOV' || props.extension == 'MKV')? movieImg:(props.extension =='DOC' || props.extension =='DOCX' || props.extension == 'TXT')? docImg: (props.extension =='PHP' || props.extension =='JS' || props.extension == 'CSS' || props.extension == 'SCSS' || props.extension == 'JSX')? codingImg:imagePath}
             />
             </>
           )}
