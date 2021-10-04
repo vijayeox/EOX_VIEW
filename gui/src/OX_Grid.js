@@ -1190,7 +1190,12 @@ export default class OX_Grid extends React.Component {
           filterOperators={this.props.filterOperators}
           groupable={this.props.groupable}
           style={this.props.gridStyles}
-          pageable={this.props.pageable}
+          pageable={{
+            buttonCount: 5,
+            pageSizes: [10, 50, 100, 200],
+            info: true,
+          }}
+          // pageable={this.props.pageable}
           take={this.props.take}
           resizable={this.props.resizable ? true : false}
           reorderable={this.props.reorderable ? true : false}
