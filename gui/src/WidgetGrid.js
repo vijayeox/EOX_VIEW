@@ -6,6 +6,7 @@ import { IntlService } from '@progress/kendo-react-intl'
 import { ExcelExport } from '@progress/kendo-react-excel-export';
 import WidgetDrillDownHelper from './WidgetDrillDownHelper';
 import "@progress/kendo-theme-bootstrap/dist/all.css";
+import parseCustom from "html-react-parser";
 
 const loadingPanel = (
     <div className="k-loading-mask">
@@ -89,7 +90,24 @@ export default class WidgetGrid extends React.Component {
         }
     }
 
+     getRandomInt(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+    
+
     prepareData = (refilter) => {
+        // testing code 
+        
+        // if(this.allData) {
+        //     this.allData.map(data => {
+        //         data['rflag'] = this.getRandomInt(0,4);
+        //         console.log(data);
+        //     })
+        // }
+
+
         if (this.allData) {
             this.allData.map(data => {
                 //trimmimg time from date in order for date filter to work
@@ -283,6 +301,61 @@ export default class WidgetGrid extends React.Component {
         } return <td></td>
     }
 
+    // Function to return  the html string and convert it as an html to be loaded by iterating through the cases 
+    /*
+        Params 
+        props - Properties 
+        configuration - Configuration array provided for the query 
+        c - Column Name
+        d - fieldValuetypes from the configuration 
+    */
+     getIconValue = (props, configuration, c, d) => {
+         if(d.length > 0){
+              for (var i=0; i <= d.length; i++){
+            var caseValue = d[i];
+            if(String(caseValue) === String(props.dataItem[c])){
+                return[
+                    parseCustom(configuration.html.images[i][String(caseValue)]),
+                    configuration.colors[String(caseValue)]
+                    ] 
+                }
+            }
+        }
+        else{
+            console.log("Check the configuration, the field types is kept empty in the configuration.")
+        }
+    }
+
+    // Function to render the different html tags inside the grid column 
+    /*
+        Params 
+        props - Properties 
+        configuration - Configuration array provided for the query 
+        c - Column Name
+    */
+     cellWithBackGround = (props, configuration, c) => {
+        let colName = c
+        // fetch the images to be loaded from the configuration
+        const icons = configuration.html.images
+        const fieldValueTypesForCheck = configuration.html.fieldValuetypes
+        // get the value of the check by getting the field from configuration and putting it to check folder 
+        let deciderCheck = configuration.html.field
+        // Fetch the information to be loaded for rendering 
+        var [ icontoBeLoaded , styles ] = this.getIconValue(props, configuration, deciderCheck, fieldValueTypesForCheck)
+        // Create the style based on the color that we provide. 
+        var style = {
+            backgroundColor: String(styles),
+        };
+        
+        // Return the table elements 
+        return (
+          <td colSpan={props.colSpan} style={style} >
+             {props.dataItem[colName]}{icontoBeLoaded}
+          </td>
+        );
+      };
+
+
     render() {
         let thiz = this;
         let hasBackButton = this.hasBackButton()
@@ -290,9 +363,16 @@ export default class WidgetGrid extends React.Component {
             let columns = []
             for (const config of thiz.columnConfig) {
                 if (config['footerAggregate']) {
+                    // add a check here for checking for derived column around this. if derived column pass the props to load derived column values. 
+                    
                     columns.push(<GridColumn key={config['field']} {...config} footerCell={(props) => thiz.Aggregate(props, config['footerAggregate'])} />);
                 } else {
-                    columns.push(<GridColumn key={config['field']} {...config} />);
+                    if(config['derived_column']){
+                        columns.push(<GridColumn key={config['field']} {...config} cell={(props) => thiz.cellWithBackGround(props, config, config['field'])} />)
+                    }
+                    else{
+                        columns.push(<GridColumn key={config['field']} {...config} />);
+                    }
                 }
             }
             return columns;
