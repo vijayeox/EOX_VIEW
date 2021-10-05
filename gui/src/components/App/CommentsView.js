@@ -192,7 +192,7 @@ class CommentsView extends React.Component {
 		gridToolbarContent.push(
 			<Button
 				title={"View"}
-				className={"toolBarButton"}
+				className={"btn btn-primary"}
 				primary={true}
 				onClick={e => this.updatePageContent(pageContent)}
 			>
@@ -216,7 +216,7 @@ class CommentsView extends React.Component {
 			gridToolbarContent.push(
 				<Button
 					title={"Edit"}
-					className={"toolBarButton"}
+					className={"btn btn-primary"}
 					primary={true}
 					onClick={e => this.updatePageContent(pageContent)}
 				>
@@ -228,7 +228,7 @@ class CommentsView extends React.Component {
 			gridToolbarContent.push(
 				<Button
 					title={"Audit Log"}
-					className={"toolBarButton"}
+					className={"btn btn-primary"}
 					primary={true}
 					onClick={e => this.callAuditLog()}
 				>
