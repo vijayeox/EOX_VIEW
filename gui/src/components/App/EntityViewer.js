@@ -74,15 +74,21 @@ class EntityViewer extends React.Component {
         fileId = this.state.fileId;
       }
     }
-    const isTaskApp = this.appId === "454a1ec4-eeab-4dc2-8a3f-6a4255ffaee1" || this.appId === "ff1ecbb7-3a45-4966-b38c-bf203f171423";
+    // const isTaskApp = this.appId === "454a1ec4-eeab-4dc2-8a3f-6a4255ffaee1" || this.appId === "ff1ecbb7-3a45-4966-b38c-bf203f171423";
+    const isTaskApp = [ "f4b323b6-c60d-42a6-98db-1b9a711ce5b5" ,"454a1ec4-eeab-4dc2-8a3f-6a4255ffaee1", "af6056c1-be46-4266-b83c-4b2177bcc7ca" ].includes(this.appId);
     console.log('FileData', this.appId, this.state);
     
     if (isTaskApp) {
-      gridToolbarContent.push(this.getTaskHeader(fileData));
+      gridToolbarContent.push(this.getTaskHeader(fileData, this.appId === "454a1ec4-eeab-4dc2-8a3f-6a4255ffaee1"));
       setTimeout(() => {
         const appDescription = document.getElementById(`${this.appId}_description`);
-        if (appDescription) {
+        if (appDescription && this.appId === "454a1ec4-eeab-4dc2-8a3f-6a4255ffaee1" ) {
           appDescription.innerHTML = fileData?.data?.data?.description;
+          this.setState({ filePanelUuid: `${this.appId}_description`, tabPanel: '' })
+        }
+        else if(this.appId === "f4b323b6-c60d-42a6-98db-1b9a711ce5b5"){
+          const innerHtml = `<div class="pto"> <div class="pto-data"> <b>Employee Name</b> <p>${fileData?.data?.data.name}</p> </div> <div class="pto-data"> <b>Type of leave</b> <p>${fileData?.data?.data.leaveType}</p> </div> <div class="pto-data"> <b>Status</b> <p>${fileData?.data?.data.status}</p> </div> <div class="pto-data"> <b>Leave Start Date</b> <p>${fileData?.data?.data.leaveStartDatePto}</p> </div> <div class="pto-data"> <b>Leave End Date</b> <p>${fileData?.data?.data.leaveEndDatePto}</p> </div> <div class="pto-data"> <b>Observer</b> <p>${fileData?.data?.data.HRname}</p> </div> </div> <div class="pto-data padding-top-20"> <b>Description</b> <p>${fileData?.data?.data.description}</p> </div>`
+          appDescription.innerHTML = innerHtml;
           this.setState({ filePanelUuid: `${this.appId}_description`, tabPanel: '' })
         }
       })
@@ -189,7 +195,11 @@ class EntityViewer extends React.Component {
     document.getElementById(this.appId + "_breadcrumbParent").dispatchEvent(ev);
   }
 
-  getTaskHeader(fileData) {
+  getTaskHeader(fileData, isTask) {
+    // const ptoJsx = <>
+    // <div class="pto"> <div class="pto-data"> 
+    // <b>Employee Name</b> 
+    // <p>{fileData?.data?.name}</p> </div> <div class="pto-data"> <b>Type of leave</b> <p>{fileData?.data?.leaveType}</p> </div> <div class="pto-data"> <b>Status</b> <p>{fileData?.data?.status}</p> </div> <div class="pto-data"> <b>Leave Start Date</b> <p>{fileData?.data?.leaveStartDatePto}</p> </div> <div class="pto-data"> <b>Leave End Date</b> <p>{data.leaveEndDatePto}</p> </div> <div class="pto-data"> <b>Observer</b> <p>{data.HRname}</p> </div> </div> <div class="pto-data padding-top-20"> <b>Description</b> <p dangerouslySetInnerHTML={{ __html: fileData?.data?.description }}></p> </div></>
     const breadCrumb = document.getElementById(
       this.appId + "_breadcrumbParent"
     );
@@ -199,7 +209,9 @@ class EntityViewer extends React.Component {
     const {
       data: {
         title,
-        data: { status, start_date, next_action_date, username, assignedto, ownerid, end_date },
+        data: { status, start_date, next_action_date, username, assignedto, ownerid, end_date , exitHireDate , exitTerminationDate, exitStatus, pipCommencementDate, pipCompletionDate, pipStatus, transportationStartDate, transportationEndDate, transportStatus, startDate, endDate, statusResignationForm},
+        // Apologies for adding this additional field name. Due to lack of time in hand, we are adding these.
+        // These will be cleared up in the next release. 
         ownerId
       },
     } = fileData;
@@ -242,7 +254,11 @@ class EntityViewer extends React.Component {
       <div className="task-header width-100">
         <i className="fa fa-arrow-from-left go-back" onClick={goBack}></i>
         <div className="task-header_taskname">
-          {title.trim()?.split(" ")?.slice(0, 2)?.map((v) => v[0]?.toUpperCase())?.join("")}
+          {title
+            .split(" ")
+            .slice(0, 2)
+            .map((v) => v[0].toUpperCase())
+            .join("")}
         </div>
         <div className="task-header_info width-100">
           <div className="task-header_name" title={title}>
@@ -251,13 +267,13 @@ class EntityViewer extends React.Component {
           <div className="task-header_details">
             <div>
               <p>Status</p> <span className="task-status"></span>{" "}
-              <p>{status}</p>
+              <p>{(status || exitStatus || pipStatus || statusResignationForm || transportStatus).toUpperCase()}</p>
             </div>
             <div>
-              <p>Created On</p> <p>{start_date}</p>
+              <p>Created On</p> <p>{ start_date ? start_date : (exitHireDate || pipCommencementDate || startDate || transportationStartDate).substring(0,10)}</p>
             </div>
             <div>
-              <p>Due On</p> <p>{end_date}</p>
+              <p>Due On</p> <p>{ end_date ? end_date : (exitTerminationDate || pipCompletionDate || endDate || transportationEndDate).substring(0,10)}</p>
             </div>
             <div className="owner-assignee">
               Assigned To {(imageAssigned) ? <div className='msg-img' style={{ background: `url(${imageAssigned})`, backgroundSize: "contain", height: "20px", width: "20px", borderRadius: "50%" }}></div> : <i className="fad fa-user owner-assignee-dp"></i>}
@@ -269,7 +285,7 @@ class EntityViewer extends React.Component {
               {/* <div className='msg-img' style={{ background: `url(${image})`, backgroundSize: "contain" }}></div> */}
               {/* <p>{assignedToName}</p> */}
             </div>
-            <div className="task-header_progress">
+            {isTask && <div className="task-header_progress">
               <div className="task-header_progress--data">
                 <div>
                   <span>
@@ -302,7 +318,7 @@ class EntityViewer extends React.Component {
                 <strong>{Math.floor(completedHours/(completedHours+remainingHours) * 100)}%</strong>
                 <p>Done</p>
               </p>
-            </div>
+            </div>}
           </div>
         </div>
       </div>
