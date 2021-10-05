@@ -722,7 +722,7 @@ export function GetCrmHeader(crmData, appId, loader, helper, dontAllowConversion
                 text: "Are you sure you want to convert this Lead into an Opportunity?",
                 showCancelButton: true,
             })
-            if(value){
+            if(value?.isConfirmed){
                 loader.show()
                 await helper.request("v1", `/app/${appId}/command/delegate/ConvertToOpportunity`, crmData, "post");
                 loader.destroy()
