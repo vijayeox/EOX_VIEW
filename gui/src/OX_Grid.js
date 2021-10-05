@@ -590,7 +590,6 @@ export default class OX_Grid extends React.Component {
                   style={{ fontSize: "medium", paddingLeft: "30px" }}
                   className="noRecords"
                 >
-                  No Records Available
                 </div>
               </div>
             </ul>

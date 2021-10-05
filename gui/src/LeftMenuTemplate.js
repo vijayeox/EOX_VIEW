@@ -132,7 +132,7 @@ export default class LeftMenuTemplate extends React.Component {
                 );
               })
             ) : (
-              <div>No menu found</div>
+              <div></div>
             )}
           </SideNav.Nav>
         </SideNav>
