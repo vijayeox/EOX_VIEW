@@ -209,7 +209,7 @@ class EntityViewer extends React.Component {
     const {
       data: {
         title,
-        data: { status, start_date, next_action_date, username, assignedto, ownerid, end_date , exitHireDate , exitTerminationDate, exitStatus, pipCommencementDate, pipCompletionDate, pipStatus, transportationStartDate, transportationEndDate, transportStatus, startDate, endDate, statusResignationForm},
+        data: { status, start_date, next_action_date, username, assignedto, ownerid, end_date , exitHireDate , exitTerminationDate, exitStatus, pipCommencementDate, pipCompletionDate, pipStatus, transportationStartDate, transportationEndDate, transportStatus, startDate, endDate, statusResignationForm, leaveStartDate , leaveEndDate},
         // Apologies for adding this additional field name. Due to lack of time in hand, we are adding these.
         // These will be cleared up in the next release. 
         ownerId
@@ -270,7 +270,7 @@ class EntityViewer extends React.Component {
               <p>{(status || exitStatus || pipStatus || statusResignationForm || transportStatus).toUpperCase()}</p>
             </div>
             <div>
-              <p>Created On</p> <p>{ start_date ? start_date : (exitHireDate || pipCommencementDate || startDate || transportationStartDate).substring(0,10)}</p>
+              <p>Created On</p> <p>{ start_date ? start_date : (exitHireDate || pipCommencementDate || startDate || transportationStartDate || leaveStartDate || leaveEndDate)?.substring(0,10) || '-'}</p>
             </div>
             <div>
               <p>Due On</p> <p>{ end_date ? end_date : (exitTerminationDate || pipCompletionDate || endDate || transportationEndDate).substring(0,10)}</p>
