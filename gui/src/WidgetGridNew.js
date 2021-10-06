@@ -282,7 +282,7 @@ export default class WidgetGridNew extends React.Component {
 
         return (
             <>
-                {gridLoader.length === 0 && loadingPanel}
+                {this.state.displayedData.length === 0 && loadingPanel}
                 {this.isDrillDownTable &&
                     <div className="oxzion-widget-drilldown-table-icon" style={hasBackButton ? { right: "5%" } : { right: "7px" }} title="Drilldown Table">
                         <i className="fas fa-angle-double-down fa-lg"></i>
@@ -308,6 +308,7 @@ export default class WidgetGridNew extends React.Component {
                         </ExcelExport>
                     </>
                 }
+                {!this.exportToExcel && gridTag }
             </>
         );
     }
