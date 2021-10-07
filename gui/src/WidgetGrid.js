@@ -90,16 +90,16 @@ export default class WidgetGrid extends React.Component {
         }
     }
 
-     getRandomInt(min, max) {
+    getRandomInt(min, max) {
         min = Math.ceil(min);
         max = Math.floor(max);
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
-    
+
 
     prepareData = (refilter) => {
         // testing code 
-        
+
         // if(this.allData) {
         //     this.allData.map(data => {
         //         data['rflag'] = this.getRandomInt(0,4);
@@ -309,19 +309,19 @@ export default class WidgetGrid extends React.Component {
         c - Column Name
         d - fieldValuetypes from the configuration 
     */
-     getIconValue = (props, configuration, c, d) => {
-         if(d.length > 0){
-              for (var i=0; i <= d.length; i++){
-            var caseValue = d[i];
-            if(String(caseValue) === String(props.dataItem[c])){
-                return[
-                    parseCustom(configuration.html.images[i][String(caseValue)]),
-                    configuration.colors[String(caseValue)]
-                    ] 
+    getIconValue = (props, configuration, c, d) => {
+        if (d.length > 0) {
+            for (var i = 0; i <= d.length; i++) {
+                var caseValue = d[i];
+                if (String(caseValue) === String(props.dataItem[c])) {
+                    return [
+                        parseCustom(configuration.html.images[i][String(caseValue)]),
+                        configuration.colors[String(caseValue)]
+                    ]
                 }
             }
         }
-        else{
+        else {
             console.log("Check the configuration, the field types is kept empty in the configuration.")
         }
     }
@@ -333,7 +333,7 @@ export default class WidgetGrid extends React.Component {
         configuration - Configuration array provided for the query 
         c - Column Name
     */
-     cellWithBackGround = (props, configuration, c) => {
+    cellWithBackGround = (props, configuration, c) => {
         let colName = c
         // fetch the images to be loaded from the configuration
         const icons = configuration.html.images
@@ -341,19 +341,19 @@ export default class WidgetGrid extends React.Component {
         // get the value of the check by getting the field from configuration and putting it to check folder 
         let deciderCheck = configuration.html.field
         // Fetch the information to be loaded for rendering 
-        var [ icontoBeLoaded , styles ] = this.getIconValue(props, configuration, deciderCheck, fieldValueTypesForCheck)
+        var [icontoBeLoaded, styles] = this.getIconValue(props, configuration, deciderCheck, fieldValueTypesForCheck)
         // Create the style based on the color that we provide. 
         var style = {
             backgroundColor: String(styles),
         };
-        
+
         // Return the table elements 
         return (
-          <td colSpan={props.colSpan} style={style} >
-             {props.dataItem[colName]}{icontoBeLoaded}
-          </td>
+            <td colSpan={props.colSpan} style={style} >
+                {props.dataItem[colName]}{icontoBeLoaded}
+            </td>
         );
-      };
+    };
 
 
     render() {
@@ -364,13 +364,13 @@ export default class WidgetGrid extends React.Component {
             for (const config of thiz.columnConfig) {
                 if (config['footerAggregate']) {
                     // add a check here for checking for derived column around this. if derived column pass the props to load derived column values. 
-                    
+
                     columns.push(<GridColumn key={config['field']} {...config} footerCell={(props) => thiz.Aggregate(props, config['footerAggregate'])} />);
                 } else {
-                    if(config['derived_column']){
+                    if (config['derived_column']) {
                         columns.push(<GridColumn key={config['field']} {...config} cell={(props) => thiz.cellWithBackGround(props, config, config['field'])} />)
                     }
-                    else{
+                    else {
                         columns.push(<GridColumn key={config['field']} {...config} />);
                     }
                 }

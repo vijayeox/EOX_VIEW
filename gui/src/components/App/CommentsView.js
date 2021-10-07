@@ -704,6 +704,7 @@ export function GetCrmHeader(crmData, appId, loader, helper, dontAllowConversion
     let {name,created_by, owner,date_modified, status} = crmData;
     const regexExp = /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/gi;
     created_by = regexExp.test(created_by) ? owner : created_by;
+    name = crmData.opportunityName ? crmData.opportunityName : name;
     // const [_status, setStatus] = useState(status)
     const breadCrumb = document.getElementById(
       appId + "_breadcrumbParent"

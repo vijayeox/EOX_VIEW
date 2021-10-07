@@ -287,7 +287,7 @@ const FilterFields = function (props) {
                 </div>
             }
             <div className="dashboard-filter-field filterFieldsfilter-section-two" style={{ minWidth: "auto" }} >
-                <Form.Group className="dashboard-filter-field" controlId="formGridPassword">
+                <Form.Group className="dashboard-filter-field" id="formGridPassword">
                     {/* <Form.Label>Default Value</Form.Label><br /> */}
                     {dataType === "date" ?
                         ((filters[index]["operator"] !== "gte&&lte" && filters[index]["operator"] !== "mtd" && filters[index]["operator"] !== "ytd") && filters[index]["dateRange"] === false) ?
