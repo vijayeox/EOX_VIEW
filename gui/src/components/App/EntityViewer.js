@@ -75,7 +75,12 @@ class EntityViewer extends React.Component {
       }
     }
     // const isTaskApp = this.appId === "454a1ec4-eeab-4dc2-8a3f-6a4255ffaee1" || this.appId === "ff1ecbb7-3a45-4966-b38c-bf203f171423";
-    const isTaskApp = [ "f4b323b6-c60d-42a6-98db-1b9a711ce5b5" ,"454a1ec4-eeab-4dc2-8a3f-6a4255ffaee1", "af6056c1-be46-4266-b83c-4b2177bcc7ca" ].includes(this.appId);
+   
+    const isTaskApp = ["f4b323b6-c60d-42a6-98db-1b9a711ce5b5",
+    "454a1ec4-eeab-4dc2-8a3f-6a4255ffaee1", 
+    "af6056c1-be46-4266-b83c-4b2177bcc7ca",
+    "13bbb587-1f0f-42f0-873a-03a015d5f8bc", 
+    "787b0a46-9808-4c31-b78e-7a3b4c54d37b" ].includes(this.appId);
     console.log('FileData', this.appId, this.state);
     
     if (isTaskApp) {
@@ -86,11 +91,7 @@ class EntityViewer extends React.Component {
           appDescription.innerHTML = fileData?.data?.data?.description;
           this.setState({ filePanelUuid: `${this.appId}_description`, tabPanel: '' })
         }
-        else if(this.appId === "f4b323b6-c60d-42a6-98db-1b9a711ce5b5"){
-          const innerHtml = `<div class="pto"> <div class="pto-data"> <b>Employee Name</b> <p>${fileData?.data?.data.name}</p> </div> <div class="pto-data"> <b>Type of leave</b> <p>${fileData?.data?.data.leaveType}</p> </div> <div class="pto-data"> <b>Status</b> <p>${fileData?.data?.data.status}</p> </div> <div class="pto-data"> <b>Leave Start Date</b> <p>${fileData?.data?.data.leaveStartDatePto}</p> </div> <div class="pto-data"> <b>Leave End Date</b> <p>${fileData?.data?.data.leaveEndDatePto}</p> </div> <div class="pto-data"> <b>Observer</b> <p>${fileData?.data?.data.HRname}</p> </div> </div> <div class="pto-data padding-top-20"> <b>Description</b> <p>${fileData?.data?.data.description}</p> </div>`
-          appDescription.innerHTML = innerHtml;
-          this.setState({ filePanelUuid: `${this.appId}_description`, tabPanel: '' })
-        }
+        this.setState({ filePanelUuid: `${this.appId}_description`, tabPanel: '' })
       })
     }
     if (this.state.entityConfig && !this.state.entityConfig.has_workflow) {
@@ -226,27 +227,29 @@ class EntityViewer extends React.Component {
     let completedHours = 0;
     let remainingHours = 0;
     let finishedPercentage = 0;
-    try{
-      const start = new Date(start_date).getTime(); //WHEN WORK STARTED
-      const today = Date.now() + (5.3 * 60 * 60 * 1000); // NOW + UTC
-      const end = new Date(end_date).getTime(); //END DATE
-      if(status.toLowerCase() !== 'completed'){
-        if(start <= today && today <= end){
-          completedHours = moment.duration(moment(today).diff(moment(start))).asHours();
-          remainingHours = moment.duration(moment(end).diff(moment(today))).asHours();
+    if(isTask){
+      try{
+        const start = new Date(start_date).getTime(); //WHEN WORK STARTED
+        const today = Date.now() + (5.3 * 60 * 60 * 1000); // NOW + UTC
+        const end = new Date(end_date).getTime(); //END DATE
+        if(status.toLowerCase() !== 'completed'){
+          if(start <= today && today <= end){
+            completedHours = moment.duration(moment(today).diff(moment(start))).asHours();
+            remainingHours = moment.duration(moment(end).diff(moment(today))).asHours();
+          }
+          else{
+            remainingHours = moment.duration(moment(start).diff(moment(end))).asHours();
+          }
+        }else{
+          finishedPercentage = 100;
+          completedHours = moment.duration(moment(end).diff(moment(start))).asHours();
         }
-        else{
-          remainingHours = moment.duration(moment(start).diff(moment(end))).asHours();
-        }
-      }else{
-        finishedPercentage = 100;
-        completedHours = moment.duration(moment(end).diff(moment(start))).asHours();
+        remainingHours = Math.floor(Math.abs(remainingHours))
+        completedHours = Math.floor(Math.abs(completedHours))
+        finishedPercentage = Math.floor(completedHours/(completedHours+remainingHours)*100);
+      }catch(e){
+        console.error(`Time cal error : ${e}`)
       }
-      remainingHours = Math.floor(Math.abs(remainingHours))
-      completedHours = Math.floor(Math.abs(completedHours))
-      finishedPercentage = Math.floor(completedHours/(completedHours+remainingHours)*100);
-    }catch(e){
-      console.error(`Time cal error : ${e}`)
     }
 
     return (
