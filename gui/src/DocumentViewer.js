@@ -190,7 +190,7 @@ export default class DocumentViewer extends Component {
         this.state.documentsList[docType]
           ? accordionHTML.push(
               <Card key={index}>
-                <Card.Header>
+                <Card.Header className={"border-0"}>
                   <CustomToggle
                     eventKey={docType}
                     currentSelected={this.state.activeCard}
