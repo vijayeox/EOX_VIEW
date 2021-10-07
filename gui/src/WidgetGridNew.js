@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Grid, GridColumn as Column, GridToolbar } from '@progress/kendo-react-grid';
-import { filterBy, orderBy, process } from '@progress/kendo-data-query';
+// import { filterBy, orderBy, process } from '@progress/kendo-data-query';
 import { IntlService } from '@progress/kendo-react-intl'
 import { ExcelExport } from '@progress/kendo-react-excel-export';
 import WidgetDrillDownHelper from './WidgetDrillDownHelper';
@@ -75,16 +75,6 @@ export default class WidgetGridNew extends React.Component {
             dataState: e.dataState
         }, () => {
             // console.log(this.state.dataState);
-        });
-    }
-
-    gridSortChanged = (e) => {
-        this.allData = orderBy(this.state.displayedData, e.sort);
-        this.setState({
-            sort: e.sort,
-            exportFilterData: e.target.props.data,
-        }, () => {
-            // this.prepareData(true);
         });
     }
 
@@ -206,7 +196,7 @@ export default class WidgetGridNew extends React.Component {
                 filter: e.filter,
                 exportFilterData: e.target.props.data,
             }, () => {
-                // this.prepareData(true);
+                this.prepareData(true);
             });
         }
     }
@@ -272,7 +262,6 @@ export default class WidgetGridNew extends React.Component {
             {...this.state.dataState}
             {...this.state.displayedData}
             onDataStateChange={this.dataStateChange}
-            onSortChange={this.gridSortChanged}
             onRowClick={this.drillDownClick}
             cellRender={(tdelement, cellProps) => this.cellRender(tdelement, cellProps, this)}
         >
@@ -319,7 +308,7 @@ export default class WidgetGridNew extends React.Component {
                         </ExcelExport>
                     </>
                 }
-                {!this.exportToExcel && gridTag}
+                {!this.exportToExcel && gridTag }
             </>
         );
     }
