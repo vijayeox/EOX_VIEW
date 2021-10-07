@@ -1072,6 +1072,7 @@ class BaseFormRenderer extends React.Component {
                     gridToolbarContent.push(<Button title={"Comments"} className={"btn btn-primary"} primary={true} onClick={(e) => this.updatePageContent(commentContent)} ><i className={"fa fa-comment"}></i></Button>);
                 }
                 let ev = new CustomEvent("addcustomActions", { detail: { customActions: gridToolbarContent }, bubbles: true });
+                if(entityPage?.data?.content?.find((c) => c?.type === "TabSegment")) return;
                 document.getElementById(this.state.appId+"_breadcrumbParent").dispatchEvent(ev);
             }
         });
