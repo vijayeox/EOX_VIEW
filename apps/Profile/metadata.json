@@ -5,7 +5,7 @@
   "icon" : "icon.svg",
   "icon_white": "icon_white.svg",
   "server": "server.js",
-  "autostart": true,
+  "autostart": false,
   "singleton": true,
   "hidden": true,
   "internal": true,
