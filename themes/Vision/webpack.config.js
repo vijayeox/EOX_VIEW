@@ -87,7 +87,10 @@ module.exports = {
       {
         test: /\.(svg|png|jpe?g|gif|webp)$/,
         use: [{
-          loader: 'file-loader'
+          loader: 'file-loader',
+          options: {
+            esModule: false
+          }
         }]
       },
       {
