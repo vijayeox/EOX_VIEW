@@ -7,7 +7,7 @@ function QueryModal(props) {
   const [input, setInput] = useState({})
   const [errors, setErrors] = useState({})
   const [formValues, setFormValues] = useState("")
-  const [formSchema, setFormSchema] = useState(FormSchema["_DEFAULT_OPTIONAL_FIELDS"])
+  const [formSchema, setFormSchema] = useState(FormSchema.FormSchema["_DEFAULT_OPTIONAL_FIELDS"])
 
   const formBuilderRef = useRef(null)
 
