@@ -211,13 +211,14 @@ class EntityViewer extends React.Component {
     const {
       data: {
         title,
-        data: { status, start_date, next_action_date, username, assignedto, ownerid, end_date , exitHireDate , exitTerminationDate, exitStatus, pipCommencementDate, pipCompletionDate, pipStatus, transportationStartDate, transportationEndDate, transportStatus, startDate, endDate, statusResignationForm, leaveStartDate , leaveEndDate},
+        data: { status, start_date, next_action_date, username, assignedto , managerId , ownerid, end_date , exitHireDate , exitTerminationDate, exitStatus, pipCommencementDate, pipCompletionDate, pipStatus, transportationStartDate, transportationEndDate, transportStatus, startDate, endDate, statusResignationForm, leaveStartDate , leaveEndDate},
         // Apologies for adding this additional field name. Due to lack of time in hand, we are adding these.
         // These will be cleared up in the next release. 
         ownerId
       },
     } = fileData;
-    var imageAssigned = this.core.config("wrapper.url") + "user/profile/" + assignedto;
+    // var imageAssigned = this.core.config("wrapper.url") + "user/profile/" + assignedto;
+    var imageAssigned = `${this.core.config("wrapper.url")}user/profile/${managerId ? managerId : assignedto}`;
     var imageOwner = this.core.config("wrapper.url") + "user/profile/" + ownerId;
     const goBack = () => {
       const activeBreadcrumbs = document.getElementsByClassName('activeBreadcrumb');
