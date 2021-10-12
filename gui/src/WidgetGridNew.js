@@ -308,7 +308,12 @@ export default class WidgetGridNew extends React.Component {
                         </ExcelExport>
                     </>
                 }
-                {!this.exportToExcel && gridTag }
+                {!this.exportToExcel && 
+                <>
+                    {gridTag}
+                    {gridLoader}
+                </>
+                }
             </>
         );
     }
