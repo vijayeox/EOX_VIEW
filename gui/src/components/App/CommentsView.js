@@ -187,7 +187,7 @@ class CommentsView extends React.Component {
 			fileId: this.state.fileId
 		};
 		if(this.appId === 'ff1ecbb7-3a45-4966-b38c-bf203f171423'){
-            gridToolbarContent.push(GetCrmHeader(this.props.currentRow, this.appId,this.loader, this.core.make("oxzion/restClient")))
+            gridToolbarContent.push(GetCrmHeader(this.props.currentRow, this.appId,this.loader, this.core.make("oxzion/restClient"), false, this.state))
         }else{
 			gridToolbarContent.push(
 				<Button
@@ -701,7 +701,7 @@ class CommentsView extends React.Component {
 	}
 }
 
-export function GetCrmHeader(crmData, appId, loader, helper, dontAllowConversion){
+export function GetCrmHeader(crmData, appId, loader, helper, dontAllowConversion, state){
     let {name,created_by, owner,date_modified, status} = crmData;
     const regexExp = /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/gi;
     created_by = regexExp.test(created_by) ? owner : created_by;
@@ -766,6 +766,7 @@ export function GetCrmHeader(crmData, appId, loader, helper, dontAllowConversion
             </div>
             </div>
             {status !== 'Converted to Opportunity' && !dontAllowConversion && 
+			!["bc413bea-1510-11ec-82a8-0242ac130003","5a96821e-f720-433d-a057-1bebf11e8a44"].includes(state?.entityConfig?.form_uuid) &&
             <button 
                 style={{background: '#007bff',
                 color: '#FFF',
