@@ -418,3 +418,8 @@ $primary-color: #275362;
 div[class="k-actions k-hstack k-justify-content-end"] > button[class="k-button k-primary k-upload-selected"]{
   display: none;
 }
+
+// Extra Space above the custombar
+div#customActions>div[class="display-flex task-header-pos-abs"]{
+  margin-top : 10px;
+}
