@@ -266,6 +266,10 @@ html {
 
 .osjs-panel .osjs-panel-item--icon {
   margin: 0px 2px 0px 2px;
+
+  > i > span {
+    font-size: 14px;
+  }
 }
 
 .osjs-window-header {
