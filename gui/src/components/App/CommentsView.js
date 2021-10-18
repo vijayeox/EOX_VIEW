@@ -55,7 +55,7 @@ class CommentsView extends React.Component {
 				this.getEntityPage().then((entityPage) => {
 					if (entityPage.data) {
 						this.setState({ entityConfig: entityPage.data });
-						this.generateViewButton(entityPage.data.enable_auditlog, this.getDisableHeaderButtons(entityPage.data));
+						this.generateViewButton(entityPage.data.enable_auditlog, this.getDisableHeaderButtons(entityPage.data), fileData);
 					}
 					this.fetchCommentData();
 				});
@@ -177,7 +177,7 @@ class CommentsView extends React.Component {
 			this.loader.destroy();
 		});
 	}
-	generateViewButton(enableAuditLog, disableHeaderButtons) {
+	generateViewButton(enableAuditLog, disableHeaderButtons, fileData) {
 		let gridToolbarContent = [];
 		let filePage = [{ type: "EntityViewer", fileId: this.state.fileId }];
 		let pageContent = {
@@ -187,7 +187,7 @@ class CommentsView extends React.Component {
 			fileId: this.state.fileId
 		};
 		if(this.appId === 'ff1ecbb7-3a45-4966-b38c-bf203f171423'){
-            gridToolbarContent.push(GetCrmHeader(this.props.currentRow, this.appId,this.loader, this.core.make("oxzion/restClient"), false, this.state))
+            gridToolbarContent.push(GetCrmHeader(this.props.currentRow, this.appId,this.loader, this.core.make("oxzion/restClient"), false, this.state, fileData, this.core))
         }else{
 			gridToolbarContent.push(
 				<Button
@@ -701,7 +701,7 @@ class CommentsView extends React.Component {
 	}
 }
 
-export function GetCrmHeader(crmData, appId, loader, helper, dontAllowConversion, state){
+export function GetCrmHeader(crmData, appId, loader, helper, dontAllowConversion, state, fileData, core){
     let {name,created_by, owner,date_modified, status} = crmData;
     const regexExp = /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/gi;
     created_by = regexExp.test(created_by) ? owner : created_by;
@@ -710,7 +710,8 @@ export function GetCrmHeader(crmData, appId, loader, helper, dontAllowConversion
     const breadCrumb = document.getElementById(
       appId + "_breadcrumbParent"
     );
-    const breadCrumbClassList = breadCrumb?.children[0]?.classList;
+	const imageOwner = core?.config?.("wrapper.url") + "user/profile/" + fileData?.data?.ownerId;
+	const breadCrumbClassList = breadCrumb?.children[0]?.classList;
     breadCrumbClassList?.add("display-flex");
     breadCrumbClassList?.add("width-100");
     const goBack = () => {
@@ -762,7 +763,12 @@ export function GetCrmHeader(crmData, appId, loader, helper, dontAllowConversion
                 </div>
                 <div>
                 {date_modified && <><p>Last Updated On</p> <p>{date_modified}</p></>}
-                </div>    
+                </div>   
+				{
+					fileData?.data?.ownerId && <div className="owner-assignee">
+						Owner {(imageOwner != null) ? <div className='msg-img' style={{ background: `url(${imageOwner})`, backgroundSize: "contain", height: "20px", width: "20px", borderRadius: "50%"  }}></div> : <i className="fad fa-user owner-assignee-dp"></i>}
+					</div>
+				} 
             </div>
             </div>
             {status !== 'Converted to Opportunity' && !dontAllowConversion && 
