@@ -606,7 +606,7 @@ class CommentsView extends React.Component {
 													return (
 														<div className='msg right-msg'>
 															<div className='msg-bubble'>
-																<div className='msg-img' style={{ background: `url(${image})`, backgroundSize: "contain" }}
+																<div className='msg-img' style={{ backgroundImage: `url(${image})`, backgroundSize: "contain" }}
 																></div>
 																<div className='msg-info'>
 																	<div className='msg-info-name'>
@@ -648,7 +648,7 @@ class CommentsView extends React.Component {
 																<div
 																	className='msg-img'
 																	style={{
-																		background: `url(${image})`,
+																		backgroundImage: `url(${image})`,
 																		backgroundSize: "contain"
 																	}}
 																></div>
