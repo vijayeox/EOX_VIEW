@@ -259,11 +259,7 @@ class EntityViewer extends React.Component {
       <div className="task-header width-100">
         <i className="fa fa-arrow-from-left go-back" onClick={goBack}></i>
         <div className="task-header_taskname">
-          {title
-            .split(" ")
-            .slice(0, 2)
-            .map((v) => v[0].toUpperCase())
-            .join("")}
+          {title.trim()?.split(" ")?.slice(0, 2)?.map((v) => v?.[0]?.toUpperCase())?.join("")}
         </div>
         <div className="task-header_info width-100">
           <div className="task-header_name" title={title}>

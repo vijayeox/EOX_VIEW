@@ -741,11 +741,7 @@ export function GetCrmHeader(crmData, appId, loader, helper, dontAllowConversion
         <div className="task-header width-100">
             <i className="fa fa-arrow-from-left go-back" onClick={goBack}></i>
             <div className="task-header_taskname">
-            {name
-                .split(" ")
-                .slice(0, 2)
-                .map((v) => v[0].toUpperCase())
-                .join("")}
+            {name.trim()?.split(" ")?.slice(0, 2)?.map((v) => v?.[0]?.toUpperCase())?.join("")}
             </div>
             <div className="task-header_info width-100">
             <div className="task-header_name" title={name}>
