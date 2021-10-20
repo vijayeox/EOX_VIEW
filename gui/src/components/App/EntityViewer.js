@@ -226,6 +226,11 @@ class EntityViewer extends React.Component {
         activeBreadcrumbs?.[activeBreadcrumbs.length-1]?.children?.[0]?.click()
       }
     }
+    let createdDate = start_date || exitHireDate || pipCommencementDate || startDate || transportationStartDate || leaveStartDate;
+    let dueDate = end_date || exitTerminationDate || pipCompletionDate || endDate || transportationEndDate|| leaveEndDate;
+    const momentFormat = this.profile?.key?.preferences?.dateformat || 'DD-MM-YYYY';
+    createdDate = moment(new Date(createdDate)).format(momentFormat)
+    dueDate = moment(new Date(dueDate)).format(momentFormat)
     let completedHours = 0;
     let remainingHours = 0;
     let finishedPercentage = 0;
@@ -271,10 +276,10 @@ class EntityViewer extends React.Component {
               <p>{(status || exitStatus || pipStatus || statusResignationForm || transportStatus).toUpperCase()}</p>
             </div>
             <div>
-              <p>Created On</p> <p>{ start_date ? start_date : (exitHireDate || pipCommencementDate || startDate || transportationStartDate || leaveStartDate )?.substring(0,10) || '-'}</p>
+              <p>Created On</p> <p>{createdDate}</p>
             </div>
             <div>
-              <p>Due On</p> <p>{ end_date ? end_date : (exitTerminationDate || pipCompletionDate || endDate || transportationEndDate|| leaveEndDate)?.substring(0,10) || '-'}</p>
+              <p>Due On</p> <p>{dueDate}</p>
             </div>
             <div className="owner-assignee">
               Assigned To {(imageAssigned) ? <div className='msg-img' style={{ background: `url(${imageAssigned})`, backgroundSize: "contain", height: "20px", width: "20px", borderRadius: "50%" }}></div> : <i className="fad fa-user owner-assignee-dp"></i>}

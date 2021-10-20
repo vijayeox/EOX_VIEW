@@ -187,7 +187,7 @@ class CommentsView extends React.Component {
 			fileId: this.state.fileId
 		};
 		if(this.appId === 'ff1ecbb7-3a45-4966-b38c-bf203f171423'){
-            gridToolbarContent.push(GetCrmHeader(this.props.currentRow, this.appId,this.loader, this.core.make("oxzion/restClient"), false, this.state, fileData, this.core))
+            gridToolbarContent.push(GetCrmHeader(this.props.currentRow, this.appId,this.loader, this.core.make("oxzion/restClient"), false, this.state, fileData, this.core, this.profile?.key?.preferences?.dateformat ))
         }else{
 			gridToolbarContent.push(
 				<Button
@@ -701,7 +701,7 @@ class CommentsView extends React.Component {
 	}
 }
 
-export function GetCrmHeader(crmData, appId, loader, helper, dontAllowConversion, state, fileData, core){
+export function GetCrmHeader(crmData, appId, loader, helper, dontAllowConversion, state, fileData, core, dateFormat = 'DD-MM-YYYY'){
     let {name,created_by, owner,date_modified, status} = crmData;
     const regexExp = /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/gi;
     created_by = regexExp.test(created_by) ? owner : created_by;
@@ -754,11 +754,11 @@ export function GetCrmHeader(crmData, appId, loader, helper, dontAllowConversion
                 </div>}
                 <div>
                 {created_by && 
-					<><p>Created By</p> <p>{created_by}</p></>
+					<><p>Created By</p> <p>{moment(new Date(created_by)).format(dateFormat)}</p></>
 				}
                 </div>
                 <div>
-                {date_modified && <><p>Last Updated On</p> <p>{date_modified}</p></>}
+                {date_modified && <><p>Last Updated On</p> <p>{moment(new Date(date_modified)).format(dateFormat)}</p></>}
                 </div>   
 				{
 					fileData?.data?.ownerId && <div className="owner-assignee">
