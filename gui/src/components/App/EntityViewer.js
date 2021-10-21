@@ -228,8 +228,8 @@ class EntityViewer extends React.Component {
         activeBreadcrumbs?.[activeBreadcrumbs.length-1]?.children?.[0]?.click()
       }
     }
-    let createdDate = start_date || exitHireDate || pipCommencementDate || startDate || transportationStartDate || leaveStartDate;
-    let dueDate = end_date || exitTerminationDate || pipCompletionDate || endDate || transportationEndDate|| leaveEndDate;
+    let createdDate = start_date;
+    let dueDate = end_date;
     const momentFormat = this.profile?.key?.preferences?.dateformat || 'DD-MM-YYYY';
     createdDate = moment(new Date(createdDate)).format(momentFormat)
     dueDate = moment(new Date(dueDate)).format(momentFormat)
