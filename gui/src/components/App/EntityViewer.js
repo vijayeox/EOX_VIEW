@@ -211,7 +211,9 @@ class EntityViewer extends React.Component {
     const {
       data: {
         title,
-        data: { status, start_date, next_action_date, username, assignedto , managerId , ownerid, end_date , exitHireDate , exitTerminationDate, exitStatus, pipCommencementDate, pipCompletionDate, pipStatus, transportationStartDate, transportationEndDate, transportStatus, startDate, endDate, statusResignationForm, leaveStartDate , leaveEndDate},
+        data: { status, start_date, next_action_date, end_date, username, assignedto , managerId , ownerid},
+        
+        // data: { status, start_date, next_action_date, username, assignedto , managerId , ownerid, end_date , exitHireDate , exitTerminationDate, exitStatus, pipCommencementDate, pipCompletionDate, pipStatus, transportationStartDate, transportationEndDate, transportStatus, startDate, endDate, statusResignationForm, leaveStartDate , leaveEndDate},
         // Apologies for adding this additional field name. Due to lack of time in hand, we are adding these.
         // These will be cleared up in the next release. 
         ownerId
@@ -226,8 +228,8 @@ class EntityViewer extends React.Component {
         activeBreadcrumbs?.[activeBreadcrumbs.length-1]?.children?.[0]?.click()
       }
     }
-    let createdDate = start_date || exitHireDate || pipCommencementDate || startDate || transportationStartDate || leaveStartDate;
-    let dueDate = end_date || exitTerminationDate || pipCompletionDate || endDate || transportationEndDate|| leaveEndDate;
+    let createdDate = start_date;
+    let dueDate = end_date;
     const momentFormat = this.profile?.key?.preferences?.dateformat || 'DD-MM-YYYY';
     createdDate = moment(new Date(createdDate)).format(momentFormat)
     dueDate = moment(new Date(dueDate)).format(momentFormat)
