@@ -89,7 +89,7 @@ module.exports = {
           {
             loader: "file-loader",
             options: {
-              name: "[name].[hash].[ext]",
+              name: "[name].[ext]",
               outputPath: "images"
             }
           }
@@ -99,7 +99,7 @@ module.exports = {
         test: /\.(woff(2)?|ttf|eot)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
         loader: "file-loader",
         options: {
-          name: "[name].[hash].[ext]",
+          name: "[name].[ext]",
           outputPath: "font"
         }
       },
