@@ -23,6 +23,13 @@ html {
   width: 15px;
 }
 
+.k-list-scroller {
+  font-size: 14px;
+}
+
+.k-popup {
+  padding: 0px;
+}
 .osjs-window {
   // @include window;
   // background: #275362;
@@ -353,6 +360,7 @@ label {
   width: 7em;
 }
 
+//Attachments tab
 .col-md-12.dash-manager-buttons {
   padding-right: 0px;
   padding-left: 0px;
