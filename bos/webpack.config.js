@@ -35,7 +35,7 @@ module.exports = {
     libraryTarget: 'umd',
     umdNamedDefine: true,
     sourceMapFilename: '[file].map',
-    filename: '[name].[contenthash].js'
+    filename: '[name].js'
   },
   performance: {
     maxEntrypointSize: 600 * 1024,
@@ -76,7 +76,8 @@ module.exports = {
       title: 'EOX Vantage'
     }),
     new MiniCssExtractPlugin({
-      filename: '[name].css'
+      filename: '[name].css',
+      chunkFilename: "[id].css"
     }),
     new NodePolyfillPlugin(),
     ...plugins
