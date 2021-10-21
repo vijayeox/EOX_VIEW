@@ -195,8 +195,8 @@ export const defaultConfiguration = {
       widgets: [],
       keybindings: [],
       background: {
-        src: require('./styles/wallpaper.png'),
-        color: '#572a79',
+        src: 'wallpaper.png',
+        color: 'transperent',
         style: 'cover'
       },
       iconview: {
