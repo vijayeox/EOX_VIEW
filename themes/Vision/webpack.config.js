@@ -1,6 +1,5 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-
 const mode = process.env.NODE_ENV || 'development';
 const minimize = mode === 'production';
 const plugins = [];
@@ -28,8 +27,8 @@ module.exports = {
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: '[name].css',
-      chunkFilename: '[id].css'
+      filename: "[name].css",
+      chunkFilename: "[id].css"
     }),
     ...plugins
   ],
@@ -83,15 +82,6 @@ module.exports = {
             ]
           }
         }
-      },
-      {
-        test: /\.(svg|png|jpe?g|gif|webp)$/,
-        use: [{
-          loader: 'file-loader',
-          options: {
-            esModule: false
-          }
-        }]
       },
       {
         test: /\.html$/,

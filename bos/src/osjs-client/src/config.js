@@ -195,7 +195,7 @@ export const defaultConfiguration = {
       widgets: [],
       keybindings: [],
       background: {
-        src: require('./styles/wallpaper.png'),
+        src: undefined, //require('./styles/wallpaper.png'),
         color: 'transparent',
         style: 'cover'
       },
