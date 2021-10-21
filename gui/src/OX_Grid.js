@@ -135,11 +135,11 @@ export default class OX_Grid extends React.Component {
     }
   }
 
-  async DeleteFile(api, item) {
+  async DeleteFile(api, item, urlPostParams) {
     let response = await this.restClient.request(
       "v1",
       "/" + api,
-      {},
+      urlPostParams ? urlPostParams: {},
       item.typeOfRequest ? item.typeOfRequest : "post"
     );
     return response;
@@ -877,6 +877,52 @@ export default class OX_Grid extends React.Component {
               buttonPopup: buttonPopup,
               showButtonPopup: true,
             });
+          } else if (item.type == "APIRequest"){
+            action.updateOnly = true;                         
+              var urlPostParams = {};
+              if(item.params && item.params.urlPostParams){
+                urlPostParams = ParameterHandler.replaceParams(this.appId, item.params.urlPostParams, mergeRowData);
+              }
+              var url = ParameterHandler.replaceParams(
+                this.appId,
+                item.route,
+                mergeRowData
+              );
+              Swal.fire({
+                title: "Are you sure?",
+                text: "Do you really want to delete the record? This cannot be undone.",
+                imageUrl:
+                  "https://image.flaticon.com/icons/svg/1632/1632714.svg",
+                imageWidth: 75,
+                imageHeight: 75,
+                confirmButtonText: "Delete",
+                confirmButtonColor: "#d33",
+                showCancelButton: true,
+                cancelButtonColor: "#3085d6",
+              }).then((result) => {
+                if (result.value) {
+                  this.DeleteFile("app/" + this.appId + "/" + url, item,urlPostParams).then(
+                    (response) => {
+                      console.log(response);
+                      this.refreshHandler(response);
+                      if (response.status == "success") {
+                        this.state.notif.current.notify(
+                          "Success",
+                          "Deleted Successfully",
+                          "success"
+                        );
+                      } else {
+                        this.state.notif.current.notify(
+                          "Error",
+                          response.message,
+                          "danger"
+                        );
+                      }
+                    }
+                  );
+                }
+              });
+
           } else {
             if (item.params && item.params.page_id) {
               pageId = item.params.page_id;
