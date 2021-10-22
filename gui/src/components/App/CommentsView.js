@@ -609,21 +609,23 @@ class CommentsView extends React.Component {
 																<div className='msg-img' style={{ backgroundImage: `url(${image})`, backgroundSize: "contain" }}
 																></div>
 																<div className='msg-info'>
-																	<div className='msg-info-name'>
-																		{commentItem.name}
+																	<div className='msg-info-extra'>
+																		<div className='msg-info-name'>
+																			{commentItem.name}
+																		</div>
+																		<div className='msg-info-time'>
+																			{moment
+																				.utc(commentItem.time, "YYYY-MM-DD HH:mm:ss")
+																				.clone()
+																				.tz(this.userTimezone)
+																				.format(this.userDateFormat + " - HH:mm:ss")}
+																		</div>
 																	</div>
-																	<div className='msg-info-time'>
-																		{moment
-																			.utc(commentItem.time, "YYYY-MM-DD HH:mm:ss")
-																			.clone()
-																			.tz(this.userTimezone)
-																			.format(this.userDateFormat + " - HH:mm:ss")}
-																	</div>
+																		<div className='msg-text' dangerouslySetInnerHTML={{
+																		__html: commentItem.text
+																	}}
+																	></div>
 																</div>
-																<div className='msg-text' dangerouslySetInnerHTML={{
-																	__html: commentItem.text
-																}}
-																></div>
 																{commentItem.fileName &&
 																	commentItem.fileName.map((fileName, index) => {
 																		return (
@@ -653,24 +655,25 @@ class CommentsView extends React.Component {
 																	}}
 																></div>
 																<div className='msg-info'>
-																	<div className='msg-info-name'>
-																		{commentItem.name}
+																	<div className='msg-info-extra'>
+																		<div className='msg-info-name'>
+																			{commentItem.name}
+																		</div>
+																		<div className='msg-info-time'>
+																			{moment
+																				.utc(commentItem.time, "YYYY-MM-DD HH:mm:ss")
+																				.clone()
+																				.tz(this.userTimezone)
+																				.format(this.userDateFormat + " - HH:mm:ss")}
+																		</div>
 																	</div>
-																	<div className='msg-info-time'>
-																		{moment
-																			.utc(commentItem.time, "YYYY-MM-DD HH:mm:ss")
-																			.clone()
-																			.tz(this.userTimezone)
-																			.format(this.userDateFormat + " - HH:mm:ss")}
-																	</div>
-																</div>
-
-																<div
+																	<div
 																	className='msg-text'
 																	dangerouslySetInnerHTML={{
 																		__html: commentItem.text
 																	}}
-																></div>
+																	></div>
+																</div>
 																{commentItem.fileName &&
 																	commentItem.fileName.map((fileName, index) => {
 																		return (

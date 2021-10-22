@@ -153,38 +153,63 @@
       border-radius: 15px;
       background: var(--left-msg-bg);
       word-break: break-word;
+
+      display: flex;
+      align-items: center;
     }
     .msg-text {
       white-space: pre-wrap;
       display: grid;
     }
     .msg-info {
-      display: inline-flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
+      // display: inline-flex;
+      // justify-content: space-between;
+      // align-items: center;
+      // margin-bottom: 10px;
+
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      width: 100%;
+
     }
-    .right-msg .msg-bubble {
+
+    .msg-info-extra {
+      display: flex;
+      justify-content: space-between;
+    }
+
+
+    .msg-bubble {
       background: transparent;
       color: #275362;
       width: 50%;
-      // border: 1px solid #275362;
       border-radius: 5px;
     }
-    .left-msg .msg-bubble {
-      background: transparent;
-      color: #275362;
-      width: 100%;
-      display: table-column-group;
-      // border-bottom: 1px solid #275362;
-      // border-radius: 0px;
-    }
+
+    // .right-msg .msg-bubble {
+    //   background: transparent;
+    //   color: #275362;
+    //   width: 50%;
+    //   // border: 1px solid #275362;
+    //   border-radius: 5px;
+    // }
+    // .left-msg .msg-bubble {
+    //   background: transparent;
+    //   color: #275362;
+    //   width: 50%;
+    //   border-radius: 5px;
+    //   // display: table-column-group;
+    //   // border-bottom: 1px solid #275362;
+    //   // border-radius: 0px;
+    // }
     .msg-info-time {
       font-size: 0.85em;
     }
     .msg-info-name {
-      margin-right: 10px;
+      // margin-right: 10px;
       font-weight: bold;
+      // margin-bottom: 10px;
     }
     .right-msg {
       // flex-direction: row-reverse;
