@@ -770,9 +770,9 @@ export function GetCrmHeader(crmData, appId, loader, helper, dontAllowConversion
 				} 
             </div>
             </div>
-            {status !== 'Converted to Opportunity' && !dontAllowConversion && 
-			!["bc413bea-1510-11ec-82a8-0242ac130003","5a96821e-f720-433d-a057-1bebf11e8a44", "6a3330bf-5aa3-4a09-9252-bf107ca0df81"].includes(state?.entityConfig?.form_uuid) &&
-            <button 
+            {status !== 'Converted to Opportunity' && !dontAllowConversion &&
+			!["bc413bea-1510-11ec-82a8-0242ac130003","5a96821e-f720-433d-a057-1bebf11e8a44", "6a3330bf-5aa3-4a09-9252-bf107ca0df81","bc413e1a-1510-11ec-82a8-0242ac130003","d681e961-9d62-4f43-9e57-c1d94709490b"].includes(state?.entityConfig?.form_uuid) &&
+            <button
                 style={{background: '#007bff',
                 color: '#FFF',
                 fontWeight: 'bold',
