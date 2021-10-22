@@ -600,7 +600,7 @@ export default class DocumentViewer extends Component {
     if (this.state.apiCallStatus) {
       if (documentsList) {
         return (
-          <div className="row docViewerComponent">
+          <div className="docViewerComponent">
             <Notification ref={this.notif} />
             <div className="col-md-3 docListDiv">
               <Accordion defaultActiveKey={this.state.documentTypes[0]}>
