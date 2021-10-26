@@ -46,7 +46,8 @@ class RenderButtons extends React.Component {
       }
       var pageDetails = {title:currentValue.name,pageContent:copyPageContent,pageId:currentValue.pageId,icon:currentValue.icon,parentPage:this.pageId}
       if(showButton){
-        adminItems.push(
+          const isExportPdf = currentValue?.details?.find((detail) => detail?.type === 'exportPdf')
+          adminItems.push(
           <div
             key={index}
             className="moduleBtn"
@@ -55,7 +56,7 @@ class RenderButtons extends React.Component {
                 detail: pageDetails,
                 bubbles: true
               });
-              document.getElementById(this.appNavigationDiv).dispatchEvent(p_ev);
+              document.getElementById(this.appNavigationDiv).dispatchEvent(isExportPdf ?  new CustomEvent("exportPdf") : p_ev);
             }}
           >
             <div className="block">
