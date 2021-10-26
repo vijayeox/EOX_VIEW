@@ -276,8 +276,43 @@ html {
   min-height: 2em;
   height: auto;
   align-items: center;
-  display: none;
+  // display: none;
 }
+
+
+  [data-maximized='false'] {
+    
+    .osjs-window-header {
+      display: flex;
+    }
+
+  }
+
+  [data-maximized='true'] {
+    .osjs-window-header {
+      display: none;
+    }
+  }
+
+  [data-id="Profile_Window"],
+  [data-id="ChatWindow"],
+  [data-id="PreferencesWindow"]
+   {
+    .osjs-window-header {
+      display: flex;
+    }
+  }
+
+
+
+
+
+// [data-id="Profile_Window"],
+// [data-id="Profile_Window"] {
+//   .osjs-window-header  {
+//     display: flex;
+//   }
+// }
 
 .osjs-panel-item[data-name="menu"] {
   display: contents;

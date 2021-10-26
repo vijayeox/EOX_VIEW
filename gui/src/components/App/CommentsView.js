@@ -713,7 +713,7 @@ export function GetCrmHeader(crmData, appId, loader, helper, dontAllowConversion
     const breadCrumb = document.getElementById(
       appId + "_breadcrumbParent"
     );
-	const imageOwner = core?.config?.("wrapper.url") + "user/profile/" + fileData?.data?.ownerId;
+	let imageOwner = null;//core?.config?.("wrapper.url") + "user/profile/" + fileData?.data?.ownerId;
 	const breadCrumbClassList = breadCrumb?.children[0]?.classList;
     breadCrumbClassList?.add("display-flex");
     breadCrumbClassList?.add("width-100");
@@ -723,7 +723,11 @@ export function GetCrmHeader(crmData, appId, loader, helper, dontAllowConversion
           activeBreadcrumbs?.[activeBreadcrumbs.length-1]?.children?.[0]?.click()
         }
     }
-
+	try{
+		const objSplit =  fileData?.data?.data?.ownerObj?.split('uuid":"')?.[1];
+		const quoteIdx =objSplit?.indexOf('"');
+		imageOwner = `${core?.config?.("wrapper.url")}user/profile/${objSplit?.substr(0, quoteIdx)}`
+	}catch(e){}
     const convertLeadsToOpportunity = async () => {
         try{
             const value = await Swal.fire({
@@ -744,7 +748,7 @@ export function GetCrmHeader(crmData, appId, loader, helper, dontAllowConversion
         <div className="task-header width-100">
             <i className="fa fa-arrow-from-left go-back" onClick={goBack}></i>
             <div className="task-header_taskname">
-            {name.trim()?.split(" ")?.slice(0, 2)?.map((v) => v?.[0]?.toUpperCase())?.join("")}
+            {name?.trim()?.split(" ")?.slice(0, 2)?.map((v) => v?.[0]?.toUpperCase())?.join("")}
             </div>
             <div className="task-header_info width-100">
             <div className="task-header_name" title={name}>
@@ -752,7 +756,7 @@ export function GetCrmHeader(crmData, appId, loader, helper, dontAllowConversion
             </div>
             <div className="task-header_details">
                 {status && <div>
-                <p>Status</p> <span className="task-status"></span>{" "}
+                <p>Status</p> <span className="task-status" style={{backgroundColor : '#3FB5E1'}}></span>{" "}
                 <p>{status}</p>
                 </div>}
                 <div>
@@ -764,8 +768,8 @@ export function GetCrmHeader(crmData, appId, loader, helper, dontAllowConversion
                 {date_modified && <><p>Last Updated On</p> <p>{moment(new Date(date_modified)).format(dateFormat)}</p></>}
                 </div>   
 				{
-					fileData?.data?.ownerId && <div className="owner-assignee">
-						Owner {(imageOwner != null) ? <div className='msg-img' style={{ background: `url(${imageOwner})`, backgroundSize: "contain", height: "20px", width: "20px", borderRadius: "50%"  }}></div> : <i className="fad fa-user owner-assignee-dp"></i>}
+					imageOwner && <div className="owner-assignee">
+						Owner {(imageOwner != null) ? <div className='msg-img' style={{ backgroundImage: `url(${imageOwner})`, backgroundSize: "contain", height: "20px", width: "20px", borderRadius: "50%"  }}></div> : <i className="fad fa-user owner-assignee-dp"></i>}
 					</div>
 				} 
             </div>
