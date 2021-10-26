@@ -710,6 +710,28 @@ export function GetCrmHeader(crmData, appId, loader, helper, dontAllowConversion
     created_by = regexExp.test(created_by) ? owner : created_by;
     name = crmData.opportunityName ? crmData.opportunityName : name;
     // const [_status, setStatus] = useState(status)
+	const defaulPalette={
+		red : '#EE4424',
+		green : '#A3C53A',
+		blue : '#3FB5E1',
+		orange : '#F3BA1D'
+	}
+	const colorPalette = {
+		Active : defaulPalette.green,
+		Inactive : defaulPalette.red,
+		New : defaulPalette.blue,
+		Disqualified : defaulPalette.red,
+		Open : defaulPalette.blue,
+		'In Progress' : defaulPalette.orange,
+		Closed : defaulPalette.green,
+		Forecast : defaulPalette.orange,
+		Won : defaulPalette.green,
+		Lost : defaulPalette.red,
+		Cold : defaulPalette.red,
+		Chasing : defaulPalette.orange,
+		Prospecting : defaulPalette.orange,
+		Qualified : defaulPalette.green
+	}
     const breadCrumb = document.getElementById(
       appId + "_breadcrumbParent"
     );
@@ -756,7 +778,7 @@ export function GetCrmHeader(crmData, appId, loader, helper, dontAllowConversion
             </div>
             <div className="task-header_details">
                 {status && <div>
-                <p>Status</p> <span className="task-status" style={{backgroundColor : '#3FB5E1'}}></span>{" "}
+                <p>Status</p> <span className="task-status" style={{backgroundColor :colorPalette[status] || defaulPalette.orange}}></span>{" "}
                 <p>{status}</p>
                 </div>}
                 <div>
