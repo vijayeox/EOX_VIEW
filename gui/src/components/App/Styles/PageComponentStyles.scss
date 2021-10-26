@@ -118,7 +118,7 @@ $primary-color: #275362;
       .task-status {
         padding: 5px;
         border-radius: 10px;
-        background-color: rgba(0, 128, 0, 0.83);
+        // background-color: rgba(0, 128, 0, 0.83);
         margin: 0 6px;
       }
 
@@ -415,11 +415,12 @@ $primary-color: #275362;
 }
 
 // Hide extra upload button in attachment section [BUG] #26242 by Mukul
-div[class="k-actions k-hstack k-justify-content-end"] > button[class="k-button k-primary k-upload-selected"]{
+div[class="k-actions k-hstack k-justify-content-end"]
+  > button[class="k-button k-primary k-upload-selected"] {
   display: none;
 }
 
 // Extra Space above the custombar
-div#customActions>div[class="display-flex task-header-pos-abs"]{
-  margin-top : 10px;
+div#customActions > div[class="display-flex task-header-pos-abs"] {
+  margin-top: 10px;
 }

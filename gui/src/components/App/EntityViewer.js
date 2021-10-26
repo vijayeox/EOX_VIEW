@@ -236,6 +236,8 @@ class EntityViewer extends React.Component {
     let completedHours = 0;
     let remainingHours = 0;
     let finishedPercentage = 0;
+    const defaultStatus = '#008000d4';
+    const lowerCaseStatus = status?.toLowerCase();
     if(isTask){
       try{
         const start = new Date(start_date).getTime(); //WHEN WORK STARTED
@@ -274,7 +276,24 @@ class EntityViewer extends React.Component {
           </div>
           <div className="task-header_details">
             <div>
-              <p>Status</p> <span className="task-status"></span>{" "}
+              <p>Status</p> <span className="task-status"
+                  style={{
+                    backgroundColor: ["completed", "approved", "closed"].includes(
+                      lowerCaseStatus
+                    )
+                      ? "#A3C53A"
+                      : lowerCaseStatus === "in progress"
+                      ? "#F3BA1D"
+                      : [
+                          "delayed",
+                          "not approved",
+                          "rejected",
+                          "not completed",
+                        ].includes(lowerCaseStatus)
+                      ? "#EE4424"
+                      : "#3FB5E1",
+                  }}
+                ></span>{" "}
               <p>{(status || exitStatus || pipStatus || statusResignationForm || transportStatus).toUpperCase()}</p>
             </div>
             <div>
