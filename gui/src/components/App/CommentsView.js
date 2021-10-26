@@ -99,7 +99,7 @@ class CommentsView extends React.Component {
 			var query = {
 				filter: {
 					logic: "and",
-					filters: [{ field: "name", operator: "contains", value: term }]
+					filters: [{ field: "username", operator: "contains", value: term }]
 				},
 				skip: 0,
 				take: 10
@@ -533,7 +533,7 @@ class CommentsView extends React.Component {
 										<Mention
 											trigger={RegExp("(?:^|\\s)(@*([^@]*))$")}
 											markup='@[__display__](user:__name__)'
-											displayTransform={(id, username) => `@${username}`}
+											displayTransform={(id, username) => `@${username}`+ " "}
 											renderSuggestion={(
 												suggestion,
 												search,
