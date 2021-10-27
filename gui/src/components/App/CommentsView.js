@@ -746,9 +746,15 @@ export function GetCrmHeader(crmData, appId, loader, helper, dontAllowConversion
         }
     }
 	try{
-		const objSplit =  fileData?.data?.data?.ownerObj?.split('uuid":"')?.[1];
-		const quoteIdx =objSplit?.indexOf('"');
-		imageOwner = `${core?.config?.("wrapper.url")}user/profile/${objSplit?.substr(0, quoteIdx)}`
+		const owner = fileData?.data?.data?.ownerObj;
+		if(owner){
+			let objSplit,quoteIdx;
+			if(typeof owner === "string"){
+				objSplit = owner?.split('uuid":"')?.[1];
+				quoteIdx = objSplit?.indexOf('"');
+			}
+			imageOwner = `${core?.config?.("wrapper.url")}user/profile/${typeof owner === 'object' ? owner?.uuid : objSplit?.substr(0, quoteIdx)}`
+		}
 	}catch(e){}
     const convertLeadsToOpportunity = async () => {
         try{
@@ -779,7 +785,7 @@ export function GetCrmHeader(crmData, appId, loader, helper, dontAllowConversion
             <div className="task-header_details">
                 {status && <div>
                 <p>Status</p> <span className="task-status" style={{backgroundColor :colorPalette[status] || defaulPalette.orange}}></span>{" "}
-                <p>{status}</p>
+                <p style={{margin : 'auto'}}>{status}</p>
                 </div>}
                 <div>
                 {created_by && 
