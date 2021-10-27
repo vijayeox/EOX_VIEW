@@ -163,45 +163,10 @@ export default class WindowsPanelItem extends PanelItem {
             // "data-has-image": w.icon ? true : undefined,
             "data-focused": w.focused ? "true" : "false",
             onclick: () => w.raise(),
-            // oncontextmenu: (ev) => {
-            //   ev.stopPropagation();
-            //   ev.preventDefault();
-            //   this.core.make("osjs/contextmenu").show({
-            //     position: ev.target,
-            //     menu: [
-            //       {
-            //         label: w.state.maximized
-            //           ? _("LBL_RESTORE")
-            //           : _("LBL_MAXIMIZE"),
-            //         onclick: () =>
-            //           w.attributes.maximizable
-            //             ? w.state.maximized
-            //               ? w.restore()
-            //               : w.maximize()
-            //             : null,
-            //         disabled: !w.attributes.maximizable,
-            //       },
-            //       {
-            //         label: w.state.minimized
-            //           ? _("LBL_RAISE")
-            //           : _("LBL_MINIMIZE"),
-            //         onclick: () =>
-            //           w.attributes.minimizable
-            //             ? w.state.minimized
-            //               ? w.raise()
-            //               : w.minimize()
-            //             : null,
-            //         disabled: !w.attributes.minimizable,
-            //       },
-            //       // { type: "separator" },
-            //       {
-            //         label: _("LBL_CLOSE"),
-            //         onclick: () => (w.attributes.closeable ? w.close() : null),
-            //         disabled: !w.attributes.closeable,
-            //       },
-            //     ],
-            //   });
-            // },
+            oncontextmenu: (ev) => {
+              ev.stopPropagation();
+              ev.preventDefault();
+            },
             className:
               "osjs-panel-item--clickable osjs-panel-item--icon in-window",
           },
