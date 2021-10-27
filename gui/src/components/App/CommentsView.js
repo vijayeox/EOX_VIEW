@@ -785,7 +785,7 @@ export function GetCrmHeader(crmData, appId, loader, helper, dontAllowConversion
             <div className="task-header_details">
                 {status && <div>
                 <p>Status</p> <span className="task-status" style={{backgroundColor :colorPalette[status] || defaulPalette.orange}}></span>{" "}
-                <p>{status}</p>
+                <p style={{margin : 'auto'}}>{status}</p>
                 </div>}
                 <div>
                 {created_by && 
