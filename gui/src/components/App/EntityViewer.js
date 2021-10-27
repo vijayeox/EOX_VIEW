@@ -294,7 +294,7 @@ class EntityViewer extends React.Component {
                       : "#3FB5E1",
                   }}
                 ></span>{" "}
-              <p>{(status || exitStatus || pipStatus || statusResignationForm || transportStatus).toUpperCase()}</p>
+              <p style={{margin : 'auto'}}>{(status || exitStatus || pipStatus || statusResignationForm || transportStatus).toUpperCase()}</p>
             </div>
             <div>
               <p>Created On</p> <p>{createdDate}</p>

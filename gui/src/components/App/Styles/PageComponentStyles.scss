@@ -81,12 +81,13 @@ $primary-color: #275362;
     }
 
     .task-header_name {
-      margin: 3px 2px 9px 9px;
+      margin: 3px 2px 3px 9px;
       font-size: 1.25rem;
       color: #1f1f67;
       max-width: 70%;
       overflow: hidden;
       text-overflow: ellipsis;
+      line-height: normal;
     }
 
     .task-header_details {
@@ -106,7 +107,7 @@ $primary-color: #275362;
       .owner-assignee,
       div > div:first-child,
       div > p:first-child {
-        font-size: 13.25px !important;
+        font-size: 12px !important;
         color: #000 !important;
       }
       .owner-assignee {
