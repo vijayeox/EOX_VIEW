@@ -14,6 +14,7 @@ class EntityViewer extends React.Component {
     this.appId = this.props.appId;
     this.fileId = this.props.fileId;
     this.proc = this.props.proc;
+    this.unmounted = false;
     this.state = {
       content: this.props.content,
       fileData: this.props.fileData,
@@ -67,6 +68,9 @@ class EntityViewer extends React.Component {
   callAuditLog() {
     this.setState({ showAuditLog: true });
   }
+  componentWillUnmount(){
+    this.unmounted = true;
+  }
   generateEditButton(enableComments, enableAuditLog, fileData) {
     var fileId;
     let gridToolbarContent = [];
@@ -81,15 +85,17 @@ class EntityViewer extends React.Component {
     }
     if (this.state.isTabSegment) {
       gridToolbarContent.push(this.getTaskHeader(fileData, this.appId === "454a1ec4-eeab-4dc2-8a3f-6a4255ffaee1"));
-      setTimeout(() => {
-        const appDescription = document.getElementById(`${this.appId}_description`);
-        if (appDescription && this.appId === "454a1ec4-eeab-4dc2-8a3f-6a4255ffaee1" ) {
-          appDescription.innerHTML = fileData?.data?.data?.description;
+      if(!this.unmounted){
+        setTimeout(() => {
+          const appDescription = document.getElementById(`${this.appId}_description`);
+          if (appDescription && this.appId === "454a1ec4-eeab-4dc2-8a3f-6a4255ffaee1" ) {
+            appDescription.innerHTML = fileData?.data?.data?.description;
+            this.setState({ filePanelUuid: `${this.appId}_description`, tabPanel: '' })
+          }
           this.setState({ filePanelUuid: `${this.appId}_description`, tabPanel: '' })
-        }
-        this.setState({ filePanelUuid: `${this.appId}_description`, tabPanel: '' })
-        const breadcrumbs = document.querySelector('div[class="display-flex task-header-pos-abs"]')?.children;// > div[class="display-flex task-header-pos-abs"]
-      })
+          const breadcrumbs = document.querySelector('div[class="display-flex task-header-pos-abs"]')?.children;// > div[class="display-flex task-header-pos-abs"]
+        })
+      }
     }
     if (this.state.entityConfig && !this.state.entityConfig.has_workflow) {
       filePage = [
