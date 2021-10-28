@@ -6,6 +6,9 @@ import { React, ReactDOM } from "oxziongui";
 import metaData from "./metadata.json";
 
 var i, finalposition, finalDimension, finalMaximised, finalMinimised;
+
+
+
 // Our launcher
 const register = (core, args, options, metadata) => {
   // Create a new Application instance
@@ -51,21 +54,25 @@ const register = (core, args, options, metadata) => {
             top: 50
           },
           visibility: "restricted",
-          closeable: true,
+          closeable: false,
           maximizable: true,
-          minimizable: false,
+          minimizable: true,
 
         }
           
       })
       .on("destroy", () => proc.destroy())
       .on("render", (e) => {
+        win.focus();
         win.maximize();
+        
       })
       // .on("render", (e) => {
       //   win.maximize();
       // })
-      .render($content => ReactDOM.render(<Body args={core} dashboardUUID={dashboardUUID} proc={proc}/>, $content))    // pass it directly to the component you create
+      .render($content => {
+        ReactDOM.render(<Body args={core} dashboardUUID={dashboardUUID} proc={proc}/>, $content)
+         })   // pass it directly to the component you create
       if(win.$element.className.indexOf('Window_'+applicationName) == 12){
         win.$element.className += " Window_"+applicationName;
       } 
@@ -75,10 +82,43 @@ const register = (core, args, options, metadata) => {
       if(finalMaximised){
         win.maximize();
       }
+      const updateTray = () => {
+        if (core.has("osjs/tray")) {
+          const trayObj = core.make("osjs/tray");
+          if (trayInitialized) {
+            trigger();
+            tray.update({ count: announcementsCount });
+          } else {
+            trayInitialized = true;
+            tray = trayObj.create(
+              {
+                
+                title: "profileWindow",
+                icon: proc.resource(metadata.icon_white),
+                pos: 4,
+                onclick: () => {
+                  win.raise();
+                  win.focus();
+                  trigger();
+                },
+              },
+              (ev) => {
+                core.make("osjs/contextmenu").show({
+                  position: ev,
+                });
+              }
+            );
+          }
+        }
+      
+    };
+    updateTray();  
   };
   createProcWindow(proc);
   return proc;
 };
+
+
 
 const trigger = () => {
   var an_ev = new CustomEvent("openProfile", {
