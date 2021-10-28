@@ -265,18 +265,21 @@ html {
 //   margin-right: 2.4%;
 // }
 
-.osjs-panel {
-  height: 2.5em;
-  min-height: 2.5em;
-}
 
-.osjs-panel .osjs-panel-item--icon {
-  margin: 0px 2px 0px 2px;
+// Removed this from the themes and moved to the _panel.scss
 
-  > i > span {
-    font-size: 14px;
-  }
-}
+// .osjs-panel {
+//   height: 2.5em !important;
+//   min-height: 2.5em !important;
+// }
+
+// .osjs-panel .osjs-panel-item--icon {
+//   margin: 0px 2px 0px 2px;
+
+//   > i > span {
+//     font-size: 14px;
+//   }
+// }
 
 .osjs-window-header {
   min-height: 2em;
