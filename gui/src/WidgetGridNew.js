@@ -204,7 +204,7 @@ export default class WidgetGridNew extends React.Component {
 
     myCustomDateCell = (props,config) => {
         if (props.dataItem[props.field] !== '') {
-          return <td>{Moment(props.dataItem[props.field]).format(config.format1 || "YYYY/MM/DD")}</td>
+          return <td>{Moment(props.dataItem[props.field]).format(config.dateFormat || "YYYY/MM/DD")}</td>
         }
         return <td>{props.dataItem[props.field]}</td>
     }
