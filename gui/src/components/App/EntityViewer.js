@@ -84,8 +84,8 @@ class EntityViewer extends React.Component {
       }
     }
     if (this.state.isTabSegment) {
-      gridToolbarContent.push(this.getTaskHeader(fileData, this.appId === "454a1ec4-eeab-4dc2-8a3f-6a4255ffaee1"));
       if(!this.unmounted){
+        gridToolbarContent.push(this.getTaskHeader(fileData, this.appId === "454a1ec4-eeab-4dc2-8a3f-6a4255ffaee1"));
         setTimeout(() => {
           const appDescription = document.getElementById(`${this.appId}_description`);
           if (appDescription && this.appId === "454a1ec4-eeab-4dc2-8a3f-6a4255ffaee1" ) {
