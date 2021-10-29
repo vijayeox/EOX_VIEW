@@ -236,9 +236,9 @@ class EntityViewer extends React.Component {
     }
     let createdDate = start_date;
     let dueDate = end_date;
-    const momentFormat = this.profile?.key?.preferences?.dateformat || 'DD-MM-YYYY';
-    createdDate = moment(createdDate).format(momentFormat)
-    dueDate = moment(dueDate).format(momentFormat)
+    // const momentFormat = this.profile?.key?.preferences?.dateformat || 'DD-MM-YYYY';
+    // createdDate = moment(createdDate).format(momentFormat)
+    // dueDate = moment(dueDate).format(momentFormat)
     let completedHours = 0;
     let remainingHours = 0;
     let finishedPercentage = 0;
@@ -274,7 +274,7 @@ class EntityViewer extends React.Component {
       <div className="task-header width-100">
         <i className="fa fa-arrow-from-left go-back" onClick={goBack}></i>
         <div className="task-header_taskname">
-          {title.trim()?.split(" ")?.slice(0, 2)?.map((v) => v?.[0]?.toUpperCase())?.join("")}
+          {title?.trim()?.split(" ")?.slice(0, 2)?.map((v) => v?.[0]?.toUpperCase())?.join("")}
         </div>
         <div className="task-header_info width-100">
           <div className="task-header_name" title={title}>
@@ -300,10 +300,10 @@ class EntityViewer extends React.Component {
                       : "#3FB5E1",
                   }}
                 ></span>{" "}
-              <p style={{margin : 'auto'}}>{(status || exitStatus || pipStatus || statusResignationForm || transportStatus).toUpperCase()}</p>
+              <p style={{margin : 'auto'}}>{status}</p>
             </div>
             <div>
-              <p>Created On</p> <p>{createdDate}</p>
+              <p>Start Date</p> <p>{createdDate}</p>
             </div>
             <div>
               <p>Due On</p> <p>{dueDate}</p>
