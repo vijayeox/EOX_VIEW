@@ -237,8 +237,8 @@ class EntityViewer extends React.Component {
     let createdDate = start_date;
     let dueDate = end_date;
     const momentFormat = this.profile?.key?.preferences?.dateformat || 'DD-MM-YYYY';
-    createdDate = moment(new Date(createdDate)).format(momentFormat)
-    dueDate = moment(new Date(dueDate)).format(momentFormat)
+    createdDate = moment(createdDate).format(momentFormat)
+    dueDate = moment(dueDate).format(momentFormat)
     let completedHours = 0;
     let remainingHours = 0;
     let finishedPercentage = 0;

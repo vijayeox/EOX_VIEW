@@ -789,11 +789,11 @@ export function GetCrmHeader(crmData, appId, loader, helper, dontAllowConversion
                 </div>}
                 <div>
                 {created_by && 
-					<><p>Created By</p> <p>{moment(new Date(created_by)).format(dateFormat)}</p></>
+					<><p>Created By</p> <p>{moment(created_by).format(dateFormat)}</p></>
 				}
                 </div>
                 <div>
-                {date_modified && <><p>Last Updated On</p> <p>{moment(new Date(date_modified)).format(dateFormat)}</p></>}
+                {date_modified && <><p>Last Updated On</p> <p>{moment(date_modified).format(dateFormat)}</p></>}
                 </div>   
 				{
 					imageOwner && <div className="owner-assignee">
