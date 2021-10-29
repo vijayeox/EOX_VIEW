@@ -294,10 +294,11 @@ export default class WidgetGridNew extends React.Component {
         return (
             <>
                 {this.state.displayedData.length === 0 && loadingPanel}
-                {this.isDrillDownTable &&
-                    <div className="oxzion-widget-drilldown-table-icon" style={hasBackButton ? { right: "5%" } : { right: "7px" }} title="Drilldown Table">
-                        <i className="fas fa-angle-double-down fa-lg"></i>
-                    </div>
+                {
+                // this.isDrillDownTable &&
+                //     <div className="oxzion-widget-drilldown-table-icon" style={hasBackButton ? { right: "5%" } : { right: "7px" }} title="Drilldown Table">
+                //         <i className="fas fa-angle-double-down fa-lg"></i>
+                //     </div>
                 }
                 {/* {gridTag}
                 {gridLoader} */}
@@ -305,7 +306,7 @@ export default class WidgetGridNew extends React.Component {
                     <>
                         <div
                             className="oxzion-widget-drilldown-excel-icon"
-                            style={hasBackButton ? { right: "5%" } : { right: "10px" }}
+                            style={hasBackButton ? { right: "5%" } : { }}
                             onClick={this.saveAsExcel}>
                             <i className="fa fa-file-excel fa-lg"></i>
                         </div>
