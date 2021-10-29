@@ -233,7 +233,7 @@ export class DataLoader extends React.Component {
     } else {
       this.requestDataIfNeeded();
     }
-    return <div>{this.loader.showGrid()}</div>;
+    return <div></div>;
   }
 
   objectEquals(obj1, obj2) {
