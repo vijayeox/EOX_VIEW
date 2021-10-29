@@ -300,13 +300,13 @@ class EntityViewer extends React.Component {
                       : "#3FB5E1",
                   }}
                 ></span>{" "}
-              <p style={{margin : 'auto'}}>{(status || exitStatus || pipStatus || statusResignationForm || transportStatus).toUpperCase()}</p>
+              <p style={{margin : 'auto'}}>{status}</p>
             </div>
             <div>
-              <p>Created On</p> <p>{createdDate}</p>
+              <p>Start Date</p> <p>{start_date}</p>
             </div>
             <div>
-              <p>Due On</p> <p>{dueDate}</p>
+              <p>Due On</p> <p>{end_date}</p>
             </div>
             <div className="owner-assignee">
               Assigned To {(imageAssigned) ? <div className='msg-img' style={{ background: `url(${imageAssigned})`, backgroundSize: "contain", height: "20px", width: "20px", borderRadius: "50%" }}></div> : <i className="fad fa-user owner-assignee-dp"></i>}
