@@ -1194,7 +1194,7 @@ componentWillUnmount(){
             ></i>
           </div>
         </Popup>
-        {this.rawDataPresent ? (
+        <>{this.rawDataPresent ? (
           <DataOperation
             args={this.props.osjsCore}
             gridData={this.props.data}
@@ -1213,7 +1213,7 @@ componentWillUnmount(){
             onDataRecieved={this.dataRecieved}
             {...this.props}
           />
-        )}
+        )}{this.state.showLoader && this.loader.showGrid()}</>
         <div id="customActionsToolbar" />
         <Grid
           rowRender={this.rowRender}
