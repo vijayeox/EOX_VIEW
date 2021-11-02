@@ -112,7 +112,7 @@ componentWillUnmount(){
   };
 
   dataStateChange = (e) => {
-    this.setState({ ...this.state, dataState: e.dataState, apiActivityCompleted: false });
+    this.setState({ ...this.state, dataState: e.dataState });
   };
 
   dataRecieved = (data) => {
@@ -1213,7 +1213,7 @@ componentWillUnmount(){
             onDataRecieved={this.dataRecieved}
             {...this.props}
           />
-        )}{!this.state.apiActivityCompleted && this.loader.showGrid()}</>
+        )}</>
         <div id="customActionsToolbar" />
         <Grid
           rowRender={this.rowRender}
