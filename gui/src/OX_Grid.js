@@ -1150,20 +1150,18 @@ componentWillUnmount(){
   };
 
   toggleGridLoader() {
-    console.log(this.state)
       const selector = `#content_${this.appId}_${this.pageId} .k-grid-container `;
       try {
-        const ele = document.querySelector(`${selector}>.osjs-boot-splash-grid`);
-          ele?.remove();
+          document.querySelector(`${selector}>.osjs-boot-splash-grid`)?.remove();
           if (!this.state.apiActivityCompleted ) {
-          const ele = document.createElement("div");
-          ele.className = "osjs-boot-splash-grid";
-          ele.innerHTML = ` <div class="spinner">
+            const ele = document.createElement("div");
+            ele.className = "osjs-boot-splash-grid";
+            ele.innerHTML = ` <div class="spinner">
                   <div class="bounce1"></div>
                   <div class="bounce2"></div>
                   <div class="bounce3"></div>
                 </div>`;
-          document.querySelector(selector)?.append(ele);
+            document.querySelector(selector)?.append(ele);
         }
       } catch (e) {
         document.querySelector(`${selector}>.osjs-boot-splash-grid`)?.remove();
