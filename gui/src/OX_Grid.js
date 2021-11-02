@@ -75,6 +75,8 @@ export default class OX_Grid extends React.Component {
       : React.createRef();
     this.refreshHandler = this.refreshHandler.bind(this);
     this.inlineEdit = this.inlineEdit.bind(this);
+    this.toggleGridLoader = this.toggleGridLoader.bind(this);
+    this.toggleGridLoader();
   }
   _excelExport;
   _grid;
@@ -112,11 +114,13 @@ componentWillUnmount(){
   };
 
   dataStateChange = (e) => {
-    this.setState({ ...this.state, dataState: e.dataState });
+    const showLoader = (()=>{try{return JSON.stringify(this.state?.dataState) !== JSON.stringify(e?.dataState)}catch(e){return false}})()
+    this.setState({ ...this.state, dataState: e.dataState, apiActivityCompleted : false }, () => showLoader && this.toggleGridLoader());
+   
   };
 
   dataRecieved = (data) => {
-    this.setState({ gridData: data, apiActivityCompleted: true });
+    this.setState({ gridData: data, apiActivityCompleted: true }, this.toggleGridLoader);
   };
 
   UNSAFE_componentWillReceiveProps(nextProps) {
@@ -1144,6 +1148,27 @@ componentWillUnmount(){
       this.setState({ contextMenuOpen: false });
     }
   };
+
+  toggleGridLoader() {
+    console.log(this.state)
+      const selector = `#content_${this.appId}_${this.pageId} .k-grid-container `;
+      try {
+        const ele = document.querySelector(`${selector}>.osjs-boot-splash-grid`);
+          ele?.remove();
+          if (!this.state.apiActivityCompleted ) {
+          const ele = document.createElement("div");
+          ele.className = "osjs-boot-splash-grid";
+          ele.innerHTML = ` <div class="spinner">
+                  <div class="bounce1"></div>
+                  <div class="bounce2"></div>
+                  <div class="bounce3"></div>
+                </div>`;
+          document.querySelector(selector)?.append(ele);
+        }
+      } catch (e) {
+        document.querySelector(`${selector}>.osjs-boot-splash-grid`)?.remove();
+      }
+  }
 
   render() {
     return (
