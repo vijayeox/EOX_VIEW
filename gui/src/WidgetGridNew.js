@@ -7,6 +7,7 @@ import { ExcelExport } from '@progress/kendo-react-excel-export';
 import WidgetDrillDownHelper from './WidgetDrillDownHelper';
 import { WidgetGridLoader } from './WidgetGridLoader.js';
 import "@progress/kendo-theme-bootstrap/dist/all.css";
+import Moment from 'moment';
 
 const loadingPanel = (
     <div className="k-loading-mask">
@@ -94,8 +95,8 @@ export default class WidgetGridNew extends React.Component {
     parseData = () => {
         let fieldDataTypeMap = new Map();
         for (const config of this.columnConfig) {
-            if (config['dataType']) {
-                fieldDataTypeMap.set(config['field'], config['dataType']);
+            if (config['dataType'] === "date" || config['type'] === "date") {
+                fieldDataTypeMap.set(config['field'], (config['dataType'] || config['type']));
             }
         }
         for (let dataItem of this.allData) {
@@ -201,6 +202,13 @@ export default class WidgetGridNew extends React.Component {
         }
     }
 
+    myCustomDateCell = (props,config) => {
+        if (props.dataItem[props.field] !== '') {
+          return <td>{Moment(props.dataItem[props.field]).format(config.dateFormat || "YYYY/MM/DD")}</td>
+        }
+        return <td>{props.dataItem[props.field]}</td>
+    }
+
     render() {
         let thiz = this;
         let hasBackButton = this.hasBackButton()
@@ -216,6 +224,9 @@ export default class WidgetGridNew extends React.Component {
                 } else {
                     if (config['type'] == null) {
                         columns.push(<Column field={config['field']} title={config['title']} key={config['field']} {...config} style={config['className'] ? config['className'] : null}/>);
+                    }
+                    else if(config['type'] == 'date'){
+                        columns.push(<Column field={config['field']} title={config['title']} filter="date" key={config['field']} {...config} style={config['className'] ? config['className'] : null} cell={(props) => thiz.myCustomDateCell(props,config)} />);
                     } else {
                         columns.push(<Column field={config['field']} title={config['title']} filter={config ? ((config['type'] == 'number') ? 'numeric' : config['type']) : "numeric"
                         } key={config['field']} {...config} style={config['className'] ? config['className'] : null} />);
@@ -283,10 +294,11 @@ export default class WidgetGridNew extends React.Component {
         return (
             <>
                 {this.state.displayedData.length === 0 && loadingPanel}
-                {this.isDrillDownTable &&
-                    <div className="oxzion-widget-drilldown-table-icon" style={hasBackButton ? { right: "5%" } : { right: "7px" }} title="Drilldown Table">
-                        <i className="fas fa-angle-double-down fa-lg"></i>
-                    </div>
+                {
+                // this.isDrillDownTable &&
+                //     <div className="oxzion-widget-drilldown-table-icon" style={hasBackButton ? { right: "5%" } : { right: "7px" }} title="Drilldown Table">
+                //         <i className="fas fa-angle-double-down fa-lg"></i>
+                //     </div>
                 }
                 {/* {gridTag}
                 {gridLoader} */}
@@ -294,7 +306,7 @@ export default class WidgetGridNew extends React.Component {
                     <>
                         <div
                             className="oxzion-widget-drilldown-excel-icon"
-                            style={hasBackButton ? { right: "5%" } : { right: "10px" }}
+                            style={hasBackButton ? { right: "5%" } : { }}
                             onClick={this.saveAsExcel}>
                             <i className="fa fa-file-excel fa-lg"></i>
                         </div>

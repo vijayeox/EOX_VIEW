@@ -14,6 +14,7 @@ class EntityViewer extends React.Component {
     this.appId = this.props.appId;
     this.fileId = this.props.fileId;
     this.proc = this.props.proc;
+    this.unmounted = false;
     this.state = {
       content: this.props.content,
       fileData: this.props.fileData,
@@ -67,6 +68,9 @@ class EntityViewer extends React.Component {
   callAuditLog() {
     this.setState({ showAuditLog: true });
   }
+  componentWillUnmount(){
+    this.unmounted = true;
+  }
   generateEditButton(enableComments, enableAuditLog, fileData) {
     var fileId;
     let gridToolbarContent = [];
@@ -80,16 +84,18 @@ class EntityViewer extends React.Component {
       }
     }
     if (this.state.isTabSegment) {
-      gridToolbarContent.push(this.getTaskHeader(fileData, this.appId === "454a1ec4-eeab-4dc2-8a3f-6a4255ffaee1"));
-      setTimeout(() => {
-        const appDescription = document.getElementById(`${this.appId}_description`);
-        if (appDescription && this.appId === "454a1ec4-eeab-4dc2-8a3f-6a4255ffaee1" ) {
-          appDescription.innerHTML = fileData?.data?.data?.description;
+      if(!this.unmounted){
+        gridToolbarContent.push(this.getTaskHeader(fileData, this.appId === "454a1ec4-eeab-4dc2-8a3f-6a4255ffaee1"));
+        setTimeout(() => {
+          const appDescription = document.getElementById(`${this.appId}_description`);
+          if (appDescription && this.appId === "454a1ec4-eeab-4dc2-8a3f-6a4255ffaee1" ) {
+            appDescription.innerHTML = fileData?.data?.data?.description;
+            this.setState({ filePanelUuid: `${this.appId}_description`, tabPanel: '' })
+          }
           this.setState({ filePanelUuid: `${this.appId}_description`, tabPanel: '' })
-        }
-        this.setState({ filePanelUuid: `${this.appId}_description`, tabPanel: '' })
-        const breadcrumbs = document.querySelector('div[class="display-flex task-header-pos-abs"]')?.children;// > div[class="display-flex task-header-pos-abs"]
-      })
+          const breadcrumbs = document.querySelector('div[class="display-flex task-header-pos-abs"]')?.children;// > div[class="display-flex task-header-pos-abs"]
+        })
+      }
     }
     if (this.state.entityConfig && !this.state.entityConfig.has_workflow) {
       filePage = [
@@ -230,12 +236,14 @@ class EntityViewer extends React.Component {
     }
     let createdDate = start_date;
     let dueDate = end_date;
-    const momentFormat = this.profile?.key?.preferences?.dateformat || 'DD-MM-YYYY';
-    createdDate = moment(new Date(createdDate)).format(momentFormat)
-    dueDate = moment(new Date(dueDate)).format(momentFormat)
+    // const momentFormat = this.profile?.key?.preferences?.dateformat || 'DD-MM-YYYY';
+    // createdDate = moment(createdDate).format(momentFormat)
+    // dueDate = moment(dueDate).format(momentFormat)
     let completedHours = 0;
     let remainingHours = 0;
     let finishedPercentage = 0;
+    const defaultStatus = '#008000d4';
+    const lowerCaseStatus = status?.toLowerCase();
     if(isTask){
       try{
         const start = new Date(start_date).getTime(); //WHEN WORK STARTED
@@ -266,7 +274,7 @@ class EntityViewer extends React.Component {
       <div className="task-header width-100">
         <i className="fa fa-arrow-from-left go-back" onClick={goBack}></i>
         <div className="task-header_taskname">
-          {title.trim()?.split(" ")?.slice(0, 2)?.map((v) => v?.[0]?.toUpperCase())?.join("")}
+          {title?.trim()?.split(" ")?.slice(0, 2)?.map((v) => v?.[0]?.toUpperCase())?.join("")}
         </div>
         <div className="task-header_info width-100">
           <div className="task-header_name" title={title}>
@@ -274,14 +282,31 @@ class EntityViewer extends React.Component {
           </div>
           <div className="task-header_details">
             <div>
-              <p>Status</p> <span className="task-status"></span>{" "}
-              <p>{(status || exitStatus || pipStatus || statusResignationForm || transportStatus).toUpperCase()}</p>
+              <p>Status</p> <span className="task-status"
+                  style={{
+                    backgroundColor: ["completed", "approved", "closed"].includes(
+                      lowerCaseStatus
+                    )
+                      ? "#A3C53A"
+                      : lowerCaseStatus === "in progress"
+                      ? "#F3BA1D"
+                      : [
+                          "delayed",
+                          "not approved",
+                          "rejected",
+                          "not completed",
+                        ].includes(lowerCaseStatus)
+                      ? "#EE4424"
+                      : "#3FB5E1",
+                  }}
+                ></span>{" "}
+              <p style={{margin : 'auto'}}>{status}</p>
             </div>
             <div>
-              <p>Created On</p> <p>{createdDate}</p>
+              <p>Start Date</p> <p>{createdDate}</p>
             </div>
             <div>
-              <p>Due On</p> <p>{dueDate}</p>
+              <p>Due On</p> <p>{end_date}</p>
             </div>
             <div className="owner-assignee">
               Assigned To {(imageAssigned) ? <div className='msg-img' style={{ background: `url(${imageAssigned})`, backgroundSize: "contain", height: "20px", width: "20px", borderRadius: "50%" }}></div> : <i className="fad fa-user owner-assignee-dp"></i>}

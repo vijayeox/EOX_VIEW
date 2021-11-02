@@ -266,25 +266,68 @@ html {
   // }
 }
 
+<<<<<<< HEAD
 .osjs-panel {
   height: 2.5em;
   min-height: 2.5em;
 }
+=======
+>>>>>>> AppBuilder
 
-.osjs-panel .osjs-panel-item--icon {
-  margin: 0px 2px 0px 2px;
+// For all action buttons in a app on list view page
+// .customActions.dash-manager-buttons > button:last-child {
+//   margin-right: 2.4%;
+// }
 
-  > i > span {
-    font-size: 14px;
-  }
-}
+
+// Removed this from the themes and moved to the _panel.scss
+
+// .osjs-panel {
+//   height: 2.5em !important;
+//   min-height: 2.5em !important;
+// }
+
+// .osjs-panel .osjs-panel-item--icon {
+//   margin: 0px 2px 0px 2px;
+
+//   > i > span {
+//     font-size: 14px;
+//   }
+// }
 
 .osjs-window-header {
   min-height: 2em;
   height: auto;
   align-items: center;
-  display: none;
+  // display: none;
 }
+
+[data-maximized="false"] {
+  .osjs-window-header {
+    display: flex;
+  }
+}
+
+[data-maximized="true"] {
+  .osjs-window-header {
+    display: none;
+  }
+}
+
+[data-id="Profile_Window"],
+[data-id="ChatWindow"],
+[data-id="PreferencesWindow"] {
+  .osjs-window-header {
+    display: flex;
+  }
+}
+
+// [data-id="Profile_Window"],
+// [data-id="Profile_Window"] {
+//   .osjs-window-header  {
+//     display: flex;
+//   }
+// }
 
 .osjs-panel-item[data-name="menu"] {
   display: contents;
@@ -407,9 +450,9 @@ label {
 .k-upload .k-upload-button {
   font-size: 12px;
 }
-.tab-content {
-  min-height: 830px;
-}
+// .tab-content {
+  // min-height: 830px;
+// }
 .accordion .card .card-header > button {
   border-color: #a2b5bc;
   color: #345561 !important;

@@ -100,14 +100,19 @@ export default class OX_Grid extends React.Component {
     document
       .getElementById("customActionsToolbar")
       .addEventListener("getCustomActions", this.getCustomActions, false);
-  }
+    document.getElementById(`navigation_${this.appId}`)?.addEventListener('exportPdf', this.exportPDF, false);
+}
+
+componentWillUnmount(){
+  document.getElementById(`navigation_${this.appId}`)?.removeEventListener('exportPdf', this.exportPDF, false);
+}
 
   getCustomActions = (e) => {
     this.generateGridToolbar();
   };
 
   dataStateChange = (e) => {
-    this.setState({ ...this.state, dataState: e.dataState });
+    this.setState({ ...this.state, dataState: e.dataState, apiActivityCompleted: false });
   };
 
   dataRecieved = (data) => {
@@ -1189,7 +1194,7 @@ export default class OX_Grid extends React.Component {
             ></i>
           </div>
         </Popup>
-        {this.rawDataPresent ? (
+        <>{this.rawDataPresent ? (
           <DataOperation
             args={this.props.osjsCore}
             gridData={this.props.data}
@@ -1208,7 +1213,7 @@ export default class OX_Grid extends React.Component {
             onDataRecieved={this.dataRecieved}
             {...this.props}
           />
-        )}
+        )}{!this.state.apiActivityCompleted && this.loader.showGrid()}</>
         <div id="customActionsToolbar" />
         <Grid
           rowRender={this.rowRender}

@@ -99,7 +99,7 @@ class CommentsView extends React.Component {
 			var query = {
 				filter: {
 					logic: "and",
-					filters: [{ field: "name", operator: "contains", value: term }]
+					filters: [{ field: "username", operator: "contains", value: term }]
 				},
 				skip: 0,
 				take: 10
@@ -533,7 +533,7 @@ class CommentsView extends React.Component {
 										<Mention
 											trigger={RegExp("(?:^|\\s)(@*([^@]*))$")}
 											markup='@[__display__](user:__name__)'
-											displayTransform={(id, username) => `@${username}`}
+											displayTransform={(id, username) => `@${username}`+ " "}
 											renderSuggestion={(
 												suggestion,
 												search,
@@ -710,10 +710,32 @@ export function GetCrmHeader(crmData, appId, loader, helper, dontAllowConversion
     created_by = regexExp.test(created_by) ? owner : created_by;
     name = crmData.opportunityName ? crmData.opportunityName : name;
     // const [_status, setStatus] = useState(status)
+	const defaulPalette={
+		red : '#EE4424',
+		green : '#A3C53A',
+		blue : '#3FB5E1',
+		orange : '#F3BA1D'
+	}
+	const colorPalette = {
+		Active : defaulPalette.green,
+		Inactive : defaulPalette.red,
+		New : defaulPalette.blue,
+		Disqualified : defaulPalette.red,
+		Open : defaulPalette.blue,
+		'In Progress' : defaulPalette.orange,
+		Closed : defaulPalette.green,
+		Forecast : defaulPalette.orange,
+		Won : defaulPalette.green,
+		Lost : defaulPalette.red,
+		Cold : defaulPalette.red,
+		Chasing : defaulPalette.orange,
+		Prospecting : defaulPalette.orange,
+		Qualified : defaulPalette.green
+	}
     const breadCrumb = document.getElementById(
       appId + "_breadcrumbParent"
     );
-	const imageOwner = core?.config?.("wrapper.url") + "user/profile/" + fileData?.data?.ownerId;
+	let imageOwner = null;//core?.config?.("wrapper.url") + "user/profile/" + fileData?.data?.ownerId;
 	const breadCrumbClassList = breadCrumb?.children[0]?.classList;
     breadCrumbClassList?.add("display-flex");
     breadCrumbClassList?.add("width-100");
@@ -723,7 +745,17 @@ export function GetCrmHeader(crmData, appId, loader, helper, dontAllowConversion
           activeBreadcrumbs?.[activeBreadcrumbs.length-1]?.children?.[0]?.click()
         }
     }
-
+	try{
+		const owner = fileData?.data?.data?.ownerObj;
+		if(owner){
+			let objSplit,quoteIdx;
+			if(typeof owner === "string"){
+				objSplit = owner?.split('uuid":"')?.[1];
+				quoteIdx = objSplit?.indexOf('"');
+			}
+			imageOwner = `${core?.config?.("wrapper.url")}user/profile/${typeof owner === 'object' ? owner?.uuid : objSplit?.substr(0, quoteIdx)}`
+		}
+	}catch(e){}
     const convertLeadsToOpportunity = async () => {
         try{
             const value = await Swal.fire({
@@ -744,7 +776,7 @@ export function GetCrmHeader(crmData, appId, loader, helper, dontAllowConversion
         <div className="task-header width-100">
             <i className="fa fa-arrow-from-left go-back" onClick={goBack}></i>
             <div className="task-header_taskname">
-            {name.trim()?.split(" ")?.slice(0, 2)?.map((v) => v?.[0]?.toUpperCase())?.join("")}
+            {name?.trim()?.split(" ")?.slice(0, 2)?.map((v) => v?.[0]?.toUpperCase())?.join("")}
             </div>
             <div className="task-header_info width-100">
             <div className="task-header_name" title={name}>
@@ -752,27 +784,27 @@ export function GetCrmHeader(crmData, appId, loader, helper, dontAllowConversion
             </div>
             <div className="task-header_details">
                 {status && <div>
-                <p>Status</p> <span className="task-status"></span>{" "}
-                <p>{status}</p>
+                <p>Status</p> <span className="task-status" style={{backgroundColor :colorPalette[status] || defaulPalette.orange}}></span>{" "}
+                <p style={{margin : 'auto'}}>{status}</p>
                 </div>}
                 <div>
                 {created_by && 
-					<><p>Created By</p> <p>{moment(new Date(created_by)).format(dateFormat)}</p></>
+					<><p>Created By</p> <p>{moment(created_by).format(dateFormat)}</p></>
 				}
                 </div>
                 <div>
-                {date_modified && <><p>Last Updated On</p> <p>{moment(new Date(date_modified)).format(dateFormat)}</p></>}
+                {date_modified && <><p>Last Updated On</p> <p>{moment(date_modified).format(dateFormat)}</p></>}
                 </div>   
 				{
-					fileData?.data?.ownerId && <div className="owner-assignee">
-						Owner {(imageOwner != null) ? <div className='msg-img' style={{ background: `url(${imageOwner})`, backgroundSize: "contain", height: "20px", width: "20px", borderRadius: "50%"  }}></div> : <i className="fad fa-user owner-assignee-dp"></i>}
+					imageOwner && <div className="owner-assignee">
+						Owner {(imageOwner != null) ? <div className='msg-img' style={{ backgroundImage: `url(${imageOwner})`, backgroundSize: "contain", height: "20px", width: "20px", borderRadius: "50%"  }}></div> : <i className="fad fa-user owner-assignee-dp"></i>}
 					</div>
 				} 
             </div>
             </div>
-            {status !== 'Converted to Opportunity' && !dontAllowConversion && 
-			!["bc413bea-1510-11ec-82a8-0242ac130003","5a96821e-f720-433d-a057-1bebf11e8a44", "6a3330bf-5aa3-4a09-9252-bf107ca0df81"].includes(state?.entityConfig?.form_uuid) &&
-            <button 
+            {status !== 'Converted to Opportunity' && !dontAllowConversion &&
+			!["bc413bea-1510-11ec-82a8-0242ac130003","5a96821e-f720-433d-a057-1bebf11e8a44", "6a3330bf-5aa3-4a09-9252-bf107ca0df81","bc413e1a-1510-11ec-82a8-0242ac130003","d681e961-9d62-4f43-9e57-c1d94709490b"].includes(state?.entityConfig?.form_uuid) &&
+            <button
                 style={{background: '#007bff',
                 color: '#FFF',
                 fontWeight: 'bold',

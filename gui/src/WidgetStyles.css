@@ -30,13 +30,17 @@ div.oxzion-widget > div.oxzion-widget-roll-up-button {
     cursor:pointer;
 }
 
+.oxzion-widget-content {
+    position: relative;
+}
+
 div > div.oxzion-widget-drilldown-icon{
+    top: 20px;
     position: absolute;
-    top: 1%;
-    left: 1%;
-    color: #265160;
     z-index: 10;
-  
+    cursor: pointer;
+    color: #265160;
+    right: 3px; 
 }
 
 div > div.oxzion-widget-drilldown-table-icon{
@@ -50,13 +54,12 @@ div > div.oxzion-widget-drilldown-table-icon{
 }
 
 .oxzion-widget-drilldown-excel-icon{
-    float: right;
     top: 20px;
-    position: relative;
+    position: absolute;
     z-index: 10;
-    width: 16px;
     cursor: pointer;
     color: #265160;
+    right: 2px;
 }
 
 .oxzion-widget-aggregate-drilldown{
@@ -78,4 +81,12 @@ div > div.oxzion-widget-drilldown-table-icon{
 .yellow {
     color: #F3BA1D;
     font-weight: bold;
+}
+
+
+/* This is to make the header same as the headers in the app builder appa list view.*/
+.oxzion-widget [role="columnheader"] {
+    border: 0;
+    border-width: 0;
+    border-color: transparent;
 }

@@ -81,12 +81,13 @@ $primary-color: #275362;
     }
 
     .task-header_name {
-      margin: 3px 2px 9px 9px;
+      margin: 3px 2px 3px 9px;
       font-size: 1.25rem;
       color: #1f1f67;
       max-width: 70%;
       overflow: hidden;
       text-overflow: ellipsis;
+      line-height: normal;
     }
 
     .task-header_details {
@@ -106,7 +107,7 @@ $primary-color: #275362;
       .owner-assignee,
       div > div:first-child,
       div > p:first-child {
-        font-size: 13.25px !important;
+        font-size: 12px !important;
         color: #000 !important;
       }
       .owner-assignee {
@@ -118,7 +119,7 @@ $primary-color: #275362;
       .task-status {
         padding: 5px;
         border-radius: 10px;
-        background-color: rgba(0, 128, 0, 0.83);
+        // background-color: rgba(0, 128, 0, 0.83);
         margin: 0 6px;
       }
 
@@ -415,11 +416,12 @@ $primary-color: #275362;
 }
 
 // Hide extra upload button in attachment section [BUG] #26242 by Mukul
-div[class="k-actions k-hstack k-justify-content-end"] > button[class="k-button k-primary k-upload-selected"]{
+div[class="k-actions k-hstack k-justify-content-end"]
+  > button[class="k-button k-primary k-upload-selected"] {
   display: none;
 }
 
 // Extra Space above the custombar
-div#customActions>div[class="display-flex task-header-pos-abs"]{
-  margin-top : 10px;
+div#customActions > div[class="display-flex task-header-pos-abs"] {
+  margin-top: 10px;
 }

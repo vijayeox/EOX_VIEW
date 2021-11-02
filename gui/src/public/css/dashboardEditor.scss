@@ -210,7 +210,7 @@ div#filter-form-container.show-filter-panel {
 }
 
 .dashboard-viewer-div {
-  position: realtive;
+  position: relative;
   margin-top: 0em !important;
   float: left;
   width: 100%;
@@ -332,6 +332,7 @@ div#filter-form-container.show-filter-panel {
   margin-top: 4em;
 }
 
+
 .k-grid-header .k-i-sort-asc-sm,
 .k-grid-header .k-i-sort-desc-sm,
 .k-grid-header .k-sort-order {
@@ -358,6 +359,18 @@ div#filter-form-container.show-filter-panel {
 .k-pager-numbers .k-link.k-state-hover {
   color: #656565 !important;
   background-color: rgba(78, 73, 73, 0.2) !important;
+}
+
+/* 
+  With discussion with Harsha, Vinu and UV:
+  Whenever there is a drilldown grid
+  The solutions provided is we can mark the first cell of all rows blue and underline, 
+  so they know that know its a link
+*/
+
+.drillDownStyle table tr td:first-child {
+  color: blue;
+  text-decoration: underline;
 }
 
 .drillDownStyle .k-master-row:hover {
