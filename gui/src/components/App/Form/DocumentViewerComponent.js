@@ -250,7 +250,7 @@ export default class DocumentViewerComponent extends Base {
   render(children) {
     var fileList = this.fileList ? this.fileList : null;
     var row =
-      `<div class="row docViewerComponent">
+      `<div class="docViewerComponent">
     <div class="col-md-12" >` +
       fileList +
       `</div>
