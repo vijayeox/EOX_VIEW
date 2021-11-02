@@ -799,7 +799,7 @@ componentWillUnmount(){
               this.loader.destroy();
               Swal.fire({
                 icon: "error",
-                title: response.message,
+                title: item.errorMessage ? item.errorMessage : response.message,
                 showConfirmButton: true,
               });
               that.setState({
@@ -842,7 +842,7 @@ componentWillUnmount(){
                       } else {
                         this.state.notif.current.notify(
                           "Error",
-                          response.message,
+                          item.errorMessage ? item.errorMessage :response.message,
                           "danger"
                         );
                       }
