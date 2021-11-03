@@ -4,6 +4,9 @@
 @import "./src/desktop";
 @import "./src/gui";
 @import "./src/animations";
+@import "~@fortawesome/fontawesome-pro/css/all.css";
+@import url("https://fonts.googleapis.com/css?family=Didact+Gothic");
+@import "./node_modules/bootstrap/dist/css/bootstrap.css";
 
 body,
 html {
@@ -139,8 +142,8 @@ html {
 }
 .osjs-gui-menu {
   ul {
-    background-color: #333333;
-    border: 1px solid #000;
+    background-color: #265160;
+    border: 1px solid #265160;
     color: white;
   }
 
@@ -188,12 +191,11 @@ html {
 
 .osjs-panel-item[data-name="windows"] > div {
   font-size: 12px;
-  color: white;
-  background-color: #275362;
+  color: white !important;
+  background-color: #275362 !important;
   border-radius: 0px;
-  padding: 9px 3px;
+  padding: 12px 3px !important;
   align-self: center;
-
   img {
     max-height: 20px;
   }
@@ -204,7 +206,7 @@ html {
 }
 
 .osjs-gui-menu ul > li {
-  padding: 20px;
+  padding: 0px;
 }
 
 // .osjs-panel-item[data-name="windows"] {
@@ -257,20 +259,61 @@ html {
   // }
 }
 
-.osjs-panel {
-  height: 2.5m;
-  min-height: 2.5em;
-}
 
-.osjs-panel .osjs-panel-item--icon {
-  margin: 0px 2px 0px 2px;
-}
+// For all action buttons in a app on list view page
+// .customActions.dash-manager-buttons > button:last-child {
+//   margin-right: 2.4%;
+// }
+
+
+// Removed this from the themes and moved to the _panel.scss
+
+// .osjs-panel {
+//   height: 2.5em !important;
+//   min-height: 2.5em !important;
+// }
+
+// .osjs-panel .osjs-panel-item--icon {
+//   margin: 0px 2px 0px 2px;
+
+//   > i > span {
+//     font-size: 14px;
+//   }
+// }
 
 .osjs-window-header {
   min-height: 2em;
   height: auto;
   align-items: center;
+  // display: none;
 }
+
+[data-maximized="false"] {
+  .osjs-window-header {
+    display: flex;
+  }
+}
+
+[data-maximized="true"] {
+  .osjs-window-header {
+    display: none;
+  }
+}
+
+[data-id="Profile_Window"],
+[data-id="ChatWindow"],
+[data-id="PreferencesWindow"] {
+  .osjs-window-header {
+    display: flex;
+  }
+}
+
+// [data-id="Profile_Window"],
+// [data-id="Profile_Window"] {
+//   .osjs-window-header  {
+//     display: flex;
+//   }
+// }
 
 .osjs-panel-item[data-name="menu"] {
   display: contents;
@@ -338,5 +381,76 @@ label {
   color: #275362;
 }
 
+// This is for the spacing and we have added it to to contain till 1000 or 5000 page count on the dropdown
+// [BUG] #27118
+.k-pager-sizes .k-dropdown,
+.k-pager-sizes .k-dropdowntree,
+.k-pager-sizes > select {
+  width: 7em;
+}
+
+.sidenav---navitem---9uL5T {
+  color: white !important;
+}
+
+.col-md-12.dash-manager-buttons {
+  padding-right: 0px;
+  padding-left: 0px;
+  margin-top: 1px;
+  margin-bottom: 2px;
+
+  .form-control {
+    border: 0px !important;
+  }
+}
+.card {
+  border: 0px;
+}
+
+.col-md-3.docListDiv {
+  padding: 0px 4px 0px 15px !important;
+}
+
+.dash-manager-buttons.card-header {
+  margin: 3px;
+
+  .button.btn.btn-primary {
+    padding: 0.1rem 0.4rem;
+  }
+}
+
+.docListBody.borderActive p > a,
+.docListBody.border p > a {
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.links > button {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.k-upload .k-dropzone,
+.k-upload .k-upload-button {
+  font-size: 12px;
+}
+// .tab-content {
+  // min-height: 830px;
+// }
+.accordion .card .card-header > button {
+  border-color: #a2b5bc;
+  color: #345561 !important;
+  background-color: #e4e7eb !important;
+  border-radius: 6px;
+  padding: 0.2rem 0.5rem 0.2rem 0.5rem;
+}
+.accordion .card .card-header {
+  background-color: transparent !important;
+}
+.collapse.show .card-body .docItems .docListBody > i {
+  font-size: 10px;
+}
 @import "variables.scss";
 @import "eox.scss";

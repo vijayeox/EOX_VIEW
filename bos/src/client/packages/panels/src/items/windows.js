@@ -153,71 +153,81 @@ export default class WindowsPanelItem extends PanelItem {
 
   render(state, actions) {
     const _ = this.core.make("osjs/locale").translate;
-    const windows = state.windows.map((w) =>
-      h(
-        "div",
-        {
-          // "data-has-image": w.icon ? true : undefined,
-          "data-focused": w.focused ? "true" : "false",
-          onclick: () => w.raise(),
-          oncontextmenu: (ev) => {
-            ev.stopPropagation();
-            ev.preventDefault();
-            this.core.make("osjs/contextmenu").show({
-              position: ev.target,
-              menu: [
-                {
-                  label: w.state.maximized
-                    ? _("LBL_RESTORE")
-                    : _("LBL_MAXIMIZE"),
-                  onclick: () =>
-                    w.attributes.maximizable
-                      ? w.state.maximized
-                        ? w.restore()
-                        : w.maximize()
-                      : null,
-                  disabled: !w.attributes.maximizable,
-                },
-                {
-                  label: w.state.minimized ? _("LBL_RAISE") : _("LBL_MINIMIZE"),
-                  onclick: () =>
-                    w.attributes.minimizable
-                      ? w.state.minimized
-                        ? w.raise()
-                        : w.minimize()
-                      : null,
-                  disabled: !w.attributes.minimizable,
-                },
-                { type: "separator" },
-                {
-                  label: _("LBL_CLOSE"),
-                  onclick: () => (w.attributes.closeable ? w.close() : null),
-                  disabled: !w.attributes.closeable,
-                },
-              ],
-            });
+    let fontString = "";
+    const windows = state.windows.map(
+      (w) => (
+        (fontString = JSON.stringify(w.icon)),
+        h(
+          "div",
+          {
+            // "data-has-image": w.icon ? true : undefined,
+            "data-focused": w.focused ? "true" : "false",
+            onclick: () => w.raise(),
+            oncontextmenu: (ev) => {
+              ev.stopPropagation();
+              ev.preventDefault();
+            },
+            className:
+              "osjs-panel-item--clickable osjs-panel-item--icon in-window",
           },
-          className:
-            "osjs-panel-item--clickable osjs-panel-item--icon in-window",
-        },
-        [
-          h("i", {
-            className: w.icon,
-            // src: w.icon,
-            alt: w.title || "(window)",
-          }),
-          h("span", {}, w.title || "(window)"),
-          //onclosing the app through panel causes contains(null)issue -In progress
-          // h("i", {
-          //   className: "fad fa-times",
-          //   style: {
-          //     marginLeft: "0.3em",
-          //     marginRight: "0px",
-          //     lineHeight: "13px",
-          //   },
-          //   onclick: () => w.close(),
-          // }),
-        ]
+          [
+            h("i", {
+              className: fontString.includes("fa-") ? w.icon : "fad fa-globe",
+              alt: w.title || "(window)",
+            }),
+            h("span", {}, w.title || "(window)"),
+            h("i", {
+            label: _("LBL_CLOSE"),
+              className: "fad fa-caret-down",
+              style: {
+                marginLeft: "0.3em",
+                marginRight: "0px",
+                lineHeight: "13px",
+              },
+              // onclick: () => (w.attributes.closeable ? w.close() : null),
+              // disabled: !w.attributes.closeable,
+              onclick: (ev) => {
+                ev.stopPropagation();
+                ev.preventDefault();
+                this.core.make("osjs/contextmenu").show({
+                  position: ev.target,
+                  menu: [
+                    {
+                      label: w.state.maximized
+                        ? _("LBL_RESTORE")
+                        : _("LBL_MAXIMIZE"),
+                      onclick: () =>
+                        w.attributes.maximizable
+                          ? w.state.maximized
+                            ? w.restore()
+                            : w.maximize()
+                          : null,
+                      disabled: !w.attributes.maximizable,
+                    },
+                    {
+                      label: w.state.minimized
+                        ? _("LBL_RAISE")
+                        : _("LBL_MINIMIZE"),
+                      onclick: () =>
+                        w.attributes.minimizable
+                          ? w.state.minimized
+                            ? w.raise()
+                            : w.minimize()
+                          : null,
+                      disabled: !w.attributes.minimizable,
+                    },
+                    // { type: "separator" },
+                    {
+                      label: _("LBL_CLOSE"),
+                      onclick: () => (w.attributes.closeable ? w.close() : null),
+                      disabled: !w.attributes.closeable,
+                    },
+                  ],
+                });
+              }
+            }),
+          ]
+        )
       )
     );
 

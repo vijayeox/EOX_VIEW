@@ -15,11 +15,26 @@ class ActivityLog extends React.Component {
     this.filterable = false;
     this.reorderable = false;
     this.resizable = false;
-    this.sortable = true;
+    this.sortable = false;
     this.disableControls = this.props.disableControls
     this.api = "app/" + this.appId + "/file/"+this.fileId+"/audit";
 
-    var columnConfig = [{field:"version",title:"Version"},{field:"file_date_modified",title:"Performed On", filter: "date", filterFormat: "YYYY-MM-DD", cell: "<td>{formatDate(item.file_date_modified,'YYYY-MM-DD, h:mm:ss a')}</td>"},{field:"modifiedUser",title:"Modified By"},{field:"action",title:"Action Performed"}]
+    var columnConfig = [{
+      field: "version",
+      title: "Version"
+  }, {
+      field: "file_date_modified",
+      title: "Performed On",
+      filter: "date",
+      filterFormat: "YYYY-MM-DD",
+      cell: "<td>{formatDate(item.file_date_modified,'YYYY-MM-DD')}</td>"
+  }, {
+      field: "modifiedUser",
+      title: "Modified By"
+  }, {
+      field: "action",
+      title: "Action Performed"
+  }]
 
     this.pageable = { buttonCount: 3, pageSizes: [10, 20, 50]};
     this.state = {

@@ -109,11 +109,8 @@ export default class ProfilePanelItem extends PanelItem {
     };
     const openProfileApp = () => {
       this.core.run("Profile");
-      // let helper = this.core.make("oxzion/link");
-      //   helper.launchApp({
-
-      //   },"Profile");
     };
+
     return super.render("profile", [
       h(
         "div",
@@ -221,42 +218,42 @@ export default class ProfilePanelItem extends PanelItem {
                         title: "Edit Profile",
                       }),
                       h("span", {
-                        title: "Edit Profile",
-                        innerHTML: "Edit Profile",
+                        title: "Edit Preference",
+                        innerHTML: "Edit Preference",
                         className: "profile-dropdown-text",
                       }),
                     ]
                   ),
                 ]
               ),
-              h(
-                "a",
-                {
-                  className: "profileitem",
-                },
-                [
-                  h(
-                    "div",
-                    {
-                      onclick: openProfileApp,
-                      className: "profile-dropdown-item",
-                    },
-                    [
-                      h("i", {
-                        // src: open_profile,
-                        alt: "Open Profile",
-                        className: open_profile,
-                        title: "Open Profile",
-                      }),
-                      h("span", {
-                        title: "Open Profile",
-                        innerHTML: "Open Profile",
-                        className: "profile-dropdown-text",
-                      }),
-                    ]
-                  ),
-                ]
-              ),
+              // h(
+              //   "a",
+              //   {
+              //     className: "profileitem",
+              //   },
+              //   [
+              //     h(
+              //       "div",
+              //       {
+              //         onclick: openProfileApp,
+              //         className: "profile-dropdown-item",
+              //       },
+              //       [
+              //         h("i", {
+              //           // src: open_profile,
+              //           alt: "Open Profile",
+              //           className: open_profile,
+              //           title: "Open Profile",
+              //         }),
+              //         h("span", {
+              //           title: "Open Profile",
+              //           innerHTML: "Open Profile",
+              //           className: "profile-dropdown-text",
+              //         }),
+              //       ]
+              //     ),
+              //   ]
+              // ),
             ]
           ),
           h("img", {

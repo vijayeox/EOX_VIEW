@@ -1045,10 +1045,24 @@ class BaseFormRenderer extends React.Component {
         let fileContent = await helper.request("v1","/app/" + this.state.appId + "/entity/"+this.state.entityId+"/page",{},"get");
         return fileContent;
     }
-    generateViewButton(){
+    setEntityId(){
+        return new Promise(async(r) => {
+            try{
+                let helper = this.core.make("oxzion/restClient");
+                const file = await helper.request("v1","/app/" + this.state.appId + "/file/"+this.state.fileId+"/data",{},"get")
+                this.setState({entityId : file?.data?.entity_id}, () => r())
+            }catch(e){
+                r();
+            }
+        })
+    }
+    async generateViewButton(){
         let gridToolbarContent = [];
+        if(!this.state.entityId) {
+            await this.setEntityId()
+        }
         this.getEntityPage().then(entityPage => {
-            if(entityPage.status=="success"){
+        if(entityPage.status=="success"){
                 let filePage = [{type: "EntityViewer",fileId: this.state.fileId}];
                 let pageContent = {pageContent: filePage,title: "View",icon: "fa fa-eye",fileId:this.state.fileId};
                 let commentPage = [{type:"Comment",fileId:this.state.fileId}];
@@ -1058,6 +1072,7 @@ class BaseFormRenderer extends React.Component {
                     gridToolbarContent.push(<Button title={"Comments"} className={"btn btn-primary"} primary={true} onClick={(e) => this.updatePageContent(commentContent)} ><i className={"fa fa-comment"}></i></Button>);
                 }
                 let ev = new CustomEvent("addcustomActions", { detail: { customActions: gridToolbarContent }, bubbles: true });
+                if(entityPage?.data?.content?.find((c) => c?.type === "TabSegment")) return;
                 document.getElementById(this.state.appId+"_breadcrumbParent").dispatchEvent(ev);
             }
         });

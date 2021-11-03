@@ -58,6 +58,9 @@ const register = (core, args, options, metadata) => {
         },
       })
       .on("destroy", () => proc.destroy())
+      .on("render", (e) => {
+        win.maximize();
+      })
       .on("resized", (config) => {
         event = new CustomEvent("windowResize", {
           detail: config,

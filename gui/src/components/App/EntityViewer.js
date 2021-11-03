@@ -4,6 +4,7 @@ import TabSegment from "./TabSegment";
 import { Button, DropDownButton } from "@progress/kendo-react-buttons";
 import PrintPdf from "./../print/printpdf";
 import ActivityLog from "./ActivityLog";
+import moment from "moment";
 class EntityViewer extends React.Component {
   constructor(props) {
     super(props);
@@ -13,6 +14,7 @@ class EntityViewer extends React.Component {
     this.appId = this.props.appId;
     this.fileId = this.props.fileId;
     this.proc = this.props.proc;
+    this.unmounted = false;
     this.state = {
       content: this.props.content,
       fileData: this.props.fileData,
@@ -24,6 +26,11 @@ class EntityViewer extends React.Component {
       entityConfig: null,
       filePanelUuid: this.uuidv4(),
       tabPanel: 'tabpanel-',
+      isTabSegment :["f4b323b6-c60d-42a6-98db-1b9a711ce5b5",
+      "454a1ec4-eeab-4dc2-8a3f-6a4255ffaee1", 
+      "af6056c1-be46-4266-b83c-4b2177bcc7ca",
+      "13bbb587-1f0f-42f0-873a-03a015d5f8bc", 
+      "787b0a46-9808-4c31-b78e-7a3b4c54d37b" ].includes( this.props.appId)
     };
   }
 
@@ -61,6 +68,9 @@ class EntityViewer extends React.Component {
   callAuditLog() {
     this.setState({ showAuditLog: true });
   }
+  componentWillUnmount(){
+    this.unmounted = true;
+  }
   generateEditButton(enableComments, enableAuditLog, fileData, enablePrint, enableGenerateLink) {
     var fileId;
     let gridToolbarContent = [];
@@ -73,16 +83,19 @@ class EntityViewer extends React.Component {
         fileId = this.state.fileId;
       }
     }
-    const isTaskApp = this.appId === "454a1ec4-eeab-4dc2-8a3f-6a4255ffaee1";
-    if (isTaskApp) {
-      gridToolbarContent.push(this.getTaskHeader(fileData));
-      setTimeout(() => {
-        const appDescription = document.getElementById(`${this.appId}_description`);
-        if (appDescription) {
-          appDescription.innerHTML = fileData?.data?.data?.description;
+    if (this.state.isTabSegment) {
+      if(!this.unmounted){
+        gridToolbarContent.push(this.getTaskHeader(fileData, this.appId === "454a1ec4-eeab-4dc2-8a3f-6a4255ffaee1"));
+        setTimeout(() => {
+          const appDescription = document.getElementById(`${this.appId}_description`);
+          if (appDescription && this.appId === "454a1ec4-eeab-4dc2-8a3f-6a4255ffaee1" ) {
+            appDescription.innerHTML = fileData?.data?.data?.description;
+            this.setState({ filePanelUuid: `${this.appId}_description`, tabPanel: '' })
+          }
           this.setState({ filePanelUuid: `${this.appId}_description`, tabPanel: '' })
-        }
-      })
+          const breadcrumbs = document.querySelector('div[class="display-flex task-header-pos-abs"]')?.children;// > div[class="display-flex task-header-pos-abs"]
+        })
+      }
     }
     if (this.state.entityConfig && !this.state.entityConfig.has_workflow) {
       filePage = [
@@ -109,7 +122,7 @@ class EntityViewer extends React.Component {
         </Button>
       );
     }
-    if(enablePrint){
+    if(enablePrint && !this.state.isTabSegment){
 	    toolbarButtons.push(
 	      <Button
 	        title={"Print"}
@@ -121,7 +134,7 @@ class EntityViewer extends React.Component {
 	      </Button>
 	    );
     }
-    if (enableAuditLog) {
+    if (enableAuditLog && !this.state.isTabSegment) {
       toolbarButtons.push(
         <Button
           title={"Audit Log"}
@@ -133,7 +146,7 @@ class EntityViewer extends React.Component {
         </Button>
       );
     }
-    if (enableComments != "0") {
+    if (enableComments != "0" && !this.state.isTabSegment) {
       var commentPage = {
         title: "Comments",
         icon: "far fa-comment",
@@ -150,7 +163,7 @@ class EntityViewer extends React.Component {
         </Button>
       );
     }
-    if(enableGenerateLink){
+    if(enableGenerateLink && !this.state.isTabSegment){
 	    toolbarButtons.push(
 	      <Button
 	        title={"Generate Link"}
@@ -179,7 +192,7 @@ class EntityViewer extends React.Component {
 	    );
     }
     gridToolbarContent.push(
-      <div className={`display-flex ${isTaskApp ? "task-header-pos-abs" : ""}`}>
+      <div className={`display-flex ${this.state.isTabSegment ? "task-header-pos-abs" : ""}`}>
         {toolbarButtons}
       </div>
     );
@@ -190,7 +203,11 @@ class EntityViewer extends React.Component {
     document.getElementById(this.appId + "_breadcrumbParent").dispatchEvent(ev);
   }
 
-  getTaskHeader(fileData) {
+  getTaskHeader(fileData, isTask) {
+    // const ptoJsx = <>
+    // <div class="pto"> <div class="pto-data"> 
+    // <b>Employee Name</b> 
+    // <p>{fileData?.data?.name}</p> </div> <div class="pto-data"> <b>Type of leave</b> <p>{fileData?.data?.leaveType}</p> </div> <div class="pto-data"> <b>Status</b> <p>{fileData?.data?.status}</p> </div> <div class="pto-data"> <b>Leave Start Date</b> <p>{fileData?.data?.leaveStartDatePto}</p> </div> <div class="pto-data"> <b>Leave End Date</b> <p>{data.leaveEndDatePto}</p> </div> <div class="pto-data"> <b>Observer</b> <p>{data.HRname}</p> </div> </div> <div class="pto-data padding-top-20"> <b>Description</b> <p dangerouslySetInnerHTML={{ __html: fileData?.data?.description }}></p> </div></>
     const breadCrumb = document.getElementById(
       this.appId + "_breadcrumbParent"
     );
@@ -200,27 +217,64 @@ class EntityViewer extends React.Component {
     const {
       data: {
         title,
-        data: { status, start_date, next_action_date, username, assignedto, ownerid },
+        data: { status, start_date, next_action_date, end_date, username, assignedto , managerId , ownerid},
+        
+        // data: { status, start_date, next_action_date, username, assignedto , managerId , ownerid, end_date , exitHireDate , exitTerminationDate, exitStatus, pipCommencementDate, pipCompletionDate, pipStatus, transportationStartDate, transportationEndDate, transportStatus, startDate, endDate, statusResignationForm, leaveStartDate , leaveEndDate},
+        // Apologies for adding this additional field name. Due to lack of time in hand, we are adding these.
+        // These will be cleared up in the next release. 
+        ownerId
       },
     } = fileData;
-    var imageAssigned = this.core.config("wrapper.url") + "user/profile/" + assignedto;
-    var imageOwner = this.core.config("wrapper.url") + "user/profile/" + ownerid;
+    // var imageAssigned = this.core.config("wrapper.url") + "user/profile/" + assignedto;
+    var imageAssigned = `${this.core.config("wrapper.url")}user/profile/${managerId ? managerId : assignedto}`;
+    var imageOwner = this.core.config("wrapper.url") + "user/profile/" + ownerId;
     const goBack = () => {
       const activeBreadcrumbs = document.getElementsByClassName('activeBreadcrumb');
       if(activeBreadcrumbs && activeBreadcrumbs?.length > 0){
         activeBreadcrumbs?.[activeBreadcrumbs.length-1]?.children?.[0]?.click()
       }
     }
+    let createdDate = start_date;
+    let dueDate = end_date;
+    // const momentFormat = this.profile?.key?.preferences?.dateformat || 'DD-MM-YYYY';
+    // createdDate = moment(createdDate).format(momentFormat)
+    // dueDate = moment(dueDate).format(momentFormat)
+    let completedHours = 0;
+    let remainingHours = 0;
+    let finishedPercentage = 0;
+    const defaultStatus = '#008000d4';
+    const lowerCaseStatus = status?.toLowerCase();
+    if(isTask){
+      try{
+        const start = new Date(start_date).getTime(); //WHEN WORK STARTED
+        const today = Date.now() + (5.3 * 60 * 60 * 1000); // NOW + UTC
+        const end = new Date(end_date).getTime(); //END DATE
+        if(status.toLowerCase() !== 'completed'){
+          if(start <= today && today <= end){
+            completedHours = moment.duration(moment(today).diff(moment(start))).asHours();
+            remainingHours = moment.duration(moment(end).diff(moment(today))).asHours();
+          }
+          else{
+            remainingHours = moment.duration(moment(start).diff(moment(end))).asHours();
+          }
+        }else{
+          finishedPercentage = 100;
+          completedHours = moment.duration(moment(end).diff(moment(start))).asHours();
+        }
+        remainingHours = Math.floor(Math.abs(remainingHours))
+        completedHours = Math.floor(Math.abs(completedHours))
+        finishedPercentage = Math.floor(completedHours/(completedHours+remainingHours)*100);
+      }catch(e){
+        console.error(`Time cal error : ${e}`)
+      }
+    }
+
     return (
 
       <div className="task-header width-100">
         <i className="fa fa-arrow-from-left go-back" onClick={goBack}></i>
         <div className="task-header_taskname">
-          {title
-            .split(" ")
-            .slice(0, 2)
-            .map((v) => v[0].toUpperCase())
-            .join("")}
+          {title?.trim()?.split(" ")?.slice(0, 2)?.map((v) => v?.[0]?.toUpperCase())?.join("")}
         </div>
         <div className="task-header_info width-100">
           <div className="task-header_name" title={title}>
@@ -228,14 +282,31 @@ class EntityViewer extends React.Component {
           </div>
           <div className="task-header_details">
             <div>
-              <p>Status</p> <span className="task-status"></span>{" "}
-              <p>{status}</p>
+              <p>Status</p> <span className="task-status"
+                  style={{
+                    backgroundColor: ["completed", "approved", "closed"].includes(
+                      lowerCaseStatus
+                    )
+                      ? "#A3C53A"
+                      : lowerCaseStatus === "in progress"
+                      ? "#F3BA1D"
+                      : [
+                          "delayed",
+                          "not approved",
+                          "rejected",
+                          "not completed",
+                        ].includes(lowerCaseStatus)
+                      ? "#EE4424"
+                      : "#3FB5E1",
+                  }}
+                ></span>{" "}
+              <p style={{margin : 'auto'}}>{status}</p>
             </div>
             <div>
-              <p>Created On</p> <p>{start_date}</p>
+              <p>Start Date</p> <p>{createdDate}</p>
             </div>
             <div>
-              <p>Due On</p> <p>{next_action_date}</p>
+              <p>Due On</p> <p>{end_date}</p>
             </div>
             <div className="owner-assignee">
               Assigned To {(imageAssigned) ? <div className='msg-img' style={{ background: `url(${imageAssigned})`, backgroundSize: "contain", height: "20px", width: "20px", borderRadius: "50%" }}></div> : <i className="fad fa-user owner-assignee-dp"></i>}
@@ -247,28 +318,20 @@ class EntityViewer extends React.Component {
               {/* <div className='msg-img' style={{ background: `url(${image})`, backgroundSize: "contain" }}></div> */}
               {/* <p>{assignedToName}</p> */}
             </div>
-            <div className="task-header_progress">
+            {isTask && <div className="task-header_progress">
               <div className="task-header_progress--data">
                 <div>
                   <span>
-                    <strong>10H</strong> Done
+                    <strong>{completedHours}H</strong> Done
                   </span>
                   <span>
-                    <strong>26H</strong> To do
+                    <strong>{remainingHours}H</strong> To do
                   </span>
                 </div>
                 <div>
                   <div
                     style={{
-                      width: "60%",
-                      background: "red",
-                      padding: "1.5px",
-                      margin: 0,
-                    }}
-                  ></div>
-                  <div
-                    style={{
-                      width: "30%",
+                      width: `${Math.floor(completedHours/(completedHours+remainingHours) * 100)}%`,
                       background: "green",
                       padding: "1.5px",
                       margin: 0,
@@ -276,8 +339,8 @@ class EntityViewer extends React.Component {
                   ></div>
                   <div
                     style={{
-                      width: "10%",
-                      background: "#888",
+                      width: `${Math.floor(remainingHours/(completedHours+remainingHours) * 100).toFixed(0)}%`,
+                      background: "red",
                       padding: "1.5px",
                       margin: 0,
                     }}
@@ -285,10 +348,10 @@ class EntityViewer extends React.Component {
                 </div>
               </div>
               <p className="display-flex">
-                <strong>30%</strong>
+                <strong>{Math.floor(completedHours/(completedHours+remainingHours) * 100)}%</strong>
                 <p>Done</p>
               </p>
-            </div>
+            </div>}
           </div>
         </div>
       </div>

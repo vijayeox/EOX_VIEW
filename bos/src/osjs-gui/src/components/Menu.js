@@ -28,39 +28,39 @@
  * @licence Simplified BSD License
  */
 
-import {h} from 'hyperapp';
-import {Icon} from './Icon';
+import { h } from "hyperapp";
+import { Icon } from "./Icon";
 
 const ul = (props, children = [], level = 0) => {
-
-  const label = child => {
+  const label = (child) => {
     const children = [];
 
-    if (child.type === 'checkbox' || typeof child.checked === 'boolean') {
-      children.push(h('span', {
-        class: 'osjs-gui-menu-checkbox ' + (child.checked ? 'active' : '')
-      }));
+    if (child.type === "checkbox" || typeof child.checked === "boolean") {
+      children.push(
+        h("span", {
+          class: "osjs-gui-menu-checkbox " + (child.checked ? "active" : ""),
+        })
+      );
     } else if (child.icon) {
       children.push(h(Icon, child.icon));
     }
 
-    children.push(h('span', {}, child.label));
+    children.push(h("span", {}, child.label));
 
     return children;
   };
 
   const inner = (props, child) => {
-    if (typeof child.element === 'function') {
+    if (typeof child.element === "function") {
       return child.element();
     }
 
-    const className = child.type === 'separator'
-      ? 'osjs-gui-menu-separator'
-      : 'osjs-gui-menu-label ' + (child.disabled ? 'osjs__disabled' : '');
+    const className =
+      child.type === "separator"
+        ? "osjs-gui-menu-separator"
+        : "osjs-gui-menu-label " + (child.disabled ? "osjs__disabled" : "");
 
-    const children = [
-      h('span', {class: className}, label(child))
-    ];
+    const children = [h("span", { class: className }, label(child))];
 
     if (child.items) {
       children.push(ul(props, child.items, level + 1));
@@ -69,34 +69,46 @@ const ul = (props, children = [], level = 0) => {
     return children;
   };
 
-  return h('ul', {
-    class: ''
-  }, children.map(
-    child => h('li', {
-      class: 'osjs-gui-menu-entry'
-    }, [
-      h('div', {
-        class: 'osjs-gui-menu-container',
-        'data-has-image': child.icon ? true : undefined,
-        'data-has-children': child.items ? true : undefined,
-        onmouseover: child.items ? props.onshow : undefined,
-        ontouchend: child.items ? props.onshow : undefined,
-        onclick: (ev) => {
-          if (child.items) {
-            return;
-          }
+  return h(
+    "ul",
+    {
+      class: "contextMenu",
+    },
+    children.map((child) =>
+      h(
+        "li",
+        {
+          class: "osjs-gui-menu-entry",
+        },
+        [
+          h(
+            "div",
+            {
+              class: "osjs-gui-menu-container",
+              "data-has-image": child.icon ? true : undefined,
+              "data-has-children": child.items ? true : undefined,
+              onmouseover: child.items ? props.onshow : undefined,
+              ontouchend: child.items ? props.onshow : undefined,
+              onclick: (ev) => {
+                if (child.items) {
+                  return;
+                }
 
-          if (child.onclick) {
-            child.onclick(child, ev);
-          }
+                if (child.onclick) {
+                  child.onclick(child, ev);
+                }
 
-          if (props.onclick) {
-            props.onclick(child, ev, child);
-          }
-        }
-      }, inner(props, child))
-    ])
-  ));
+                if (props.onclick) {
+                  props.onclick(child, ev, child);
+                }
+              },
+            },
+            inner(props, child)
+          ),
+        ]
+      )
+    )
+  );
 };
 
 /**
@@ -118,14 +130,19 @@ const ul = (props, children = [], level = 0) => {
  * @param {Object} [posprops.ition] Position
  * @param {MenuItems} [props.menu] Menu items
  */
-export const Menu = (props) => h('div', {
-  id: 'osjs-context-menu',
-  className: 'osjs-gui osjs-gui-menu',
-  oncreate: props.oncreate,
-  onupdate: props.onupdate,
-  style: {
-    display: props.visible !== false ? 'block' : 'none',
-    top: props.position ? String(props.position.top) + 'px' : 0,
-    left: props.position ? String(props.position.left) + 'px' : 0
-  }
-}, ul(props, props.menu));
+export const Menu = (props) =>
+  h(
+    "div",
+    {
+      id: "osjs-context-menu",
+      className: "osjs-gui osjs-gui-menu",
+      oncreate: props.oncreate,
+      onupdate: props.onupdate,
+      style: {
+        display: props.visible !== false ? "block" : "none",
+        top: props.position ? String(props.position.top) + "px" : 0,
+        left: props.position ? String(props.position.left) + "px" : 0,
+      },
+    },
+    ul(props, props.menu)
+  );

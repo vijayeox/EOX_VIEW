@@ -31,7 +31,7 @@
       overflow-y: auto;
       padding: 10px;
       min-height: 12rem;
-      height: 250px;
+      height: calc(100vh - 290px);
     }
 
     #emoji-list {
@@ -150,41 +150,62 @@
     .msg-bubble {
       max-width: 100%;
       padding: 5px;
-      border-radius: 15px;
-      background: var(--left-msg-bg);
+      // border-radius: 15px;
+      // background: var(--left-msg-bg);
       word-break: break-word;
+
+      background: transparent;
+      color: #275362;
+      width: 95%;
+      border-radius: 5px;
+
+      display: flex;
+      // align-items: center;
     }
     .msg-text {
       white-space: pre-wrap;
       display: grid;
     }
     .msg-info {
-      display: inline-flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
-    }
-    .right-msg .msg-bubble {
-      background: transparent;
-      color: #275362;
-      width: 50%;
-      // border: 1px solid #275362;
-      border-radius: 5px;
-    }
-    .left-msg .msg-bubble {
-      background: transparent;
-      color: #275362;
+      // display: inline-flex;
+      // justify-content: space-between;
+      // align-items: center;
+      // margin-bottom: 10px;
+
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
       width: 100%;
-      display:table-column-group;
-      // border-bottom: 1px solid #275362;
-      // border-radius: 0px;
+
     }
+
+    .msg-info-extra {
+
+    }
+
+    // .right-msg .msg-bubble {
+    //   background: transparent;
+    //   color: #275362;
+    //   width: 50%;
+    //   // border: 1px solid #275362;
+    //   border-radius: 5px;
+    // }
+    // .left-msg .msg-bubble {
+    //   background: transparent;
+    //   color: #275362;
+    //   width: 50%;
+    //   border-radius: 5px;
+    //   // display: table-column-group;
+    //   // border-bottom: 1px solid #275362;
+    //   // border-radius: 0px;
+    // }
     .msg-info-time {
       font-size: 0.85em;
     }
     .msg-info-name {
-      margin-right: 10px;
+      // margin-right: 10px;
       font-weight: bold;
+      margin-bottom: 10px;
     }
     .right-msg {
       // flex-direction: row-reverse;
@@ -219,6 +240,26 @@
 
       .k-grid td {
         border-width: 0px;
+      }
+    }
+    .k-grid-header,
+    .k-grid-table {
+      .k-grid .k-alt {
+        background-color: transparent !important;
+      }
+
+      th {
+        background-color: #f6f8fa;
+        color: #8f9bb3;
+      }
+
+      td {
+        border-bottom: 1px solid #ebeff2;
+      }
+
+      .k-grid th,
+      .k-grid td {
+        padding: 10px !important;
       }
     }
 

@@ -7,9 +7,17 @@
 .k-dialog-buttongroup {
   position: relative !important;
 }
-
+.k-detail-row:last-child > .k-detail-cell > .GridCustomStyle {
+  margin-bottom: 10rem;
+}
 .sidenav---navicon---3gCRo > i {
   font-size: 20px;
+}
+
+.k-grid-header, .k-grid-footer {
+  padding-right: 14px;
+
+  // This is to overwrite the css from kendo and make the columns align properly.  BUG #27763
 }
 
 .k-grid-header .k-header > .k-link {
@@ -36,10 +44,43 @@
   height: 95% !important;
 }
 
+.k-grid .k-alt {
+  background-color: transparent !important;
+}
+
 .k-grid th,
 .k-grid td {
-  padding: 4px !important;
+  padding: 10px !important;
   font-family: Roboto, sans-serif !important;
+}
+
+// .k-grid-header,
+// .k-grid-table {
+.k-grid .k-alt {
+  background-color: transparent !important;
+}
+
+.k-grid th {
+  background-color: #f6f8fa;
+  color: #8f9bb3;
+}
+
+.k-grid td {
+  border-bottom: 1px solid #ebeff2 !important;
+}
+
+.k-grid th,
+.k-grid td {
+  padding: 10px !important;
+}
+// }
+div.jsx-parser {
+  display: contents;
+  td {
+    border-width: 0 0 0 1px;
+    border-color: rgba(33, 37, 41, 0.125);
+    border-bottom: 1px solid #ebeff2 !important;
+  }
 }
 
 .row-container-items,

@@ -30,6 +30,7 @@ const register = (core, args, options, metadata) => {
       id: "Window_OrgChartWindow",
       title: metadata.title.en_EN,
       icon: proc.resource(icon_white),
+      icon:metadata.fontIcon,
       attributes: {
         classNames: ["Window_OrgChartWindow"],
         dimension: finalDimension ? finalDimension : {

@@ -3,7 +3,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
-// const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TerserPlugin = require("terser-webpack-plugin");
 const mode = process.env.NODE_ENV || "development";
 const minimize = mode === "production";
@@ -60,9 +60,9 @@ module.exports = {
       chunkFilename: "[id].css"
     }),
     new NodePolyfillPlugin(),
-    // new HtmlWebpackPlugin({
-
-    // }),
+    new HtmlWebpackPlugin({
+      
+    }),
     ...plugins
   ],
   resolve: {
@@ -79,7 +79,7 @@ module.exports = {
           {
             loader: "file-loader",
             options: {
-              name: "[name].[hash].[ext]",
+              name: "[name].[ext]",
               outputPath: "images"
             }
           }
@@ -89,7 +89,7 @@ module.exports = {
         test: /\.(woff(2)?|ttf|eot)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
         loader: "file-loader",
         options: {
-          name: "[name].[hash].[ext]",
+          name: "[name].[ext]",
           outputPath: "font"
         }
       },

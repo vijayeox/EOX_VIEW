@@ -30,7 +30,8 @@
 
 .osjs-panel {
   display: flex;
-  min-height: 4em;
+  height: 2.5em;
+  min-height: 2.5em;
   align-items: center;
   box-sizing: border-box;
   position: absolute;
@@ -82,17 +83,22 @@
   .osjs-panel-item--icon {
     display: flex;
     align-items: center;
+    margin: 0px 2px 0px 2px;
 
     > i {
       height: $base-margin;
-      margin-right: ($base-margin / 2) + 0.3;
+      margin-right: ($base-margin / 2);
+
+      > span {
+        font-size: 14px;
+      }
     }
   }
 }
 
 .footer-CR {
   display: flex;
-  min-height: 2em;
+  min-height: 2.05em;
   align-items: center;
   box-sizing: border-box;
   position: absolute;
@@ -102,7 +108,7 @@
   bottom: 0 !important;
   flex-direction: row-reverse !important;
   background-color: #275362 !important;
-  z-index: 99999;
+  z-index: 999;
 }
 .footer-CR .coppyRight {
   color: #fff;
@@ -141,7 +147,7 @@
 }
 
 .appmenu {
-  height: calc(100% - 3.5em);
+  height: calc(100% - 4.5em);
   box-sizing: border-box;
   display: flex;
   flex-wrap: nowrap;

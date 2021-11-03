@@ -13,7 +13,7 @@ class MultiSelect extends React.Component {
     this.state = {
       userList: [],
       selectedUsers: [],
-      filterValue: false
+      filterValue: false,
     };
     this.helper = this.core.make("oxzion/restClient");
     this.notif = React.createRef();
@@ -25,15 +25,15 @@ class MultiSelect extends React.Component {
       var query = {
         filter: {
           logic: "and",
-          filters: [{ field: "name", operator: "contains", value: term }]
+          filters: [{ field: "name", operator: "contains", value: term }],
         },
         skip: 0,
-        take: size
+        take: size,
       };
     } else {
       var query = {
         skip: 0,
-        take: size
+        take: size,
       };
     }
 
@@ -61,7 +61,7 @@ class MultiSelect extends React.Component {
 
     if (typeof this.props.config.subList == "object") {
       this.setState({
-        selectedUsers: this.props.config.subList
+        selectedUsers: this.props.config.subList,
       });
       let loader = this.core.make("oxzion/splash");
       loader.destroy();
@@ -79,11 +79,11 @@ class MultiSelect extends React.Component {
           tempUsers.push({
             uuid: userid,
             name: userName,
-            is_manager: is_manager
+            is_manager: is_manager,
           });
         }
         this.setState({
-          selectedUsers: tempUsers
+          selectedUsers: tempUsers,
         });
         let loader = this.core.make("oxzion/splash");
         loader.destroy();
@@ -109,7 +109,7 @@ class MultiSelect extends React.Component {
         tempUsers.push({ uuid: userid, name: userName });
       }
       this.setState({
-        userList: tempUsers
+        userList: tempUsers,
       });
     });
   };
@@ -120,13 +120,13 @@ class MultiSelect extends React.Component {
 
   filterChange = (e) => {
     this.setState({
-      filterValue: e.filter.value.length > 0
+      filterValue: e.filter.value.length > 0,
     });
     if (e.filter.value.length > 0) {
-        this.getMainList(e.filter.value, 20);
+      this.getMainList(e.filter.value, 20);
     } else {
       this.setState({
-        userList: []
+        userList: [],
       });
     }
   };
@@ -139,7 +139,7 @@ class MultiSelect extends React.Component {
       //   "success"
       // )
       this.setState({
-        selectedUsers: e.target.value
+        selectedUsers: e.target.value,
       });
     }
   }
@@ -164,7 +164,7 @@ class MultiSelect extends React.Component {
       $(".k-searchbar")
         .children()
         .attr({
-          placeholder: "Search - Type The Name"
+          placeholder: "Search - Type The Name",
         })
         .css("min-width", "387px");
     });
@@ -176,7 +176,7 @@ class MultiSelect extends React.Component {
     if (index !== -1) {
       selectedUsers.splice(index, 1);
       this.setState({
-        selectedUsers: selectedUsers
+        selectedUsers: selectedUsers,
       });
     }
   };
@@ -240,26 +240,26 @@ class MultiSelect extends React.Component {
               </Grid>
             </div>
           )}
-          
-            <DialogActionsBar>
-              <button
-                className="k-button k-primary"
-                onClick={() =>
-                  this.props.manage.postSelected(
-                    this.state.selectedUsers,
-                    this.props.config.dataItem.uuid
-                  )
-                }
-              >
-                Save
-              </button>
-              <button
-                className="k-button"
-                onClick={this.props.manage.closeDialog}
-              >
-                Cancel
-              </button>
-            </DialogActionsBar>
+
+          <DialogActionsBar>
+            <button
+              className="k-button k-primary"
+              onClick={() =>
+                this.props.manage.postSelected(
+                  this.state.selectedUsers,
+                  this.props.config.dataItem.uuid
+                )
+              }
+            >
+              Save
+            </button>
+            <button
+              className="k-button"
+              onClick={this.props.manage.closeDialog}
+            >
+              Cancel
+            </button>
+          </DialogActionsBar>
         </Dialog>
       </div>
     );
@@ -267,7 +267,7 @@ class MultiSelect extends React.Component {
 }
 
 function cellWithEditing(remove, title) {
-  return class extends GridCell {
+  return class extends React.Component {
     render() {
       return (
         <td>
