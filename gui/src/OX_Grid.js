@@ -103,6 +103,7 @@ export default class OX_Grid extends React.Component {
       .getElementById("customActionsToolbar")
       .addEventListener("getCustomActions", this.getCustomActions, false);
     document.getElementById(`navigation_${this.appId}`)?.addEventListener('exportPdf', this.exportPDF, false);
+    this.toggleGridLoader();
 }
 
 componentWillUnmount(){
