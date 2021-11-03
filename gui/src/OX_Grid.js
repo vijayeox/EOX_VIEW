@@ -76,7 +76,6 @@ export default class OX_Grid extends React.Component {
     this.refreshHandler = this.refreshHandler.bind(this);
     this.inlineEdit = this.inlineEdit.bind(this);
     this.toggleGridLoader = this.toggleGridLoader.bind(this);
-    this.toggleGridLoader();
   }
   _excelExport;
   _grid;
@@ -103,6 +102,7 @@ export default class OX_Grid extends React.Component {
       .getElementById("customActionsToolbar")
       .addEventListener("getCustomActions", this.getCustomActions, false);
     document.getElementById(`navigation_${this.appId}`)?.addEventListener('exportPdf', this.exportPDF, false);
+    this.toggleGridLoader();
 }
 
 componentWillUnmount(){
