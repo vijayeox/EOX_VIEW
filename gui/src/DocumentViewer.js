@@ -241,6 +241,7 @@ export default class DocumentViewer extends Component {
                               <a
                                 href={doc.url}
                                 target="_blank"
+                                onClick={event => event.stopPropagation()}
                                 rel="noopener noreferrer"
                               >
                                 {doc.originalName &&
@@ -344,6 +345,7 @@ export default class DocumentViewer extends Component {
   };
 
   handleDocumentClick = (doc) => {
+    if(this.state.selectedDocument?.id === doc.id) return;
     var documentViewerDiv = document.querySelector(".docViewerWindow");
     this.loader.show(documentViewerDiv);
     this.setState({
@@ -463,6 +465,7 @@ export default class DocumentViewer extends Component {
               target="_blank"
               className="image-download-button btn btn-primary"
               title="Download"
+              onClick={event => event.stopPropagation()}
             >
               <i className="fad fa-download" aria-hidden="true"></i>
             </a>
@@ -602,7 +605,7 @@ export default class DocumentViewer extends Component {
         return (
           <div className="docViewerComponent">
             <Notification ref={this.notif} />
-            <div className="col-md-3 docListDiv">
+            <div className="col-md-3 docListDiv docViewerComponent_docListDiv">
               <Accordion defaultActiveKey={this.state.documentTypes[0]}>
                 {this.generateDocumentList()}
               </Accordion>
