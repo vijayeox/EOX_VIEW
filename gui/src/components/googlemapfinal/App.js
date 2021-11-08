@@ -3,7 +3,7 @@ import React, { Fragment, useEffect, useState} from "react";
 //import { card } from "reactstrap";
 import Dropdown from 'react-dropdown';
 //import Select from 'react-select';
-//import 'react-dropdown/style.css';
+import 'react-dropdown/style.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 

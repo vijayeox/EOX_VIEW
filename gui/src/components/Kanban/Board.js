@@ -95,15 +95,17 @@ export default function Board(props) {
     <div>
       <div className="expense-item">
 
-        <Button variant="link" style={{ color: "black" }}>
+        
         <Badge>
             <CalenderDropDown onDateRange={dateRangeHandler} />
-          </Badge>
+        </Badge>
+        
+        <Button variant="link" style={{ color: "black" }}>
            <Badge>
                   <div>
                      <FontAwesomeIcon   size = 'sm' icon={['fal', 'user-friends']}  /> Users
                   </div>
-            </Badge>
+          </Badge>
 
           <Badge>
             <select
@@ -125,7 +127,7 @@ export default function Board(props) {
               <option value="Low">Low</option>
             </select>
           </Badge>
-        </Button>
+          </Button>
         <Button variant="link" style={{ color: "black", fontWeight: 400 }}>
           <Badge>
             <div>Status</div>
