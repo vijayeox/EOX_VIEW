@@ -602,7 +602,7 @@ export default class DocumentViewer extends Component {
         return (
           <div className="docViewerComponent">
             <Notification ref={this.notif} />
-            <div className="col-md-3 docListDiv">
+            <div className="col-md-3 docListDiv docViewerComponent_docListDiv">
               <Accordion defaultActiveKey={this.state.documentTypes[0]}>
                 {this.generateDocumentList()}
               </Accordion>
