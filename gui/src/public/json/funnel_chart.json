@@ -1,0 +1,50 @@
+{
+    "series": [{
+        "type": "PyramidSeries",
+        "colors": {
+            "list": [
+                "lightgrey",
+                "green",
+                "darkred",
+                "cadetblue",
+                "lightblue"
+            ]
+        },
+        "dataFields": {
+            "value": "count",
+            "category": "forva1"
+        },
+        "labels": {
+            "template": {
+                "disabled": true
+            }
+        },
+        "labelsContainer": {
+            "paddingLeft": 0,
+            "width": 200
+        },
+        "topWidth": "70%",
+        "bottomWidth": "35%",
+        "sliceLinks": {
+            "height": 0,
+            "fillOpcity": 1
+        },
+        "valueIs": "height",
+        "alignLabels": false,
+        "labelsOpposite": false
+    }],
+    "legend": {
+        "position": "right",
+        "marginTop": 5,
+        "marginBottom": 0,
+        "markers": {
+            "width": 12,
+            "height": 12
+        },
+        "valign": "top",
+        "fontSize": 15,
+        "labels": {
+            "text": "{category} ([bold][blue]{value}[/])"
+        }
+    }
+}

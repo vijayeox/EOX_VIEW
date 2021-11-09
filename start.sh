@@ -1,30 +1,34 @@
 #!/bin/bash
 
+dirName="$(tr [A-Z] [a-z] <<< "${PWD##*/}")"
+echo "Stopping container if already running..."
+docker stop "${dirName//_}_vw_1"
+
 IP=`hostname -I | awk '{ print $1 }'`
 
-while getopts "h:YyNn" options
+startOptions=""
+while getopts "h:YyNnIi" options
 do
 	case $options in
 			h ) IP=$OPTARG;;
-		[Yy]* ) startBash=y;;
-		[Nn]* ) startBash=n;;
+		[Yy]* ) startOptions="y";;
+		[Nn]* ) startOptions="n";;
+		[Ii]* ) startOptions="i";;
 	esac
 done
 
-chmod 777 -R ./set-docker-env.sh
+chmod 777 -R ./docker/run.sh
 
-if [ ! -e ./view_built ]; then
+if [ "$startOptions" == "i" ] || [ ! -f ./view_built ]; then
 	IP="$IP" docker-compose up --build
 else
 	IP="$IP" docker-compose up -d --build
+	echo "View is being served in the background on port 8081."
+	while true; do
+		case $startOptions in
+			[Yy]* ) docker exec -it "${dirName//_}_vw_1" bash; break;;
+			[Nn]* ) break;;
+				* ) read -p "Do you wish to enter the container?(y/n)" startOptions;;
+		esac
+	done
 fi
-
-echo "View is being served in the background on port 8081."
-
-while true; do
-	case $startBash in
-		[Yy]* ) dirName="$(tr [A-Z] [a-z] <<< "${PWD##*/}")"; docker exec -it "${dirName//_}_vw_1" bash; break;;
-		[Nn]* ) break;;
-			* ) read -p "Do you wish to enter the container?(y/n)" startBash;;
-	esac
-done

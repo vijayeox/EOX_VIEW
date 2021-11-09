@@ -31,7 +31,7 @@ export class RestClientServiceProvider extends ServiceProvider {
 		let userData = this.core.getUser();
 		this.token = userData["jwt"];
 		try {
-			let url = this.baseUrl + 'user/me/a+p+acc+bapp';
+			let url = this.baseUrl + 'user/me/a+p+acc+bapp+ap';
 			var xmlHttp = new XMLHttpRequest();
 			xmlHttp.open("GET", url, false);
 			let auth = 'Bearer ' + this.token;

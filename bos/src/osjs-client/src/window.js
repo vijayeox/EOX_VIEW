@@ -27,9 +27,9 @@
  * @author  Anders Evenrud <andersevenrud@gmail.com>
  * @licence Simplified BSD License
  */
-import {EventEmitter} from '@osjs/event-emitter';
-import {droppable} from './utils/dnd';
-import {escapeHtml, createCssText, getActiveElement} from './utils/dom';
+import { EventEmitter } from "@osjs/event-emitter";
+import { droppable } from "./utils/dnd";
+import { escapeHtml, createCssText, getActiveElement } from "./utils/dom";
 
 /**
  * Window dimension definition
@@ -102,62 +102,78 @@ let lastWindow = null;
 /*
  * Creates window attributes from an object
  */
-const createAttributes = (attrs) => Object.assign({
-  classNames: [],
-  modal: false,
-  ontop: false,
-  gravity: false,
-  moveable: true,
-  resizable: true,
-  focusable: true,
-  maximizable: true,
-  minimizable: true,
-  sessionable: true,
-  closeable: true,
-  header: true,
-  controls: true,
-  visibility: 'global',
-  shadowDOM: false,
-  clamp: true,
-  mediaQueries: {
-    small: 'screen and (max-width: 640px)',
-    medium: 'screen and (min-width: 640px) and (max-width: 1024px)',
-    big: 'screen and (min-width: 1024px)'
-  },
-  minDimension: {
-    width: MINIMUM_WIDTH,
-    height: MINIMUM_HEIGHT
-  },
-  maxDimension: {
-    width: -1,
-    height: -1
-  }
-}, attrs);
+const createAttributes = (attrs) =>
+  Object.assign(
+    {
+      classNames: [],
+      modal: false,
+      ontop: false,
+      gravity: false,
+      moveable: true,
+      resizable: true,
+      focusable: true,
+      maximizable: true,
+      minimizable: true,
+      sessionable: true,
+      closeable: true,
+      header: true,
+      controls: true,
+      visibility: "global",
+      shadowDOM: false,
+      clamp: true,
+      mediaQueries: {
+        small: "screen and (max-width: 640px)",
+        medium: "screen and (min-width: 640px) and (max-width: 1024px)",
+        big: "screen and (min-width: 1024px)",
+      },
+      minDimension: {
+        width: MINIMUM_WIDTH,
+        height: MINIMUM_HEIGHT,
+      },
+      maxDimension: {
+        width: -1,
+        height: -1,
+      },
+    },
+    attrs
+  );
 
 /*
  * Creates window state from an object
  */
-const createState = (state, options, attrs) => Object.assign({
-  title: options.title || options.id,
-  icon: options.icon || require('./styles/logo-blue-32x32.png'),
-  media: null,
-  moving: false,
-  resizing: false,
-  loading: false,
-  focused: false,
-  maximized: false,
-  minimized: false,
-  zIndex: 1,
-  styles: {},
-  position: Object.assign({}, {
-    left: null,
-    top: null
-  }, options.position),
-  dimension: Object.assign({}, {
-    width: Math.max(attrs.minDimension.width, MINIMUM_WIDTH),
-    height: Math.max(attrs.minDimension.height, MINIMUM_HEIGHT)
-  }, options.dimension)
-}, state);
+const createState = (state, options, attrs) =>
+  Object.assign(
+    {
+      title: options.title || options.id,
+      icon: options.icon || require("./styles/logo-blue-32x32.png"),
+      media: null,
+      moving: false,
+      resizing: false,
+      loading: false,
+      focused: false,
+      maximized: false,
+      minimized: false,
+      zIndex: 1,
+      styles: {},
+      position: Object.assign(
+        {},
+        {
+          left: null,
+          top: null,
+        },
+        options.position
+      ),
+      dimension: Object.assign(
+        {},
+        {
+          width: Math.max(attrs.minDimension.width, MINIMUM_WIDTH),
+          height: Math.max(attrs.minDimension.height, MINIMUM_HEIGHT),
+        },
+        options.dimension
+      ),
+    },
+    state
+  );
 
 /*
  * Creates a window id
@@ -172,18 +188,16 @@ const createWindowId = (win) => {
 /*
  * Check if we have to set next zindex
  */
-const checkNextZindex = ({wid, attributes, state}) => {
-  const {ontop} = attributes;
-  const {zIndex} = state;
+const checkNextZindex = ({ wid, attributes, state }) => {
+  const { ontop } = attributes;
+  const { zIndex } = state;
 
   const windexes = windows
-    .filter(w => w.attributes.ontop === ontop)
-    .filter(w => w.wid !== wid)
-    .map(w => w.state.zIndex);
+    .filter((w) => w.attributes.ontop === ontop)
+    .filter((w) => w.wid !== wid)
+    .map((w) => w.state.zIndex);
 
-  const max = windexes.length > 0
-    ? Math.max.apply(null, windexes)
-    : 0;
+  const max = windexes.length > 0 ? Math.max.apply(null, windexes) : 0;
 
   return zIndex < max;
 };
@@ -191,13 +205,13 @@ const checkNextZindex = ({wid, attributes, state}) => {
 /*
  * Clamps position to viewport
  */
-const clampPosition = (rect, {dimension, position}) => {
+const clampPosition = (rect, { dimension, position }) => {
   const maxLeft = rect.width - dimension.width;
   const maxTop = rect.height - dimension.height + rect.top;
 
   return {
     left: Math.min(maxLeft, position.left),
-    top: Math.max(rect.top, Math.min(maxTop, position.top))
+    top: Math.max(rect.top, Math.min(maxTop, position.top)),
   };
 };
 
@@ -205,20 +219,21 @@ const clampPosition = (rect, {dimension, position}) => {
  * Window rendering callback function
  */
 const renderCallback = (win, callback) => {
-  if (typeof callback === 'function') {
+  if (typeof callback === "function") {
     if (win.attributes.shadowDOM) {
       try {
-        const mode = typeof win.attributes.shadowDOM === 'string'
-          ? win.attributes.shadowDOM
-          : 'open';
+        const mode =
+          typeof win.attributes.shadowDOM === "string"
+            ? win.attributes.shadowDOM
+            : "open";
 
-        const shadow = win.$content.attachShadow({mode});
+        const shadow = win.$content.attachShadow({ mode });
 
         callback(shadow, win);
 
         return;
       } catch (e) {
-        console.warn('Shadow DOM not supported?', e);
+        console.warn("Shadow DOM not supported?", e);
       }
     }
 
@@ -229,11 +244,12 @@ const renderCallback = (win, callback) => {
 /*
  * Adds a list of classnames to window element
  */
-const addClassNames = (win, names) => names
-  .filter(val => !!val)
-  .forEach((val) => win.$element.classList.add(val));
+const addClassNames = (win, names) =>
+  names
+    .filter((val) => !!val)
+    .forEach((val) => win.$element.classList.add(val));
 
-const transformVectors = (rect, {width, height}, {top, left}) => {
+const transformVectors = (rect, { width, height }, { top, left }) => {
   const transform = (val, attr) => {
     if (!isNaN(val)) {
       return Number.isInteger(val)
@@ -246,13 +262,13 @@ const transformVectors = (rect, {width, height}, {top, left}) => {
 
   return {
     dimension: {
-      width: transform(width, 'width'),
-      height: transform(height, 'height')
+      width: transform(width, "width"),
+      height: transform(height, "height"),
     },
     position: {
-      top: transform(top, 'height'),
-      left: transform(left, 'width')
-    }
+      top: transform(top, "height"),
+      left: transform(left, "width"),
+    },
   };
 };
 
@@ -262,7 +278,7 @@ const transformVectors = (rect, {width, height}, {top, left}) => {
 const TEMPLATE = `<div class="osjs-window-inner">
   <div class="osjs-window-header pl10">
     <div class="osjs-window-icon">
-      <div></div>
+      <i></i>
     </div>
     <div class="osjs-window-title"></div>
     <div class="osjs-window-breadcrumb"></div>
@@ -286,7 +302,9 @@ const TEMPLATE = `<div class="osjs-window-inner">
   <div class="osjs-window-resize" data-direction="se"></div>
   <div class="osjs-window-resize" data-direction="e"></div>
   <div class="osjs-window-resize" data-direction="ne"></div>
-</div>`.replace(/\n\s+/g, '').trim();
+</div>`
+  .replace(/\n\s+/g, "")
+  .trim();
 
 /**
  * Window
@@ -294,7 +312,6 @@ const TEMPLATE = `<div class="osjs-window-inner">
  * @desc Class for a OS.js Window
  */
 export default class Window extends EventEmitter {
-
   /**
    * Create window
    *
@@ -311,22 +328,25 @@ export default class Window extends EventEmitter {
    * @param {WindowState} [options.state] Apply Window state
    */
   constructor(core, options = {}) {
-    options = Object.assign({
-      id: null,
-      title: null,
-      parent: null,
-      template: null,
-      attributes: {},
-      position: {},
-      dimension: {},
-      state: {}
-    }, options);
+    options = Object.assign(
+      {
+        id: null,
+        title: null,
+        parent: null,
+        template: null,
+        attributes: {},
+        position: {},
+        dimension: {},
+        state: {},
+      },
+      options
+    );
 
-    console.log('Window::constructor()', options);
+    console.log("Window::constructor()", options);
 
-    super('Window@' + options.id);
+    super("Window@" + options.id);
 
-    if (typeof options.position === 'string') {
+    if (typeof options.position === "string") {
       options.attributes.gravity = options.position;
       options.position = {};
     }
@@ -389,7 +409,7 @@ export default class Window extends EventEmitter {
      * The window container
      * @type {Node}
      */
-    this.$element = document.createElement('div');
+    this.$element = document.createElement("div");
 
     /**
      * The content container
@@ -445,12 +465,12 @@ export default class Window extends EventEmitter {
     }
     this.destroyed = true;
 
-    console.debug('Window::destroy()');
+    console.debug("Window::destroy()");
 
-    this.emit('destroy', this);
-    this.core.emit('osjs/window:destroy', this);
+    this.emit("destroy", this);
+    this.core.emit("osjs/window:destroy", this);
 
-    this.children.forEach(w => w.destroy());
+    this.children.forEach((w) => w.destroy());
 
     if (this.$element) {
       this.$element.remove();
@@ -460,7 +480,7 @@ export default class Window extends EventEmitter {
       lastWindow = null;
     }
 
-    const foundIndex = windows.findIndex(w => w === this);
+    const foundIndex = windows.findIndex((w) => w === this);
     if (foundIndex !== -1) {
       windows.splice(foundIndex, 1);
     }
@@ -484,8 +504,8 @@ export default class Window extends EventEmitter {
 
     // Assign the window if it is a child
     if (this.parent) {
-      this.on('destroy', () => {
-        const foundIndex = this.parent.children.findIndex(w => w === this);
+      this.on("destroy", () => {
+        const foundIndex = this.parent.children.findIndex((w) => w === this);
         if (foundIndex !== -1) {
           this.parent.children.splice(foundIndex, 1);
         }
@@ -495,31 +515,36 @@ export default class Window extends EventEmitter {
     }
 
     // Insert template
-    const tpl = this.core.config('windows.template') || TEMPLATE;
+    const tpl = this.core.config("windows.template") || TEMPLATE;
     if (this._template) {
-      this.$element.innerHTML = typeof this._template === 'function'
-        ? this._template(this, tpl)
-        : this._template;
+      this.$element.innerHTML =
+        typeof this._template === "function"
+          ? this._template(this, tpl)
+          : this._template;
     } else {
       this.$element.innerHTML = tpl;
     }
 
-    this.$content = this.$element.querySelector('.osjs-window-content');
-    this.$header = this.$element.querySelector('.osjs-window-header');
-    this.$icon = this.$element.querySelector('.osjs-window-icon > div');
-    this.$title = this.$element.querySelector('.osjs-window-title');
-    this.$breadCrumb = this.$element.querySelector('.osjs-window-breadcrumb');
+    this.$content = this.$element.querySelector(".osjs-window-content");
+    this.$header = this.$element.querySelector(".osjs-window-header");
+    this.$icon = this.$element.querySelector(".osjs-window-icon > i");
+    this.$title = this.$element.querySelector(".osjs-window-title");
+    this.$breadCrumb = this.$element.querySelector(".osjs-window-breadcrumb");
 
     // Transform percentages in dimension to pixels etc
-    if (this.core.has('osjs/desktop')) {
-      const rect = this.core.make('osjs/desktop').getRect();
-      const {dimension, position} = transformVectors(rect, this.state.dimension, this.state.position);
+    if (this.core.has("osjs/desktop")) {
+      const rect = this.core.make("osjs/desktop").getRect();
+      const { dimension, position } = transformVectors(
+        rect,
+        this.state.dimension,
+        this.state.position
+      );
       this.state.dimension = dimension;
       this.state.position = position;
     }
 
     // Behavior
-    const behavior = this.core.make('osjs/window-behavior');
+    const behavior = this.core.make("osjs/window-behavior");
     if (behavior) {
       behavior.init(this);
     }
@@ -537,8 +562,8 @@ export default class Window extends EventEmitter {
     // this.on('destroy', () => d.destroy());
 
     this.inited = true;
-    this.emit('init', this);
-    this.core.emit('osjs/window:create', this);
+    this.emit("init", this);
+    this.core.emit("osjs/window:create", this);
 
     return this;
   }
@@ -547,25 +572,27 @@ export default class Window extends EventEmitter {
    * Updates the window buttons
    */
   _updateButtons() {
-    const hideButton = action =>
-      this.$header.querySelector(`.osjs-window-button[data-action=${action}]`)
-        .style.display = 'none';
+    const hideButton = (action) =>
+      (this.$header.querySelector(
+        `.osjs-window-button[data-action=${action}]`
+      ).style.display = "none");
 
     if (this.attributes.controls) {
       if (!this.attributes.maximizable) {
-        hideButton('maximize');
+        hideButton("maximize");
       }
 
       if (!this.attributes.minimizable) {
-        hideButton('minimize');
+        hideButton("minimize");
       }
 
       if (!this.attributes.closeable) {
-        hideButton('close');
+        hideButton("close");
       }
     } else {
-      Array.from(this.$header.querySelectorAll('.osjs-window-button'))
-        .forEach(el => el.style.display = 'none');
+      Array.from(this.$header.querySelectorAll(".osjs-window-button")).forEach(
+        (el) => (el.style.display = "none")
+      );
     }
   }
 
@@ -574,14 +601,14 @@ export default class Window extends EventEmitter {
    * @param {Function} [callback] Callback when window DOM has been constructed
    * @return {Window} this instance
    */
-  render(callback = function() {}) {
+  render(callback = function () {}) {
     if (this.rendered) {
       return this;
     } else if (!this.inited) {
       this.init();
     }
 
-    addClassNames(this, ['osjs-window', ...this.attributes.classNames]);
+    addClassNames(this, ["osjs-window", ...this.attributes.classNames]);
 
     this._updateButtons();
     this._updateDOM();
@@ -591,7 +618,7 @@ export default class Window extends EventEmitter {
     }
 
     if (!this.attributes.header) {
-      this.$header.style.display = 'none';
+      this.$header.style.display = "none";
     }
 
     // Clamp the initial window position to viewport
@@ -603,10 +630,10 @@ export default class Window extends EventEmitter {
 
     if (this.attributes.modal) {
       if (this.parent) {
-        this.on('render', () => this.parent.setState('loading', true));
+        this.on("render", () => this.parent.setState("loading", true));
 
-        this.on('destroy', () => {
-          this.parent.setState('loading', false);
+        this.on("destroy", () => {
+          this.parent.setState("loading", false);
           this.parent.focus();
         });
       }
@@ -620,8 +647,8 @@ export default class Window extends EventEmitter {
     this.setNextZindex(true);
 
     setTimeout(() => {
-      this.emit('render', this);
-      this.core.emit('osjs/window:render', this);
+      this.emit("render", this);
+      this.core.emit("osjs/window:render", this);
     }, 1);
 
     return this;
@@ -635,7 +662,7 @@ export default class Window extends EventEmitter {
       return false;
     }
 
-    this.emit('close', this);
+    this.emit("close", this);
 
     this.destroy();
 
@@ -648,7 +675,7 @@ export default class Window extends EventEmitter {
    */
   focus() {
     if (!this.state.minimized) {
-      if (this._toggleState('focused', true, 'focus')) {
+      if (this._toggleState("focused", true, "focus")) {
         if (lastWindow && lastWindow !== this) {
           lastWindow.blur();
         }
@@ -675,7 +702,7 @@ export default class Window extends EventEmitter {
       activeElement.blur();
     }
 
-    return this._toggleState('focused', false, 'blur');
+    return this._toggleState("focused", false, "blur");
   }
 
   /**
@@ -684,7 +711,7 @@ export default class Window extends EventEmitter {
    */
   minimize() {
     if (this.attributes.minimizable) {
-      if (this._toggleState('minimized', true, 'minimize')) {
+      if (this._toggleState("minimized", true, "minimize")) {
         this.state.minimized = true;
         this.blur();
 
@@ -700,7 +727,7 @@ export default class Window extends EventEmitter {
    * @return {Boolean}
    */
   raise() {
-    return this._toggleState('minimized', false, 'raise');
+    return this._toggleState("minimized", false, "raise");
   }
 
   /**
@@ -709,9 +736,9 @@ export default class Window extends EventEmitter {
    */
   maximize() {
     if (this.attributes.maximizable) {
-      if (this._toggleState('maximized', true, 'maximize')) {
+      if (this._toggleState("maximized", true, "maximize")) {
         this.state.maximized = true;
-        this.once('transitionend', () => this.emit('resized'));
+        this.once("transitionend", () => this.emit("resized"));
 
         return true;
       }
@@ -725,8 +752,8 @@ export default class Window extends EventEmitter {
    * @return {Boolean}
    */
   restore() {
-    if (this._toggleState('maximized', false, 'restore')) {
-      this.once('transitionend', () => this.emit('resized'));
+    if (this._toggleState("maximized", false, "restore")) {
+      this.once("transitionend", () => this.emit("resized"));
 
       return true;
     }
@@ -745,21 +772,26 @@ export default class Window extends EventEmitter {
       return;
     }
 
-    const innerBox = (container.parentNode.classList.contains('osjs-gui')
-      ? container.parentNode
-      : container).getBoundingClientRect();
+    const innerBox = (
+      container.parentNode.classList.contains("osjs-gui")
+        ? container.parentNode
+        : container
+    ).getBoundingClientRect();
 
     const outerBox = this.$content.getBoundingClientRect();
     const diffY = Math.ceil(outerBox.height - innerBox.height);
     const diffX = Math.ceil(outerBox.width - innerBox.width);
     const topHeight = this.$header.offsetHeight;
 
-    const {left, top} = this.state.position;
+    const { left, top } = this.state.position;
     const min = this.attributes.minDimension;
     const max = this.attributes.maxDimension;
 
     let width = Math.max(container.offsetWidth + diffX, min.width);
-    let height = Math.max(container.offsetHeight + diffY + topHeight, min.height);
+    let height = Math.max(
+      container.offsetHeight + diffY + topHeight,
+      min.height
+    );
 
     if (max.width > 0) {
       width = Math.min(width, max.width);
@@ -772,14 +804,14 @@ export default class Window extends EventEmitter {
     width = Math.max(width, container.offsetWidth);
     height = Math.max(height, container.offsetHeight);
 
-    if (this.core.has('osjs/desktop')) {
-      const rect = this.core.make('osjs/desktop').getRect();
+    if (this.core.has("osjs/desktop")) {
+      const rect = this.core.make("osjs/desktop").getRect();
       width = Math.min(width, rect.width - left);
       height = Math.min(height, rect.height - top);
     }
 
     if (!isNaN(width) && !isNaN(height)) {
-      this.setDimension({width, height});
+      this.setDimension({ width, height });
     }
   }
 
@@ -788,11 +820,11 @@ export default class Window extends EventEmitter {
    * @param {boolean} [update=true] Update DOM
    */
   clampToViewport(update = true) {
-    if (!this.core.has('osjs/desktop')) {
+    if (!this.core.has("osjs/desktop")) {
       return;
     }
 
-    const rect = this.core.make('osjs/desktop').getRect();
+    const rect = this.core.make("osjs/desktop").getRect();
 
     this.state.position = Object.assign(
       {},
@@ -820,11 +852,11 @@ export default class Window extends EventEmitter {
    * @param {String} title Title
    */
   setTitle(title) {
-    this.state.title = title || '';
+    this.state.title = title || "";
 
     this._updateDOM();
 
-    this.core.emit('osjs/window:change', this, 'title', title);
+    this.core.emit("osjs/window:change", this, "title", title);
   }
 
   /**
@@ -832,7 +864,11 @@ export default class Window extends EventEmitter {
    * @param {WindowDimension} dimension The dimension
    */
   setDimension(dimension) {
-    const {width, height} = Object.assign({}, this.state.dimension, dimension || {});
+    const { width, height } = Object.assign(
+      {},
+      this.state.dimension,
+      dimension || {}
+    );
 
     this.state.dimension.width = width;
     this.state.dimension.height = height;
@@ -846,7 +882,11 @@ export default class Window extends EventEmitter {
    * @param {Boolean} [preventDefault=false] Prevents any future position setting in init procedure
    */
   setPosition(position, preventDefault = false) {
-    const {left, top} = Object.assign({}, this.state.position, position || {});
+    const { left, top } = Object.assign(
+      {},
+      this.state.position,
+      position || {}
+    );
 
     this.state.position.top = top;
     this.state.position.left = left;
@@ -864,7 +904,7 @@ export default class Window extends EventEmitter {
    */
   setZindex(zIndex) {
     this.state.zIndex = zIndex;
-    console.debug('Window::setZindex()', zIndex);
+    console.debug("Window::setZindex()", zIndex);
 
     this._updateDOM();
   }
@@ -894,7 +934,7 @@ export default class Window extends EventEmitter {
 
     // Allows for some "grace time" so the overlay does not
     // "blink"
-    if (name === 'loading' && update) {
+    if (name === "loading" && update) {
       clearTimeout(this._loadingDebounce);
 
       if (value === true) {
@@ -911,40 +951,40 @@ export default class Window extends EventEmitter {
    * @param {String} gravity Gravity
    */
   gravitate(gravity) {
-    if (!this.core.has('osjs/desktop')) {
+    if (!this.core.has("osjs/desktop")) {
       return;
     }
 
-    const rect = this.core.make('osjs/desktop').getRect();
-    let {left, top} = this.state.position;
+    const rect = this.core.make("osjs/desktop").getRect();
+    let { left, top } = this.state.position;
 
-    if (gravity === 'center') {
-      left = (rect.width / 2) - (this.state.dimension.width / 2);
-      top = (rect.height / 2) - (this.state.dimension.height / 2);
+    if (gravity === "center") {
+      left = rect.width / 2 - this.state.dimension.width / 2;
+      top = rect.height / 2 - this.state.dimension.height / 2;
     } else if (gravity) {
-      let hasVertical =  gravity.match(/top|bottom/);
+      let hasVertical = gravity.match(/top|bottom/);
       let hasHorizontal = gravity.match(/left|rigth/);
 
       if (gravity.match(/top/)) {
         top = rect.top;
       } else if (gravity.match(/bottom/)) {
-        top = rect.height - (this.state.dimension.height) + rect.top;
+        top = rect.height - this.state.dimension.height + rect.top;
       }
 
       if (gravity.match(/left/)) {
         left = rect.left;
       } else if (gravity.match(/right/)) {
-        left = rect.width - (this.state.dimension.width);
+        left = rect.width - this.state.dimension.width;
       }
 
       if (!hasVertical && gravity.match(/center/)) {
-        top = (rect.height / 2) - (this.state.dimension.height / 2);
+        top = rect.height / 2 - this.state.dimension.height / 2;
       } else if (!hasHorizontal && gravity.match(/center/)) {
-        left = (rect.width / 2) - (this.state.dimension.width / 2);
+        left = rect.width / 2 - this.state.dimension.width / 2;
       }
     }
 
-    this.setPosition({left, top});
+    this.setPosition({ left, top });
   }
 
   /**
@@ -954,7 +994,7 @@ export default class Window extends EventEmitter {
   getState(n) {
     const value = this.state[n];
 
-    return ['position', 'dimension', 'styles'].indexOf(n) !== -1
+    return ["position", "dimension", "styles"].indexOf(n) !== -1
       ? Object.assign({}, value)
       : value;
   }
@@ -964,13 +1004,15 @@ export default class Window extends EventEmitter {
    * @return {Object}
    */
   getSession() {
-    return this.attributes.sessionable === false ? null : {
-      id: this.id,
-      maximized: this.state.maximized,
-      minimized: this.state.minimized,
-      position: Object.assign({}, this.state.position),
-      dimension: Object.assign({}, this.state.dimension)
-    };
+    return this.attributes.sessionable === false
+      ? null
+      : {
+          id: this.id,
+          maximized: this.state.maximized,
+          minimized: this.state.minimized,
+          position: Object.assign({}, this.state.position),
+          dimension: Object.assign({}, this.state.dimension),
+        };
   }
 
   /**
@@ -1002,7 +1044,7 @@ export default class Window extends EventEmitter {
 
     if (update) {
       if (oldValue !== value) {
-        console.debug('Window::_setState()', name, value);
+        console.debug("Window::_setState()", name, value);
       }
 
       this._updateDOM();
@@ -1021,11 +1063,11 @@ export default class Window extends EventEmitter {
       return false;
     }
 
-    console.debug('Window::_toggleState()', name, value, eventName, update);
+    console.debug("Window::_toggleState()", name, value, eventName, update);
 
     this.state[name] = value;
     this.emit(eventName, this);
-    this.core.emit('osjs/window:change', this, name, value);
+    this.core.emit("osjs/window:change", this, name, value);
 
     if (update) {
       this._updateDOM();
@@ -1042,16 +1084,17 @@ export default class Window extends EventEmitter {
       return;
     }
 
-    const {$element, $title, $icon, id, state, attributes} = this;
-    const {width, height} = state.dimension;
-    const {top, left} = state.position;
-    const {title, icon, zIndex, styles} = state;
+    const { $element, $title, $icon, id, state, attributes } = this;
+    const { width, height } = state.dimension;
+    const { top, left } = state.position;
+    const { title, icon, zIndex, styles } = state;
 
     const attrs = {
       id: id,
       media: state.media,
       moving: state.moving,
       resizing: state.resizing,
+      icon: state.icon,
       loading: state.loading,
       focused: state.focused,
       maximized: state.maximized,
@@ -1061,31 +1104,36 @@ export default class Window extends EventEmitter {
       resizable: attributes.resizable,
       moveable: attributes.moveable,
       maximizable: attributes.maximizable,
-      minimizable: attributes.minimizable
+      minimizable: attributes.minimizable,
     };
-
-    const cssText = createCssText(Object.assign({
-      top: String(top) + 'px',
-      left: String(left) + 'px',
-      height: String(height) + 'px',
-      width: String(width) + 'px',
-      zIndex: (attrs.ontop ? ONTOP_ZINDEX : 0) + zIndex
-    }, styles));
+    const cssText = createCssText(
+      Object.assign(
+        {
+          top: String(top) + "px",
+          left: String(left) + "px",
+          height: String(height) + "px",
+          width: String(width) + "px",
+          zIndex: (attrs.ontop ? ONTOP_ZINDEX : 0) + zIndex,
+        },
+        styles
+      )
+    );
 
     if ($title) {
       $title.innerHTML = escapeHtml(title);
     }
 
     if ($icon) {
-      $icon.style.backgroundImage = `url(${icon})`;
+      // $icon.style.backgroundImage = `url(${icon})`;
+      $icon.className = attrs.icon;
     }
 
     if ($element) {
-      Object.keys(attrs)
-        .forEach(a => $element.setAttribute(`data-${a}`, String(attrs[a])));
+      Object.keys(attrs).forEach((a) =>
+        $element.setAttribute(`data-${a}`, String(attrs[a]))
+      );
 
       $element.style.cssText = cssText;
     }
   }
-
 }

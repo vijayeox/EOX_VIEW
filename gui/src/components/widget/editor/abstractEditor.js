@@ -11,7 +11,7 @@ class AbstractEditor extends React.Component {
             widgetType: null,
             readOnly: true,
             queries: [],
-            configuration: '',
+            configuration: null,
             drillDownFilter: '',
             drillDownWidget: '',
             drillDownTarget: '',
@@ -22,17 +22,41 @@ class AbstractEditor extends React.Component {
             hasMaxDepth: false,
             drillDownMaxDepth: -1,
             filteredWidgetList: [],
+            templateList: [],
+            widgetVisualType: this.props.widget.type,
+            isTemplateLoading: true,
+            selectedTemplate: "",
+            templateContent: "",
             errors: {
                 configuration: null,
                 expression: null,
                 drillDown: {},
                 queries: [],
-                target:{singleLevel:{},multiLevel:{}}
+                target: { singleLevel: {}, multiLevel: {} }
             }
         };
-        this.widgetTypes = [{ "label": "Chart", "value": "chart" }, { "label": "Inline", "value": "inline" }, { "label": "Table", "value": "table" }, { "label": "Dashboard", "value": "dashboard" }]
+        this.widgetTypes = [{ "label": "Chart", "value": "chart" }, { "label": "Inline", "value": "inline" }, { "label": "Table", "value": "table" }, { "label": "Dashboard", "value": "dashboard" }, { "label": "File", "value": "file" }]
         this.queryList = [];
         this.data = null;
+        this.selectedOption = null
+        this.widgetJson = {
+            "chart": [
+                { "name": "Area", "value": "area_chart" },
+                { "name": "Bar", "value": "bar_chart" },
+                { "name": "Column", "value": "column_chart" },
+                { "name": "Funnel", "value": "funnel_chart" },
+                { "name": "Line", "value": "line_chart" },
+                { "name": "map", "value": "map" },
+                { "name": "Multi Axis Cluster Column", "value": "multi_axis_cluster_column_chart" },
+                { "name": "Pie", "value": "pie_chart" },
+                { "name": "Stacked Horizontal Bar", "value": "stacked_horizontal_bar_chart" }
+            ],
+            "table": [
+                { "name": "Area", "value": "area_chart" }
+            ],
+            "Aggregate value": [],
+            "Profile": []
+        }
     }
 
     getState = () => {
@@ -89,23 +113,22 @@ class AbstractEditor extends React.Component {
         if (name == "drillDownMaxDepth") {
             hasMaxDepth = true
             this.setState({ [name]: value, hasMaxDepth: hasMaxDepth, errors: errors })
-        }
-        else if (name == "drillDownWidget") {
+        } else if (name == "drillDownWidget") {
             if (value !== 'dashboard') {
                 hasMaxDepth = (this.props.widget["uuid"] && this.props.widget["uuid"] === value)
                 this.setState({ [name]: value, hasMaxDepth: hasMaxDepth, errors: errors })
             }
-        }
-        else if (name == "drillDownWidgetType") {
+        } else if (name == "drillDownWidgetType") {
             let filteredWidgetList = null
-            if (value == 'dashboard') {
+            if (value === 'dashboard') {
                 filteredWidgetList = this.props.selectableDashboardOptions.filter(option => option.type == value)
+            } else if (value === 'file') {
+                filteredWidgetList = this.props.selectableAppOptions.filter(option => option.type == value)
             } else {
                 filteredWidgetList = this.props.selectableWidgetOptions.filter(option => option.type == value)
             }
             this.setState({ filteredWidgetList: filteredWidgetList, drillDownWidgetType: e, drillDownWidget: "" })
-        }
-        else {
+        } else {
             this.setState({ [name]: value, errors: errors })
         }
     }
@@ -120,7 +143,7 @@ class AbstractEditor extends React.Component {
                 queries.push({
                     'uuid': query.uuid,
                     'configuration': {
-                        'filter': configuration ? (configuration.filter ? JSON.stringify(configuration.filter, null, '    ') : '') : '',
+                        'filter': configuration ? (configuration.filter ? JSON.stringify(configuration.filter, null, '') : '') : '',
                         'grouping': configuration ? (configuration.grouping ? JSON.stringify(configuration.grouping, null, '') : '') : '',
                         'sort': configuration ? (configuration.sort ? JSON.stringify(configuration.sort, null, '') : '') : ''
                     },
@@ -136,7 +159,7 @@ class AbstractEditor extends React.Component {
             state.widgetType = type;
             return state;
         }, () => {
-            if (this.state.selectedTab !== '' && (this.state.selectedTab == "widget" || this.state.selectedTab == "chart")) {
+            if (this.state.selectedTab !== '' && (this.state.selectedTab == "widget" || this.state.selectedTab == "chart" || this.state.selectedTab == "profile")) {
                 thiz.refreshViews();
             } else if (this.state.selectedTab !== '' && this.state.selectedTab == "query") {
                 thiz.refreshQueryPreview()
@@ -183,8 +206,20 @@ class AbstractEditor extends React.Component {
         });
         return errorMessage ? false : true;
     }
+
     getSelectedWidgetType = () => {
-        return this.state.drillDownWidgetType.value !== "dashboard" ? "widget" : "dashboard";
+        switch (this.state.drillDownWidgetType.value) {
+            case 'file':
+                this.state.drillDownWidgetType.value = "file";
+                break;
+            case 'widget':
+                this.state.drillDownWidgetType.value = "widget";
+                break;
+            default:
+                this.state.drillDownWidgetType.value = "dashboard";
+        }
+        return this.state.drillDownWidgetType.value;
+        // return this.state.drillDownWidgetType.value !== "dashboard" ? this.state.drillDownWidgetType.value !== "widget" ? "file" : "widget" : "dashboard";
     }
 
     ApplyDrillDown = (widgetType) => {
@@ -222,14 +257,16 @@ class AbstractEditor extends React.Component {
     }
 
     setDrillDownTargetType(target) {
-        if (this.state.selectableWidgetOptions.length > 0) {
-            let selectedWidgetOption = null
+        if (this.state.drillDownWidget.length > 0) {
+            let selectedDrillDownOption = null
             if (target == "dashboard") {
-                selectedWidgetOption = this.state.selectableDashboardOptions.filter(option => option.value == this.state.drillDownWidget)
+                selectedDrillDownOption = this.state.selectableDashboardOptions.filter(option => option.value == this.state.drillDownWidget)
+            } else if (target == "file") {
+                selectedDrillDownOption = this.state.selectableAppOptions.filter(option => option.value == this.state.drillDownWidget)
             } else {
-                selectedWidgetOption = this.state.selectableWidgetOptions.filter(option => option.value == this.state.drillDownWidget)
+                selectedDrillDownOption = this.state.selectableWidgetOptions.filter(option => option.value == this.state.drillDownWidget)
             }
-            let widget = selectedWidgetOption[0] ? selectedWidgetOption[0]["type"] : ''
+            let widget = selectedDrillDownOption[0] ? selectedDrillDownOption[0]["type"] : ''
             let selectedWidget = widget
             let widgetType = this.widgetTypes.filter(option => option.value == selectedWidget)
             this.setState({ drillDownWidgetType: widgetType[0] })
@@ -275,11 +312,17 @@ class AbstractEditor extends React.Component {
     }
 
     getSelectedDrillDownWidget() {
-        if (this.state.drillDownWidgetType !== "") {
-            return this.state.drillDownWidgetType.value == "dashboard" ?
-                this.props.selectableDashboardOptions.filter(option => option.value == this.state.drillDownWidget)
-                :
+        switch (this.state.drillDownWidgetType.value) {
+            case 'file':
+                this.props.selectableAppOptions.filter(option => option.value == this.state.drillDownWidget)
+                break;
+            case 'widget':
                 this.props.selectableWidgetOptions.filter(option => option.value == this.state.drillDownWidget)
+                break;
+            case 'dashboard':
+                this.props.selectableDashboardOptions.filter(option => option.value == this.state.drillDownWidget)
+            default:
+                this.props.selectableDashboardOptions.filter(option => option.value == this.state.drillDownWidget)
         }
     }
 
@@ -296,6 +339,56 @@ class AbstractEditor extends React.Component {
             return state;
         }, () => {
             thiz.loadData(thiz.refreshQueryPreview);
+        });
+    }
+
+    getTemplateSelection = () => {
+        window.postDataRequest('analytics/template', {}, 'get')
+            .then((response) => {
+                if (response.status == "success") {
+                    this.setState({ isTemplateLoading: false, templateList: response.data })
+                }
+            })
+    }
+
+    getWidgetPreView = (templateName, queries, expression) => {
+        let params = {};
+        let postUrl = '';
+        let method = '';
+        postUrl = 'analytics/widget/preview'
+        method = 'filepost'
+        if (this.state.queries[0].uuid == "") {
+            Swal.fire({
+                type: 'error',
+                title: 'Oops ...',
+                text: 'Failed to load queries. Queries Required...'
+            });
+            return;
+        }
+        else if (!expression || (expression === '')) {
+            params['configuration'] = JSON.stringify({ "template": templateName });
+            params['queries'] = JSON.stringify({ "queries": [queries[0].uuid] });
+        } else {
+            params['configuration'] = JSON.stringify({ "template": templateName });
+            params['queries'] = JSON.stringify({ "queries": [queries[0].uuid] });
+            params['expression'] = JSON.stringify({ "expression": [expression] });
+        }
+        window.postDataRequest(postUrl, params, method)
+            .then((response) => {
+                if (response.status == 'success') {
+                    this.data = response.widget.data;
+                    this.refreshWidgetPreview();
+                }
+            }).catch((err) => console.log("err-->", err));
+
+    }
+
+    templateSelectionChanged = (evt) => {
+        let value = evt.value;
+        this.getWidgetPreView(value.split('.')[0], this.state.queries, this.state.expression);
+        this.setState({
+            selectedTemplate: evt,
+            configuration: JSON.stringify({ "template": value.split('.')[0] })
         });
     }
 

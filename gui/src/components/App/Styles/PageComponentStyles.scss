@@ -12,34 +12,186 @@ $primary-color: #275362;
     display: flex;
     flex-direction: column;
   }
-  .customActions{
-    margin-top: 5px;
+  .customActions {
+    margin: 5px 0px 2px 0px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
   }
 
-  .toolBarButton {
-    margin: 0 10px;
-    display: inline-block;
-    font-weight: 400;
-    color: #fff;
-    text-align: center;
-    vertical-align: middle;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    background-color: transparent;
-    border: 1px solid transparent;
-    padding: .375rem .75rem;
-    font-size: 1rem;
-    line-height: 1.5;
-    border-radius: 50%;
-    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-    float: right;
+  .dash-manager-buttons {
+    right: 0px;
+    width: auto;
+    float: left;
+    position: relative;
   }
+
+  .dash-manager-buttons .btn-primary {
+    color: #345561;
+    background-color: #c5d2d6;
+    border-radius: 42px;
+    font-size: 13px;
+    box-shadow: 0px 0px 5px 0px grey;
+    height: auto;
+    padding: 5px 10px;
+    border-radius: 100%;
+  }
+
+  .dash-manager-buttons .btn {
+    // margin-right: 7px;
+    margin: 0px 4px;
+    border-color: #eaeaea;
+  }
+
+  .dashboard .btn-primary {
+    color: #fff;
+    background-color: #265160;
+    border-color: #265160;
+  }
+  .display-flex {
+    display: flex;
+  }
+  .task-header-pos-abs {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+  .width-100 {
+    width: 100%;
+  }
+  .task-header {
+    padding: 5px 0 5px 17px;
+    display: flex;
+    align-items: center;
+    .go-back {
+      transform: rotate(180deg) !important;
+      cursor: pointer;
+    }
+
+    &_info {
+      flex-direction: column;
+      gap: 10px 0;
+    }
+
+    .task-header_details,
+    .task-header_details > div,
+    &_info {
+      display: flex;
+    }
+
+    .task-header_name {
+      margin: 3px 2px 3px 9px;
+      font-size: 1.25rem;
+      color: #1f1f67;
+      max-width: 70%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      line-height: normal;
+    }
+
+    .task-header_details {
+      div {
+        margin-left: 10px;
+        align-items: center;
+        p {
+          margin: 0;
+          margin-left: 5px;
+        }
+        div:not(:first-child),
+        p:not(:first-child) {
+          font-size: 12px !important;
+          color: #696982;
+        }
+      }
+      .owner-assignee,
+      div > div:first-child,
+      div > p:first-child {
+        font-size: 12px !important;
+        color: #000 !important;
+      }
+      .owner-assignee {
+        .owner-assignee-dp {
+          padding-left: 0.5rem;
+          font-size: 20px;
+        }
+      }
+      .task-status {
+        padding: 5px;
+        border-radius: 10px;
+        // background-color: rgba(0, 128, 0, 0.83);
+        margin: 0 6px;
+      }
+
+      //PROGRESS
+
+      .task-header_progress {
+        flex: 1;
+        display: flex;
+        justify-content: end;
+        div {
+          &:first-child {
+            justify-content: space-between;
+            padding-bottom: 6px;
+            width: 15rem;
+          }
+          & {
+            display: flex;
+            width: 100%;
+          }
+        }
+        &--data {
+          display: flex;
+          flex-direction: column;
+          width: 15rem;
+          margin: 0px 20px 0rem 5rem;
+
+          p {
+            strong {
+              padding-right: 5px;
+            }
+          }
+        }
+      }
+    }
+
+    &_taskname {
+      border-radius: 50px;
+      background: #bddce6;
+      margin-left: 7.5px;
+      font-size: 1.25rem;
+      min-height: 50px;
+      display: flex;
+      min-width: 50px;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+
+  // .toolBarButton {
+  //   margin: 0 10px;
+  //   display: inline-block;
+  //   font-weight: 400;
+  //   color: #fff;
+  //   text-align: center;
+  //   vertical-align: middle;
+  //   -webkit-user-select: none;
+  //   -moz-user-select: none;
+  //   -ms-user-select: none;
+  //   user-select: none;
+  //   background-color: transparent;
+  //   border: 1px solid transparent;
+  //   padding: .375rem .75rem;
+  //   font-size: 1rem;
+  //   line-height: 1.5;
+  //   border-radius: 50%;
+  //   transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  //   float: right;
+  // }
   .breadcrumbs {
     padding-top: 5px;
     padding-bottom: 0.8rem;
-    display: flex;
+    display: contents;
     flex-direction: row;
     flex-wrap: wrap;
     line-height: 30px;
@@ -80,24 +232,27 @@ $primary-color: #275362;
     width: 100%;
   }
 
-  abbr{
+  abbr {
     text-decoration: none;
   }
-
-  .page-active , .contentDiv{
+  .contentDiv {
+    position: relative;
+  }
+  .page-active,
+  .contentDiv {
     height: 100%;
   }
   .activeBreadcrumb a {
-    color: #5CD4E3 !important;
+    color: #5cd4e3 !important;
   }
   .activeBreadcrumb a:hover {
-    color: #30C2D2 !important;
+    color: #30c2d2 !important;
     text-decoration: underline !important;
   }
-  .tab-link{
+  .tab-link {
     border: 1px solid transparent;
-    border-top-left-radius: .25rem;
-    border-top-right-radius: .25rem;
+    border-top-left-radius: 0.25rem;
+    border-top-right-radius: 0.25rem;
     padding: 0.5rem 2rem;
     cursor: pointer;
     margin-right: 0;
@@ -106,24 +261,28 @@ $primary-color: #275362;
     color: #444;
     -webkit-transition: all 0.2s;
     transition: all 0.2s;
+    padding-bottom: 1.125rem;
+    width: 20%;
   }
-  .Navigation .tab-link:focus{
+  .Navigation .tab-link:focus {
     outline: transparent;
   }
- .tab-link:hover,.tab-link:focus{
+  .tab-link:hover,
+  .tab-link:focus {
     border-color: #e9ecef #e9ecef #dee2e6;
     outline: 0;
   }
-  .tab-link-active{
+  .tab-link-active {
     border: none;
-    -webkit-box-shadow: inset 0 -2px 0 #30C2D2;
-    box-shadow: inset 0 -2px 0 #30C2D2;
-    color: #30C2D2;
+    -webkit-box-shadow: inset 0 -2px 0 #30c2d2;
+    box-shadow: inset 0 -2px 0 #0a6ed1;
+    color: #0a6ed1;
   }
-  .tab-content .contentDiv{
+  .tab-content .contentDiv {
     flex: 1 1 auto;
     min-height: 1px;
-    padding: 1.25rem;
+    // padding: 1.25rem;
+    padding: 0.2rem 0.2rem 0.2rem 0.2rem;
   }
 
   .searchBar {
@@ -204,7 +363,7 @@ $primary-color: #275362;
   margin-bottom: 0.8rem;
 }
 
-.breadcrumbHearder{
+.breadcrumbHearder {
   margin-bottom: 0px;
 }
 
@@ -239,14 +398,30 @@ $primary-color: #275362;
   position: relative;
   text-size-adjust: 100%;
 }
-.page-inactive{
-  display:none;
+
+.page-dimmed {
+  filter: grayscale;
+  opacity: 0.7;
 }
-.page-active{
+.page-inactive {
+  display: none;
+}
+.page-active {
   display: block;
 }
-.rygBadge{
+.rygBadge {
   margin-left: auto;
   width: 80px;
   border: 3px solid lightgrey;
+}
+
+// Hide extra upload button in attachment section [BUG] #26242 by Mukul
+div[class="k-actions k-hstack k-justify-content-end"]
+  > button[class="k-button k-primary k-upload-selected"] {
+  display: none;
+}
+
+// Extra Space above the custombar
+div#customActions > div[class="display-flex task-header-pos-abs"] {
+  margin-top: 10px;
 }

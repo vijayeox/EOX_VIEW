@@ -1,15 +1,15 @@
 import React from 'react';
-import { query as section } from '../metadata.json';
+import dashboardJson from '../metadata.json';
+// import { query as section } from '../metadata.json';
 import { Form, Row, Col, Button, Tabs, Tab } from 'react-bootstrap'
 import OX_Grid from "./OX_Grid"
 import Notification from "./Notification"
 import Switch from 'react-switch'
 import QueryModal from './components/Modals/QueryModal'
 import QueryResult from './components/Query/QueryResult'
-import { FormSchema } from "./components/Modals/QueryModalSchema.json"
+// import { FormSchema } from "./components/Modals/QueryModalSchema.json"
+import querySchemaJson from "./components/Modals/QueryModalSchema.json"
 import JSONFormRenderer from "./JSONFormRenderer"
-
-
 import ReactDOM from 'react-dom'
 import "./public/css/query.scss";
 
@@ -18,7 +18,7 @@ class Query extends React.Component {
     super(props);
     this.core = this.props.args;
     this.ref = React.createRef();
-    this.props.setTitle(section.title.en_EN);
+    this.props.setTitle(dashboardJson.query.title.en_EN);
     this.notif = React.createRef();
     this.state = {
       dataSourceOptions: [],
@@ -49,7 +49,7 @@ class Query extends React.Component {
 
   async fetchDataSource() {
     let helper = this.core.make('oxzion/restClient');
-    let response = await helper.request('v1', 'analytics/datasource', {}, 'get');
+    let response = await helper.request('v1', 'analytics/datasource?filter=[{"sort":[{"field":"name","dir":"asc"}],"skip":0,"take":10000}]', {}, 'get');
     this.setState({ dataSourceOptions: response.data })
   }
 
@@ -94,13 +94,14 @@ class Query extends React.Component {
   }
 
   onsaveQuery() {
-    if(this.validateform()){
-      let inputsCopy={...this.state.inputs}
-      inputsCopy["configuration"]=this.ref.current.getFormConfig(false)
-      this.setState({inputs:inputsCopy},()=>{
+    if (this.validateform()) {
+      let inputsCopy = { ...this.state.inputs }
+      inputsCopy["configuration"] = this.ref.current.getFormConfig(false)
+      this.setState({ inputs: inputsCopy }, () => {
         this.setState({ showQueryModal: true, modalContent: "", modalType: "Save" })
-      })  
-  }}
+      })
+    }
+  }
 
   renderEmpty() {
     return [<React.Fragment key={1} />];
@@ -180,8 +181,8 @@ class Query extends React.Component {
                 {action[key].icon ? (
                   <i className={action[key].icon + " manageIcons"}></i>
                 ) : (
-                    action[key].name
-                  )}
+                  action[key].name
+                )}
               </Button>
             </abbr>
           )
@@ -198,8 +199,8 @@ class Query extends React.Component {
         this.setState({ showQueryModal: true, modalContent: item, modalType: "Activate" })
       else if (action.name === "execute" && item.isdeleted == "0")
         this.setState({ showQueryModal: true, modalContent: item, modalType: "Execute" })
-      else if(action.name==="edit" &&item.isdeleted == "0")
-      this.setState({ showQueryModal: true, modalContent: item, modalType: "Edit" })
+      else if (action.name === "edit" && item.isdeleted == "0")
+        this.setState({ showQueryModal: true, modalContent: item, modalType: "Edit" })
     }
   }
 
@@ -246,38 +247,37 @@ class Query extends React.Component {
       var end = window.performance.now();
       var runtime = end - start;
       if (response.status === "success") {
-        
+
 
         let columnNames
         let columnNameObj = []
         if (response.data !== undefined) {
           //if response is a array show OX_GRID
-           if(Array.isArray(response.data.result))
-           {
+          if (Array.isArray(response.data.result)) {
             columnNames = Object.keys(response.data.result[0])
-           }
-            // prepare column names for OX_Grid
-            if (columnNames != undefined) {
-              columnNames.map(name => {
-                columnNameObj.push({ 'title': name, 'field': name })
-              })
-            }
-            this.setState({ queryResult: response.data.result, queryColumns: columnNameObj, elapsedTime: runtime, queryName: queryname ,activeTab: "results" })
-            if (document.getElementById("result-tab-div") !== null) {
-              this.destroyResult()
-              this.setState({ queryResult: response.data.result, queryColumns: columnNameObj, elapsedTime: runtime, queryName: queryname ,activeTab: "results" })
-              this.renderResult()
-            }
-            else {
-              this.setState({ queryResult: response.data.result, queryColumns: columnNameObj, elapsedTime: runtime, queryName: queryname ,activeTab: "results" })
-              this.renderResult()
-            }
-           
-          
-        
+          }
+          // prepare column names for OX_Grid
+          if (columnNames != undefined) {
+            columnNames.map(name => {
+              columnNameObj.push({ 'title': name, 'field': name })
+            })
+          }
+          this.setState({ queryResult: response.data.result, queryColumns: columnNameObj, elapsedTime: runtime, queryName: queryname, activeTab: "results" })
+          if (document.getElementById("result-tab-div") !== null) {
+            this.destroyResult()
+            this.setState({ queryResult: response.data.result, queryColumns: columnNameObj, elapsedTime: runtime, queryName: queryname, activeTab: "results" })
+            this.renderResult()
+          }
+          else {
+            this.setState({ queryResult: response.data.result, queryColumns: columnNameObj, elapsedTime: runtime, queryName: queryname, activeTab: "results" })
+            this.renderResult()
+          }
+
+
+
         }
         else {
-          this.setState({ queryResult: response.data.result, elapsedTime: runtime, queryName: queryname ,activeTab: "results" })
+          this.setState({ queryResult: response.data.result, elapsedTime: runtime, queryName: queryname, activeTab: "results" })
         }
         this.notif.current.notify(
           "Query Executed ",
@@ -369,7 +369,7 @@ class Query extends React.Component {
                   value={this.state.inputs["configuration"] || ''}
                   onChange={(e) => this.handleChange(e, this)}
                 /> */}
-                <JSONFormRenderer formSchema={FormSchema["_DEFAULT_OPTIONAL_FIELDS"]} values={this.ref.current?JSON.parse(this.ref.current.getFormConfig(false)):{}} subForm={true} ref={this.ref} />
+                <JSONFormRenderer formSchema={querySchemaJson.FormSchema["_DEFAULT_OPTIONAL_FIELDS"]} values={this.ref.current ? JSON.parse(this.ref.current.getFormConfig(false)) : {}} subForm={true} ref={this.ref} />
                 <Form.Text className="text-muted errorMsg">
                   {this.state.errors["configuration"]}
                 </Form.Text>
@@ -402,8 +402,8 @@ class Query extends React.Component {
                           {
                             name: "execute", rule: "{{isdeleted}}==0", icon: "fa fa-gear"
                           },
-                             {
-                            name:"edit", rule:"{{isdeleted}}==0",icon: "fa fa-edit"
+                          {
+                            name: "edit", rule: "{{isdeleted}}==0", icon: "fa fa-edit"
                           },
                           {
                             name: "toggleActivate", rule: "{{isdeleted}}==0", icon: "fa fa-trash"
@@ -424,23 +424,23 @@ class Query extends React.Component {
         </div>
         {
           this.state.showQueryModal &&
-        <QueryModal
-          runQuery={(content)=>this.runQuery(content)}
-          osjsCore={this.core}
-          modalType={this.state.modalType}
-          show={this.state.showQueryModal}
-          refreshGrid={this.refresh}
-          content={this.state.modalContent}
-          hideQueryForm={()=>this.toggleQueryForm("hide")}
-          onHide={() => this.setState({ showQueryModal: false })}
-          configuration={this.state.inputs["configuration"]}
-          datasourcename={this.state.inputs["datasourcename"] != undefined ? this.state.inputs["datasourcename"][0] : ""}
-          datasourceuuid={this.state.inputs["datasourcename"] != undefined ? this.state.inputs["datasourcename"][1] : ""}
-          dataSourceOptions={this.state.dataSourceOptions}
-          notification={this.notif}
-          resetInput={() => this.setState({ inputs: {} })}
-        />
-  }
+          <QueryModal
+            runQuery={(content) => this.runQuery(content)}
+            osjsCore={this.core}
+            modalType={this.state.modalType}
+            show={this.state.showQueryModal}
+            refreshGrid={this.refresh}
+            content={this.state.modalContent}
+            hideQueryForm={() => this.toggleQueryForm("hide")}
+            onHide={() => this.setState({ showQueryModal: false })}
+            configuration={this.state.inputs["configuration"]}
+            datasourcename={this.state.inputs["datasourcename"] != undefined ? this.state.inputs["datasourcename"][0] : ""}
+            datasourceuuid={this.state.inputs["datasourcename"] != undefined ? this.state.inputs["datasourcename"][1] : ""}
+            dataSourceOptions={this.state.dataSourceOptions}
+            notification={this.notif}
+            resetInput={() => this.setState({ inputs: {} })}
+          />
+        }
       </div>
     );
   }

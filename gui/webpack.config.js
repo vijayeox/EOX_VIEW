@@ -1,19 +1,13 @@
 const path = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const TerserPlugin = require("terser-webpack-plugin");
 const mode = process.env.NODE_ENV || "development";
 const minimize = mode === "production";
 const plugins = [];
-
-if (mode === "production") {
-  plugins.push(
-    new OptimizeCSSAssetsPlugin({
-      cssProcessorOptions: {
-        discardComments: true
-      }
-    })
-  );
-}
 
 module.exports = {
   output: {
@@ -22,7 +16,8 @@ module.exports = {
     libraryTarget: 'umd',
     umdNamedDefine: true,
     sourceMapFilename: '[file].map',
-    filename: '[name].js'
+    filename: '[name].js',
+    // clean: true,
   },
   mode,
   devtool: "source-map",
@@ -31,7 +26,10 @@ module.exports = {
     osjs: "OSjs"
   },
   optimization: {
-    minimize,
+    minimizer: [
+      new CssMinimizerPlugin(),
+      new TerserPlugin(),
+    ],
     chunkIds: "named",
     splitChunks: {
       cacheGroups: {
@@ -52,14 +50,22 @@ module.exports = {
     }
   },
   plugins: [
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: path.resolve(__dirname, './src/ckeditor') }
+      ]
+    }),
     new MiniCssExtractPlugin({
       filename: "[name].css",
       chunkFilename: "[id].css"
     }),
+    new NodePolyfillPlugin(),
+    new HtmlWebpackPlugin({
+      
+    }),
     ...plugins
   ],
   resolve: {
-    
     alias: {
       OxzionGUI: path.resolve(__dirname, "./src"),
       "react-icons": path.resolve(__dirname, "./node_modules/react-icons")
@@ -68,39 +74,33 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(svg|png|jpe?g|gif|webp)$/,
+        test: /\.(svg|png|jpe?g|gif|webp|)$/,
         use: [
           {
-            loader: "file-loader"
+            loader: "file-loader",
+            options: {
+              name: "[name].[ext]",
+              outputPath: "images"
+            }
           }
         ]
       },
       {
-        test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        loader: "url-loader?limit=10000&mimetype=application/font-woff"
-      },
-      {
-        test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        loader: "file-loader"
+        test: /\.(woff(2)?|ttf|eot)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        loader: "file-loader",
+        options: {
+          name: "[name].[ext]",
+          outputPath: "font"
+        }
       },
       {
         test: /\.(sa|sc|c)ss$/,
         use: [
           MiniCssExtractPlugin.loader,
-          {
-            loader: "css-loader",
-            options: {
-              sourceMap: true
-            }
-          },
-          {
-            loader: "sass-loader",
-            options: {
-              minimize,
-              sourceMap: true
-            }
-          }
-        ]
+          'css-loader',
+          'sass-loader',
+        ],
+        sideEffects: true,
       },
       {
         test: /\.js$/,
@@ -108,6 +108,7 @@ module.exports = {
         use: {
           loader: "babel-loader",
           options: {
+            generatorOpts: { compact: false },
             presets: [
               '@babel/react', '@babel/env'
             ],

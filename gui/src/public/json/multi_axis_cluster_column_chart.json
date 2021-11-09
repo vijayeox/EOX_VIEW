@@ -1,0 +1,84 @@
+{
+    "xAxes": [
+        {
+            "type": "CategoryAxis",
+            "dataFields": {
+                "category": "period-year"
+            },
+            "renderer": {
+                "grid": {
+                    "template": {
+                        "type": "Grid",
+                        "location": 0
+                    }
+                },
+                "minGridDistance": 20
+            }
+        }
+    ],
+    "yAxes": [
+        {
+            "type": "ValueAxis",
+            "id": "axis1",
+            "title": {
+                "type": "Label",
+                "text": "Premium"
+            },
+            "renderer": {
+                "maxLabelPosition": 0.98
+            }
+        },
+        {
+            "type": "ValueAxis",
+            "id": "axis2",
+            "title": {
+                "type": "Label",
+                "text": "Policy"
+            },
+            "renderer": {
+                "opposite": true,
+                "maxLabelPosition": 0.98
+            }
+        }
+    ],
+    "series": [
+        {
+            "type": "ColumnSeries",
+            "name": "Premium",
+            "columns": {
+                "template": {
+                    "type": "Column",
+                    "strokeOpacity": 0,
+                    "tooltipText": "{categoryX}\n{valueY}"
+                }
+            },
+            "dataFields": {
+                "valueY": "quotedpremium",
+                "categoryX": "period-year"
+            },
+            "sequencedInterpolation": true,
+            "sequencedInterpolationDelay": 100
+        },
+        {
+            "type": "ColumnSeries",
+            "name": "Policy",
+            "columns": {
+                "template": {
+                    "type": "Column",
+                    "strokeOpacity": 0,
+                    "tooltipText": "{categoryX}\n{valueY}"
+                }
+            },
+            "yAxis": "axis2",
+            "dataFields": {
+                "valueY": "count",
+                "categoryX": "period-year"
+            },
+            "sequencedInterpolation": true,
+            "sequencedInterpolationDelay": 100
+        }
+    ],
+    "legend": {
+        "type": "Legend"
+    }
+}

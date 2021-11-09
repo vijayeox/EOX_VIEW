@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Button, Modal, Form, Row, Col } from 'react-bootstrap'
 import JSONFormRenderer from "../../JSONFormRenderer"
-import { FormSchema } from "./DataSourceModalSchema.json"
+import FormSchema from "./DataSourceModalSchema.json"
 
 function DataSourceModal(props) {
   const [input, setInput] = useState({})
@@ -16,10 +16,12 @@ function DataSourceModal(props) {
     DELETE: "Deleted"
   }
   function getFormSchema() {
-    if (props.content && FormSchema[props.content.type]) {
-      return FormSchema[props.content.type]
+    if (props.content && FormSchema.FormSchema[props.content.type]) {
+      let type = props.content.type;
+      return FormSchema.FormSchema[`"`,type,`"`];
     } else {
-      return FormSchema["_DEFAULT_OPTIONAL_FIELDS"]
+      // return FormSchema["_DEFAULT_OPTIONAL_FIELDS"] 
+      return FormSchema.FormSchema._DEFAULT_OPTIONAL_FIELDS //working
     }
 
   }
@@ -30,7 +32,7 @@ function DataSourceModal(props) {
       setInput({ ...input, ["name"]: name, ["type"]: type, ["configuration"]: configuration })
       setFormConfiguration(props.content.configuration.data || {})
       if (formSchema == {} || formSchema == undefined) {
-        let schema = FormSchema["_DEFAULT_OPTIONAL_FIELDS"]
+        let schema = FormSchema.FormSchema["_DEFAULT_OPTIONAL_FIELDS"]
         if (schema) {
           setFormSchema(schema)
         }
@@ -188,7 +190,7 @@ function DataSourceModal(props) {
       <Modal.Header >
         <Modal.Title id="contained-modal-title-vcenter">
           {props.modalType} Data Source
-         </Modal.Title>
+        </Modal.Title>
       </Modal.Header>
       <Modal.Body className="modal-body">
         <Form>

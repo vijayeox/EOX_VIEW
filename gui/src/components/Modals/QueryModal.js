@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Button, Modal, Form, Row, Col } from 'react-bootstrap'
 import JSONFormRenderer from "../../JSONFormRenderer"
-import { FormSchema } from "./QueryModalSchema.json"
+import FormSchema from "./QueryModalSchema.json"
 
 function QueryModal(props) {
   const [input, setInput] = useState({})
   const [errors, setErrors] = useState({})
   const [formValues, setFormValues] = useState("")
-  const [formSchema, setFormSchema] = useState(FormSchema["_DEFAULT_OPTIONAL_FIELDS"])
+  const [formSchema, setFormSchema] = useState(FormSchema.FormSchema["_DEFAULT_OPTIONAL_FIELDS"])
 
   const formBuilderRef = useRef(null)
 
@@ -208,7 +208,7 @@ function QueryModal(props) {
       <Modal.Header >
         <Modal.Title id="contained-modal-title-vcenter">
           {props.modalType} Query
-         </Modal.Title>
+        </Modal.Title>
       </Modal.Header>
       <Modal.Body className="modal-body">
         <Form>
@@ -271,9 +271,9 @@ function QueryModal(props) {
               <Form.Label column lg="3">Configuration</Form.Label>
               <Col lg="9">
                 {/* {props.modalType !== "Save" ? */}
-                  <JSONFormRenderer formSchema={formSchema != undefined ? formSchema : {}} values={formValues} subForm={true} ref={formBuilderRef} />
-                  {/* : */}
-                  {/* <Form.Control as="textarea" name="configuration" value={input["configuration"] !== undefined ? input["configuration"] : props.configuration} onChange={handleChange} disabled={DisabledFields} /> */}
+                <JSONFormRenderer formSchema={formSchema != undefined ? formSchema : {}} values={formValues} subForm={true} ref={formBuilderRef} />
+                {/* : */}
+                {/* <Form.Control as="textarea" name="configuration" value={input["configuration"] !== undefined ? input["configuration"] : props.configuration} onChange={handleChange} disabled={DisabledFields} /> */}
                 {/* } */}
               </Col>
             </Form.Group>

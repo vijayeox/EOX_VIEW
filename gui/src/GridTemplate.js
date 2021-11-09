@@ -3,10 +3,11 @@ import {
   Grid,
   GridColumn,
   GridToolbar,
-  GridNoRecords
+  GridNoRecords,
 } from "@progress/kendo-react-grid";
 import Notification from "./Notification";
-import { GridCell } from "@progress/kendo-react-grid";
+import GridCell from "@progress/kendo-react-grid";
+import GridActions from "./components/Grid/GridActions";
 import DataLoader from "./components/Grid/DataLoader";
 import Swal from "sweetalert2";
 import $ from "jquery";
@@ -22,18 +23,18 @@ export default class GridTemplate extends React.Component {
       dataState: {
         take: 20,
         skip: 0,
-        sort: this.props.config.sortMode
+        sort: this.props.config.sortMode,
       },
       gridData: this.props.gridData
         ? this.props.gridData
         : { data: [], total: 0 },
-      api: this.props.config.api
+      api: this.props.config.api,
     };
     this.notif = React.createRef();
   }
 
   componentDidMount() {
-    $(document).ready(function() {
+    $(document).ready(function () {
       $(".k-textbox").attr("placeholder", "Search");
     });
   }
@@ -41,21 +42,21 @@ export default class GridTemplate extends React.Component {
   componentDidUpdate(prevProps) {
     if (this.props.config.api !== prevProps.config.api) {
       this.setState({
-        api: this.props.config.api
+        api: this.props.config.api,
       });
     }
   }
 
-  dataStateChange = e => {
+  dataStateChange = (e) => {
     this.setState({
       ...this.state,
-      dataState: e.data
+      dataState: e.data,
     });
   };
 
-  dataRecieved = data => {
+  dataRecieved = (data) => {
     this.setState({
-      gridData: data
+      gridData: data,
     });
   };
 
@@ -70,7 +71,7 @@ export default class GridTemplate extends React.Component {
             title={this.props.config.column[i].title}
             filterCell={this.emptyCell}
             sortable={false}
-            cell={props => (
+            cell={(props) => (
               <LogoCell {...props} myProp={this.props} url={this.baseUrl} />
             )}
           />
@@ -83,7 +84,7 @@ export default class GridTemplate extends React.Component {
             title={this.props.config.column[i].title}
             filterCell={this.emptyCell}
             sortable={false}
-            cell={props => <LogoCell2 {...props} myProp={this.props} />}
+            cell={(props) => <LogoCell2 {...props} myProp={this.props} />}
           />
         );
       } else {
@@ -100,7 +101,7 @@ export default class GridTemplate extends React.Component {
             title={this.props.config.column[i].title}
             cell={
               checkCellTemplate
-                ? item => checkCellTemplate(item.dataItem)
+                ? (item) => checkCellTemplate(item.dataItem)
                 : undefined
             }
           />
@@ -127,7 +128,7 @@ export default class GridTemplate extends React.Component {
     }
   }
 
-  refreshHandler = serverResponse => {
+  refreshHandler = (serverResponse) => {
     if (serverResponse.status == "success") {
       this.notif.current.notify(
         "Success",
@@ -152,7 +153,7 @@ export default class GridTemplate extends React.Component {
     return (
       <div
         className="gridTemplateWrap"
-        style={{ height: "90%", display: "flex", marginTop: "10px" }}
+        style={{ height: "90%", display: "flex" }}
       >
         <Notification ref={this.notif} />
         {this.rawDataPresent()}
@@ -167,7 +168,7 @@ export default class GridTemplate extends React.Component {
           total={this.state.gridData.total ? this.state.gridData.total : 0}
           pageable={{ buttonCount: 5, pageSizes: true, info: true }}
           onDataStateChange={this.dataStateChange}
-          onRowClick={e => {
+          onRowClick={(e) => {
             e.dataItem.hasOwnProperty("is_system_role")
               ? e.dataItem.type === "2"
                 ? this.props.manageGrid.edit(e.dataItem, { diableField: true })
@@ -188,7 +189,7 @@ export default class GridTemplate extends React.Component {
                   style={{
                     display: "flex",
                     width: "110%",
-                    alignItems: "center"
+                    alignItems: "center",
                   }}
                 >
                   <div style={{ marginLeft: "10px" }}>
@@ -207,9 +208,9 @@ export default class GridTemplate extends React.Component {
           {this.props.config.showToolBar == true && (
             <GridToolbar>
               <div>
-                <div style={{ fontSize: "20px" }}>
+                {/* <div style={{ fontSize: "20px" }}>
                   {this.props.config.title + "'s"} List
-                </div>
+                </div> */}
                 <AddButton
                   args={this.props.manageGrid.add}
                   permission={this.props.permission.canAdd}
@@ -222,9 +223,9 @@ export default class GridTemplate extends React.Component {
           {(this.props.permission.canEdit ||
             this.props.permission.canDelete) && (
             <GridColumn
-              title="Manage"
-              minResizableWidth={170}
-              cell={CellWithEditing(
+              title="Actions"
+              minResizableWidth={170}              
+              cell={GridActions(
                 this.props.config.title,
                 this.props.manageGrid.edit,
                 this.props.manageGrid.remove,
@@ -233,7 +234,7 @@ export default class GridTemplate extends React.Component {
                 {
                   ...this.props.manageGrid,
                   core: this.core,
-                  notification: this.notif
+                  notification: this.notif,
                 }
               )}
               sortable={false}
@@ -251,18 +252,19 @@ class AddButton extends React.Component {
     return this.props.permission ? (
       <button
         onClick={this.props.args}
-        className="k-button"
+        className="k-button btn btn-primary"
         style={{
           position: "absolute",
-          top: "3px",
-          right: "10px",
-          fontSize: "14px"
+          top: "2px",
+          right: "0px",
+          fontSize: "14px",
+          padding: "8px 6px 5px 10px",
         }}
       >
-        <i className="fa fa-plus-circle" style={{ fontSize: "20px" }}></i>
+        <i className="fad fa-plus" style={{ fontSize: "18px" }}></i>
 
-        <p style={{ margin: "0px", paddingLeft: "10px" }}>
-          Add {this.props.label}
+        <p style={{ margin: "0px", paddingLeft: "0px" }}>
+          {/* Add {this.props.label} */}
         </p>
       </button>
     ) : null;
@@ -328,169 +330,4 @@ class LogoCell2 extends React.Component {
       </td>
     ) : null;
   }
-}
-
-function CellWithEditing(
-  title,
-  edit,
-  remove,
-  addUsers,
-  permission,
-  fullConfig
-) {
-  return class extends GridCell {
-    constructor(props) {
-      super(props);
-      this.core = this.props.args;
-    }
-
-    deleteButton() {
-      return permission.canDelete ? (
-        <abbr title={"Delete " + title}>
-          <button
-            type="button"
-            className="btn manage-btn k-grid-remove-command"
-            onClick={e => {
-              e.preventDefault();
-              Swal.fire({
-                title: "Are you sure?",
-                text:
-                  "Do you really want to delete the record? This cannot be undone.",
-                imageUrl:
-                  "https://image.flaticon.com/icons/svg/1632/1632714.svg",
-                imageWidth: 75,
-                imageHeight: 75,
-                confirmButtonText: "Delete",
-                confirmButtonColor: "#d33",
-                showCancelButton: true,
-                cancelButtonColor: "#3085d6",
-                target: ".Window_Admin"
-              }).then(result => {
-                if (result.value) {
-                  remove(this.props.dataItem);
-                }
-              });
-            }}
-          >
-            <i className="fa fa-trash manageIcons"></i>
-          </button>
-        </abbr>
-      ) : null;
-    }
-
-    async passwordReset(username) {
-      let helper = fullConfig.core.make("oxzion/restClient");
-      let response = await helper.request(
-        "v1",
-        "user/me/forgotpassword",
-        { username: username },
-        "post"
-      );
-      return response;
-    }
-
-    triggerPasswordReset = dataItem => {
-      console.log(dataItem);
-      this.passwordReset(dataItem.username).then(response => {
-        response.status == "success"
-          ? fullConfig.notification.current.notify(
-              "Success",
-              "Password reset mail has been sent to " +
-                dataItem.name +
-                " ( " +
-                response.data.username +
-                " )",
-              "success"
-            )
-          : fullConfig.notification.current.notify(
-              "Failed",
-              response.message ? response.message : "Operation Failed",
-              "danger"
-            );
-      });
-    };
-
-    render() {
-      let editButton = (
-        <React.Fragment>
-          <abbr title={"Edit " + title + " Details"}>
-            <button
-              type="button"
-              className=" btn manage-btn k-grid-edit-command"
-              onClick={() => {
-                edit(this.props.dataItem, { diableField: false });
-              }}
-            >
-              <i className="fa fa-pencil manageIcons"></i>
-            </button>
-          </abbr>
-          {addUsers && (
-            <React.Fragment>
-              &nbsp; &nbsp;
-              <abbr
-                title={
-                  "Add " +
-                  (title == "Announcement" ? "Groups" : "Users") +
-                  " to " +
-                  title
-                }
-              >
-                <button
-                  type="button"
-                  className="btn manage-btn"
-                  onClick={() => {
-                    addUsers(this.props.dataItem);
-                  }}
-                >
-                  {title == "Announcement" ? (
-                    <i className="fa fa-users manageIcons"></i>
-                  ) : (
-                    <i className="fa fa-user-plus manageIcons"></i>
-                  )}
-                </button>
-              </abbr>
-            </React.Fragment>
-          )}
-        </React.Fragment>
-      );
-
-      return (
-        <td>
-          <center>
-            {this.props.dataItem.hasOwnProperty("is_system_role")
-              ? this.props.dataItem.type === "2"
-                ? null
-                : permission.canEdit
-                ? editButton
-                : null
-              : permission.canEdit
-              ? editButton
-              :  null}
-            &nbsp; &nbsp;
-            {this.props.dataItem.is_system_role || this.props.dataItem.is_admin
-              ? (this.props.dataItem.is_system_role == "0" ||
-                  this.props.dataItem.is_admin == "0") &&
-                this.deleteButton()
-              : this.deleteButton()}
-            {fullConfig.resetPassword ? (
-              <React.Fragment>
-                &nbsp; &nbsp;
-                <abbr title={"Reset Password"}>
-                  <button
-                    type="button"
-                    className="btn manage-btn"
-                    onClick={() =>
-                      this.triggerPasswordReset(this.props.dataItem)
-                    }
-                  >
-                    <i className={fullConfig.resetPassword.icon}></i>
-                  </button>
-                </abbr>
-              </React.Fragment>
-            ) : null}
-          </center>
-        </td>
-      );
-    }
-  };
 }

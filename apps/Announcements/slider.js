@@ -71,7 +71,31 @@ class Slider extends React.Component {
         },
         () => this.refreshTimer()
       );
+      this.markAsRead();
     });
+  }
+
+  markAsRead() {
+    const currentIndex = this.state.currentIndex;
+    if (document.querySelector('div[data-id="annoucementsWindow"]').getAttribute('data-focused') == "true" && this.state.announcements.length && (!this.state.announcements[currentIndex]['view'] || this.state.announcements[currentIndex]['view'] == "0")) {
+      let count = 0;
+      this.state.announcements[currentIndex]['view'] = 1;
+      this.state.announcements.map((announcement) => {
+        if (!announcement.view || announcement.view == "0") {
+          count++;
+        }
+      });
+
+      this.core.emit('announcement/tray:modified', count);
+
+      this.core.make("oxzion/restClient")
+      .request(
+        "v1",
+        "/announcement/markasread",
+        { "announcementId": this.state.announcements[this.state.currentIndex]['uuid'] },
+        "post"
+        );
+    }
   }
 
   refreshTimer() {
@@ -105,6 +129,7 @@ class Slider extends React.Component {
   }
 
   goToNextSlide() {
+      this.markAsRead();
     if (this.state.currentIndex === this.state.announcements.length - 1) {
       return this.setState({
         currentIndex: 0,
@@ -241,7 +266,8 @@ class Slider extends React.Component {
           >
             <div className="popup-content">
               <h6>{this.state.focusData.name}</h6>
-              <p className="mainText">{this.state.focusData.description}</p>
+              <p className="mainText"  dangerouslySetInnerHTML={{__html:this.state.focusData.description }} ></p>
+
               <div className="buttonWrap">
                 {this.state.focusData.link ? (
                   <button

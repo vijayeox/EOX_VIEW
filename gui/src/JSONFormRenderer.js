@@ -24,7 +24,6 @@ const JSONFormRenderer = forwardRef((props, ref) => {
     scrollToBottom()
   }, [formFields])
 
-
   useImperativeHandle(ref, () => ({
     getFormConfig(embedData) {
       let parsedConfig = JSON.parse(formValues)
@@ -165,7 +164,7 @@ const JSONFormRenderer = forwardRef((props, ref) => {
               }
               <select id="optionalFields" name="optionalFields" className="form-control form-control-sm" value={input["optionalFields"]} placeholder="Select Fields" onChange={handleChange} >
               <option key="" value="-1" >--Select Fields--</option>
-                {optionalFields}
+              {optionalFields}
               </select>
             </div>
           }

@@ -32,12 +32,21 @@
   } from "./metadata.json";
 
 
-  var i, finalposition, finalDimension,finalMaximised,finalMinimised;
+  var i, finalposition, finalDimension,finalMaximised,finalMinimised, parameters;
 
   const baseUrl = process.env.SERVER;
   OSjs.make("osjs/packages").register(
     "Task",
     (core, args, options, metadata) => {
+     
+      
+      if(Object.keys(args).length == 0){
+        parameters = "";
+      }
+      else{
+        parameters = args || "";
+      }
+      console.log(parameters);
       // Create a new Application instance
       const proc = core.make("osjs/application", {
         args,
@@ -82,7 +91,7 @@
     const iframe = document.createElement('iframe');
     iframe.style.width = '100%';
     iframe.style.height = '100%';
-    iframe.src = proc.resource(baseUrl+ "/oxindex" + suffix + '&oxauth=' + user.jwt);
+    iframe.src = proc.resource(baseUrl+ "/oxindex" + suffix + '&oxauth=' + user.jwt + '&newParams=' + parameters);
 
     iframe.setAttribute('border', '0');
 
@@ -106,3 +115,5 @@
   });
 }
 );
+
+

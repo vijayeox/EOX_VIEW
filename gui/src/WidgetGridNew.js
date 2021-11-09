@@ -1,4 +1,3 @@
-
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Grid, GridColumn as Column, GridToolbar } from '@progress/kendo-react-grid';
@@ -7,6 +6,8 @@ import { IntlService } from '@progress/kendo-react-intl'
 import { ExcelExport } from '@progress/kendo-react-excel-export';
 import WidgetDrillDownHelper from './WidgetDrillDownHelper';
 import { WidgetGridLoader } from './WidgetGridLoader.js';
+import "@progress/kendo-theme-bootstrap/dist/all.css";
+import Moment from 'moment';
 
 const loadingPanel = (
     <div className="k-loading-mask">
@@ -20,12 +21,12 @@ export default class WidgetGridNew extends React.Component {
         super(props);
         this.core = props.core;
         this.excelExporter = null;
-        this.allData = props.data ? props.data : [];
+        this.allData = this.props.data ? props.data : [];
         // this.filteredData = null;
         this.filterParams = props.filterParams
-        this.uuid = props.uuid
-        let configuration = props.configuration;
-        this.isDrillDownTable = props.isDrillDownTable;
+        this.uuid = this.props.uuid
+        let configuration = this.props.configuration;
+        this.isDrillDownTable = this.props.isDrillDownTable;
         this.resizable = configuration ? (configuration.resizable ? configuration.resizable : false) : false;
         this.filterable = configuration ? (configuration.filterable ? configuration.filterable : false) : false;
         this.groupable = configuration ? (configuration.groupable ? configuration.groupable : false) : false;
@@ -38,11 +39,21 @@ export default class WidgetGridNew extends React.Component {
         this.pageSize = configuration ? (configuration.pageSize ? configuration.pageSize : 10) : 10;
         let oxzionMeta = configuration ? (configuration['oxzion-meta'] ? configuration['oxzion-meta'] : null) : null;
         this.exportToExcel = oxzionMeta ? (oxzionMeta['exportToExcel'] ? oxzionMeta['exportToExcel'] : false) : false;
-        this.total_count = props.total_count
+        this.total_count = this.props.total_count
+        this.helper = this.core.make("oxzion/link");
         // data can be assigned as allData since the first call needs to be assigned here.
         this.state = {
+            props: this.props,
             displayedData: { data: this.allData, total: this.total_count },
-            dataState: { take: this.pageSize, skip: 0 }
+            dataState: { take: this.pageSize, skip: 0 },
+            filter: null,
+            pagination: {
+                skip: 0,
+                take: this.pageSize
+            },
+            sort: (configuration ? (configuration.sort ? configuration.sort : null) : null),
+            group: null,
+            exportFilterData: []
         };
 
         let beginWith = configuration ? configuration.beginWith : null;
@@ -56,16 +67,15 @@ export default class WidgetGridNew extends React.Component {
             this.state.group = beginWith.group ? beginWith.group : null;
             this.state.filter = beginWith.filter ? beginWith.filter : null;
         }
-
     }
 
     dataStateChange = (e) => {
-        console.log(e);
+        // console.log(e);
         this.setState({
             ...this.state,
             dataState: e.dataState
         }, () => {
-            console.log(this.state.dataState);
+            // console.log(this.state.dataState);
         });
     }
 
@@ -85,8 +95,8 @@ export default class WidgetGridNew extends React.Component {
     parseData = () => {
         let fieldDataTypeMap = new Map();
         for (const config of this.columnConfig) {
-            if (config['dataType']) {
-                fieldDataTypeMap.set(config['field'], config['dataType']);  
+            if (config['dataType'] === "date" || config['type'] === "date") {
+                fieldDataTypeMap.set(config['field'], (config['dataType'] || config['type']));
             }
         }
         for (let dataItem of this.allData) {
@@ -109,8 +119,30 @@ export default class WidgetGridNew extends React.Component {
     }
 
     drillDownClick = (evt) => {
-        WidgetDrillDownHelper.drillDownClicked(WidgetDrillDownHelper.findWidgetElement(evt.nativeEvent ? evt.nativeEvent.target : evt.target), evt.dataItem)
-        ReactDOM.unmountComponentAtNode(this.props.canvasElement)
+        // console.log(this.props.configuration);
+        let drillDownTarget = this.state.props.configuration["oxzion-meta"]['drillDown']['target'];
+        let drillDownField = this.state.props.configuration["oxzion-meta"]['drillDown']['drillDownField'];
+        if (drillDownTarget == 'file') {
+            let appName = this.state.props.configuration["oxzion-meta"]['drillDown']['nextWidgetId'];
+            let eventData = evt.dataItem;
+            // console.log("Inside the file log Content" + eventData); //Need to open a URL
+            this.launchApplication(eventData, appName, drillDownField)
+        } else {
+            WidgetDrillDownHelper.drillDownClicked(WidgetDrillDownHelper.findWidgetElement(evt.nativeEvent ? evt.nativeEvent.target : evt.target), evt.dataItem)
+            ReactDOM.unmountComponentAtNode(this.state.props.canvasElement)
+        }
+    }
+
+    launchApplication(event, selectedApplication, drillDownField) {
+        console.log(event[drillDownField]);
+        if (drillDownField) {
+            this.helper.launchApp({
+                // pageId: event.target.getAttribute("page-id"),
+                pageTitle: event.name,
+                // pageIcon: event.target.getAttribute("icon"),
+                fileId: (event[drillDownField]) ? event[drillDownField] : event.uuid,
+            }, selectedApplication);
+        }
     }
 
     hasBackButton() {
@@ -170,6 +202,13 @@ export default class WidgetGridNew extends React.Component {
         }
     }
 
+    myCustomDateCell = (props,config) => {
+        if (props.dataItem[props.field] !== '') {
+          return <td>{Moment(props.dataItem[props.field]).format(config.dateFormat || "YYYY/MM/DD")}</td>
+        }
+        return <td>{props.dataItem[props.field]}</td>
+    }
+
     render() {
         let thiz = this;
         let hasBackButton = this.hasBackButton()
@@ -184,10 +223,13 @@ export default class WidgetGridNew extends React.Component {
                     }
                 } else {
                     if (config['type'] == null) {
-                        columns.push(<Column field={config['field']} title={config['title']} key={config['field']} />);
+                        columns.push(<Column field={config['field']} title={config['title']} key={config['field']} {...config} style={config['className'] ? config['className'] : null}/>);
+                    }
+                    else if(config['type'] == 'date'){
+                        columns.push(<Column field={config['field']} title={config['title']} filter="date" key={config['field']} {...config} style={config['className'] ? config['className'] : null} cell={(props) => thiz.myCustomDateCell(props,config)} />);
                     } else {
                         columns.push(<Column field={config['field']} title={config['title']} filter={config ? ((config['type'] == 'number') ? 'numeric' : config['type']) : "numeric"
-                        } key={config['field']} />);
+                        } key={config['field']} {...config} style={config['className'] ? config['className'] : null} />);
                     }
                 }
             }
@@ -197,12 +239,11 @@ export default class WidgetGridNew extends React.Component {
         let gridTag = <Grid
             style={{ height: this.height, width: this.width }}
             className={this.isDrillDownTable ? "drillDownStyle" : ""}
-            filterable={true}
-            sortable={true}
-            pageable={true}
+            filterable={this.filterable}
             filterOperators={{
                 'text': [
                     { text: 'grid.filterStartsWithOperator', operator: 'startswith' },
+                    { text: 'grid.filterStartsWithOperator', operator: 'endswith' },
                     { text: 'grid.filterContainsOperator', operator: 'contains' },
                     { text: 'grid.filterNotContainsOperator', operator: 'doesnotcontain' },
                     { text: 'grid.filterEqOperator', operator: 'eq' },
@@ -234,7 +275,6 @@ export default class WidgetGridNew extends React.Component {
             onDataStateChange={this.dataStateChange}
             onRowClick={this.drillDownClick}
             cellRender={(tdelement, cellProps) => this.cellRender(tdelement, cellProps, this)}
-
         >
             {/* comment all the columns for testing with our api  */}
             {/* <GridColumn field="ProductID" filter="numeric" title="Id" />
@@ -243,7 +283,6 @@ export default class WidgetGridNew extends React.Component {
             <GridColumn field="UnitsInStock" filter="numeric" title="In stock" /> */}
             {getColumns()}
         </Grid>;
-
         let gridLoader = <WidgetGridLoader
             dataState={this.state.dataState}
             onDataRecieved={this.dataRecieved}
@@ -254,11 +293,12 @@ export default class WidgetGridNew extends React.Component {
 
         return (
             <>
-                {gridLoader.length === 0 && loadingPanel}
-                { this.isDrillDownTable &&
-                    <div className="oxzion-widget-drilldown-table-icon" style={hasBackButton ? { right: "5%" } : { right: "7px" }} title="Drilldown Table">
-                        <i className="fas fa-angle-double-down fa-lg"></i>
-                    </div>
+                {this.state.displayedData.length === 0 && loadingPanel}
+                {
+                // this.isDrillDownTable &&
+                //     <div className="oxzion-widget-drilldown-table-icon" style={hasBackButton ? { right: "5%" } : { right: "7px" }} title="Drilldown Table">
+                //         <i className="fas fa-angle-double-down fa-lg"></i>
+                //     </div>
                 }
                 {/* {gridTag}
                 {gridLoader} */}
@@ -266,7 +306,7 @@ export default class WidgetGridNew extends React.Component {
                     <>
                         <div
                             className="oxzion-widget-drilldown-excel-icon"
-                            style={hasBackButton ? { right: "5%" } : { right: "10px" }}
+                            style={hasBackButton ? { right: "5%" } : { }}
                             onClick={this.saveAsExcel}>
                             <i className="fa fa-file-excel fa-lg"></i>
                         </div>
@@ -279,6 +319,12 @@ export default class WidgetGridNew extends React.Component {
                             {gridLoader}
                         </ExcelExport>
                     </>
+                }
+                {!this.exportToExcel && 
+                <>
+                    {gridTag}
+                    {gridLoader}
+                </>
                 }
             </>
         );

@@ -1,0 +1,45 @@
+{
+    "series": [{
+        "type": "ColumnSeries",
+        "name": "Bound Premium",
+        "dataFields": {
+            "valueY": "count",
+            "categoryX": "forva1"
+        },
+        "tooltipText": "[bold]{categoryX}: {valueY.formatNumber('#,###.00a')}[/]"
+    }],
+    "xAxes": [{
+        "type": "CategoryAxis",
+        "dataFields": {
+            "category": "forva1"
+        },
+        "title": {
+            "text": ""
+        },
+        "renderer": {
+            "grid": {
+                "template": {
+                    "location": 0
+                }
+            },
+            "minGridDistance": 1,
+            "labels": {
+                "rotation": 0,
+                "verticalCenter": "middle",
+                "horizontalCenter": "middle",
+                "width": "100",
+                "wrap": true,
+                "fontSize": 13
+            }
+        }
+    }],
+    "yAxes": [{
+        "type": "ValueAxis",
+        "title": {
+            "text": ""
+        }
+    }],
+    "cursor": {
+        "type": "XYCursor"
+    }
+}

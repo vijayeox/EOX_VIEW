@@ -1,0 +1,8 @@
+For View:
+
+step1: docker login repo.eoxvantage.com
+       provide credentials and login
+step2: docker pull repo.eoxvantage.com/eox_3.x_view_appbuilder
+step3: give permission to start_repo.sh file, chmod +x start_repo.sh 
+       and execute ./start_repo.sh
+

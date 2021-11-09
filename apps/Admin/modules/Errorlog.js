@@ -1,4 +1,4 @@
-import {React,OX_Grid} from "oxziongui";
+import { React, OX_Grid } from "oxziongui";
 import { TitleBar } from "./components/titlebar";
 
 class Errorlog extends React.Component {
@@ -20,22 +20,22 @@ class Errorlog extends React.Component {
 
   renderButtons(e, action) {
     var actionButtons = [];
-    Object.keys(action).map(function(key, index) {
+    Object.keys(action).map(function (key, index) {
       var buttonStyles = action[key].icon
         ? {
-            width: "2.2rem"
+            width: "2.2rem",
           }
         : {
             width: "auto",
             paddingTop: "5px",
             color: "white",
-            fontWeight: "600"
+            fontWeight: "600",
           };
       actionButtons.push(
         <abbr title={action[key].name} key={index}>
           <button
             type="button"
-            className=" btn manage-btn k-grid-edit-command"
+            className=" btn btn-primary manage-btn k-grid-edit-command"
             onClick={() => this.retryCall(e)}
             style={buttonStyles}
           >
@@ -63,7 +63,7 @@ class Errorlog extends React.Component {
           menu={this.props.menu}
           args={this.core}
         />
-        <div style={{ width: "100%", padding: "10px" }}></div>
+        <div style={{ width: "100%", padding: "7px" }}></div>
         <OX_Grid
           osjsCore={this.core}
           data={"errorlog"}
@@ -74,36 +74,36 @@ class Errorlog extends React.Component {
           columnConfig={[
             {
               title: "ID",
-              field: "id"
+              field: "id",
             },
             {
               title: "Type",
-              field: "error_type"
+              field: "error_type",
             },
             {
               title: "Payload",
-              field: "payload"
+              field: "payload",
             },
             {
               title: "Parameters",
-              field: "params"
+              field: "params",
             },
             {
               title: "Date Created",
-              field: "date_created"
+              field: "date_created",
             },
             {
               title: "Actions",
-              cell: e =>
+              cell: (e) =>
                 this.renderButtons(e, [
                   {
                     name: "Retry",
                     rule: "true",
-                    icon: "fa fa-redo"
-                  }
+                    icon: "fa fa-redo",
+                  },
                 ]),
-              filterCell: e => this.renderEmpty()
-            }
+              filterCell: (e) => this.renderEmpty(),
+            },
           ]}
         />
       </div>

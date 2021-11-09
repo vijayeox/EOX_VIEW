@@ -5,7 +5,7 @@
   .formio-component-well {
     p {
       li {
-        padding: 4px;
+        padding: 10px;
       }
     }
   }
@@ -23,7 +23,14 @@
   }
   label {
     span {
-      color: darkslategray;
+        color: darkslategray;
+        /*font-family: Quicksand;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 20px;
+	line-height: 25px;
+	color: red;*/
+
     }
   }
   .formio-error-wrapper{
@@ -35,6 +42,10 @@
   .formio-component-select {
     .form-control.is-invalid.dropdown {
       background-position: right calc(2.8em + 0.1875rem) center;
+    }
+
+    .choices__list--dropdown.is-active{
+      position: relative;
     }
   }
 
@@ -99,6 +110,10 @@
     a:not([href]){
       color: #007bff;
       cursor: pointer;
+    }
+
+    a[ref*="toggleCameraMode"] {
+      display: none;
     }
   }
   // * {
@@ -272,13 +287,26 @@
 
 .formBuilder {
   #form-save-button {
-    display: flex;
+    /*display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-evenly;
-
+    justify-content: space-evenly;*/
+    font-family: Quicksand;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 25px;
+    color: #275362;
+    
+    
+    
     .form-group{
       margin-bottom: unset;
+      background: #f30b0b;
+      border: 1px solid #B5CBDA;
+      box-sizing: border-box;
+      box-shadow: inset 0px 1px 1px 1px #B5CBDA;
+      border-radius: 8px;
     }
   }
 }

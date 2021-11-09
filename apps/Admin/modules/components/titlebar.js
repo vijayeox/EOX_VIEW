@@ -1,14 +1,23 @@
-import {React,KendoReactButtons} from "oxziongui";
+import { React, KendoReactButtons } from "oxziongui";
 import { DropDown } from "./index.js";
 
 export class TitleBar extends React.Component {
   render() {
     return (
       <div
-        style={{ paddingTop: "12px", marginLeft: "0px" }}
+        style={{
+          // paddingTop: "12px",
+          marginLeft: "0px",
+          display: "flex",
+          alignItems: "center",
+          position: "relative",
+          width: "92%",
+          top: "5px",
+        }}
         className="adminTitleBar"
       >
-        <div
+        {/* <div> */}
+        {/* <div
           style={{ marginLeft: "15px", position: "absolute", zIndex: "101" }}
         >
           <KendoReactButtons.Button
@@ -18,23 +27,23 @@ export class TitleBar extends React.Component {
               width: "45px",
               height: "45px",
               position: "relative",
-              bottom: "3px"
+              bottom: "3px",
             }}
           >
             <i className="fa fa-bars"></i>
           </KendoReactButtons.Button>
-        </div>
+        </div> */}
         <div className="col text-center" id="pageTitle">
           {this.props.title}
         </div>
         {this.props.orgSwitch ? (
           <div
             style={{
-              right: "15px",
-              top: "15px",
-              position: "absolute",
-              zIndex: "100",
-              width: "200px"
+              // right: "65px",
+              // top: "4px",
+              // position: "absolute",
+              zIndex: "1",
+              width: "155px",
             }}
           >
             <DropDown
@@ -42,7 +51,7 @@ export class TitleBar extends React.Component {
               mainList={"account"}
               selectedItem={{
                 id: "111",
-                name: "Switch Account"
+                name: "Switch Account",
               }}
               preFetch={true}
               onDataChange={this.props.orgChange}

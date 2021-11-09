@@ -1,0 +1,30 @@
+{
+    "series": [{
+        "type": "PieSeries",
+        "name": "# of Policy",
+        "dataFields": {
+            "value": "count",
+            "category": "forva1"
+        },
+        "slices": {
+            "template": {
+                "stroke": "#fff",
+                "strokeWidth": 2,
+                "strokeOpacity": 1,
+                "cursorOverStyle": [{
+                    "property": "cursor",
+                    "value": "pointer"
+                }],
+                "tooltipText": "{name}:[bold]{category} - {value.formatNumber('###,###.')}"
+            }
+        }
+    }],
+    "cursor": {
+        "type": "XYCursor"
+    },
+    "titles": [{
+        "text": "# of Policy by Status",
+        "fontSize": 25,
+        "marginBottom": 30
+    }]
+}

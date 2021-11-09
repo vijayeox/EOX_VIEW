@@ -1,1 +1,109 @@
 @import "./node_modules/@progress/kendo-theme-bootstrap/dist/all.css";
+
+.k-animation-container {
+  z-index: 20000;
+}
+
+.k-dialog-buttongroup {
+  position: relative !important;
+}
+.k-detail-row:last-child > .k-detail-cell > .GridCustomStyle {
+  margin-bottom: 10rem;
+}
+.sidenav---navicon---3gCRo > i {
+  font-size: 20px;
+}
+
+.k-grid-header, .k-grid-footer {
+  padding-right: 14px;
+
+  // This is to overwrite the css from kendo and make the columns align properly.  BUG #27763
+}
+
+.k-grid-header .k-header > .k-link {
+}
+
+.k-grouping-header-flex > .k-indicator-container:last-child {
+  line-height: 10px !important;
+}
+
+.k-grid th {
+  padding: 4px !important;
+}
+
+.k-filter-row td,
+.k-filter-row th {
+  padding: 2px !important;
+}
+
+.k-grid {
+  font-size: 12px !important;
+  font-family: Roboto, sans-serif !important;
+  margin: 10px !important;
+  width: 98% !important;
+  height: 95% !important;
+}
+
+.k-grid .k-alt {
+  background-color: transparent !important;
+}
+
+.k-grid th,
+.k-grid td {
+  padding: 10px !important;
+  font-family: Roboto, sans-serif !important;
+}
+
+// .k-grid-header,
+// .k-grid-table {
+.k-grid .k-alt {
+  background-color: transparent !important;
+}
+
+.k-grid th {
+  background-color: #f6f8fa;
+  color: #8f9bb3;
+}
+
+.k-grid td {
+  border-bottom: 1px solid #ebeff2 !important;
+}
+
+.k-grid th,
+.k-grid td {
+  padding: 10px !important;
+}
+// }
+div.jsx-parser {
+  display: contents;
+  td {
+    border-width: 0 0 0 1px;
+    border-color: rgba(33, 37, 41, 0.125);
+    border-bottom: 1px solid #ebeff2 !important;
+  }
+}
+
+.row-container-items,
+.row-container-items figure {
+  margin: 0px !important;
+  padding: 0px !important;
+  border-radius: 0px !important;
+}
+
+.k-textbox {
+  height: 20px !important;
+}
+
+.k-filtercell .k-filtercell-operator {
+  height: 20px !important;
+}
+
+.k-filtercell-operator {
+  display: grid !important;
+}
+
+.k-select {
+  padding: 10px !important;
+  height: 10px !important;
+  width: fit-content !important;
+}

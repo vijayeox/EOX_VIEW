@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Button, Modal, Form, Row, Col } from 'react-bootstrap'
-import { visualization } from '../../../metadata.json';
+import visualization from '../../../metadata.json';
 
 
 function VisualizationModal(props) {
@@ -17,11 +17,11 @@ function VisualizationModal(props) {
     if (props.content !== undefined) {
       var { name, type, renderer } = props.content;
       var configuration = JSON.stringify(props.content.configuration)
-      setInput({ ...input, ["name"]: name, ["type"]: type, ["configuration"]: configuration ,["renderer"]:renderer})
+      setInput({ ...input, ["name"]: name, ["type"]: type, ["configuration"]: configuration, ["renderer"]: renderer })
     }
     else {
       //clear all inputs
-      setInput({["name"]: "", ["type"]: "", ["configuration"]: "",["renderer"]:""})
+      setInput({ ["name"]: "", ["type"]: "", ["configuration"]: "", ["renderer"]: "" })
     }
   }, [props.content])
 
@@ -99,7 +99,7 @@ function VisualizationModal(props) {
         formData["name"] = input["name"];
         formData["type"] = input["type"];
         formData["configuration"] = input["configuration"];
-        formData["renderer"] =input["renderer"]
+        formData["renderer"] = input["renderer"]
 
         if (operation === allowedOperation.EDIT || operation === allowedOperation.ACTIVATE) {
           //pass additional form inputs required for edit operation
@@ -183,7 +183,7 @@ function VisualizationModal(props) {
       <Modal.Header >
         <Modal.Title id="contained-modal-title-vcenter">
           {props.modalType} Visualization
-         </Modal.Title>
+        </Modal.Title>
       </Modal.Header>
       <Modal.Body className="modal-body">
         <Form>

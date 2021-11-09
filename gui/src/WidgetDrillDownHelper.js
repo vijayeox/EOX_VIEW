@@ -30,25 +30,26 @@ class WidgetDrillDownHelper {
     static bindDrillDownDataContext(templateString, dataContext) {
         if (!templateString || ('' === templateString) || !dataContext) {
             return templateString;
-        }
-        let regex = /\${.*?}/;
-        while (true) {
-            let hits = regex.exec(templateString);
-            if (!hits) {
-                break;
-            }
-            templateString = templateString.replace(regex, function (matchedSubstring, offset, string) {
-                let key = matchedSubstring.substring(2, (matchedSubstring.length - 1)); //Extract string between ${ and }
-                let value = dataContext[key];
-                if (!value) {
-                    console.error('Filter string:', templateString);
-                    console.error('Event data context:', dataContext);
-                    throw `Value for key "${key}" not found in the event data context logged above.`;
+        } else {
+            let regex = /\${.*?}/;
+            while (true) {
+                let hits = regex.exec(templateString);
+                if (!hits) {
+                    break;
                 }
-                return value;
-            });
+                templateString = templateString.replace(regex, function (matchedSubstring, offset, string) {
+                    let key = matchedSubstring.substring(2, (matchedSubstring.length - 1)); //Extract string between ${ and }
+                    let value = dataContext[key];
+                    if (!value) {
+                        console.error('Filter string:', templateString);
+                        console.error('Event data context:', dataContext);
+                        throw `Value for key "${key}" not found in the event data context logged above.`;
+                    }
+                    return value;
+                });
+            }
+            return templateString;
         }
-        return templateString;
     }
 
     static drillDownClicked(widgetElement, dataContext) {
@@ -98,6 +99,14 @@ class WidgetDrillDownHelper {
             case 'dashboard':
                 messageContent["dashboard"] = context.nextWidgetId;
                 messageContent["dashboardTitle"] = context.dashboardTitle;
+                break;
+
+            case 'file':
+                messageContent["uuid"] = context.uuid;
+                messageContent["appName"] = context.appName;
+                messageContent["name"] = context.name;
+
+                // <a eoxapplication={item.appName} file-id={item.uuid}>{item.name}</a>
                 break;
 
             default:

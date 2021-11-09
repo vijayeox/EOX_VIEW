@@ -4,14 +4,9 @@ import { Overlay, Tooltip, Button, Form } from 'react-bootstrap';
 import WidgetModal from './Modal/WidgetModal'
 import './globalFunctions';
 import Swal from "sweetalert2";
-import '../../../public/css/sweetalert.css';
-// import './widgetEditorApp.scss';
-import { options } from '../../../../../gui/amcharts/core';
 import Select from 'react-select'
 import Flippy, { FrontSide, BackSide } from 'react-flippy';
 import WidgetEditorBody from './widgetEditorBody'
-// import '../../../public/css/dashboardEditor.scss'
-
 
 class WidgetEditorApp extends React.Component {
     constructor(props) {
@@ -22,7 +17,7 @@ class WidgetEditorApp extends React.Component {
             mode: null,
             flipped: false,
             widget: {
-                align: widgetConfiguration ? widgetConfiguration.align : null,
+                align: widgetConfiguration ? widgetConfiguration.align : "left",
                 uuid: widgetConfiguration ? widgetConfiguration.id : null,
                 // type: html
             },
@@ -38,6 +33,7 @@ class WidgetEditorApp extends React.Component {
             visualizationOptions: [],
             selectableWidgetOptions: [],
             selectableDashboardOptions: [],
+            selectableAppOptions: [],
             readOnly: true,
             isPreLoadedWidget: widgetConfiguration ? (widgetConfiguration.id ? true : false) : false
         };
@@ -69,7 +65,6 @@ class WidgetEditorApp extends React.Component {
         this.refs.editor.makeReadOnly(flag);
     }
 
-
     loadWidget = (uuid) => {
         let thiz = this;
         window.postDataRequest(`analytics/widget/${uuid}?data=true`).
@@ -86,33 +81,17 @@ class WidgetEditorApp extends React.Component {
                 }
                 let widget = responseData.widget;
                 thiz.setState((state) => {
-                    widget.align = state.widget.align; //Retain align property needed for ckEditor.
+                    widget.align = (state.widget.align) ? state.widget.align : "left"; //Retain align property needed for ckEditor.
                     state.widget = widget;
                     state.widgetName = widget.name;
                     state.widgetOwner = widget.is_owner
                     state.visibility = widget.ispublic
                     return state;
-                },
-                    () => {
-
-                        // console.log(thiz.refs.editor)
-                        // if (thiz.refs.editor) {
-                        //     thiz.refs.editor.setWidgetData({
-                        //         data: widget.data,
-                        //         configuration: widget.configuration,
-                        //         queries: widget.queries,
-                        //         expression: widget.expression,
-                        //         readOnly: true
-                        //     });
-                        //     thiz.refs.editor.makeReadOnly(true);
-                        // }
-
-
-                    });
+                });
             }).
             catch(function (responseData) {
-                console.error('Could not load MLET.');
-                console.error(responseData);
+                // console.error('Could not load MLET.');
+                // console.error(responseData);
                 Swal.fire({
                     type: 'error',
                     title: 'Oops ...',
@@ -191,8 +170,7 @@ class WidgetEditorApp extends React.Component {
                             selectableWidgetOptions: selectableWidgetList,
                             showModal: false
                         });
-                    })
-                    .catch(function (response) {
+                    }).catch(function (response) {
                         thiz.setState({ showModal: false })
                         Swal.fire({
                             type: 'error',
@@ -215,70 +193,65 @@ class WidgetEditorApp extends React.Component {
                 });
             });
     }
+
     //Set the react app instance on the window so that the window can call this app to get its state before the window closes.
     componentDidMount() {
         window.widgetEditorApp = this;
         let thiz = this;
-        Promise.all([this._sendUnlimitedWidgetListRequest(), window.postDataRequest('analytics/visualization'), window.getAllPermission(), this._sendUnlimitedDashboardListRequest()])
+        Promise.all([this._sendUnlimitedWidgetListRequest(), window.postDataRequest('analytics/visualization'), window.getAllPermission(), this._sendUnlimitedDashboardListRequest(), window.postDataRequest('app')])
             .then((response) => {
                 let widgetData = response[0].data;
                 let dashboardData = response[3];
                 let dashboardResult = [];
+                let selectableAppList = [];
 
-                for (var i in dashboardData) {
-                    dashboardResult.push([dashboardData[i]]);
-                }
-
-                let widgetList = []
-                let dashboardList = []
+                Object.values(response[4]).map(app => {
+                    if (app.uuid) {
+                        selectableAppList.push({ "label": app.name, "value": app.name, "type": "file" });
+                    }
+                });
+                let widgetList = [];
+                let dashboardList = [];
                 widgetList = widgetData.map(widget => {
                     return (
                         <option key={widget.uuid} value={widget.uuid}>{widget.name}</option>
                     )
-                })
-
+                });
                 dashboardList = dashboardResult.map(dashboard => {
                     return (
                         <option key={dashboard.uuid} value={dashboard.uuid}>{dashboard.name}</option>
                     )
-                })
-
-                let selectableWidgetList = []
-                let visualList = []
-
+                });
+                let selectableWidgetList = [];
+                let visualList = [];
                 widgetData.map(widget => {
                     selectableWidgetList.push({ "label": widget.name, "value": widget.uuid, "type": widget.type })
                 });
-
-                let selectableDashboardList = []
+                let selectableDashboardList = [];
                 Object.values(response[3]).map(dashboard => {
                     if (dashboard.uuid) {
                         selectableDashboardList.push({ "label": dashboard.name, "value": dashboard.uuid, "type": "dashboard" })
                     }
-                })
-
+                });
                 let visualizationData = response[1].data;
-
                 visualList = visualizationData.map(visualization => {
                     return (
                         <option key={visualization.uuid} data-key={visualization.uuid} value={visualization.type}>{visualization.name}</option>
                     )
                 });
-
                 const { MANAGE_ANALYTICS_WIDGET_READ, MANAGE_ANALYTICS_WIDGET_WRITE } = response[2].permissions
-                thiz.setState({ selectableWidgetOptions: selectableWidgetList, visualizationOptions: visualList, widgetPermissions: { MANAGE_ANALYTICS_WIDGET_READ, MANAGE_ANALYTICS_WIDGET_WRITE }, selectableDashboardOptions: selectableDashboardList })
+                thiz.setState({ selectableWidgetOptions: selectableWidgetList, visualizationOptions: visualList, widgetPermissions: { MANAGE_ANALYTICS_WIDGET_READ, MANAGE_ANALYTICS_WIDGET_WRITE }, selectableDashboardOptions: selectableDashboardList, selectableAppOptions: selectableAppList })
                 if (thiz.state.widget.uuid) {
                     thiz.loadWidget(thiz.state.widget.uuid);
                 }
-            })
-            .catch(err => {
+            }).catch(err => {
                 console.error(err)
                 Swal.fire({
                     type: 'error',
                     title: 'Oops ...',
                     text: 'Failed to load MLETs. Please try after some time.'
                 });
-            })
+            });
     }
 
     componentDidUpdate() {
@@ -293,7 +266,6 @@ class WidgetEditorApp extends React.Component {
             });
             this.refs.editor.makeReadOnly(this.state.readOnly);
         }
-
     }
 
     updateWidgetState = (value) => {
@@ -306,8 +278,7 @@ class WidgetEditorApp extends React.Component {
         this.setState((state) => {
             if (!message || ('' === message)) {
                 delete state.errors[key];
-            }
-            else {
+            } else {
                 state.errors[key] = message;
             }
             return state;
@@ -320,7 +291,6 @@ class WidgetEditorApp extends React.Component {
         let promise = new Promise((resolve, reject) => {
             resolvePromise = resolve;
         });
-
         let widgetName = this.state.widgetName;
         if (widgetName) {
             widgetName = widgetName.trim();
@@ -329,8 +299,7 @@ class WidgetEditorApp extends React.Component {
             this.setErrorMessage('widgetName', 'Widget name is needed');
             console.debug('Widget name is null or empty. Invalid.');
             resolvePromise(false); //Found validation error.
-        }
-        else {
+        } else {
             let thiz = this;
             let errorMessage = null;
             let encodedName = encodeURIComponent(widgetName);
@@ -343,37 +312,31 @@ class WidgetEditorApp extends React.Component {
                             thiz.setErrorMessage('widgetName', 'MLET name is already in use. Please provide another name.');
                             resolvePromise(false);
                             console.log('MLET copy is in progress. Given MLET name is in use. Error.');
-                        }
-                        else {
+                        } else {
                             console.log('MLET copy is in progress. Given MLET name not found. Ok to continue.');
                             resolvePromise(true);
                         }
-                    }
-                    else if ('edit' === thiz.state.mode) {
+                    } else if ('edit' === thiz.state.mode) {
                         if (localWidget.uuid) { //Case of editing existing widget.
                             if (responseWidget) { //If name is found uuid's should match.
                                 if (responseWidget.uuid === localWidget.uuid) {
                                     console.log('UUIDs of MLET being edited and name search response MLET are matching. Ok to continue.');
                                     resolvePromise(true);
-                                }
-                                else {
+                                } else {
                                     thiz.setErrorMessage('widgetName', 'MLET name is already in use. Please provide another name.');
                                     resolvePromise(false);
                                     console.log('UUIDs not matching. Some other MLET has given name. Error.');
                                 }
-                            }
-                            else { //Else it is ok because it may be the name of the widget being edited OR a new name.
+                            } else { //Else it is ok because it may be the name of the widget being edited OR a new name.
                                 console.log('Widget having given name not found. Ok to continue.');
                                 resolvePromise(true);
                             }
-                        }
-                        else { //Case of new widget. Name should not be found.
+                        } else { //Case of new widget. Name should not be found.
                             if (responseWidget) {
                                 thiz.setErrorMessage('widgetName', 'MLET name is already in use. Please provide another name.');
                                 resolvePromise(false);
                                 console.log('UUIDs not matching. Some other MLET has given name.');
-                            }
-                            else {
+                            } else {
                                 resolvePromise(true);
                                 console.log('MLET having given name not found. Ok to continue.');
                             }
@@ -385,8 +348,7 @@ class WidgetEditorApp extends React.Component {
                         thiz.setErrorMessage('widgetName', null);
                         console.debug('MLET name is not in use. valid.');
                         resolvePromise(true); //No validation errors.
-                    }
-                    else {
+                    } else {
                         console.error(response);
                         Swal.fire({
                             type: 'error',
@@ -406,7 +368,6 @@ class WidgetEditorApp extends React.Component {
         let promise = new Promise((resolve, reject) => {
             resolvePromise = resolve;
         });
-
         let thiz = this;
         this.isWidgetNameValid().then(function (isNameValid) {
             console.debug(`Widget name valid? ${isNameValid}`);
@@ -414,12 +375,10 @@ class WidgetEditorApp extends React.Component {
                 thiz.refs.editor.areAllFieldsValid();
             console.debug(`Overall validation result:${result}`);
             resolvePromise(result);
-        }).
-            catch(function () {
-                console.debug('widgetEditorApp.isWidgetNameValid call failed.');
-                resolvePromise(false);
-            });
-
+        }).catch(function () {
+            console.debug('widgetEditorApp.isWidgetNameValid call failed.');
+            resolvePromise(false);
+        });
         return promise;
     }
 
@@ -430,20 +389,19 @@ class WidgetEditorApp extends React.Component {
         switch (widget.type) {
             case 'aggregate':
             case 'inline':
+            case 'profile':
                 // case 'html':
                 type = 'inline';
                 break;
-
             case 'chart':
             case 'table':
             case 'grid':
                 type = 'block';
                 break;
-
             case 'html':
+            case 'report':
                 type = 'html';
                 break;
-
         }
         return {
             align: widget.align,
@@ -456,7 +414,6 @@ class WidgetEditorApp extends React.Component {
     saveWidget = () => {
         let state = this.state;
         let editorState = this.refs.editor.getState();
-
         let params = {
             'configuration': editorState.configuration,
             'expression': editorState.expression,
@@ -473,8 +430,7 @@ class WidgetEditorApp extends React.Component {
             params["visualization_uuid"] = state.visualizationID
             params["ispublic"] = parseInt(state.visibility);
             return window.postDataRequest('analytics/widget', params, 'post');
-        }
-        else {
+        } else {
             switch (state.mode) {
                 case 'edit':
                     params['uuid'] = widgetId;
@@ -482,7 +438,6 @@ class WidgetEditorApp extends React.Component {
                     params['version'] = state.widget.version;
                     return window.postDataRequest('analytics/widget/' + state.widget.uuid, params, 'put');
                     break;
-
                 case 'copy':
                     params["ispublic"] = parseInt(state.visibility);
                     return window.postDataRequest('analytics/widget/' + state.widget.uuid + '/copy', params, 'post');
@@ -497,7 +452,6 @@ class WidgetEditorApp extends React.Component {
         let promise = new Promise((resolve, reject) => {
             resolvePromise = resolve;
         });
-
         let thiz = this;
         this.areAllFieldsValid().then(function (areFieldsValid) {
             console.debug(`widgetEditorApp.areAllFieldsValid resolved with ${areFieldsValid}`);
@@ -516,12 +470,10 @@ class WidgetEditorApp extends React.Component {
                     text: 'Form fields have errors. Please resolve errors and try again.'
                 });
                 resolvePromise(true); //true indicates there are errors.
-            }
-            else {
+            } else {
                 resolvePromise(false); //false indicates there are no errors.
             }
         });
-
         return promise;
     }
 
@@ -600,7 +552,6 @@ class WidgetEditorApp extends React.Component {
                                     options={this.state.selectableWidgetOptions}
                                 />
                             </div>
-
                             {!this.state.readOnly && !this.state.flipped &&
                                 <>
                                     <div className="left-align">
@@ -669,8 +620,15 @@ class WidgetEditorApp extends React.Component {
                         </div>
                         {!this.state.flipped &&
                             <div className="row">
-                                {((this.state.widget.type === 'chart' || this.state.widget.type === 'table' || this.state.widget.type === 'inline') && (this.state.selectableWidgetOptions.length > 0) && (this.state.selectableDashboardOptions.length > 0)) &&
-                                    <WidgetEditorBody ref="editor" type={this.state.widget.type} widget={this.state.widget} syncWidgetState={(name, value, data) => this.syncWidgetState(name, value, data)} selectableWidgetOptions={this.state.selectableWidgetOptions} selectableDashboardOptions={this.state.selectableDashboardOptions} />
+                                {((this.state.widget.type === 'chart' || this.state.widget.type === 'table' || this.state.widget.type === 'inline' || this.state.widget.type === 'html' || this.state.widget.type === 'profile' || this.state.widget.type === 'report') && (this.state.selectableWidgetOptions.length > 0) && (this.state.selectableDashboardOptions.length > 0) && (this.state.selectableAppOptions.length > 0)) &&
+                                    <WidgetEditorBody
+                                        ref="editor"
+                                        type={this.state.widget.type}
+                                        widget={this.state.widget}
+                                        syncWidgetState={(name, value, data) => this.syncWidgetState(name, value, data)}
+                                        selectableWidgetOptions={this.state.selectableWidgetOptions}
+                                        selectableDashboardOptions={this.state.selectableDashboardOptions}
+                                        selectableAppOptions={this.state.selectableAppOptions} />
                                 }
                             </div>
                         }
@@ -714,20 +672,23 @@ class WidgetEditorApp extends React.Component {
                                             <option key="2" value="0">Private</option>
                                         </select>
                                     </div>
-
                                     <button type="button" className="btn btn-primary add-series-button" title="Go Back" style={{ borderRadius: "26px", height: "30px" }}
                                         onClick={() => this.setState({ flipped: false })} >
                                         <span className="fa fa-arrow-left" aria-hidden="true"></span>
                                     </button>
-
                                 </div>
 
-
                                 <div className="row">
-                                    {(this.state.widget.type === 'chart' || this.state.widget.type === 'table' || this.state.widget.type === 'inline' || this.state.widget.type === 'html') &&
-                                        <WidgetEditorBody ref="editor" type={this.state.widget.type} widget={this.state.widget} syncWidgetState={(name, value, data) => this.syncWidgetState(name, value, data)} selectableWidgetOptions={this.state.selectableWidgetOptions} selectableDashboardOptions={this.state.selectableDashboardOptions} />
+                                    {(this.state.widget.type === 'chart' || this.state.widget.type === 'table' || this.state.widget.type === 'inline' || this.state.widget.type === 'html' || this.state.widget.type === 'profile' || this.state.widget.type === 'report') &&
+                                        <WidgetEditorBody
+                                            ref="editor"
+                                            type={this.state.widget.type}
+                                            widget={this.state.widget}
+                                            syncWidgetState={(name, value, data) => this.syncWidgetState(name, value, data)}
+                                            selectableWidgetOptions={this.state.selectableWidgetOptions}
+                                            selectableDashboardOptions={this.state.selectableDashboardOptions}
+                                            selectableAppOptions={this.state.selectableAppOptions} />
                                     }
-
                                 </div>
                             </>
                         }
@@ -744,7 +705,6 @@ class WidgetEditorApp extends React.Component {
 }
 
 export default WidgetEditorApp;
-
 window.startWidgetEditorApp = function (editor) {
     ReactDOM.render(<WidgetEditorApp editor={editor} />, document.getElementById('root'));
 }

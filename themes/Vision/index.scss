@@ -4,6 +4,9 @@
 @import "./src/desktop";
 @import "./src/gui";
 @import "./src/animations";
+@import "~@fortawesome/fontawesome-pro/css/all.css";
+@import url("https://fonts.googleapis.com/css?family=Didact+Gothic");
+@import "./node_modules/bootstrap/dist/css/bootstrap.css";
 
 body,
 html {
@@ -65,23 +68,23 @@ html {
   }
 
   &[data-action="minimize"] {
-  & > div {
+    & > div {
       background-position: 50% 50%;
       background-size: 14px;
-    background-image: url("./src/images/minimize.svg");
-  }
-    &:hover{
-     transform: scale(1.2);
+      background-image: url("./src/images/minimize.svg");
+    }
+    &:hover {
+      transform: scale(1.2);
     }
   }
   &[data-action="maximize"] {
-  & > div {
+    & > div {
       background-position: 50% 50%;
       background-size: 14px;
-    background-image: url("./src/images/maximize.svg");
-  }
-    &:hover{
-     transform: scale(1.2);
+      background-image: url("./src/images/maximize.svg");
+    }
+    &:hover {
+      transform: scale(1.2);
     }
   }
 
@@ -94,8 +97,8 @@ html {
       background-image: url("./src/images/close.svg");
     }
 
-    &:hover{
-     transform: scale(1.2);
+    &:hover {
+      transform: scale(1.2);
     }
   }
 }
@@ -109,19 +112,38 @@ html {
 }
 
 .osjs-window-title {
-  padding: 0;
-  padding-left: 0;
   font-size: 14px;
+  margin: 0px 0px 0px 9px;
+  height: auto !important;
+  color: white;
 }
 
 .osjs-window-icon {
   padding: 0;
 }
 
+.osjs-window-breadcrumb {
+  display: flex;
+  line-height: 0;
+  flex-grow: 50;
+  height: auto !important;
+  align-items: baseline;
+  font-size: 11px !important;
+
+  .disabledBreadcrumb {
+    font-weight: bold;
+  }
+}
+.activeBreadcrumb > a > i {
+  font-size: 0px;
+}
+.disabledBreadcrumb > a > i {
+  font-size: 0px;
+}
 .osjs-gui-menu {
   ul {
-    background-color: #333333;
-    border: 1px solid #000;
+    background-color: #265160;
+    border: 1px solid #265160;
     color: white;
   }
 
@@ -131,6 +153,7 @@ html {
 }
 
 .osjs-panel-item[data-name="tray"] > div > img {
+  margin-left: -7px !important;
 }
 
 .osjs-gui-menu-separator::after {
@@ -159,22 +182,23 @@ html {
   background-color: #333333;
 }
 
-.osjs-window-title {
-  color: #fff;
-}
-
-.osjs-window-icon > div {
+.osjs-window-icon > i {
   width: 3em;
   height: 3em;
   background-color: #275362;
+  margin: 4px 5px 2px 20px !important;
 }
 
 .osjs-panel-item[data-name="windows"] > div {
-  border: 0px solid #333;
-  background-color: transparent;
-  color: #fff;
+  font-size: 12px;
+  color: white !important;
+  background-color: #275362 !important;
   border-radius: 0px;
-  border-right: 1px solid rgb(99, 97, 97);
+  padding: 12px 3px !important;
+  align-self: center;
+  img {
+    max-height: 20px;
+  }
 }
 
 .osjs-panel .osjs-panel-item--icon > img {
@@ -182,67 +206,121 @@ html {
 }
 
 .osjs-gui-menu ul > li {
-  padding: 2px;
+  padding: 0px;
 }
 
-.osjs-panel-item[data-name="windows"] {
-  .osjs-panel-item--clickable:hover img {
-    // -webkit-transition: all 200ms ease-in;
-    // -webkit-transform: scale(1.1);
-    // -ms-transition: all 200ms ease-in;
-    // -ms-transform: scale(1.1);
-    // -moz-transition: all 200ms ease-in;
-    // -moz-transform: scale(1.1);
-    // transition: all 200ms ease-in;
-    // transform: scale(1.1);
-  }
+// .osjs-panel-item[data-name="windows"] {
+//   .osjs-panel-item--clickable:hover img {
+//     -webkit-transition: all 200ms ease-in;
+//     -webkit-transform: scale(1.1);
+//     -ms-transition: all 200ms ease-in;
+//     -ms-transform: scale(1.1);
+//     -moz-transition: all 200ms ease-in;
+//     -moz-transform: scale(1.1);
+//     transition: all 200ms ease-in;
+//     transform: scale(1.1);
+//   }
 
-  .osjs-panel-item--clickable:hover {
-    background: #588fa26e;
-  }
+//   .osjs-panel-item--clickable:hover {
+//     background: #588fa26e;
+//   }
+// }
+
+// .osjs-panel-item--clickable:hover img {
+// -webkit-transition: all 200ms ease-in;
+// -webkit-transform: scale(1.1);
+// -ms-transition: all 200ms ease-in;
+// -ms-transform: scale(1.1);
+// -moz-transition: all 200ms ease-in;
+// -moz-transform: scale(1.1);
+// transition: all 200ms ease-in;
+// transform: scale(1.1);
+// }
+
+.customActions > .btn.btn-primary {
+  color: #345561 !important;
+  background-color: #e4e7eb !important;
+  border-radius: 42px;
+  font-size: 13px;
+  box-shadow: 0px 0px 4px 0px grey;
 }
 
-.osjs-panel-item--clickable:hover img {
-  // -webkit-transition: all 200ms ease-in;
-  // -webkit-transform: scale(1.1);
-  // -ms-transition: all 200ms ease-in;
-  // -ms-transform: scale(1.1);
-  // -moz-transition: all 200ms ease-in;
-  // -moz-transform: scale(1.1);
-  // transition: all 200ms ease-in;
-  // transform: scale(1.1);
+.customActions .btn {
+  margin-right: 7px;
+  border-color: #c5d2d6 !important;
+}
+.customActions > .btn.btn-primary:hover {
+  // color: #345561 !important;
+  // border: 0px solid #c7cdd5;
+  border-color: #c7cdd5;
+  background-color: #c5d2d6 !important;
+  // > i {
+  //   color: whitesmoke !important;
+  // }
 }
 
-.osjs-panel {
-  height: 3.5em;
-  min-height: 3.5em;
-}
 
-.osjs-panel .osjs-panel-item--icon {
-  margin: 2px;
-}
+// For all action buttons in a app on list view page
+// .customActions.dash-manager-buttons > button:last-child {
+//   margin-right: 2.4%;
+// }
+
+
+// Removed this from the themes and moved to the _panel.scss
+
+// .osjs-panel {
+//   height: 2.5em !important;
+//   min-height: 2.5em !important;
+// }
+
+// .osjs-panel .osjs-panel-item--icon {
+//   margin: 0px 2px 0px 2px;
+
+//   > i > span {
+//     font-size: 14px;
+//   }
+// }
 
 .osjs-window-header {
-  min-height: 3em;
+  min-height: 2em;
   height: auto;
   align-items: center;
+  // display: none;
 }
-.osjs-window-title {
-  height: auto !important;
-  color: white;
-}
-.osjs-panel-item[data-name="windows"] > div {
 
-  font-size: 12px;
-  color: white;
-  background-color: rgba(255, 255, 255, 0.4);
-  border-radius: 20px;
-  padding: 5px 10px;
-  align-self: center;
-
-  img {
-    max-height: 20px;
+[data-maximized="false"] {
+  .osjs-window-header {
+    display: flex;
   }
+}
+
+[data-maximized="true"] {
+  .osjs-window-header {
+    display: none;
+  }
+}
+
+[data-id="Profile_Window"],
+[data-id="ChatWindow"],
+[data-id="PreferencesWindow"] {
+  .osjs-window-header {
+    display: flex;
+  }
+}
+
+// [data-id="Profile_Window"],
+// [data-id="Profile_Window"] {
+//   .osjs-window-header  {
+//     display: flex;
+//   }
+// }
+
+.osjs-panel-item[data-name="menu"] {
+  display: contents;
+  align-items: center;
+  padding: 0;
+  width: 10%;
+  padding: 0px !important;
 }
 
 .k-dateinput-wrap {
@@ -303,5 +381,76 @@ label {
   color: #275362;
 }
 
+// This is for the spacing and we have added it to to contain till 1000 or 5000 page count on the dropdown
+// [BUG] #27118
+.k-pager-sizes .k-dropdown,
+.k-pager-sizes .k-dropdowntree,
+.k-pager-sizes > select {
+  width: 7em;
+}
+
+.sidenav---navitem---9uL5T {
+  color: white !important;
+}
+
+.col-md-12.dash-manager-buttons {
+  padding-right: 0px;
+  padding-left: 0px;
+  margin-top: 1px;
+  margin-bottom: 2px;
+
+  .form-control {
+    border: 0px !important;
+  }
+}
+.docListDiv .accordion > .card {
+  border: 0px;
+}
+
+.col-md-3.docListDiv {
+  padding: 0px 4px 0px 15px !important;
+}
+
+.dash-manager-buttons.card-header {
+  margin: 3px;
+
+  .button.btn.btn-primary {
+    padding: 0.1rem 0.4rem;
+  }
+}
+
+.docListBody.borderActive p > a,
+.docListBody.border p > a {
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.links > button {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.k-upload .k-dropzone,
+.k-upload .k-upload-button {
+  font-size: 12px;
+}
+// .tab-content {
+  // min-height: 830px;
+// }
+.accordion .card .card-header > button {
+  border-color: #a2b5bc;
+  color: #345561 !important;
+  background-color: #e4e7eb !important;
+  border-radius: 6px;
+  padding: 0.2rem 0.5rem 0.2rem 0.5rem;
+}
+.accordion .card .card-header {
+  background-color: transparent !important;
+}
+.collapse.show .card-body .docItems .docListBody > i {
+  font-size: 10px;
+}
 @import "variables.scss";
 @import "eox.scss";

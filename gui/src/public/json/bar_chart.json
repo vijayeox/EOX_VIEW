@@ -1,0 +1,46 @@
+{
+	"series": [{
+		"type": "ColumnSeries",
+		"name": "Quoted Premium",
+		"dataFields": {
+			"valueX": "count",
+			"categoryY": "underwriter"
+		},
+		"tooltipText": "{name}:[bold]{categoryY} - {valueX}[/]"
+	}],
+	"yAxes": [{
+		"type": "CategoryAxis",
+		"dataFields": {
+			"category": "underwriter"
+		},
+		"title": {
+			"text": "Underwriter"
+		},
+		"renderer": {
+			"grid": {
+				"template": {
+					"location": 0
+				}
+			},
+			"labels": {
+				"verticalCenter": "middle",
+				"horizontalCenter": "middle"
+			},
+			"minGridDistance": 13
+		}
+	}],
+	"xAxes": [{
+		"type": "ValueAxis",
+		"title": {
+			"text": "Quoted Premium ($)"
+		}
+	}],
+	"cursor": {
+		"type": "XYCursor"
+	},
+	"titles": [{
+		"text": "Quoted Premium by Underwriter",
+		"fontSize": 15,
+		"marginBottom": 15
+	}]
+}

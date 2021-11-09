@@ -2,6 +2,8 @@
 
 #npm rebuild node-sass
 ./clean.sh
+chmod 777 gui/ -R
+chown root:root gui/ -R
 ./build.sh gui
 ./build.sh iconpacks
 ./build.sh themes

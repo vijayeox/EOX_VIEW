@@ -1,74 +1,129 @@
 .Window_Analytics {
-    @import '~bootstrap/dist/css/bootstrap.css';
-    @import '~@fortawesome/fontawesome-pro/css/all.css';
-    @import "./components/burger-menu.css";
+  @import "~bootstrap/dist/css/bootstrap.css";
+  @import "~@fortawesome/fontawesome-pro/css/all.css";
+  @import "./components/burger-menu.css";
 }
 
+@import "../../gui/src/public/css/dashboardEditor.scss";
+@import "../../gui/src/public/css/sweetalert.css";
+@import "../../gui/src/components/widget/editor/widgetEditorApp.scss";
+
 .osjs-window-header {
-    background: #265160;
+  background: #265160;
+  display: none;
 }
 
 .osjs-window-title {
-    color:white;
+  color: white;
 }
 
 .full-height {
-    height:100vh;
+  height: 100vh;
 }
 
 .full-width {
-    width:100%;
+  width: 100%;
 }
 
 .no-padding {
-    padding:0px;
+  padding: 0px;
 }
 
 .page-body {
-    height:calc(100%); /* Same height as .osjs-window-content */
+  height: calc(100%); /* Same height as .osjs-window-content */
 }
 
 .page-body .page-title {
-    text-align:center;
-    font-size:2em;
-    font-weight:bold;
-    padding:0.5em;
+  text-align: center;
+  font-size: 13px;
+  font-weight: bold;
+  padding: 0.5em;
 }
 
 .page-body .page-content {
-    overflow-y:scroll;
-    height:calc(100% - 4.0em); /* Height of .page-body minus title bar height. */
-    
+  overflow-y: scroll;
+  height: calc(100% - 0.2em); /* Height of .page-body minus title bar height. */
 }
 
 .page-body .dashboard {
-    height:calc(100%);
-    margin-left: 0.5em;
-    margin-right: 0.5em;
+  height: calc(100%);
+  margin-left: 0em;
+  margin-right: 0em;
+  background-color: #f3f3f3;
 }
 
-
-  //menu css
-  .Window_Analytics .bm-item-list .bm-item{
-    line-height: 2em !important;
-    padding-left: 1em;
+//menu css
+.Window_Analytics .bm-item-list .bm-item {
+  line-height: 2em !important;
+  padding-left: 1em;
 }
-.Window_Analytics .bm-item-list .bm-item i{
-    padding-right: 0.5em;
-}
-
-.Window_Analytics .bm-item:hover{
-    color: #ffffff !important;
+.Window_Analytics .bm-item-list .bm-item i {
+  padding-right: 0.5em;
 }
 
-.Window_Analytics .bm-menu{
-    padding: 2.5em 0 0 0 !important;
+.Window_Analytics .bm-item:hover {
+  color: #ffffff !important;
 }
 
-.Window_Analytics .activateDash .react-switch{
-    margin-top: 10px !important;
+.Window_Analytics .bm-menu {
+  padding: 2.5em 0 0 0 !important;
 }
 
-.Window_Analytics .deactivateDash .react-switch{
-    margin-top: 6px !important;
+.Window_Analytics .activateDash .react-switch {
+  margin-top: 10px !important;
 }
+
+.Window_Analytics .deactivateDash .react-switch {
+  margin-top: 6px !important;
+}
+
+.search-wrapper {
+  padding: 0px !important;
+  background: #fff;
+}
+
+.dashboard-filter-field .form-group {
+  margin-bottom: 0px !important;
+}
+
+.sidenav---navicon---3gCRo > i {
+  font-size: 20px;
+}
+
+.breadcrumbHeader {
+  display: contents;
+}
+
+.breadcrumbHeader > .row {
+  display: flex;
+}
+
+.k-indicator-container {
+  height: 30px;
+  font-size: 12px;
+}
+
+.k-grid-header .k-header > .k-link {
+}
+
+.k-grid th {
+  padding: 4px;
+}
+
+.k-filter-row td,
+.k-filter-row th {
+  padding: 2px;
+}
+
+.k-grid {
+  font-size: 12px;
+}
+
+// .k-grid {
+//   font-size: 12px !important;
+// }
+
+// .k-grid th,
+// .k-grid td {
+//   padding: 10px !important;
+// }

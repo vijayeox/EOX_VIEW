@@ -8,7 +8,6 @@
   right: 98px;
 }
 
-
 .dashboard .flippy-back {
   height: 120vh !important;
   min-height: 70vh;
@@ -42,22 +41,21 @@
   background-color: #265160c4 !important;
 }
 
-
 .dashboard .deactivateDash .react-switch-bg {
   background: rgb(39, 83, 98) !important;
 }
 
 .dashboard .react-switch-handle {
   background: #fff !important;
-
 }
 
 //dashboard editor filter
 .create-filter-form {
-  padding: 10px;
-  float: left;
-  background: #a9c4c4;
-  width: 99%;
+  flex-direction: column;
+  padding: 5px 5px 0 5px;
+  background: white;
+  display: flex;
+  flex: 1;
 }
 
 .create-filter-form .btn {
@@ -72,6 +70,7 @@
 
 .dates-container {
   display: flex;
+  gap: 1rem;
 }
 
 .react-datepicker-wrapper {
@@ -89,12 +88,11 @@
   height: 20px;
 }
 
-
 .dates-container input,
 .create-filter-form input {
   display: block;
-  height: calc(1.5em + .75rem + 2px);
-  padding: .375rem .75rem;
+  height: calc(1.5em + 0.75rem + 2px);
+  padding: 0.375rem 0.75rem;
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;
@@ -102,38 +100,59 @@
   background-color: #fff;
   background-clip: padding-box;
   border: 1px solid #ced4da;
-  border-radius: .25rem;
-  transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+  border-radius: 0.25rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   width: 12vw;
-}
-
-.create-filter-form input {
-  // width: 20vw;
 }
 
 .dates-container input {
   width: 140px;
-
 }
 
 #filtertype {
   max-width: 23vw;
 }
 
+div#filter-form-container {
+  background: white;
+  border-radius: 10px;
+  margin-top: 5px;
+  box-shadow: -3px 3px 18px #cccccc;
+}
+
+div#filter-form-container.show-filter-panel {
+  background: white;
+  border-radius: 5px;
+  margin-top: 5px;
+  box-shadow: -3px 3px 18px #cccccc;
+  overflow-y: scroll;
+  height: 70vh;
+  max-height: 70vh;
+  position: absolute;
+  z-index: 10000;
+  right: 0;
+  top: 0;
+  transition: 0.8s ease-in;
+}
+
+// .show-filter-panel {
+
+// }
+
 .disappear {
   display: none;
 }
 
-#filtereditor-form-container,
-#filter-form-container {
-  background: #a9c4c4;
-  border-radius: 10px;
-  margin-top: 60px;
+.blurOut {
+  display: block;
+  filter: blur(5px);
+  pointer-events: none;
 }
 
 #filtereditor-form-container button.close,
 #filter-form-container button.close {
-  padding-right: 1em;
+  background-color: transparent;
+  border-radius: none;
 }
 
 #filtereditor-form-container label,
@@ -141,10 +160,22 @@
   color: #275362;
 }
 
+#filtereditor-form-container {
+  background-color: white;
+  border-radius: 10px;
+  margin-top: 60px;
+}
+
+.apply-filter-btn-wrapper {
+  display: flex;
+  margin: 10px auto;
+  padding-bottom: 10px;
+}
+
 .apply-filter-btn {
-  position: initial !important;
-  border-radius: 12px;
+  border-radius: 0px;
   margin-left: 0px;
+  flex: 1;
 }
 
 .custom-react-select-container {
@@ -155,9 +186,8 @@
 }
 
 .custom-react-select-container:hover {
-  background-color: #DEEBFF !important;
+  background-color: #deebff !important;
   width: 100%;
-
 }
 
 .custom-react-select-container i {
@@ -171,7 +201,7 @@
   // padding: 1em;
   padding-top: 12px;
   padding-bottom: 0px;
-  position: absolute;
+  position: relative;
   width: auto;
   float: right;
   right: 0;
@@ -180,24 +210,22 @@
 }
 
 .dashboard-viewer-div {
-  position: absolute;
-  margin-top: 4em;
+  position: relative;
+  margin-top: 0em !important;
+  float: left;
   width: 100%;
 }
-
-
 
 .react-select-container {
   z-index: 100;
   width: 300px;
   float: left;
   right: 10px;
-
 }
 
 .dash-manager-buttons .btn {
   margin-right: 7px;
-  border-color: #eaeaea;
+  border-color: #c5d2d6 !important;
 }
 
 .dash-manager-buttons {
@@ -207,36 +235,55 @@
   position: relative;
 }
 
-.dash-manager-buttons .btn-primary {
-  color: #345561;
-  background-color: #c5d2d6;
+.dash-manager-buttons .btn.btn-primary {
+  color: #345561 !important;
+  background-color: #e4e7eb !important;
   border-radius: 42px;
-  font-size: 14px;
-  box-shadow: 0px 0px 5px 0px grey;
+  font-size: 13px !important;
+  box-shadow: 0px 0px 4px 0px grey;
 }
 
-.dash-manager-buttons .btn-primary:hover {
-  color: whitesmoke;
-  background-color: #c5d2d6;
+.dash-manager-buttons .btn.btn-primary:hover {
+  // color: whitesmoke;
+  // background-color: #c5d2d6;
+  color: #345561;
+  border-color: #c7cdd5;
+  background-color: #c5d2d6 !important;
+}
+
+.dasboard-viewer-wrapper {
+  display: flex;
+  flex-direction: column;
+
+  .dashboard-drilldown-info-wrapper {
+    display: flex;
+    align-items: center;
+    position: relative;
+    margin-bottom: 0px;
+  }
 }
 
 .dasboard-viewer-content {
-  // border: 1px solid#1d6165;
-  min-height: 20px;
-  border-radius: 4px;
-  box-shadow: 2px 5px#c6b5b5;
-  padding: 1em;
-  border: 0.5px solid grey;
-  width: max-content;
-  min-width: 99%;
+  background-color: #f3f3f3;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  min-width: 100%;
+  margin-top: 1em;
+  // margin-top: 4em;
 }
 
 .dashboard-rollup-button {
-  color: black;
+  color: white;
   cursor: pointer;
-  right: 1%;
+  right: 0%;
   position: absolute;
-} 
+  top: 15%;
+  background-color: rgb(39, 83, 98);
+  overflow: hidden;
+  padding: 0.5em 1em;
+  border-radius: 0 0.25rem 0.25rem 0;
+}
 
 .dashboard-filter-description {
   position: absolute;
@@ -244,11 +291,18 @@
   top: 0;
   height: 30px;
   width: 100%;
-  font-size: 16px !important;
+  font-size: 13px !important;
 }
 
 .dashboard-preview-tab {
-  background-image: linear-gradient(to right, #275362, #235764, #205b65, #1d5f65, #1d6365);
+  background-image: linear-gradient(
+    to right,
+    #275362,
+    #235764,
+    #205b65,
+    #1d5f65,
+    #1d6365
+  );
   height: 1.3em;
   color: #f2f2f2;
   top: 50%;
@@ -267,7 +321,7 @@
 }
 
 .Window_Analytics .dashboard .GridCustomStyle {
-  height: calc(100% - 91px) !important
+  height: calc(100% - 91px) !important;
 }
 
 .Window_Analytics .dashboard label {
@@ -278,22 +332,23 @@
   margin-top: 4em;
 }
 
+
 .k-grid-header .k-i-sort-asc-sm,
 .k-grid-header .k-i-sort-desc-sm,
 .k-grid-header .k-sort-order {
-  color: #656565 !important
+  color: #656565 !important;
 }
 
 .k-grid-header .k-grid-filter.k-state-active,
 .k-grid-header .k-header-column-menu.k-state-active,
 .k-grid-header .k-hierarchy-cell .k-icon.k-state-active {
   color: #fff;
-  background-color: #656565 !important
+  background-color: #656565 !important;
 }
 
 .k-pager-numbers .k-link.k-state-selected {
   color: #656565 !important;
-  background-color: rgba(78, 73, 73, 0.2) !important
+  background-color: rgba(78, 73, 73, 0.2) !important;
 }
 
 .k-pager-numbers .k-link {
@@ -303,7 +358,18 @@
 .k-pager-numbers .k-link:hover,
 .k-pager-numbers .k-link.k-state-hover {
   color: #656565 !important;
-  background-color: rgba(78, 73, 73, 0.2) !important
+  background-color: rgba(78, 73, 73, 0.2) !important;
+}
+
+/* 
+  With discussion with Harsha, Vinu and UV:
+  Whenever there is a drilldown grid
+  The solutions provided is we can mark the first cell of all rows blue and underline, 
+  so they know that know its a link
+*/
+.drillDownStyle table tr:not(.k-grid-norecords) td:first-child {
+  color: blue;
+  text-decoration: underline;
 }
 
 .drillDownStyle .k-master-row:hover {
@@ -321,6 +387,14 @@
   margin-left: 10px;
 }
 
+.filter_remove_button_view,
+.filter_remove_button_view.btn.btn-primary {
+  cursor: pointer;
+  position: relative;
+  margin: 0;
+  padding: 2px 7px;
+}
+
 .errorMsg {
   color: red !important;
 }
@@ -335,36 +409,161 @@
 }
 
 .field-width-75 {
-  width:75px !important;
+  width: 75px !important;
 }
 
 .field-width-100 {
-  width:100px !important;
+  width: 100px !important;
 }
 
 .field-width-150 {
-  width:150px !important;
+  width: 150px !important;
 }
 
 .field-width-200 {
-  width:200px !important;
+  width: 200px !important;
 }
-.disabled {
-  
+
+.field-width-300 {
+  width: 300px !important;
 }
 
 .select_notif {
-  padding: 10px;
-  background: yellow;
-  color: black;
-  margin-top: 25px;
-  float: left;
+  padding: 4px;
+  color: red;
+  font-size: 12px;
+  margin-top: 0px;
+  // background: rgba(255, 255, 0, 0.453);
+  // float: left;
+  // margin-bottom: 15px;
 }
 
 .toastHide {
   visibility: hidden;
 }
-.full-width{
+
+.full-width {
   widows: 100%;
   overflow: hidden;
+}
+
+.filterFieldsfilter {
+  //display: inline-flex !important;
+  display: inline-block;
+  flex-wrap: wrap;
+  margin-right: -5px;
+  margin-left: -5px;
+  // border-left: 2px solid #265160;
+  // border-bottom: 2px solid #27536296;
+  box-shadow: 4px 4px 10px #ebebeb, -4px -4px 10px #eaeaeab5;
+  margin-bottom: 10px;
+  padding: 0 5px;
+}
+
+.dashboard-filter-wrapper {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  height: 100%;
+
+  .filter-header-panel {
+    display: flex;
+    flex: 0;
+    align-items: center;
+    border-bottom: 1px solid lightgrey;
+    padding-bottom: 5px;
+
+    .filter-header-text {
+      font-size: 24px;
+      color: #5d6d80;
+      margin-bottom: 0;
+    }
+  }
+}
+
+.dashboard-filter-name {
+  letter-spacing: 1px;
+  flex-basis: 50%;
+  font-size: 16px;
+  color: #275362;
+  padding: 5px;
+  border-radius: 5px;
+  margin-right: 1rem;
+}
+
+// View Mode - Filter Fields CSS
+#filter-form-container {
+  .filterFieldsfilter {
+    .filterFieldsfilter-section-one {
+      display: flex;
+      align-items: center;
+      flex-basis: 100%;
+      gap: 10px;
+
+      .dashboardTextField {
+        flex-basis: 100%;
+      }
+
+      select.dashboardTextField.form-control {
+        border: none;
+      }
+      #value.dashboardTextField {
+        flex-basis: 100%;
+      }
+    }
+
+    .filterFieldsfilter-section-two {
+      flex: 1 0 100%;
+      .dashboard-filter-field {
+        display: flex;
+        justify-content: center;
+      }
+      #value.dashboardTextField {
+        flex-basis: 100%;
+      }
+    }
+  }
+}
+
+// EDIT Mode - Filter Fields CSS
+#filtereditor-form-container {
+  .create-filter-form {
+    display: flex;
+    justify-content: flex-start;
+
+    > .filterFields.form-row {
+      margin: 10px 0px;
+      padding: 5px;
+      box-shadow: 4px 4px 10px #ebebeb, -4px -4px 10px #eaeaeab5;
+      gap: 5px;
+      align-items: center;
+
+      .filterFieldsfilter-section-two {
+        flex: 1;
+        align-self: flex-end;
+        > .dashboard-filter-field {
+          flex: 1;
+        }
+        #value.dashboardTextField {
+          flex-basis: 0;
+        }
+        .dates-container {
+          display: inline-block;
+        }
+      }
+
+      .dash-manager-buttons {
+        display: flex;
+        align-items: flex-end;
+        margin-left: auto;
+        align-self: flex-end;
+      }
+    }
+  }
+}
+
+input[type="checkbox"] {
+  // transform: scale(1.5);
+  height: 12px;
+  width: 12px;
 }

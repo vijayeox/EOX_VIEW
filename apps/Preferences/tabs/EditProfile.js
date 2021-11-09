@@ -30,6 +30,10 @@ class EditProfile extends React.Component {
     this.submitProfilePic = this.submitProfilePic.bind(this);
   }
 
+  componentDidMount(){
+    var userprofile = this.getUserProfile();
+    this.setState({icon: userprofile.key.icon + "?" + new Date(),userprofile:userprofile,profileReady:true});
+  }
   componentWillMount() {
     this.setState({reload:false})
     

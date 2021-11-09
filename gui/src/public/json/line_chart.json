@@ -1,0 +1,37 @@
+{
+	"series": [{
+		"type": "LineSeries",
+		"stroke": "lightgreen",
+		"strokeWidth": 3,
+		"tensionX": 0.8,
+		"tooltipText": "{name}:[bold]{categoryX} - $ {valueY}[/]",
+		"dataFields": {
+			"valueY": "commissions",
+			"categoryX": "period-year"
+		},
+		"name": "Commission",
+		"bullets": [{
+			"type": "CircleBullet",
+			"width": 10,
+			"height": 10
+		}]
+	}],
+	"xAxes": [{
+		"type": "CategoryAxis",
+		"dataFields": {
+			"category": "period-year",
+			"title": {
+				"text": "Year"
+			}
+		}
+	}],
+	"yAxes": [{
+		"type": "ValueAxis",
+		"title": {
+			"text": ""
+		}
+	}],
+	"cursor": {
+		"type": "XYCursor"
+	}
+}

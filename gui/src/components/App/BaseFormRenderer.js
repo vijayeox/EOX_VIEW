@@ -435,10 +435,11 @@ class BaseFormRenderer extends React.Component {
     }
 
     async callDelegate(delegate, params) {
+        var delegateParams = {...this.props.params , ...params, bos: this.getBOSData() };
         if (this.hasCore) {
-            return await this.helper.request("v1", this.appUrl + "/command/delegate/" + delegate, { ...params, bos: this.getBOSData() }, "post");
+            return await this.helper.request("v1", this.appUrl + "/command/delegate/" + delegate, delegateParams, "post");
         } else {
-            return await axios.post(this.appUrl + "/command/delegate/" + delegate, { ...params, bos: this.getBOSData() });
+            return await axios.post(this.appUrl + "/command/delegate/" + delegate, delegateParams);
         }
     }
 
@@ -497,9 +498,10 @@ class BaseFormRenderer extends React.Component {
                 form.submission.data.fileId = this.props.fileId ? this.props.fileId : this.state.fileId;
                 form.submission.data["workflow_instance_id"] = undefined;
             }
-            if(this.props.parentFileId){
-              form.submission.data.fileId = undefined;
-              form.submission.data["workflow_instance_id"] = undefined;
+            if(this.props.params){
+                Object.keys(this.props.params).map((i) => {
+                    form.submission.data[i]=this.props.params[i];
+                          });
             }
             if (that.props.parentFileId) {
                 form.submission.data.fileId = undefined;
@@ -559,12 +561,21 @@ class BaseFormRenderer extends React.Component {
                 }
                 route = route + "/submit";
             } else {
-                route = that.appUrl + "/form/" + that.state.formId + "/file";
+                route = that.appUrl + "/file/crud";
                 method = "post";
 
                 if (that.props.route) {
-                    route = that.props.route;
-                    method = "post"
+                    route = that.props.absoluteUrl
+                      ? that.props.route
+                      : that.appUrl + "/" + that.props.route;
+                    method = "post";
+                }
+                if(that.state.fileId){
+                    data.uuid = that.state.fileId;
+                    method = "put"
+                }
+                if (that.state.entity_name) {
+                    data.entity_name = that.state.entity_name;
                 }
                 if (that.state.instanceId) {
                     route = that.appUrl + "/form/" + that.state.formId + "/file/" + that.state.instanceId;
@@ -595,7 +606,7 @@ class BaseFormRenderer extends React.Component {
                     else {
                         var storeCache = await that.storeCache(that.cleanData(data)).then(
                             async cacheResponse => {
-                                if (response.data.errors) {
+                                if (response.data && response.data.errors) {
                                     var storeError = await that.storeError(that.cleanData(data), response.data.errors, route).then(storeErrorResponse => {
                                         that.showFormLoader(false, 0);
                                         that.notif.current.notify("Error", "Form Submission Failed", "danger");
@@ -633,7 +644,7 @@ class BaseFormRenderer extends React.Component {
                     } else {
                         var storeCache = await that.storeCache(that.cleanData(data)).then(
                             async cacheResponse => {
-                                if (response.data.errors) {
+                                if (response.data && response.data.errors) {
                                     var storeError = await that.storeError(that.cleanData(data), response.data.errors, route).then(storeErrorResponse => {
                                         that.showFormLoader(false, 0);
                                         that.notif.current.notify("Error", "Form Submission Failed", "danger");
@@ -866,14 +877,12 @@ class BaseFormRenderer extends React.Component {
         that.showFormLoader(true, 0);
         that.callPayment(e.detail).then(response => {
           var transactionIdComponent = form.getComponent("transaction_id");
-          if (response.data) {
-            if (response.data.transaction.id && response.data.token) {
+            if (response.data && response.data.transaction.id && response.data.token) {
               transactionIdComponent.setValue(response.data.transaction.id);
               that.formSendEvent("getPaymentToken", { detail: response.data });
             } else {
               that.notif.current.notify("Error", "Transaction Token Failed!", "danger");
             }
-          }
           that.showFormLoader(false,0);
         }).catch(e => {
             that.handleError(e);
@@ -1031,16 +1040,42 @@ class BaseFormRenderer extends React.Component {
         }
       
     }
-    generateViewButton(){
+    async getEntityPage(entityId,appId) {
+        let helper = this.core.make("oxzion/restClient");
+        let fileContent = await helper.request("v1","/app/" + this.state.appId + "/entity/"+this.state.entityId+"/page",{},"get");
+        return fileContent;
+    }
+    setEntityId(){
+        return new Promise(async(r) => {
+            try{
+                let helper = this.core.make("oxzion/restClient");
+                const file = await helper.request("v1","/app/" + this.state.appId + "/file/"+this.state.fileId+"/data",{},"get")
+                this.setState({entityId : file?.data?.entity_id}, () => r())
+            }catch(e){
+                r();
+            }
+        })
+    }
+    async generateViewButton(){
         let gridToolbarContent = [];
-        let filePage = [{type: "EntityViewer",fileId: this.state.fileId}];
-        let pageContent = {pageContent: filePage,title: "View",icon: "fa fa-eye",fileId:this.state.fileId};
-        let commentPage = [{type:"Comment",fileId:this.state.fileId}];
-        let commentContent = {pageContent: commentPage,title: "Comment",icon: "fa fa-comment"};
-        gridToolbarContent.push(<Button title={"View"} className={"toolBarButton"} primary={true} onClick={(e) => this.updatePageContent(pageContent)} ><i className={"fa fa-eye"}></i></Button>);
-        gridToolbarContent.push(<Button title={"Comments"} className={"toolBarButton"} primary={true} onClick={(e) => this.updatePageContent(commentContent)} ><i className={"fa fa-comment"}></i></Button>);
-        let ev = new CustomEvent("addcustomActions", { detail: { customActions: gridToolbarContent }, bubbles: true });
-        document.getElementById(this.state.appId+"_breadcrumbParent").dispatchEvent(ev);
+        if(!this.state.entityId) {
+            await this.setEntityId()
+        }
+        this.getEntityPage().then(entityPage => {
+        if(entityPage.status=="success"){
+                let filePage = [{type: "EntityViewer",fileId: this.state.fileId}];
+                let pageContent = {pageContent: filePage,title: "View",icon: "fa fa-eye",fileId:this.state.fileId};
+                let commentPage = [{type:"Comment",fileId:this.state.fileId}];
+                let commentContent = {pageContent: commentPage,title: "Comment",icon: "fa fa-comment"};
+                gridToolbarContent.push(<Button title={"View"} className={"btn btn-primary"} primary={true} onClick={(e) => this.updatePageContent(pageContent)} ><i className={"fa fa-eye"}></i></Button>);
+                if(entityPage?.data?.enable_comments == 1){
+                    gridToolbarContent.push(<Button title={"Comments"} className={"btn btn-primary"} primary={true} onClick={(e) => this.updatePageContent(commentContent)} ><i className={"fa fa-comment"}></i></Button>);
+                }
+                let ev = new CustomEvent("addcustomActions", { detail: { customActions: gridToolbarContent }, bubbles: true });
+                if(entityPage?.data?.content?.find((c) => c?.type === "TabSegment")) return;
+                document.getElementById(this.state.appId+"_breadcrumbParent").dispatchEvent(ev);
+            }
+        });
     }
 
     async importCSS(theme){
@@ -1194,7 +1229,7 @@ class BaseFormRenderer extends React.Component {
                                         that.callDelegate(properties["delegate"], paramData).then(response => {
                                             var responseArray = [];
                                             for (var responseDataItem in response.data) {
-                                                if (response.data.hasOwnProperty(responseDataItem)) {
+                                                if (response.data && response.data.hasOwnProperty(responseDataItem)) {
                                                     responseArray[responseDataItem] = response.data[responseDataItem];
                                                 }
                                             }
@@ -1247,7 +1282,7 @@ class BaseFormRenderer extends React.Component {
                                             var responseArray = [];
                                             if (response.data) {
                                                 for (var responseDataItem in response.data) {
-                                                    if (response.data.hasOwnProperty(responseDataItem)) {
+                                                    if (response.data && response.data.hasOwnProperty(responseDataItem)) {
                                                         responseArray[responseDataItem] = response.data[responseDataItem];
                                                     }
                                                 }
@@ -1430,7 +1465,7 @@ class BaseFormRenderer extends React.Component {
           ).then((response) => {
             if (response.status == "success") {
               var formData = { data: this.formatFormData(response.data) };
-              if (response.data.fileId) {
+              if (response.data && response.data.fileId) {
                 this.setState({
                   fileId: response.data.fileId
                 })
@@ -1483,6 +1518,10 @@ class BaseFormRenderer extends React.Component {
             </div>
         );
     }
+}
+
+BaseFormRenderer.defaultProps = {
+    absoluteUrl : true
 }
 
 export default BaseFormRenderer;

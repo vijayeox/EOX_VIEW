@@ -47,11 +47,22 @@ export default class DropDown extends React.Component {
   getMainList = (query, size) => {
     GetDataSearch(this.props.mainList, query, size).then((response) => {
       var tempUsers = [];
-      for (var i = 0; i <= response.data.length - 1; i++) {
-        var userName = response.data[i].name;
-        var userid = response.data[i].uuid;
-        if(this.props.excludeItem ? !(this.props.excludeItem.uuid == userid) : true) {
-          tempUsers.push({ id: userid, name: userName });
+      if(response.data.data){
+        for (var i = 0; i <= response.data.data.length - 1; i++) {
+          var userName = response.data.data[i].name;
+          var userid = response.data.data[i].uuid;
+          if(this.props.excludeItem ? !(this.props.excludeItem.uuid == userid) : true) {
+            tempUsers.push({ id: userid, name: userName });
+          }
+          console.log(tempUsers);
+        }
+      } else {
+        for (var i = 0; i <= response.data.length - 1; i++) {
+          var userName = response.data[i].name;
+          var userid = response.data[i].uuid;
+          if(this.props.excludeItem ? !(this.props.excludeItem.uuid == userid) : true) {
+            tempUsers.push({ id: userid, name: userName });
+          }
         }
       }
       this.setState({

@@ -1,5 +1,5 @@
 .LeftMenuTemplate {
-  height: 100%;
+  height: 100%; 
   overflow: auto;
   display: flex;
   flex-direction: row;
@@ -11,12 +11,39 @@
   }
   .sidenav---sidenav---_2tBP {
     position: relative;
+    // overflow-y: auto;
+    // overflow-x: hidden; // added overflow-y : auto [BUG #27964]
+  }
+
+  // added custom scroll bar for all apps
+  .sidenav---sidenav---_2tBP::-webkit-scrollbar {
+    width: 10px;
+}
+
+  .sidenav---sidenav---_2tBP::-webkit-scrollbar-track {
+    border-radius: 10px;
+    box-shadow: inset 0 0 6px rgb(31, 66, 78);
+    background-color: #275362;
+    margin-top: 1px;
+    margin-bottom: 1px;
+  }
+  
+  .sidenav---sidenav---_2tBP::-webkit-scrollbar-thumb {
+    background-color: #306475;
+    border-radius: 10px;
+    box-shadow: inset 0 0 6px rgb(69, 93, 101);
+    height: 100px;
   }
 
   .sidenav---sidenav-subnav---1EN61 {
+    .sidenav---navitem---9uL5T:hover {
+      background: #0003!important;
+    }
     .sidenav---navitem---9uL5T {
       padding: 10px;
       display: flex !important;
+      align-items: center;
+      justify-content: flex-start;
       .sidenav---navicon---3gCRo {
         padding-left: 10px;
       }
@@ -28,20 +55,21 @@
 
     .sidenav---sidenav-subnavitem---1cD47 > .sidenav---navitem---9uL5T {
       padding: 5px 14px 5px 25px !important;
+      color: white;
     }
   }
 
-  .breadcrumbs{
-    .k-chip-icon{
-      font-family: 'Font Awesome 5 Pro'!important;
+  .breadcrumbs {
+    .k-chip-icon {
+      font-family: "Font Awesome 5 Pro" !important;
     }
-    .disabledBreadcrumb{
+    .disabledBreadcrumb {
       opacity: 1 !important;
     }
   }
 }
-.LeftMenuTemplate.hideMenu{
-  nav{
+.LeftMenuTemplate.hideMenu {
+  nav {
     display: none;
   }
 }

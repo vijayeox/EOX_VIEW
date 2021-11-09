@@ -17,11 +17,11 @@ function WidgetModal(props) {
     >
       <Modal.Header >
         <Modal.Title id="contained-modal-title-vcenter">
-          Delete Widget
+          Delete MLET
          </Modal.Title>
       </Modal.Header>
       <Modal.Body className="modal-body">
-        Are you sure you want to delete this widget?
+        Are you sure you want to delete this MLET?
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={() => props.onHide()} >Cancel</Button>

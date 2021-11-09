@@ -1,0 +1,112 @@
+{
+    "oxzion-meta": {
+        "type": "stacked-bar",
+        "dataSet": {
+            "category": "year",
+            "series": {
+                "name": "subprocess",
+                "value": "avgtime"
+            }
+        }
+    },
+    "series": [
+        {
+            "type": "ColumnSeries",
+            "name": "{SERIES_NAME}",
+            "columns": {
+                "template": {
+                    "color": {
+                        "list": [
+                            "#ff8b94",
+                            "#ffaaa5",
+                            "#ffd3b6",
+                            "#dcedc1",
+                            "#a8e6cf"
+                        ]
+                    }
+                }
+            },
+            "dataFields": {
+                "valueX": "{SERIES_NAME}",
+                "categoryY": "year"
+            },
+            "bullets": [
+                {
+                    "type": "LabelBullet",
+                    "label": {
+                        "text": "{valueX}",
+                        "fontSize": 12,
+                        "dx": -12,
+                        "fill": "white",
+                        "truncate": false,
+                        "hideOversized": false
+                    }
+                }
+            ],
+            "legendSettings": {
+                "labelText": "{SERIES_NAME}"
+            },
+            "stacked": true,
+            "tooltipText": "[bold]{categoryY}[/] : {name} : {valueX}"
+        }
+    ],
+    "yAxes": [
+        {
+            "type": "CategoryAxis",
+            "dataFields": {
+                "category": "year"
+            },
+            "title": {
+                "text": ""
+            },
+            "renderer": {
+                "grid": {
+                    "template": {
+                        "location": 90
+                    }
+                },
+                "labels": {
+                    "verticalCenter": "middle",
+                    "horizontalCenter": "middle"
+                },
+                "minGridDistance": 1
+            }
+        }
+    ],
+    "xAxes": [
+        {
+            "type": "ValueAxis",
+            "title": {
+                "text": "Average Time (in mins)"
+            }
+        }
+    ],
+    "cursor": {
+        "type": "XYCursor"
+    },
+    "titles": [
+        {
+            "text": "",
+            "fontSize": 25,
+            "marginBottom": 0
+        }
+    ],
+    "chartContainer": {
+        "children": [
+            {
+                "type": "Label",
+                "forceCreate": true,
+                "text": "",
+                "align": "center"
+            }
+        ]
+    },
+    "legend": {
+        "position": "bottom",
+        "markers": {
+            "width": 8,
+            "height": 8
+        },
+        "fontSize": 13
+    }
+}

@@ -1,133 +1,142 @@
-@import '~bootstrap/dist/css/bootstrap.css';
-@import '~@fortawesome/fontawesome-pro/css/all.css';
+@import "~bootstrap/dist/css/bootstrap.css";
+@import "~@fortawesome/fontawesome-pro/css/all.css";
 
 #widgetEditorDialog {
-    overflow-x: hidden;
-    overflow-y: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
+  font-family: Roboto, sans-serif;
+  font-size: 15px;
 }
 
 #widgetEditorDialog .flippy-front,
 #widgetEditorDialog .flippy-front {
-    height: auto;
+  height: auto;
+  box-shadow: none;
+  padding: 5px;
 }
 
 .no-left-margin {
-    margin-left: 0px;
+  margin-left: 0px;
 }
 
 .no-right-margin {
-    margin-right: 0px;
+  margin-right: 0px;
 }
 
 .no-left-padding {
-    padding-left: 0px;
+  padding-left: 0px;
 }
 
 .no-right-padding {
-    padding-right: 0px;
+  padding-right: 0px;
 }
 
 .widget-editor-form #propertyBox .card-body,
 .widget-editor-form #previewBox .card-body {
-    height: 380px;
-    max-height: 380px;
-    overflow: auto;
+  height: 100%;
+  min-height: 380px;
+  overflow: auto;
 }
 
 .widget-editor-form #chartPreview,
 .widget-editor-form #valuePreview {
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 }
 
-.widget-editor-form>div:first-child {
-    padding: 3px;
+.widget-editor-form > div:first-child {
+  padding: 3px;
 }
 
 .widget-editor-form .right-align {
-    text-align: right;
+  text-align: right;
 }
 
 .widget-editor-form .query-customization-button {
-    width: 46px;
+  width: 46px;
 }
 
 /* Begin - Error display tooltip color. */
 .error-tooltip.bs-tooltip-bottom .arrow::before {
-    border-bottom-color: red;
+  border-bottom-color: red;
 }
 
 .error-tooltip.bs-tooltip-left .arrow::before {
-    border-left-color: red;
+  border-left-color: red;
 }
 
 .error-tooltip.bs-tooltip-right .arrow::before {
-    border-right-color: red;
+  border-right-color: red;
 }
 
 .error-tooltip.bs-tooltip-top .arrow::before {
-    border-top-color: red;
+  border-top-color: red;
 }
 
 .error-tooltip .tooltip-inner {
-    background-color: red;
+  background-color: red;
 }
 
 /* End - Error display tooltip color. */
 
 /* Begin - styling react-bootstrap tabs. */
 .tab-content {
-    width: 100%;
+  min-height: 330px;
+  width: 100%;
 }
 
 .nav-tabs {
-    width: 100%;
-    border-bottom: 1px solid #dee2e6;
+  width: 100%;
+  border-bottom: 1px solid #dee2e6;
 }
 
 /* End - styling react-bootstrap tabs. */
 .create-widget-div {
-    height: 9vh;
+  height: 9vh;
 }
 
 .disappear {
-    display: none;
+  display: none;
 }
 
 .widget-editor-form .flippy-back {
-    box-shadow: none;
+  box-shadow: none;
 }
 
 .drilldown-div {
-    height: 100%;
-    padding: 1em;
+  height: 100%;
+  padding: 1em;
 }
 
 .drilldown-div .btn {
-    margin-left: 0em;
+  margin-left: 0em;
 }
 
 .action-button-box {
-    padding-left: 0px;
-    padding-right: 0px;
-    min-width: 210px;
+  padding-left: 0px;
+  padding-right: 0px;
+  min-width: 210px;
 }
 
-.action-button-box>button {
-    margin-left: 5px;
-    margin-right: 5px;
+.action-button-box > button {
+  margin-left: 5px;
+  margin-right: 5px;
 }
 
 #aggregateRefreshBtn,
 #chartRefreshBtn,
 #tableRefreshBtn {
-    float: right;
+  float: right;
 }
 
 .widget-action-btn {
-    height: 35px;
+  height: 35px;
 }
 
-.cke_dialog_ui_iframe{
-    height:400px !important;
+.cke_dialog_ui_iframe {
+  height: 400px !important;
+}
+
+.card-header {
+  padding: 5px;
 }

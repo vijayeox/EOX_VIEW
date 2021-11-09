@@ -28,7 +28,7 @@
  * @licence Simplified BSD License
  */
 
-$direction-list: "nw""sw""ne""se""n""s""w""e";
+$direction-list: "nw" "sw" "ne" "se" "n" "s" "w" "e";
 
 .osjs-window-behavior-lofi {
   position: absolute;
@@ -39,7 +39,7 @@ $direction-list: "nw""sw""ne""se""n""s""w""e";
   z-index: 10;
   position: absolute;
   min-width: 4px;
-  min-height: 1em;
+  min-height: 0.1em;
 
   &[data-direction^="n"] {
     top: -$resize-handle-size;
@@ -92,16 +92,17 @@ $direction-list: "nw""sw""ne""se""n""s""w""e";
   flex: 0 0;
   min-height: 2.2em;
 
-  &>div {
-    height: 100%;
+  & > div {
+    height: auto;
+    padding: 0px 5px 0px 5px;
   }
 }
 
 .osjs-window-icon {
-  &>div {
+  & > div {
     width: $base-margin;
     height: $base-margin;
-    background: url('src/styles/logo-blue-32x32.png') no-repeat 50% 50%;
+    background: url("src/styles/logo-blue-32x32.png") no-repeat 50% 50%;
     background-size: cover;
     cursor: pointer;
   }
@@ -125,7 +126,7 @@ $direction-list: "nw""sw""ne""se""n""s""w""e";
     pointer-events: none;
   }
 
-  &>div {
+  & > div {
     width: $base-margin;
     height: $base-margin;
   }
@@ -160,7 +161,6 @@ $direction-list: "nw""sw""ne""se""n""s""w""e";
   user-select: none;
   visibility: visible;
   touch-action: none;
-  
 
   /* This actually increases performance */
   -webkit-transform: translate3d(0, 0, 0);
@@ -174,7 +174,7 @@ $direction-list: "nw""sw""ne""se""n""s""w""e";
   perspective: 1000;
 
   &::after {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
@@ -184,27 +184,28 @@ $direction-list: "nw""sw""ne""se""n""s""w""e";
     display: none;
   }
 
-  &[data-maximized=true] {
+  &[data-maximized="true"] {
     .osjs-window-resize {
       cursor: inherit !important;
     }
   }
 
-  &[data-minimized=true] {
+  &[data-minimized="true"] {
     display: none;
     visibility: hidden;
+    height: 560px !important;
   }
 
-  &[data-focused=false] iframe {
+  &[data-focused="false"] iframe {
     pointer-events: none;
   }
 
-  &[data-resizing=true],
-  &[data-moving=true] {
+  &[data-resizing="true"],
+  &[data-moving="true"] {
     cursor: move;
   }
 
-  &[data-loading=true]::after {
+  &[data-loading="true"]::after {
     display: block;
   }
 
@@ -212,17 +213,16 @@ $direction-list: "nw""sw""ne""se""n""s""w""e";
     outline: 2px solid #000;
   }
 
-  &[data-minimizable=false] .osjs-window-button[data-action=minimize],
-  &[data-maximizable=false] .osjs-window-button[data-action=maximize],
-  &[data-closable=false] .osjs-window-button[data-action=close],
-  &[data-resizable=false] .osjs-window-resize {
+  &[data-minimizable="false"] .osjs-window-button[data-action="minimize"],
+  &[data-maximizable="false"] .osjs-window-button[data-action="maximize"],
+  &[data-closable="false"] .osjs-window-button[data-action="close"],
+  &[data-resizable="false"] .osjs-window-resize {
     display: none;
   }
 }
 
 .osjs-root[data-window-action="true"] {
   .osjs-window {
-
     /* FIXME: Maybe limit this as to increase perf ? */
     * {
       pointer-events: none;
@@ -234,7 +234,7 @@ $direction-list: "nw""sw""ne""se""n""s""w""e";
   .osjs-window {
     opacity: 1;
 
-    .osjs-window-button[data-action=maximize] {
+    .osjs-window-button[data-action="maximize"] {
       display: none;
     }
   }

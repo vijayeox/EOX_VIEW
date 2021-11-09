@@ -16,15 +16,18 @@ class Project extends React.Component {
       itemInEdit: undefined,
       visible: false,
       permission: {
-        canAdd: this.props.userProfile.privileges[
-          this.moduleConfig.permission.canAdd
-        ],
-        canEdit: this.props.userProfile.privileges[
-          this.moduleConfig.permission.canEdit
-        ],
-        canDelete: this.props.userProfile.privileges[
-          this.moduleConfig.permission.canDelete
-        ],
+        canAdd:
+          this.props.userProfile.privileges[
+            this.moduleConfig.permission.canAdd
+          ],
+        canEdit:
+          this.props.userProfile.privileges[
+            this.moduleConfig.permission.canEdit
+          ],
+        canDelete:
+          this.props.userProfile.privileges[
+            this.moduleConfig.permission.canDelete
+          ],
       },
       selectedOrg: this.props.userProfile.accountId,
     };
@@ -45,11 +48,7 @@ class Project extends React.Component {
     let helper = this.core.make("oxzion/restClient");
     let addProjectUsers = await helper.request(
       "v1",
-      "account/" +
-        this.state.selectedOrg +
-        "/project/" +
-        dataItem +
-        "/save",
+      "account/" + this.state.selectedOrg + "/project/" + dataItem + "/save",
       {
         userIdList: dataObject,
       },
@@ -66,20 +65,16 @@ class Project extends React.Component {
       temp2.push(uid);
     }
     this.pushProjectUsers(item, temp2).then((response) => {
-      if(response.status == 'success'){
+      if (response.status == "success") {
         this.notif.current.notify(
           "Success",
           "Operation succesfully completed",
           "success"
-        )
-      }else{
-        this.notif.current.notify(
-          "Error",
-          "Operation Failed",
-          "danger"
-        )
-      }   
-      this.OX_Grid.current.refreshHandler(response);   
+        );
+      } else {
+        this.notif.current.notify("Error", "Operation Failed", "danger");
+      }
+      this.OX_Grid.current.refreshHandler(response);
     });
     this.toggleDialog();
   };
@@ -100,18 +95,18 @@ class Project extends React.Component {
         <button
           key={2}
           onClick={this.insert}
-          className="k-button"
+          className="k-button btn btn-primary"
           style={{
             position: "absolute",
-            top: "1px",
-            right: "10px",
+            top: "2px",
+            right: "0px",
             fontSize: "14px",
-            padding: "5px 8px",
+            padding: "8px 6px 5px 10px",
           }}
         >
-          <i className="fa fa-plus-circle" style={{ fontSize: "20px" }}></i>
-          <p style={{ margin: "0px", paddingLeft: "10px" }}>
-            {this.listConfig.addButton.title}
+          <i className="fad fa-plus" style={{ fontSize: "18px" }}></i>
+          <p style={{ margin: "0px", paddingLeft: "0px" }}>
+            {/* {this.listConfig.addButton.title} */}
           </p>
         </button>
       );
@@ -169,8 +164,7 @@ class Project extends React.Component {
           if (response.message == "Project has subprojects") {
             Swal.fire({
               title: "Are you sure?",
-              text:
-                "The following action will delete the project and its subprojects",
+              text: "The following action will delete the project and its subprojects",
               imageUrl: "https://image.flaticon.com/icons/svg/1632/1632714.svg",
               imageWidth: 75,
               imageHeight: 75,
@@ -193,9 +187,9 @@ class Project extends React.Component {
                         "success"
                       ))
                     : this.notif.current.notify(
-                      "Error",
-                      "Operation Failed",
-                      "danger"
+                        "Error",
+                        "Operation Failed",
+                        "danger"
                       );
                 });
               }
@@ -203,17 +197,12 @@ class Project extends React.Component {
           } else if (response.status == "success") {
             this.OX_Grid.current.refreshHandler(response);
             this.notif.current.notify(
-            "Success",
-            "Operation succesfully completed",
-            "success"
+              "Success",
+              "Operation succesfully completed",
+              "success"
             );
-            
           } else {
-            this.notif.current.notify(
-              "Error",
-              "Operation Failed",
-              "danger"
-            );
+            this.notif.current.notify("Error", "Operation Failed", "danger");
           }
         });
       }
@@ -251,7 +240,7 @@ class Project extends React.Component {
 
   cancel = (mode) => {
     this.setState({ itemInEdit: undefined });
-    if(mode && (mode == 'save')){
+    if (mode && mode == "save") {
       this.notif.current.notify(
         "Success",
         "Operation succesfully completed",
@@ -273,7 +262,7 @@ class Project extends React.Component {
       filterCell: {
         type: "empty",
       },
-      columnMenuFilter:false
+      columnMenuFilter: false,
     });
     return columnInfo;
   }
@@ -286,7 +275,7 @@ class Project extends React.Component {
         <abbr title={action[key].title} key={index}>
           <button
             type="button"
-            className="btn manage-btn"
+            className="btn btn-primary manage-btn"
             onClick={() => {
               switch (action[key].type) {
                 case "edit":
@@ -349,42 +338,41 @@ class Project extends React.Component {
               : false
           }
         />
-          <OX_Grid
-            osjsCore={this.core}
-            ref={this.OX_Grid}
-            rowTemplate={
-              this.listConfig.expandable
-                ? (e) => this.renderRow(e, this.listConfig.expandable)
-                : undefined
-            }
-            expandable={this.listConfig.expandable ? true : undefined}
-            data={
-              "account/" +
-              this.state.selectedOrg +
-              "/" +
-              this.listConfig.route
-            }
-            wrapStyle={{
-              height: "calc(100% - 72px)",
-              margin: "15px",
-              position: "relative",
-              top: "5px",
-            }}
-            onRowClick={(e) => this.edit(e.dataItem, false)}
-            filterable={true}
-            gridDefaultFilters={this.listConfig.defaultFilters}
-            reorderable={true}
-            resizable={true}
-            sortable={true}
-            columnMenuFilter={false}
-            defaultToolBar={true}
-            pageable={{ buttonCount: 3, pageSizes: [10, 20, 30], info: true }}
-            columnConfig={this.prepareColumnData(this.listConfig)}
-            gridToolbar={[
-              this.listConfig.toolbarTemplate,
-              this.createAddButton(),
-            ]}
-          />
+        <OX_Grid
+          osjsCore={this.core}
+          ref={this.OX_Grid}
+          rowTemplate={
+            this.listConfig.expandable
+              ? (e) => this.renderRow(e, this.listConfig.expandable)
+              : undefined
+          }
+          expandable={this.listConfig.expandable ? true : undefined}
+          data={
+            "account/" + this.state.selectedOrg + "/" + this.listConfig.route
+          }
+          wrapStyle={{
+            // height: "calc(100% - 72px)",
+            // marginleft: "15px",
+            // marginRight: "15px",
+            // marginTop: "-40px",
+            position: "relative",
+            top: "-33px",
+          }}
+          onRowClick={(e) => this.edit(e.dataItem, false)}
+          filterable={true}
+          gridDefaultFilters={this.listConfig.defaultFilters}
+          reorderable={true}
+          resizable={true}
+          sortable={true}
+          columnMenuFilter={false}
+          defaultToolBar={true}
+          pageable={{ buttonCount: 3, pageSizes: [10, 20, 30], info: true }}
+          columnConfig={this.prepareColumnData(this.listConfig)}
+          gridToolbar={[
+            // this.listConfig.toolbarTemplate,
+            this.createAddButton(),
+          ]}
+        />
         {this.state.itemInEdit && this.inputTemplate}
         {this.state.visible && this.addUsersTemplate}
       </div>

@@ -16,6 +16,11 @@ import * as am4plugins_forceDirected from "../amcharts/plugins/forceDirected";
 import am4geodata_worldLow from "@amcharts/amcharts4-geodata/worldLow";
 am4core.useTheme(am4themes_animated);
 am4core.options.commercialLicense = true;
+// import Mapbox from './components/Custom/Mapbox';
+import ComponentIndex from './components/Custom/ComponentIndex';
+// import WidgetcustomReport from './components/Custom/WidgetCustom'
+// import WidgetCustom from './components/Custom/WidgetCustom';
+
 
 class WidgetRenderer {
     // static render(element, widget, props,hasDashboardFilters,dashboardMode) {
@@ -24,6 +29,8 @@ class WidgetRenderer {
         // am4core.options.queue = true //reduces load on the browser
         let widgetTagName = element.tagName.toUpperCase();
         let widgetReturnParams = {}
+        // let renderer = 'Report';
+        console.log(widget.renderer)
         switch (widget.renderer) {
             case 'JsAggregate':
                 if ((widgetTagName !== 'SPAN') && (widgetTagName !== 'DIV')) {
@@ -37,8 +44,7 @@ class WidgetRenderer {
                 }
                 try {
                     widgetReturnParams = WidgetRenderer.renderAmCharts(element, widget.configuration, props, widget.data, hasDashboardFilters);
-                }
-                catch (e) {
+                } catch (e) {
                     console.error(e);
                     return null;
                 }
@@ -49,10 +55,9 @@ class WidgetRenderer {
                     throw (`Unexpected table widget tag "${widgetTagName}"`);
                 }
                 try {
-                    widgetReturnParams = WidgetRenderer.renderTable(element, widget.configuration, widget.data, hasDashboardFilters, "WidgetGrid");
+                    widgetReturnParams = WidgetRenderer.renderTable(element, widget.configuration, widget.data, hasDashboardFilters, "WidgetGrid", undefined, undefined, core);
                     break;
-                }
-                catch (e) {
+                } catch (e) {
                     console.error(e);
                     return null;
                 }
@@ -64,8 +69,7 @@ class WidgetRenderer {
                 try {
                     widgetReturnParams = WidgetRenderer.renderTable(element, widget.configuration, widget.data, hasDashboardFilters, "WidgetGridNew", widget.uuid, filterParams, core, widget['total_count']);
                     break;
-                }
-                catch (e) {
+                } catch (e) {
                     console.error(e);
                     return null;
                 }
@@ -76,12 +80,37 @@ class WidgetRenderer {
                 }
                 widgetReturnParams = WidgetRenderer.renderhtml(element, widget.configuration, props, widget.data);
                 break;
-            // add a case for jsGrid for the server grid loading
 
+            case 'Profile':
+                if ((widgetTagName !== 'SPAN') && (widgetTagName !== 'DIV')) {
+                    throw (`Unexpected inline aggregate value widget tag "${widgetTagName}"`);
+                }
+                widgetReturnParams = WidgetRenderer.renderProfile(element, widget.configuration, core, widget.data);
+                break;
+
+            case 'Report':
+                if ((widgetTagName !== 'SPAN') && (widgetTagName !== 'DIV')) {
+                    console.log(`Unexpected inline Report value widget tag "${widgetTagName}"`);
+                    // throw (`Unexpected inline aggregate value widget tag "${widgetTagName}"`);
+                }
+                widgetReturnParams = WidgetRenderer.renderReport(element, widget.configuration, core, widget.data);
+                break;
+            // add a case for jsGrid for the server grid loading
             default:
                 throw (`Unexpected widget renderer "${widget.renderer}"`);
         }
         return widgetReturnParams;
+    }
+
+    static renderReport(element, config, core, data) {
+        let ComponentType = config['report'];
+        // let reportInfo = Components.renderReport(ComponentType)
+        let canvasElement = document.getElementById(element.id);
+        ReactDOM.render(
+            <ComponentIndex
+                element={element} config={config} core={core} data={data} canvasElement={canvasElement}
+            />, canvasElement
+        );
     }
 
     static renderAggregateValue(element, configuration, props, data, hasDashboardFilters, dashboardEditMode, widget) {
@@ -92,8 +121,7 @@ class WidgetRenderer {
                 let format = configuration.numberFormat;
                 let num = numeral(data);
                 displayValue = num.format(format);
-            }
-            else if (configuration.dateFormat) {
+            } else if (configuration.dateFormat) {
                 let format = configuration.dateFormat;
                 displayValue = dayjs(data).format(format);
             } else {
@@ -105,7 +133,7 @@ class WidgetRenderer {
         element.classList.remove("red");
         element.classList.remove("yellow");
         element.classList.remove("green");
-        if (widget.targets) {
+        if (widget && widget.targets) {
             element.classList.add(widget.targets.color);
         }
         if (!dashboardEditMode && WidgetDrillDownHelper.setupDrillDownContextStack(element, configuration, hasDashboardFilters)) {
@@ -119,7 +147,7 @@ class WidgetRenderer {
                     //assuming the value is going to be a formatted numeric value
                     aggregateValue = aggregateValue.replace(/\,/g, "")
                     aggregateValue = aggregateValue.replace("$", "")
-                    if (parsedAggregateValue = parseFloat(aggregateValue)) {
+                    if (aggregateValue = parseFloat(aggregateValue)) {
                         WidgetDrillDownHelper.drillDownClicked(element, { aggregatevalue: parsedAggregateValue })
                     } else {
                         throw ("Unxepected value passed as dilldownvalue")
@@ -128,6 +156,41 @@ class WidgetRenderer {
             });
             isDrillDownChart = true;
         }
+        return null;
+    }
+
+
+    static renderProfile(element, configuration, core, data) {
+        let displayValue = null;
+        let imageHtml = '';
+        if (configuration) {
+            if (configuration.uuid) {
+                let format = configuration.uuid;
+                let uuid = data;
+                let encodedKey = btoa("wrapper.url");
+                let imageUrl = '';
+                const imageSrcTag = '<img alt="" title="Profile Picture" width="140px" height="100px" src="';
+
+                displayValue = data[0][format];
+
+                if (core !== undefined) {
+                    imageUrl = core.config("wrapper.url") + "user/profile/" + displayValue;
+                    if (window.localStorage.getItem(encodedKey) == null) {
+                        let encodedVal = btoa(core.config("wrapper.url"));
+                        window.localStorage.setItem(encodedKey, encodedVal);
+                    }
+                }
+                else {
+                    let encodedVal = window.localStorage.getItem(encodedKey);
+                    imageUrl = atob(encodedVal) + "user/profile/" + displayValue;
+                }
+                imageHtml = imageSrcTag + imageUrl + '">';
+            }
+            else {
+                displayValue = data;
+            }
+        }
+        element.innerHTML = imageHtml;
         return null;
     }
 
@@ -651,10 +714,9 @@ class WidgetRenderer {
         if (widgetGridType == "WidgetGridNew") {
             ReactDOM.render(<WidgetGridNew configuration={configuration} data={data} isDrillDownTable={isDrillDownTable} canvasElement={canvasElement} uuid={widgetUUId} filterParams={filterParams} core={core} totalcount={total_count} />, canvasElement);
         } else if (widgetGridType == "WidgetGrid") {
-            ReactDOM.render(<WidgetGrid configuration={configuration} data={data} isDrillDownTable={isDrillDownTable} canvasElement={canvasElement} />, canvasElement);
+            ReactDOM.render(<WidgetGrid configuration={configuration} data={data} isDrillDownTable={isDrillDownTable} canvasElement={canvasElement} core={core} />, canvasElement);
         }
     }
 }
 
 export default WidgetRenderer;
-

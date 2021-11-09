@@ -49,8 +49,7 @@ window.onDialogEvent = function (dialogEvent) {
             window.addEventListener('message', function (event) {
                 if (event.data.data != undefined && 'permissions' in event.data.data) {
                     window.sendAllPermissions(event.data.data)
-                }
-                else
+                } else
                     window.handleDataResponse(event.data);
             }, false);
             //Dialog 'load' event contains reference to the editor opening this dialog.
@@ -77,8 +76,7 @@ window.onDialogEvent = function (dialogEvent) {
                 if (data.id) {
                     console.debug('Existing widget has been selected. Embedding it in dashboard.');
                     closeDialogWindow(data);
-                }
-                else {
+                } else {
                     console.debug('No widget has been selected. Just close dialog.');
                 }
                 return;
@@ -92,8 +90,7 @@ window.onDialogEvent = function (dialogEvent) {
                 console.debug(`hasUserInputErrors promise fulfilled with '${hasErrors}'`);
                 if (hasErrors) {
                     console.debug('User input has errors. Dont close the dialog.');
-                }
-                else {
+                } else {
                     console.debug('Save widget and close the dialog if widget save is successful.');
                     widgetEditorApp.saveWidget().
                         then(function (response) {
@@ -101,8 +98,7 @@ window.onDialogEvent = function (dialogEvent) {
                             let mode = widgetEditorApp.getEditorMode();
                             if (mode === 'edit') {
                                 data['id'] = response['uuid'];
-                            }
-                            else {
+                            } else {
                                 data['id'] = response['newWidgetUuid'];
                             }
                             closeDialogWindow(data);

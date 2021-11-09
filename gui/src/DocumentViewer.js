@@ -91,13 +91,12 @@ export default class DocumentViewer extends Component {
             this.uploadAttachments(fileIndex - 1);
           }
           this.loader.destroy();
-          if(response.status == "error"){
+          if (response.status == "error") {
             this.notif.current.notify(
               response.message,
               "Please choose a different file.",
               "danger"
-            )
-            
+            );
           }
         }
       );
@@ -126,7 +125,11 @@ export default class DocumentViewer extends Component {
   getDocumentsList = () => {
     if (this.props.url) {
       this.loader.show();
-      Requests.getDocumentsListService(this.core,this.appId,this.props.url).then((response) => {
+      Requests.getDocumentsListService(
+        this.core,
+        this.appId,
+        this.props.url
+      ).then((response) => {
         if (response.data) {
           var documentsList = {};
           var folderType = {};
@@ -160,16 +163,16 @@ export default class DocumentViewer extends Component {
             });
           } else {
             this.setState({
-              apiCallStatus : true
-            })
+              apiCallStatus: true,
+            });
           }
           this.loader.destroy();
         }
       });
-    } else{
+    } else {
       this.setState({
-        apiCallStatus : true
-      })
+        apiCallStatus: true,
+      });
     }
   };
 
@@ -180,7 +183,6 @@ export default class DocumentViewer extends Component {
     }
   }
 
-
   generateDocumentList() {
     var accordionHTML = [];
     if (this.state.documentTypes) {
@@ -188,7 +190,7 @@ export default class DocumentViewer extends Component {
         this.state.documentsList[docType]
           ? accordionHTML.push(
               <Card key={index}>
-                <Card.Header>
+                <Card.Header className={"border-0"}>
                   <CustomToggle
                     eventKey={docType}
                     currentSelected={this.state.activeCard}
@@ -224,7 +226,8 @@ export default class DocumentViewer extends Component {
                         >
                           <div
                             className={
-                              this.state.selectedDocument && this.state.selectedDocument.file
+                              this.state.selectedDocument &&
+                              this.state.selectedDocument.file
                                 ? doc.file == this.state.selectedDocument.file
                                   ? "docListBody borderActive"
                                   : "docListBody border"
@@ -235,9 +238,17 @@ export default class DocumentViewer extends Component {
                               className={"docIcon " + this.getDocIcon(doc.type)}
                             ></i>
                             <p>
-                              {doc.originalName && doc.originalName.length > 30
-                                ? this.chopFileName(doc.originalName)
-                                : doc.originalName}
+                              <a
+                                href={doc.url}
+                                target="_blank"
+                                onClick={event => event.stopPropagation()}
+                                rel="noopener noreferrer"
+                              >
+                                {doc.originalName &&
+                                doc.originalName.length > 30
+                                  ? this.chopFileName(doc.originalName)
+                                  : doc.originalName}
+                              </a>
                             </p>
                           </div>
                         </Card>
@@ -334,6 +345,7 @@ export default class DocumentViewer extends Component {
   };
 
   handleDocumentClick = (doc) => {
+    if(this.state.selectedDocument?.id === doc.id) return;
     var documentViewerDiv = document.querySelector(".docViewerWindow");
     this.loader.show(documentViewerDiv);
     this.setState({
@@ -344,7 +356,7 @@ export default class DocumentViewer extends Component {
   attachmentOperations(documentData, rename, del, downloadUrl) {
     return (
       <div className="row">
-        <div className="col-md-12">
+        <div className="col-md-12 dash-manager-buttons">
           {rename &&
           this.state.activeCard != "Documents" &&
           documentData.uuid ? (
@@ -367,9 +379,12 @@ export default class DocumentViewer extends Component {
               />
               <button
                 title="rename"
-                className="btn btn-dark"
+                className="btn btn-primary btn-dark"
                 onClick={() => {
-                  Requests.renameFile(this.core,this.appId,this.fileId,
+                  Requests.renameFile(
+                    this.core,
+                    this.appId,
+                    this.fileId,
                     documentData.uuid,
                     this.state.selectedDocument.originalName
                   ).then((response) => {
@@ -399,16 +414,21 @@ export default class DocumentViewer extends Component {
                   });
                 }}
               >
-                <i className="fa fa-floppy-o"></i>
+                <i className="fad fa-file-edit"></i>
               </button>
             </>
           ) : null}
           {del && this.state.activeCard != "Documents" && documentData.uuid ? (
             <button
               title="delete"
-              className="btn btn-dark"
+              className="btn btn-primary btn-dark"
               onClick={() => {
-                Requests.deleteFile(this.core,this.appId,this.fileId,documentData.uuid).then((response) => {
+                Requests.deleteFile(
+                  this.core,
+                  this.appId,
+                  this.fileId,
+                  documentData.uuid
+                ).then((response) => {
                   if (response.status == "success") {
                     this.notif.current.notify(
                       "Success",
@@ -435,7 +455,7 @@ export default class DocumentViewer extends Component {
                 });
               }}
             >
-              <i className="fa fa-trash"></i>
+              <i className="fad fa-trash"></i>
             </button>
           ) : null}
           {downloadUrl ? (
@@ -443,10 +463,11 @@ export default class DocumentViewer extends Component {
               href={downloadUrl}
               download
               target="_blank"
-              className="image-download-button"
+              className="image-download-button btn btn-primary"
+              title="Download"
+              onClick={event => event.stopPropagation()}
             >
-              <i className="fa fa-download" aria-hidden="true"></i>
-              Download
+              <i className="fad fa-download" aria-hidden="true"></i>
             </a>
           ) : null}
         </div>
@@ -470,14 +491,14 @@ export default class DocumentViewer extends Component {
         <React.Fragment>
           {this.attachmentOperations(documentData, true, true, url)}
           <div className="row">
-          <div className="col-md-12">
-          <img
-            onLoad={() => this.loader.destroy()}
-            className="img-fluid"
-            style={{ height: "100%" }}
-            src={url}
-          />
-          </div>
+            <div className="col-md-12 dash-manager-buttons">
+              <img
+                onLoad={() => this.loader.destroy()}
+                className="img-fluid"
+                style={{ height: "100%" }}
+                src={url}
+              />
+            </div>
           </div>
         </React.Fragment>
       );
@@ -564,9 +585,13 @@ export default class DocumentViewer extends Component {
         <React.Fragment>
           {this.attachmentOperations(documentData, true, true, url)}
           <div className="row">
-          <div className="col-md-12">
-          <img className="img-fluid" style={{ height: "100%" }} src={url2} />
-          </div>
+            <div className="col-md-12">
+              <img
+                className="img-fluid"
+                style={{ height: "100%" }}
+                src={url2}
+              />
+            </div>
           </div>
         </React.Fragment>
       );
@@ -578,9 +603,9 @@ export default class DocumentViewer extends Component {
     if (this.state.apiCallStatus) {
       if (documentsList) {
         return (
-          <div className="row docViewerComponent">
+          <div className="docViewerComponent">
             <Notification ref={this.notif} />
-            <div className="col-md-3 docListDiv">
+            <div className="col-md-3 docListDiv docViewerComponent_docListDiv">
               <Accordion defaultActiveKey={this.state.documentTypes[0]}>
                 {this.generateDocumentList()}
               </Accordion>

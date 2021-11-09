@@ -1,0 +1,18 @@
+{
+	"oxzion-meta": {
+		"type": "map",
+		"countryCode": "US",
+		"dataKeys": {
+			"state": "state",
+			"value": "quotedpremium"
+		},
+		"tooltipText": "{name}: ${value.formatNumber('###,###.00a')}",
+		"showStateName": true,
+		"legend": {
+			"labels": {
+				"min": "Bound Premium min.",
+				"max": "Bound Premium max."
+			}
+		}
+	}
+}

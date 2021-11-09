@@ -8,15 +8,35 @@ class ActivityLog extends React.Component {
     super(props);
     this.config = this.props.config;
     this.core = this.props.core;
+    this.profileAdapter = this.core.make("oxzion/profile");
+    this.profile = this.profileAdapter.get();
     this.appId = this.props.appId;
     this.fileId = this.props.fileId;
     this.filterable = false;
     this.reorderable = false;
     this.resizable = false;
-    this.sortable = true;
+    this.sortable = false;
+    this.disableControls = this.props.disableControls
     this.api = "app/" + this.appId + "/file/"+this.fileId+"/audit";
-    var columnConfig = [{field:"version",title:"Version"},{field:"file_date_modified",title:"Performed On"},{field:"modifiedUser",title:"Modified By"},{field:"action",title:"Action Performed"}]
-    this.pageable = { buttonCount: 3, pageSizes: [10, 20, 50] };
+
+    var columnConfig = [{
+      field: "version",
+      title: "Version"
+  }, {
+      field: "file_date_modified",
+      title: "Performed On",
+      filter: "date",
+      filterFormat: "YYYY-MM-DD",
+      cell: "<td>{formatDate(item.file_date_modified,'YYYY-MM-DD')}</td>"
+  }, {
+      field: "modifiedUser",
+      title: "Modified By"
+  }, {
+      field: "action",
+      title: "Action Performed"
+  }]
+
+    this.pageable = { buttonCount: 3, pageSizes: [10, 20, 50]};
     this.state = {
       columnConfig: columnConfig,
       filter: []
@@ -27,7 +47,8 @@ class ActivityLog extends React.Component {
   renderRow(e) {
     var childColumnConfig = [
         { title: "Field", field: "text", editable: false },
-        { title: "Value", field: "submittedValue" },
+        { title: "Previous Value", field: "initialValue" },
+        { title: "Updated Value", field: "submittedValue" },
     ];
     return (
       <OX_Grid
@@ -42,14 +63,14 @@ class ActivityLog extends React.Component {
 
   render() {
     return (
-        <KendoReactWindow.Window onClose={this.props.cancel}>
-            <div className="activityLogWindow">
-        <div id="audit-controls">
+        
+        <div className="activityLogWindow">
+        {!this.disableControls && <div id="audit-controls">
         <div style={{textAlign: "end"}}>
         <button type="button" className="btn btn-danger" onClick={this.props.cancel} >
                     <i className="fa fa-close"></i>
                 </button></div>
-        </div>
+        </div>}
         <div id="loading-animation" className="blockUI blockMsg blockElement loadingdivcss hide">
         <div className="loading-message ">
         <div className="block-spinner-bar">
@@ -64,8 +85,6 @@ class ActivityLog extends React.Component {
         Please use Google Chrome or Firefox.
         </div> */}
         <div className="logResults">
-          <div className="row">
-            <div className="col-md-12">
               <OX_Grid
                 osjsCore={this.core}
                 filterable={this.filterable}
@@ -79,12 +98,9 @@ class ActivityLog extends React.Component {
                 columnConfig={this.state.columnConfig}
               />
             </div>
-      </div>
-      </div>
         </div>
-      </KendoReactWindow.Window>
       
     );
   }
 }
-export default ActivityLog;
+export default React.memo(ActivityLog);

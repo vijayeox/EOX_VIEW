@@ -1,4 +1,3 @@
-
 .bm-item {
   display: inline-block;
   /* Our sidebar item styling */
@@ -21,7 +20,7 @@
   width: 20px;
   height: 20px;
   left: 10px;
-  top: 65px;
+  top: 60px;
 }
 
 /* Color/shape of burger icon bars */
@@ -61,4 +60,3 @@
 .bm-overlay {
   background: rgba(0, 0, 0, 0.3);
 }
-

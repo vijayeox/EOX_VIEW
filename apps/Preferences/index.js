@@ -30,7 +30,7 @@ const register = (core, args, options, metadata) => {
     })
     .on('destroy', () => proc.destroy())
     .render(($content,win) => 
-        ReactDOM.render(<App args = {core} win={win} appConfig = {metadata.config}/>, $content));
+        ReactDOM.render(<App args = {core} win={win} />, $content));
     if(win.$element.className.indexOf('Window_'+applicationName) == -1){
       win.$element.className += " Window_"+applicationName;
     } 

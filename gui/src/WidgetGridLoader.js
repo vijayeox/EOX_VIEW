@@ -100,8 +100,8 @@ export class WidgetGridLoader extends React.Component {
                 filterString = gridFilterString
             }
         }
-        console.log("The filter string looks like : ");
-        console.log(filterString);
+        // console.log("The filter string looks like : ");
+        // console.log(filterString);
         return filterString
     }
 
@@ -172,7 +172,7 @@ export class WidgetGridLoader extends React.Component {
         } else {
             // call createFilterString to get the filter String required for filters 
             this.gridfilterString = this.createFilterString(dataStateCopy['filter_grid']);
-            console.log(this.gridfilterString)
+            // console.log(this.gridfilterString)
             filtersApplied = toODataString(this.props.dataState);
             filtersApplied = filtersApplied.replace(/\$/g, '');
             var filterSplit = filtersApplied.split(/&(.+)/)
@@ -185,8 +185,8 @@ export class WidgetGridLoader extends React.Component {
             }
 
         }
-        console.log('final check before the filter request');
-        console.log(filtersApplied);
+        // console.log('final check before the filter request');
+        // console.log(filtersApplied);
         if (this.pending || filtersApplied === this.lastSuccess) {
             // change the check for the previous value not to return 
             return;
