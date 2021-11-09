@@ -11,8 +11,8 @@
   }
   .sidenav---sidenav---_2tBP {
     position: relative;
-    overflow-y: auto;
-    overflow-x: hidden; // added overflow-y : auto [BUG #27964]
+    // overflow-y: auto;
+    // overflow-x: hidden; // added overflow-y : auto [BUG #27964]
   }
 
   // added custom scroll bar for all apps
