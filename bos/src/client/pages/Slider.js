@@ -1,7 +1,7 @@
 import React from "react";
 import screenfull from "screenfull";
 import SlidingPanel from "react-sliding-panel";
-
+import wallpaper from '../assets/images/wallpaper.png'
 
 class Slider extends React.Component {
   constructor(props) {
@@ -188,6 +188,7 @@ render () {
               transition: "transform ease-out 0.45s"
             }}
           >
+            <img src={wallpaper} alt="EOX Vantage"/>
             {this.state.announcements.length >= 1
               ? this.state.announcements.map((announcement, i) =>
                   this.renderCard(announcement, true)
