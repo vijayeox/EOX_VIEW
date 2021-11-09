@@ -180,73 +180,75 @@ render () {
   render() {
     if (this.state.loading == false) {
       return (
-        <div className="announcement-slider" ref={(ref) => (this.el = ref)}>
-          <div
-            className="slider-wrapper"
-            style={{
-              transform: `translateX(${this.state.translateValue}px)`,
-              transition: "transform ease-out 0.45s"
-            }}
-          >
-            <img src={wallpaper} alt="EOX Vantage"/>
-            {this.state.announcements.length >= 1
-              ? this.state.announcements.map((announcement, i) =>
-                  this.renderCard(announcement, true)
-                )
-              : null}
-          </div>
-          {this.state.announcements.length == 0 ? this.state.screen = "false" : this.state.announcements.length > 1 ? (
+        <>
+          <img src={wallpaper} alt="EOX Vantage" style={{position : 'absolute', width : '100vw', height : '135vh'}}/>
+          <div className="announcement-slider" ref={(ref) => (this.el = ref)}>
             <div
-              className="arrowWrap"
-              style={{ display: this.state.isPanelOpen ? "none" : "flex" }}
+              className="slider-wrapper"
+              style={{
+                transform: `translateX(${this.state.translateValue}px)`,
+                transition: "transform ease-out 0.45s"
+              }}
             >
-              <LeftArrow
-                goToPrevSlide={() => {
-                  this.refreshTimer();
-                  this.goToPrevSlide();
-                }}
-              />
-              <RightArrow
-                goToNextSlide={() => {
-                  this.refreshTimer();
-                  this.goToNextSlide();
-                }}
-              />
+              {this.state.announcements.length >= 1
+                ? this.state.announcements.map((announcement, i) =>
+                    this.renderCard(announcement, true)
+                  )
+                : null}
             </div>
-          ) : null}
-          <SlidingPanel
-            type={"bottom"}
-            isOpen={this.state.isPanelOpen}
-            closeFunc={() => this.setState({ isPanelOpen: false })}
-          >
-            <div className="popup-content">
-              <h6>{this.state.focusData.name}</h6>
-              <p className="mainText">{this.state.focusData.description}</p>
-              <div className="buttonWrap">
-                {this.state.focusData.link ? (
+            {this.state.announcements.length == 0 ? this.state.screen = "false" : this.state.announcements.length > 1 ? (
+              <div
+                className="arrowWrap"
+                style={{ display: this.state.isPanelOpen ? "none" : "flex" }}
+              >
+                <LeftArrow
+                  goToPrevSlide={() => {
+                    this.refreshTimer();
+                    this.goToPrevSlide();
+                  }}
+                />
+                <RightArrow
+                  goToNextSlide={() => {
+                    this.refreshTimer();
+                    this.goToNextSlide();
+                  }}
+                />
+              </div>
+            ) : null}
+            <SlidingPanel
+              type={"bottom"}
+              isOpen={this.state.isPanelOpen}
+              closeFunc={() => this.setState({ isPanelOpen: false })}
+            >
+              <div className="popup-content">
+                <h6>{this.state.focusData.name}</h6>
+                <p className="mainText">{this.state.focusData.description}</p>
+                <div className="buttonWrap">
+                  {this.state.focusData.link ? (
+                    <button
+                      onClick={() =>
+                        window.open(this.state.focusData.link, "_blank")
+                      }
+                      className="actionButton popupButtons"
+                    >
+                      VISIT LINK
+                    </button>
+                  ) : null}
                   <button
-                    onClick={() =>
-                      window.open(this.state.focusData.link, "_blank")
-                    }
+                    onClick={() => {
+                      this.setState({
+                        isPanelOpen: false
+                      });
+                    }}
                     className="actionButton popupButtons"
                   >
-                    VISIT LINK
+                    CLOSE
                   </button>
-                ) : null}
-                <button
-                  onClick={() => {
-                    this.setState({
-                      isPanelOpen: false
-                    });
-                  }}
-                  className="actionButton popupButtons"
-                >
-                  CLOSE
-                </button>
+                </div>
               </div>
-            </div>
-          </SlidingPanel>
-        </div>
+            </SlidingPanel>
+          </div>
+        </>
       );
     }
     return <div />;
