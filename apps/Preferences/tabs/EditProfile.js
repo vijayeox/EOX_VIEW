@@ -3,20 +3,19 @@ import {
   Notification,
   AvatarImageCropper,
   ReactBootstrap,
-  Webcam,
+  // Webcam,
   countryStateList,
   FormRender
 } from "oxziongui";
 import editProfile from '../public/forms/editProfileForm.json'
 
 
+import * as Webcam from "react-webcam";
 class EditProfile extends React.Component {
   constructor(props) {
     super(props);
-
     this.core = this.props.args;
     var userprofile = this.getUserProfile();
-
     this.state = {
       showImageDiv: 1,
       imageData: null,
@@ -91,6 +90,8 @@ class EditProfile extends React.Component {
     } else {
       this.setState({
         icon: imageData
+      },() => {
+        this.props?.profileUpdated(imageData);
       });
       this.core.make("oxzion/profile").update();
       this.notif.current.notify(
@@ -223,7 +224,7 @@ class EditProfile extends React.Component {
         <div className="profileImageDiv">
           <div className="displayImage">
             <img
-              src={this.state.icon}
+              src={this.props.image || this.state.icon}
               className="rounded-circle displayImage"
               style={displayImage}
             />
@@ -280,4 +281,4 @@ class EditProfile extends React.Component {
   }
 }
 
-export default EditProfile;
+export default React.memo(EditProfile);
