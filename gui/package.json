@@ -105,7 +105,6 @@
         "@babel/runtime": "^7.11.2",
         "@progress/kendo-react-buttons": "^4.8.0",
         "babel-loader": "^8.1.0",
-        "babel-preset-react-app": "npm:@bryntum/babel-preset-react-app",
         "copy-webpack-plugin": "^9.0.1",
         "css-loader": "^3.6.0",
         "css-minimizer-webpack-plugin": "^3.0.2",
