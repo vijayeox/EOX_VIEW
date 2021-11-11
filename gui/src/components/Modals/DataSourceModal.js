@@ -3,11 +3,13 @@ import { Button, Modal, Form, Row, Col } from 'react-bootstrap'
 import JSONFormRenderer from "../../JSONFormRenderer"
 import FormSchema from "./DataSourceModalSchema.json"
 
+const schemaForm = JSON.parse(JSON.stringify(FormSchema));
+
 function DataSourceModal(props) {
   const [input, setInput] = useState({})
   const [errors, setErrors] = useState({})
-  const [formConfiguration, setFormConfiguration] = useState("")
-  const [formSchema, setFormSchema] = useState(getFormSchema())
+  const [formConfiguration, setFormConfiguration] = useState("") //contains values
+  const [formSchema, setFormSchema] = useState(getFormSchema()) //contains Keys
   const ref = useRef(null)
   const allowedOperation = {
     ACTIVATE: "Activated",
@@ -15,16 +17,41 @@ function DataSourceModal(props) {
     EDIT: "Edited",
     DELETE: "Deleted"
   }
+
   function getFormSchema() {
-    if (props.content && FormSchema.FormSchema[props.content.type]) {
-      let type = props.content.type;
-      return FormSchema.FormSchema[`"`,type,`"`];
-    } else {
-      // return FormSchema["_DEFAULT_OPTIONAL_FIELDS"] 
-      return FormSchema.FormSchema._DEFAULT_OPTIONAL_FIELDS //working
+
+    // // Previous Code
+    // if (props.content && FormSchema.FormSchema[props.content.type]) {
+    //   let type = props.content.type;
+    //   return FormSchema.FormSchema[`"`, type, `"`];
+    // } else {
+    //   // return FormSchema["_DEFAULT_OPTIONAL_FIELDS"] 
+    //   return FormSchema.FormSchema._DEFAULT_OPTIONAL_FIELDS //working
+    // }
+
+    // Create button clicked
+    if(props.modalType === "Create"){
+      const defaultOptionalFields = schemaForm.FormSchema._DEFAULT_OPTIONAL_FIELDS;
+      defaultOptionalFields.optionalFields = { ...defaultOptionalFields.optionalFields, ...defaultOptionalFields.defaultFields };
+      defaultOptionalFields.defaultFields = {};
+      return defaultOptionalFields;
+    } 
+
+    // Edit button clicked
+    if(props.modalType === "Edit"){
+      const defaultOptionalFields = schemaForm.FormSchema._DEFAULT_OPTIONAL_FIELDS;
+      const newFormSchema = Object.keys(defaultOptionalFields.defaultFields).map((data, index) => {
+        Object.keys(formConfiguration).forEach((config) => {
+          if (data.toLowerCase().trim() !== config.toLowerCase().trim()){
+            delete defaultOptionalFields.defaultFields[`${data}`]; 
+            defaultOptionalFields.optionalFields[`${data}`] = FormSchema.FormSchema._DEFAULT_OPTIONAL_FIELDS.optionalFields[`${data}`];
+          }
+        })
+      })
     }
 
   }
+
   useEffect(() => {
     if (props.content !== undefined) {
       var { name, type } = props.content;
@@ -32,7 +59,7 @@ function DataSourceModal(props) {
       setInput({ ...input, ["name"]: name, ["type"]: type, ["configuration"]: configuration })
       setFormConfiguration(props.content.configuration.data || {})
       if (formSchema == {} || formSchema == undefined) {
-        let schema = FormSchema.FormSchema["_DEFAULT_OPTIONAL_FIELDS"]
+        let schema = schemaForm.FormSchema["_DEFAULT_OPTIONAL_FIELDS"]
         if (schema) {
           setFormSchema(schema)
         }

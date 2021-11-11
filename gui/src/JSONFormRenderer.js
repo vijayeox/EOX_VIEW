@@ -110,13 +110,7 @@ const JSONFormRenderer = forwardRef((props, ref) => {
   }
 
   const renderFormElement = (field, key) => {
-
     if(field){
-      
-      if (input[field.control.name] === undefined) {
-        removeFormField(field,key);
-      }
-      
       return (
         <Form.Group key={field.control.name + "_group"} as={Row}>
           <Form.Label key={field.control.name + "_label"} column lg="3">
