@@ -1,5 +1,6 @@
 import React from "react";
 import oxLogo from "../assets/images/eox.png";
+import wallpaper from "../assets/images/wallpaper.png";
 
 class ResetPasswordPage extends React.Component {
   constructor(props) {
@@ -15,14 +16,14 @@ class ResetPasswordPage extends React.Component {
     var validatePassword = true;
     if (newPassword.length < 8) {
       this.setState({
-        showMessage: "Password must contain at least eight characters!"
+        showMessage: "Password must contain at least eight characters!",
       });
       validatePassword = false;
     }
     var re = /[0-9]/;
     if (!re.test(newPassword) && validatePassword) {
       this.setState({
-        showMessage: "Password must contain at least one number (0-9)!"
+        showMessage: "Password must contain at least one number (0-9)!",
       });
       validatePassword = false;
     }
@@ -31,7 +32,7 @@ class ResetPasswordPage extends React.Component {
     if (!re.test(newPassword) && validatePassword) {
       this.setState({
         showMessage:
-          "Password must contain at least one lowercase letter (a-z)!"
+          "Password must contain at least one lowercase letter (a-z)!",
       });
       validatePassword = false;
     }
@@ -40,7 +41,7 @@ class ResetPasswordPage extends React.Component {
     if (!re.test(newPassword) && validatePassword) {
       this.setState({
         showMessage:
-          "Password must contain at least one uppercase letter (A-Z)!"
+          "Password must contain at least one uppercase letter (A-Z)!",
       });
       validatePassword = false;
     }
@@ -49,7 +50,7 @@ class ResetPasswordPage extends React.Component {
     if (!re.test(newPassword) && validatePassword) {
       this.setState({
         showMessage:
-          "Password must contain at least one Special Character($&+,:;=?@#|'<>.-^*()%!)"
+          "Password must contain at least one Special Character($&+,:;=?@#|'<>.-^*()%!)",
       });
       validatePassword = false;
     }
@@ -75,7 +76,7 @@ class ResetPasswordPage extends React.Component {
       } else {
         this.setState({
           showMessage:
-            "The password reset link has expired, please try resetting again."
+            "The password reset link has expired, please try resetting again.",
         });
       }
     } else {
@@ -87,7 +88,23 @@ class ResetPasswordPage extends React.Component {
 
   render() {
     return (
-      <main id="login-container " className="loginContainer row lighten-3 " style={{flexDirection:"row-reverse"}}>
+      <main
+        id="login-container"
+        className="loginContainer row lighten-3 "
+        style={{ flexDirection: "row-reverse" }}
+      >
+        <img
+          src={wallpaper}
+          alt="EOX Vantage"
+          style={{
+            position: "absolute",
+            width: "100vw",
+            height: "135vh",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%,-50%)",
+          }}
+        />
         <div id="ox-login-form" className="form-wrapper">
           <div
             className="form-wrapper__inner"
