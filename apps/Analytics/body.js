@@ -1,6 +1,6 @@
 
 import $ from 'jquery';
-import { React, Query, DataSource, Visualization, TemplateManager, SSOCustom, KanbanView, MapView } from 'oxziongui';
+import { React, Query, DataSource, Visualization, TemplateManager, SSOCustom, KanbanView, MapView, BryntumView } from 'oxziongui';
 import { WidgetManager, DashboardManager } from 'oxziongui';
 import SideNav, { Toggle, Nav, NavItem, NavIcon, NavText } from '@trendmicro/react-sidenav';
 import "@trendmicro/react-sidenav/dist/react-sidenav.css";
@@ -15,6 +15,7 @@ const SECTION_TEMPLATEMANGER = 'TM' //TemplateManager
 const SECTION_SSOCustom = 'SC' //SSO
 const SECTION_KanbanView = 'KV' //KV
 const SECTION_MapView = 'MV' //MapView
+const SECTION_BryntumView = 'BV' //BryntumView
 
 class Body extends React.Component {
 	constructor(props) {
@@ -137,6 +138,9 @@ class Body extends React.Component {
 			case SECTION_MapView:
 				sectionContent = <MapView />;
 				break;
+			case SECTION_BryntumView:
+				sectionContent = <BryntumView />;
+				break;
 		}
 
 		return (
@@ -217,7 +221,15 @@ class Body extends React.Component {
 							<NavText>
 								Map View
 							</NavText>
-						</NavItem> 
+						</NavItem>
+						<NavItem eventKey={SECTION_BryntumView} key={SECTION_BryntumView}>
+							<NavIcon>
+								<i class="fas fa-code" aria-hidden="true"></i>
+							</NavIcon>
+							<NavText>
+								Bryntum View
+							</NavText>
+						</NavItem>  
 					</SideNav.Nav>
 				</SideNav>
 				<div className="page-content full-width" id="page-content">

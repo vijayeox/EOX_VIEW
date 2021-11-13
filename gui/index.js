@@ -47,7 +47,7 @@ import WidgetManager from "./src/WidgetManager";
 import TemplateManager from "./src/TemplateManager";
 import SSOCustom from "./src/components/Custom/SSOCustom";
 import KanbanView from "./src/components/Kanban/KanbanRoutes";
-//import HistogramView from "./src/components/Bryntum/index"
+import BryntumView from "./src/components/bryntum/bryntum"
 import MapView from "./src/components/googlemapfinal/index"
 
 //import Mapbox from "./src/components/Custom/Mapbox";
@@ -135,7 +135,7 @@ export {
   TemplateManager,
   SSOCustom,
   MapView,
-  //HistogramView
+  BryntumView,
   KanbanView
 //  Mapbox
 };

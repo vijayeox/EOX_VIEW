@@ -1,0 +1,10 @@
+/**
+ * App-global styles
+ */
+@import '~@bryntum/demo-resources/scss/example.scss';
+
+#content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
