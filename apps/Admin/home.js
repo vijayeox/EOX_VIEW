@@ -208,7 +208,7 @@ export default class Home extends React.Component {
               <NavText>Home</NavText>
             </NavItem>
 
-            {this.userProfile.privileges.MANAGE_ACCOUNT_WRITE ? (
+            {this.userProfile.privileges.MANAGE_ACCOUNT_WRITE || this.userProfile.privileges.MANAGE_ACCOUNT_READ ? (
               <NavItem eventKey="Account" key="Account" title="Account">
                 <NavIcon>
                   <i className="fad fa-users-cog" aria-hidden="true"></i>
@@ -218,7 +218,7 @@ export default class Home extends React.Component {
             ) : (
               ""
             )}
-            {this.userProfile.privileges.MANAGE_USER_WRITE ? (
+            {this.userProfile.privileges.MANAGE_USER_WRITE ||this.userProfile.privileges.MANAGE_USER_READ ? (
               <NavItem eventKey="User" key="User" title="Users">
                 <NavIcon>
                   <i className="fad fa-user" aria-hidden="true"></i>
@@ -228,7 +228,7 @@ export default class Home extends React.Component {
             ) : (
               ""
             )}
-            {this.userProfile.privileges.MANAGE_ROLE_WRITE ? (
+            {this.userProfile.privileges.MANAGE_ROLE_WRITE || this.userProfile.privileges.MANAGE_ROLE_READ ? (
               <NavItem eventKey="Role" key="Role" title="Roles">
                 <NavIcon>
                   <i className="fad fa-person-sign" aria-hidden="true"></i>
@@ -238,7 +238,7 @@ export default class Home extends React.Component {
             ) : (
               ""
             )}
-            {this.userProfile.privileges.MANAGE_TEAM_WRITE ? (
+            {this.userProfile.privileges.MANAGE_TEAM_WRITE || this.userProfile.privileges.MANAGE_TEAM_READ? (
               <NavItem eventKey="Team" key="Team" title="Teams">
                 <NavIcon>
                   <i className="fad fa-users" aria-hidden="true"></i>
@@ -248,7 +248,7 @@ export default class Home extends React.Component {
             ) : (
               ""
             )}
-            {this.userProfile.privileges.MANAGE_KRA_WRITE ? (
+            {this.userProfile.privileges.MANAGE_KRA_WRITE || this.userProfile.privileges.MANAGE_KRA_READ ? (
               <NavItem eventKey="Goal" key="Goal" title="Goals">
                 <NavIcon>
                   <i className="fad fa-bullseye-arrow" aria-hidden="true"></i>
@@ -258,7 +258,7 @@ export default class Home extends React.Component {
             ) : (
               ""
             )}
-            {this.userProfile.privileges.MANAGE_ERROR_WRITE ? (
+            {this.userProfile.privileges.MANAGE_ERROR_WRITE || this.userProfile.privileges.MANAGE_ERROR_READ? (
               <NavItem eventKey="Errorlog" key="Errorlog" title="Errorlog">
                 <NavIcon>
                   <i
@@ -271,7 +271,7 @@ export default class Home extends React.Component {
             ) : (
               ""
             )}
-            {this.userProfile.privileges.MANAGE_PROJECT_WRITE ? (
+            {this.userProfile.privileges.MANAGE_PROJECT_WRITE|| this.userProfile.privileges.MANAGE_PROJECT_READ ? (
               <NavItem eventKey="Project" key="Project" title="Projects">
                 <NavIcon>
                   <i className="fad fa-cogs" aria-hidden="true"></i>
@@ -281,7 +281,7 @@ export default class Home extends React.Component {
             ) : (
               ""
             )}
-            {this.userProfile.privileges.MANAGE_ANNOUNCEMENT_WRITE ? (
+            {this.userProfile.privileges.MANAGE_ANNOUNCEMENT_WRITE|| this.userProfile.privileges.MANAGE_ANNOUNCEMENT_READ ? (
               <NavItem
                 eventKey="Announcement"
                 key="Announcement"
@@ -295,7 +295,7 @@ export default class Home extends React.Component {
             ) : (
               ""
             )}
-            {this.userProfile.privileges.MANAGE_MAILADMIN_WRITE ? (
+            {this.userProfile.privileges.MANAGE_MAILADMIN_WRITE || this.userProfile.privileges.MANAGE_MAILADMIN_READ ? (
               <NavItem
                 eventKey={this.userProfile.privileges.MANAGE_MAILADMIN_WRITE}
                 key={this.userProfile.privileges.MANAGE_MAILADMIN_WRITE}
@@ -311,7 +311,7 @@ export default class Home extends React.Component {
             ) : (
               ""
             )}
-            {this.userProfile.privileges.MANAGE_CRMADMIN_WRITE ? (
+            {this.userProfile.privileges.MANAGE_CRMADMIN_WRITE || this.userProfile.privileges.MANAGE_CRMADMIN_READ ? (
               <NavItem
                 eventKey={this.userProfile.privileges.MANAGE_CRMADMIN_WRITE}
                 key={this.userProfile.privileges.MANAGE_CRMADMIN_WRITE}
@@ -327,7 +327,7 @@ export default class Home extends React.Component {
             ) : (
               ""
             )}
-            {this.userProfile.privileges.MANAGE_TASKADMIN_WRITE ? (
+            {this.userProfile.privileges.MANAGE_TASKADMIN_WRITE || this.userProfile.privileges.MANAGE_TASKADMIN_READ? (
               <NavItem
                 eventKey={this.userProfile.privileges.MANAGE_TASKADMIN_WRITE}
                 key={this.userProfile.privileges.MANAGE_TASKADMIN_WRITE}
@@ -343,7 +343,7 @@ export default class Home extends React.Component {
             ) : (
               ""
             )}
-            {this.userProfile.privileges.MANAGE_APPBUILDER_READ ? (
+            {this.userProfile.privileges.MANAGE_APPBUILDER_READ || this.userProfile.privileges.MANAGE_APPBUILDER_WRITE ? (
               <NavItem
                 eventKey={this.userProfile.privileges.MANAGE_APPBUILDER_READ}
                 key={this.userProfile.privileges.MANAGE_APPBUILDER_READ}
@@ -360,7 +360,7 @@ export default class Home extends React.Component {
               ""
             )}
 
-            {this.userProfile.privileges.MANAGE_OIBUILDER_READ ? (
+            {this.userProfile.privileges.MANAGE_OIBUILDER_READ || this.userProfile.privileges.MANAGE_OIBUILDER_WRITE? (
               <NavItem
                 eventKey={this.userProfile.privileges.MANAGE_OIBUILDER_READ}
                 key={this.userProfile.privileges.MANAGE_OIBUILDER_READ}

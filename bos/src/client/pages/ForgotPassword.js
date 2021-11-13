@@ -1,6 +1,6 @@
 import React from "react";
 import oxLogo from "../assets/images/eox.png";
-import wallpaper from '../assets/images/wallpaper.png'
+import wallpaper from "../assets/images/wallpaper.png";
 
 class ForgotPassword extends React.Component {
   constructor(props) {
@@ -28,7 +28,7 @@ class ForgotPassword extends React.Component {
         if (resp.status == "success") {
           this.setState({
             showMessage:
-              "If account exists, an email will be sent with further instructions"
+              "If account exists, an email will be sent with further instructions",
           });
         }
         setTimeout(function () {
@@ -37,7 +37,7 @@ class ForgotPassword extends React.Component {
       } else {
         this.setState({
           showMessage:
-            "If account exists, an email will be sent with further instructions"
+            "If account exists, an email will be sent with further instructions",
         });
         setTimeout(function () {
           window.location.href = window.location.origin;
@@ -48,65 +48,80 @@ class ForgotPassword extends React.Component {
 
   render() {
     return (
-     <main id="login-container " className="loginContainer row lighten-3 " style={{flexDirection:"row-reverse"}}>
-      <img src={wallpaper} alt="EOX Vantage" style={{position : 'absolute', width : '100vw', height : '135vh', top : '50%', left : '50%', transform:'translate(-50%,-50%)'}}/>
-      <div id="ox-login-form" className="form-wrapper">
-         <div
-           className="form-wrapper__inner"
-           id="loginPage"
-           style={{ display: "block" }}
-         >
-           <form className="ox-form ">
-             <div id="ox-img" className="ox-imgDiv">
-               <img id="ox-logo" className="ox-img" src={oxLogo} />
-             </div>
-             <div className="ox-forgotPWText">
-               <h4>Recover Password</h4>
-               <h6>Don’t worry, happens to the best of us.</h6>
-             </div>
+      <main
+        id="login-container "
+        className="loginContainer row lighten-3 "
+        style={{ flexDirection: "row-reverse" }}
+      >
+        <img
+          src={wallpaper}
+          alt="EOX Vantage"
+          style={{
+            position: "absolute",
+            width: "100vw",
+            height: "135vh",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%,-50%)",
+          }}
+        />
+        <div id="ox-login-form" className="form-wrapper">
+          <div
+            className="form-wrapper__inner"
+            id="loginPage"
+            style={{ display: "block" }}
+          >
+            <form className="ox-form ">
+              <div id="ox-img" className="ox-imgDiv">
+                <img id="ox-logo" className="ox-img" src={oxLogo} />
+              </div>
+              <div className="ox-forgotPWText">
+                <h4>Recover Password</h4>
+                <h6>Don’t worry, happens to the best of us.</h6>
+              </div>
 
-             <div className="floating-label">
-               <input
-                 type="text"
-                 name="username"
-                 className="validate"
-                 id="username"
-                 placeholder="Username"
-               />
-               <label htmlFor="username">Username</label>
-             </div>
-             <div
-               className="osjs-login-error"
-               style={{ display: this.state.showMessage ? "block" : "none" }}
-             >
-               <span id="usernameError" style={{ color: "green" }}>
-                 {this.state.showMessage}
-               </span>
-             </div>
-             <div className="form-signin__footer">
-               <button
-                 type="button"
-                 value="Submit"
-                 className="btn waves-effect waves-light"
-                 onClick={this.triggerSubmit}
-               >
-                 Email me a recovery link
-               </button>
-               <button
-                 type="button"
-                 className="btn waves-effect waves-light"
-                 onClick={() => this.props.showLoginPage()}
-               >
-                 Go Back
-               </button>
-             </div>
-           </form>
-         </div>
-         <div className="footer-links">
-           <a href="https://www.eoxvantage.com">About Us</a>
-         </div>
-       </div>
-     </main>
+              <div className="floating-label">
+                <input
+                  type="text"
+                  name="username"
+                  className="validate"
+                  id="username"
+                  placeholder="Username"
+                />
+                <label htmlFor="username">Username</label>
+              </div>
+              <div
+                className="osjs-login-error"
+                style={{ display: this.state.showMessage ? "block" : "none" }}
+              >
+                <span id="usernameError" style={{ color: "green" }}>
+                  {this.state.showMessage}
+                </span>
+              </div>
+              <div className="form-signin__footer">
+                <button
+                  type="button"
+                  value="Submit"
+                  className="btn waves-effect waves-light"
+                  onClick={this.triggerSubmit}
+                >
+                  Email me a recovery link
+                </button>
+                <button
+                  type="button"
+                  className="btn waves-effect waves-light"
+                  onClick={() => this.props.showLoginPage()}
+                >
+                  Go Back
+                </button>
+              </div>
+            </form>
+          </div>
+          <div className="footer-links">
+            <a href="https://www.eoxvantage.com">About Us</a>
+          </div>
+        </div>
+      </main>
     );
   }
 }

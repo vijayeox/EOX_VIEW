@@ -302,7 +302,9 @@ html {
 
 [data-id="Profile_Window"],
 [data-id="ChatWindow"],
-[data-id="PreferencesWindow"] {
+[data-id="PreferencesWindow"],
+[data-id="annoucementsWindow"],
+[data-id="MailApplicationWindow"] {
   .osjs-window-header {
     display: flex;
   }
