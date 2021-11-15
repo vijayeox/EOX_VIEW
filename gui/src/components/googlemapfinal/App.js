@@ -589,9 +589,11 @@ function MyComponent() {
   const [showInfo, setShowInfo] = React.useState(false);
   const [subRad, setSubRad] = React.useState(null);
   const [markers, setMarkers] = React.useState(places);
-  const [lat, setLat] = useState(38.985295077582805);
-  const [log, setLog] = useState(-94.67247144575104);
+
   const [place, setPlace] = useState(places);
+  const [lat, setLat] = useState(place[0].latitude);
+  const [log, setLog] = useState(place[0].longitude);
+  const [zoom, setZoom] = useState(20);
 
   const handleChage = e => {
     place.map(i => {
@@ -607,23 +609,33 @@ function MyComponent() {
     lng: log,
   };
 
-  const submit = () => {
-    setSubRad(radius);
-  };
   const mapRef = React.useRef();
   const onMapLoad = React.useCallback(map => {
     mapRef.current = map;
-  }, []);
-  const panTo = React.useCallback((lat, log) => {
-    mapRef.current.panTo(lat, log);
-    mapRef.current.setZoom(8);
   }, []);
 
   console.log(radius);
   console.log(markers);
   const handleChangeRadius = event => {
+    console.log(event.target.value);
+
     parseInt(setRadius(event.target.value));
+    if (radius >= 1000) {
+      setZoom(2);
+    } else if (radius === null || radius === undefined) {
+      setZoom(20);
+    } else if (radius >= 100) {
+      setZoom(5);
+    } else if (radius >= 10) {
+      setZoom(8);
+    } else if (radius >= 0.1) {
+      setZoom(12);
+    } else {
+      setZoom(20);
+    }
   };
+  console.log(radius);
+  console.log(zoom);
   const handleMarkerTap = showInfo => {
     if (showInfo === false) {
       setShowInfo(true);
@@ -642,6 +654,7 @@ function MyComponent() {
   };
   console.log(showInfo);
   console.log(lat);
+  console.log(zoom);
 
   return isLoaded ? (
     <>
@@ -668,7 +681,7 @@ function MyComponent() {
         <GoogleMap
           mapContainerStyle={containerStyle}
           center={center}
-          zoom={20}
+          zoom={zoom}
           onLoad={onMapLoad}
         >
           <Dropdown
@@ -687,25 +700,19 @@ function MyComponent() {
           {place.map(e => {
             if (e.name === ddstate)
               return (
-                (
-                  <p>
-                    Latitude: {e.latitude} Longitude: {e.longitude}
-                  </p>
-                ),
-                (
-                  <>
-                    <Circle
-                      center={{
-                        lat: e.latitude,
-                        lng: e.longitude,
-                      }}
-                      radius={parseFloat(radius * 1000)}
-                      options={{ fillColor: "red", strokeColor: "red" }}
-                    />
-                  </>
-                )
+                <p>
+                  Latitude: {e.latitude} Longitude: {e.longitude}
+                </p>
               );
           })}
+          <Circle
+            center={{
+              lat: lat,
+              lng: log,
+            }}
+            radius={parseFloat(radius * 1000)}
+            options={{ fillColor: "red", strokeColor: "red" }}
+          />
 
           {markers.map(place => (
             <>
@@ -729,7 +736,7 @@ function MyComponent() {
               position={{ lat: marker.latitude, lng: marker.longitude }}
             >
               <>
-                <img src={marker.image} alt=" " />
+                {/* <img src={marker.image} alt=" " /> */}
                 <p>{marker.name}</p>
                 <p>Latitude:{marker.latitude}</p>
                 <p>Longitude:{marker.longitude}</p>
