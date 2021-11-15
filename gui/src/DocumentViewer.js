@@ -544,6 +544,8 @@ export default class DocumentViewer extends Component {
         </div>
       );
     } else if (type == "pdf") {
+      const fileEmpty = !documentData.file || documentData?.file?.trim()?.length === 0;
+      if(fileEmpty) this.loader.destroy()
       url =
         // this.core.config("ui.url") +
         // "/ViewerJS/#" +
@@ -557,7 +559,7 @@ export default class DocumentViewer extends Component {
       return (
         <div className="pdf-frame">
           {this.attachmentOperations(documentData, true, true)}
-          <iframe
+         {!fileEmpty && <iframe
             onLoad={() => {
               setTimeout(() => {
                 this.loader.destroy();
@@ -566,7 +568,7 @@ export default class DocumentViewer extends Component {
             key={Math.random() * 20}
             src={url}
             className="iframeDoc"
-          ></iframe>
+          ></iframe>}
         </div>
       );
     } else if (type == "plain") {
