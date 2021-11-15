@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, createElement } from "react";
 import Accordion from "react-bootstrap/Accordion";
 import { useAccordionToggle } from "react-bootstrap/AccordionToggle";
 import { Card, Button } from "react-bootstrap";
@@ -70,6 +70,19 @@ export default class DocumentViewer extends Component {
     };
     rawFile.send(null);
     return rawFile.onreadystatechange();
+  }
+
+  navigateOrDownload(e, doc, url){
+    e.stopPropagation();
+    if(doc?.file?.trim()?.length === 0 || !doc.file){
+      window.open(url || doc.url, '_blank').focus();
+      return
+    }
+    const anchor = document.createElement('a');
+    anchor.href = url || doc.url;
+    anchor.download = doc.name;
+    anchor.target =  "_blank";
+    anchor.click();
   }
 
   uploadAttachments(fileIndex) {
@@ -216,19 +229,22 @@ export default class DocumentViewer extends Component {
                         <Card
                           className="docItems"
                           onClick={(e) => {
-                            doc.file != this.state.selectedDocument
-                              ? this.state.selectedDocument.file
-                                ? this.handleDocumentClick(doc)
-                                : null
-                              : null;
+                            this.handleDocumentClick(doc)
+                            // doc.file != this.state.selectedDocument
+                            //   ? this.state.selectedDocument.file
+                            //     ? this.handleDocumentClick(doc)
+                            //     : null
+                            //   : null;
                           }}
                           key={i}
                         >
                           <div
                             className={
                               this.state.selectedDocument &&
-                              this.state.selectedDocument.file
-                                ? doc.file == this.state.selectedDocument.file
+                              // this.state.selectedDocument.file
+                              //   ? doc.file == this.state.selectedDocument.file
+                                this.state.selectedDocument.id
+                                  ? doc.id == this.state.selectedDocument.id
                                   ? "docListBody borderActive"
                                   : "docListBody border"
                                 : "docListBody border"
@@ -239,9 +255,9 @@ export default class DocumentViewer extends Component {
                             ></i>
                             <p>
                               <a
-                                href={doc.url}
+                                // href={doc.url}
                                 target="_blank"
-                                onClick={event => event.stopPropagation()}
+                                onClick={e => this.navigateOrDownload(e, doc)}
                                 rel="noopener noreferrer"
                               >
                                 {doc.originalName &&
@@ -460,12 +476,12 @@ export default class DocumentViewer extends Component {
           ) : null}
           {downloadUrl ? (
             <a
-              href={downloadUrl}
-              download
-              target="_blank"
+              // href={downloadUrl}
+              // download
+              // target="_blank"
               className="image-download-button btn btn-primary"
               title="Download"
-              onClick={event => event.stopPropagation()}
+              onClick={e => this.navigateOrDownload(e, this.state.selectedDocument, downloadUrl)}
             >
               <i className="fad fa-download" aria-hidden="true"></i>
             </a>
