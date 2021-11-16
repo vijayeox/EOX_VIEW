@@ -103,4 +103,4 @@ class ActivityLog extends React.Component {
     );
   }
 }
-export default ActivityLog;
+export default React.memo(ActivityLog);
