@@ -27,12 +27,14 @@ import * as MomentTZ from "moment-timezone";
 import { countryList } from "./Form/Country";
 import { phoneList } from "./Form/Phonelist";
 import merge from "deepmerge";
+import PrintPdf from "../print/printpdf";
 class BaseFormRenderer extends React.Component {
     constructor(props) {
         super(props)
         this.core = this.props.core;
         this.notif = this.props.notif;
         this.state = {
+            showPdf: false,
             form: null,
             showLoader: false,
             stylePath: null,
@@ -63,6 +65,7 @@ class BaseFormRenderer extends React.Component {
         this.formDivID = "formio_" + this.generateUUID();
         this.loaderDivID = "formio_loader_" + formID;
         this.formErrorDivId = "formio_error_" + formID;
+        this.checkExportPDF();
         // JavascriptLoader.loadScript([{
         //     'name': 'ckEditorJs',
         //     'url': './ckeditor/ckeditor.js',
@@ -70,6 +73,17 @@ class BaseFormRenderer extends React.Component {
         //     'onerror': function () { }
         // }]);
     }
+
+    checkExportPDF = () => {
+        if(this.props?.exportPDF){
+            let ev = new CustomEvent("addcustomActions", { detail: { customActions: [
+                <Button title={"Print"} className={"toolBarButton"} primary={true} onClick={(e) => this.toggleShowPdf(true)} ><i className={"fa fa-print"}></i></Button>
+            ] }, bubbles: true });
+            document.getElementById(this.state.appId+"_breadcrumbParent").dispatchEvent(ev);
+        }
+    }
+
+    toggleShowPdf = (showPdf) => this.setState({showPdf})
 
     cancelFormSubmission=()=>{
         Swal.fire({
@@ -1515,6 +1529,13 @@ class BaseFormRenderer extends React.Component {
                     <h3>{this.state.formErrorMessage}</h3>
                 </div>
                 <div className="form-render" id={this.formDivID}></div>
+                {   this.state.showPdf && 
+                        <PrintPdf
+                        cancel={() => this.toggleShowPdf(false)}
+                        idSelector={this.formDivID}
+                        osjsCore={this.core}
+                        />
+                }
             </div>
         );
     }
