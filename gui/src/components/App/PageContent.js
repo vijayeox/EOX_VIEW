@@ -21,6 +21,7 @@ import EntityViewer from "./EntityViewer";
 import Dashboard from "../../Dashboard";
 import DashboardManager from "../../DashboardManager";
 import ActivityLog from "./ActivityLog";
+import CustomPage from "./CustomPage";
 
 class PageContent extends React.Component {
   constructor(props) {
@@ -678,6 +679,16 @@ class PageContent extends React.Component {
             fileId={fileId}
             core={this.core}
             disableControls={item?.disableControls}
+          />
+        );
+      } else if(item.type === 'CustomPage'){
+        var fileId = this.props.fileId ? this.props.fileId : this.state.currentRow.uuid;
+        content.push(
+          <CustomPage
+            appId={this.appId}
+            fileId={fileId}
+            core={this.core}
+            data={item.content}
           />
         );
       } else {
