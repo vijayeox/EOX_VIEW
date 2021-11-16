@@ -18,7 +18,6 @@ import TextAreaComponent from "./Form/TextAreaComponent";
 import ParameterHandler from "./ParameterHandler";
 import Nested from "./Form/Nested";
 import { Button, DropDownButton } from "@progress/kendo-react-buttons";
-
 import DateFormats from '../../public/js/DateFormats'
 import React from 'react'
 import Swal from "sweetalert2";
@@ -34,6 +33,7 @@ class BaseFormRenderer extends React.Component {
         this.core = this.props.core;
         this.notif = this.props.notif;
         this.state = {
+            printPdfId:null,
             showPdf: false,
             form: null,
             showLoader: false,
@@ -65,7 +65,7 @@ class BaseFormRenderer extends React.Component {
         this.formDivID = "formio_" + this.generateUUID();
         this.loaderDivID = "formio_loader_" + formID;
         this.formErrorDivId = "formio_error_" + formID;
-        this.checkExportPDF();
+        // this.checkExportPDF();
         // JavascriptLoader.loadScript([{
         //     'name': 'ckEditorJs',
         //     'url': './ckeditor/ckeditor.js',
@@ -73,17 +73,63 @@ class BaseFormRenderer extends React.Component {
         //     'onerror': function () { }
         // }]);
     }
-
-    checkExportPDF = () => {
-        if(this.props?.exportPDF){
-            let ev = new CustomEvent("addcustomActions", { detail: { customActions: [
-                <Button title={"Print"} className={"toolBarButton"} primary={true} onClick={(e) => this.toggleShowPdf(true)} ><i className={"fa fa-print"}></i></Button>
-            ] }, bubbles: true });
-            document.getElementById(this.state.appId+"_breadcrumbParent").dispatchEvent(ev);
+    async printEntireForm(){
+        try{
+            const navTabSelector = `#${this.formDivID}>.formio-form>div>nav[aria-label="navigation"]>.pagination`
+            if(!document.querySelector(navTabSelector)){
+                this.setState({showPdf : true, printPdfId : this.formDivID})
+                return;
+            }
+            const sleep = t => new Promise((r) => {  setTimeout(r,t) })
+            const pages = [];
+            this.loader.show()
+            const fetchForms = async i => { 
+                const navTabs = document.querySelector(navTabSelector)
+                const e = navTabs?.children?.[i]?.children[0];
+                if(!e) {
+                    const formPages = document.createElement('div');
+                    formPages.id = `${this.formDivID}_${Date.now()}`;
+                    formPages.innerHTML = pages.join('')
+                    document.getElementById(this.formDivID).appendChild(formPages)
+                    document.querySelectorAll(`#${formPages.id}>.formio-form>div>ul`)?.forEach((childNode) => childNode?.remove())
+                    this.setState({showPdf : true, printPdfId : formPages.id},this.loader.destroy)
+                    return;
+                };
+                e.click()
+                await sleep(500)
+                pages.push(document.querySelector(`#${this.formDivID}`)?.innerHTML)
+                fetchForms(i+1)
+            }
+            const startTabs = document.querySelector(navTabSelector);
+            const len =  startTabs?.children?.length;
+            startTabs?.children?.[len-1]?.children[0]?.click();
+            await sleep(500)
+            fetchForms(0)
+            return true;
+        }catch(e){
+            console.error(`printEntireForm : `,e)
+            this.loader.destroy()
+            return true;
         }
     }
 
-    toggleShowPdf = (showPdf) => this.setState({showPdf})
+    // checkExportPDF = () => {
+    //     if(this.props?.exportPDF){
+    //         let ev = new CustomEvent("addcustomActions", { detail: { customActions: [
+    //             <Button title={"Print"} className={"toolBarButton"} primary={true} onClick={(e) => this.toggleShowPdf(true)} ><i className={"fa fa-print"}></i></Button>
+    //         ] }, bubbles: true });
+    //         document.getElementById(this.state.appId+"_breadcrumbParent").dispatchEvent(ev);
+    //     }
+    // }
+
+    toggleShowPdf = (showPdf) => {
+        if(showPdf){
+            this.printEntireForm()
+            return;
+        }
+        document.querySelector(`#${this.formDivID}>.formio-form>div>nav[aria-label="navigation"]>.pagination`)?.children?.[0]?.children[0]?.click();
+        this.setState({showPdf})
+    }
 
     cancelFormSubmission=()=>{
         Swal.fire({
@@ -1081,10 +1127,15 @@ class BaseFormRenderer extends React.Component {
                 let pageContent = {pageContent: filePage,title: "View",icon: "fa fa-eye",fileId:this.state.fileId};
                 let commentPage = [{type:"Comment",fileId:this.state.fileId}];
                 let commentContent = {pageContent: commentPage,title: "Comment",icon: "fa fa-comment"};
-                gridToolbarContent.push(<Button title={"View"} className={"btn btn-primary"} primary={true} onClick={(e) => this.updatePageContent(pageContent)} ><i className={"fa fa-eye"}></i></Button>);
-                if(entityPage?.data?.enable_comments == 1){
-                    gridToolbarContent.push(<Button title={"Comments"} className={"btn btn-primary"} primary={true} onClick={(e) => this.updatePageContent(commentContent)} ><i className={"fa fa-comment"}></i></Button>);
+                if( entityPage.data.enable_view && entityPage.data.enable_view != 0 ) {
+                    gridToolbarContent.push(<Button title={"View"} className={"toolBarButton"} primary={true} onClick={(e) => this.updatePageContent(pageContent)} ><i className={"fa fa-eye"}></i></Button>);
                 }
+                if( entityPage.data.enable_comments && entityPage.data.enable_comments != 0 ) {
+                    gridToolbarContent.push(<Button title={"Comments"} className={"toolBarButton"} primary={true} onClick={(e) => this.updatePageContent(commentContent)} ><i className={"fa fa-comment"}></i></Button>);
+                }
+                if(this.props?.exportPDF){
+                    gridToolbarContent.push(<Button title={"Print"} className={"toolBarButton"} primary={true} onClick={(e) => this.toggleShowPdf(true)} ><i className={"fa fa-print"}></i></Button>);
+                }    
                 let ev = new CustomEvent("addcustomActions", { detail: { customActions: gridToolbarContent }, bubbles: true });
                 if(entityPage?.data?.content?.find((c) => c?.type === "TabSegment")) return;
                 document.getElementById(this.state.appId+"_breadcrumbParent").dispatchEvent(ev);
@@ -1532,7 +1583,7 @@ class BaseFormRenderer extends React.Component {
                 {   this.state.showPdf && 
                         <PrintPdf
                         cancel={() => this.toggleShowPdf(false)}
-                        idSelector={this.formDivID}
+                        idSelector={this.state.printPdfId}
                         osjsCore={this.core}
                         />
                 }
