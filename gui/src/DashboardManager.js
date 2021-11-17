@@ -220,20 +220,23 @@ class DashboardManager extends React.Component {
     this.setState({ flipped: true, uuid: "", inputs: inputs, loadEditor: true })
   }
 
-  showFilter() {
+  showFilter(dashboardUuid) {
     this.setState({ showFilter: true }, state => {
-      var element = document.getElementById("filter-form-container");
+      let filterContainer = "filter-form-container-" + dashboardUuid;
+      let filterPreview = "dashboard-preview-container-" + dashboardUuid;
+      var element = document.getElementById(filterContainer);
       element.classList.remove("disappear");
       element.classList.add("show-filter-panel")
-      var element = document.getElementById("dashboard-preview-container");
+      var element = document.getElementById(filterPreview);
       // element.classList.add("disappear");
       element.classList.add("blurOut");
     })
   }
 
   hideFilter() {
+    let filterPreview = "dashboard-preview-container-" + this.state.uuid;
     this.setState({ showFilter: false })
-    var element = document.getElementById("dashboard-preview-container");
+    var element = document.getElementById(filterPreview);
     element.classList.remove("blurOut");
   }
 
@@ -440,6 +443,8 @@ class DashboardManager extends React.Component {
 
   render() {
     let containsFilter = (Array.isArray(this.state.filterConfiguration) && this.state.filterConfiguration.length > 0) || (this.getFilterProperty("filterConfiguration").length > 0) || (this.getOptionalFilters("filterOptions").length > 0)
+    let filterContainer = "filter-form-container-" + this.state.uuid;
+    let filterPreview = "dashboard-preview-container-" + this.state.uuid;
     return (
       <div ref={this.myRef} className="dashboard">
         <Notification ref={this.notif} />
@@ -450,7 +455,7 @@ class DashboardManager extends React.Component {
           style={{ width: '100%', height: '100vh' }} /// these are optional style, it is not necessary
         >
           <FrontSide /*style={{ marginTop: '-50px' }}*/>
-            <div id="filter-form-container" style={{ width: "30vw" }} className="disappear">
+            <div id={filterContainer} style={{ width: "30vw" }} className="filter-form-container disappear">
               {containsFilter &&
                 <DashboardFilter
                   ref={this.filterRef}
@@ -465,7 +470,7 @@ class DashboardManager extends React.Component {
               }
             </div>
             {(this.state.dashList != undefined && this.state.dashList.length > 0) ?
-              <div id="dashboard-preview-container">
+              <div id={filterPreview}>
                 <div className="dash-manager-bar">
                   {
                     !this.props.hideEdit && this.userProfile.key.privileges.MANAGE_DASHBOARD_WRITE &&
@@ -510,7 +515,7 @@ class DashboardManager extends React.Component {
                         }
                         {
                           containsFilter &&
-                          <Button onClick={() => this.showFilter()} title="Filter OI">
+                          <Button onClick={() => this.showFilter(this.state.uuid)} title="Filter OI">
                             <i className="fa fa-filter" aria-hidden="true"></i>
                           </Button>
                         }
