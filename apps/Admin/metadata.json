@@ -2,7 +2,7 @@
   "type": "application",
   "name": "Admin",
   "category": "utilities",
-  "autostart": true,
+  "autostart": false,
   "icon": "icon.svg",
   "icon_white": "icon_white.svg",
   "defaultAppforOrgs" : true,

@@ -75,6 +75,8 @@ export default class OX_Grid extends React.Component {
       : React.createRef();
     this.refreshHandler = this.refreshHandler.bind(this);
     this.inlineEdit = this.inlineEdit.bind(this);
+    this.toggleGridLoader = this.toggleGridLoader.bind(this);
+    this.toggleGridLoader();
   }
   _excelExport;
   _grid;
@@ -101,6 +103,7 @@ export default class OX_Grid extends React.Component {
       .getElementById("customActionsToolbar")
       .addEventListener("getCustomActions", this.getCustomActions, false);
     document.getElementById(`navigation_${this.appId}`)?.addEventListener('exportPdf', this.exportPDF, false);
+    this.toggleGridLoader();
 }
 
 componentWillUnmount(){
@@ -112,11 +115,13 @@ componentWillUnmount(){
   };
 
   dataStateChange = (e) => {
-    this.setState({ ...this.state, dataState: e.dataState, apiActivityCompleted: false });
+    const showLoader = (()=>{try{return JSON.stringify(this.state?.dataState) !== JSON.stringify(e?.dataState)}catch(e){return false}})()
+    this.setState({ ...this.state, dataState: e.dataState, apiActivityCompleted : false }, () => showLoader && this.toggleGridLoader());
+   
   };
 
   dataRecieved = (data) => {
-    this.setState({ gridData: data, apiActivityCompleted: true });
+    this.setState({ gridData: data, apiActivityCompleted: true }, this.toggleGridLoader);
   };
 
   UNSAFE_componentWillReceiveProps(nextProps) {
@@ -799,7 +804,7 @@ componentWillUnmount(){
               this.loader.destroy();
               Swal.fire({
                 icon: "error",
-                title: response.message,
+                title: item.errorMessage ? item.errorMessage : response.message,
                 showConfirmButton: true,
               });
               that.setState({
@@ -819,8 +824,9 @@ componentWillUnmount(){
               Swal.fire({
                 title: "Are you sure?",
                 text: "Do you really want to delete the record? This cannot be undone.",
-                imageUrl:
-                  "https://image.flaticon.com/icons/svg/1632/1632714.svg",
+                // imageUrl:
+                //   "https://image.flaticon.com/icons/svg/1632/1632714.svg",
+                icon: 'question',
                 imageWidth: 75,
                 imageHeight: 75,
                 confirmButtonText: "Delete",
@@ -842,7 +848,7 @@ componentWillUnmount(){
                       } else {
                         this.state.notif.current.notify(
                           "Error",
-                          response.message,
+                          item.errorMessage ? item.errorMessage :response.message,
                           "danger"
                         );
                       }
@@ -896,8 +902,9 @@ componentWillUnmount(){
               Swal.fire({
                 title: "Are you sure?",
                 text: "Do you really want to delete the record? This cannot be undone.",
-                imageUrl:
-                  "https://image.flaticon.com/icons/svg/1632/1632714.svg",
+                // imageUrl:
+                //   "https://image.flaticon.com/icons/svg/1632/1632714.svg",
+                icon: 'question',
                 imageWidth: 75,
                 imageHeight: 75,
                 confirmButtonText: "Delete",
@@ -1145,6 +1152,25 @@ componentWillUnmount(){
     }
   };
 
+  toggleGridLoader() {
+      const selector = `#content_${this.appId}_${this.pageId} .k-grid-container `;
+      try {
+          document.querySelector(`${selector}>.osjs-boot-splash-grid`)?.remove();
+          if (!this.state.apiActivityCompleted ) {
+            const ele = document.createElement("div");
+            ele.className = "osjs-boot-splash-grid";
+            ele.innerHTML = ` <div class="spinner">
+                  <div class="bounce1"></div>
+                  <div class="bounce2"></div>
+                  <div class="bounce3"></div>
+                </div>`;
+            document.querySelector(selector)?.append(ele);
+        }
+      } catch (e) {
+        document.querySelector(`${selector}>.osjs-boot-splash-grid`)?.remove();
+      }
+  }
+
   render() {
     return (
       <div
@@ -1213,7 +1239,7 @@ componentWillUnmount(){
             onDataRecieved={this.dataRecieved}
             {...this.props}
           />
-        )}{!this.state.apiActivityCompleted && this.loader.showGrid()}</>
+        )}</>
         <div id="customActionsToolbar" />
         <Grid
           rowRender={this.rowRender}

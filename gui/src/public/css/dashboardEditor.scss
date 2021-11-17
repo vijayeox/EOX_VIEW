@@ -366,8 +366,7 @@ div#filter-form-container.show-filter-panel {
   The solutions provided is we can mark the first cell of all rows blue and underline, 
   so they know that know its a link
 */
-
-.drillDownStyle table tr td:first-child {
+.drillDownStyle table tr:not(.k-grid-norecords) td:first-child {
   color: blue;
   text-decoration: underline;
 }
