@@ -14,6 +14,7 @@ export default class CustomPage extends Component {
     this.data = this.props.data;
     this.loader = this.core.make("oxzion/splash");
     this.helper = this.core.make("oxzion/restClient");
+    this.rowData = this.props.rowData;
     this.state = {};
   }
 
@@ -48,10 +49,6 @@ export default class CustomPage extends Component {
         fileDetails.data &&
         fileDetails.data.entity_id
       ) {
-        // const fileData = await this.getEntityPage(fileDetails.data.entity_id);
-        // if (!fileData?.data?.data?.uuid) {
-        //   fileData.data.data.uuid = fileData?.data?.uuid;
-        // }
         const data = fileDetails.data;
         let { template, params, functions, api } = this.data;
         const wrapperUrl = this.core.config("wrapper.url");
@@ -59,7 +56,6 @@ export default class CustomPage extends Component {
         const sweetAlert = Swal;
         const helper = this.core.config("oxzion/restClient");
         const loader = this.core.make("oxzion/splash");
-        //
         for (let name in params) {
           params[name] = eval(params[name]);
         }
@@ -67,7 +63,6 @@ export default class CustomPage extends Component {
           eval(func)
         })
         this.preload()
-        console.log("params-", params);
         this.setState({
           ...this.state,
           data: fileDetails?.data,
@@ -77,7 +72,6 @@ export default class CustomPage extends Component {
         });
       }
     } catch (e) {
-      console.log("params-", e);
     }
   }
 
@@ -102,9 +96,9 @@ export default class CustomPage extends Component {
         if(!isConfirmed) return;
       }
       this.loader.show();
+      const rowData = this.rowData;
       const params = this.state.params;
       const parsedPayload = eval(apiData?.payload);
-      console.log('parsedPayload apiCall ',parsedPayload)
       this.helper.request("v1", apiData.url, parsedPayload, apiData.type || 'POST').
       then(() => {
         this.loader.destroy();
@@ -113,7 +107,6 @@ export default class CustomPage extends Component {
         this.loader.destroy()
       })
     }catch(e){
-      console.log('Custompage apiCall ',e)
       this.loader.destroy();
     }
   }
