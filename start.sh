@@ -2,7 +2,7 @@
 
 dirName="$(tr [A-Z] [a-z] <<< "${PWD##*/}")"
 echo "Stopping container if already running..."
-docker stop "${dirName//_}_vw_1"
+docker stop "${dirName//_}-vw-1"
 
 IP=`hostname -I | awk '{ print $1 }'`
 
@@ -26,7 +26,7 @@ else
 	echo "View is being served in the background on port 8081."
 	while true; do
 		case $startOptions in
-			[Yy]* ) docker exec -it "${dirName//_}_vw_1" bash; break;;
+			[Yy]* ) docker exec -it "${dirName//_}-vw-1" bash; break;;
 			[Nn]* ) break;;
 				* ) read -p "Do you wish to enter the container?(y/n)" startOptions;;
 		esac
