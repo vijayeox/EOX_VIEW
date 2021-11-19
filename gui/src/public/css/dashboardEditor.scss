@@ -115,14 +115,14 @@
   max-width: 23vw;
 }
 
-div#filter-form-container {
+div.filter-form-container {
   background: white;
   border-radius: 10px;
   margin-top: 5px;
   box-shadow: -3px 3px 18px #cccccc;
 }
 
-div#filter-form-container.show-filter-panel {
+div.filter-form-container.show-filter-panel {
   background: white;
   border-radius: 5px;
   margin-top: 5px;
@@ -152,13 +152,13 @@ div#filter-form-container.show-filter-panel {
 }
 
 #filtereditor-form-container button.close,
-#filter-form-container button.close {
+.filter-form-container button.close {
   background-color: transparent;
   border-radius: none;
 }
 
 #filtereditor-form-container label,
-#filter-form-container label {
+.filter-form-container label {
   color: #275362;
 }
 
@@ -491,7 +491,7 @@ div#filter-form-container.show-filter-panel {
 }
 
 // View Mode - Filter Fields CSS
-#filter-form-container {
+.filter-form-container {
   .filterFieldsfilter {
     .filterFieldsfilter-section-one {
       display: flex;
