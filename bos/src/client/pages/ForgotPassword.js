@@ -1,5 +1,6 @@
 import React from "react";
 import oxLogo from "../assets/images/eox.png";
+import wallpaper from "../assets/images/wallpaper.png";
 
 class ForgotPassword extends React.Component {
   constructor(props) {
@@ -27,7 +28,7 @@ class ForgotPassword extends React.Component {
         if (resp.status == "success") {
           this.setState({
             showMessage:
-              "If account exists, an email will be sent with further instructions"
+              "If account exists, an email will be sent with further instructions",
           });
         }
         setTimeout(function () {
@@ -36,7 +37,7 @@ class ForgotPassword extends React.Component {
       } else {
         this.setState({
           showMessage:
-            "If account exists, an email will be sent with further instructions"
+            "If account exists, an email will be sent with further instructions",
         });
         setTimeout(function () {
           window.location.href = window.location.origin;
@@ -47,7 +48,23 @@ class ForgotPassword extends React.Component {
 
   render() {
     return (
-      <main id="login-container " className="loginContainer row lighten-3 " style={{flexDirection:"row-reverse"}}>
+      <main
+        id="login-container "
+        className="loginContainer row lighten-3 "
+        style={{ flexDirection: "row-reverse" }}
+      >
+        <img
+          src={wallpaper}
+          alt="EOX Vantage"
+          style={{
+            position: "absolute",
+            width: "100vw",
+            height: "135vh",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%,-50%)",
+          }}
+        />
         <div id="ox-login-form" className="form-wrapper">
           <div
             className="form-wrapper__inner"

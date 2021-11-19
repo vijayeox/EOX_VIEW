@@ -4,7 +4,7 @@ import Preferences from "./tabs/Preferences.js";
 import EditProfile from "./tabs/EditProfile.js";
 import { Tabs, TabLink, TabContent } from "react-tabs-redux";
 import Profile from "./tabs/Profile";
-
+import * as Webcam from "react-webcam";
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -213,6 +213,10 @@ class App extends React.Component {
       );
     }
   };
+
+  profileUpdated(icon){
+    this.setState({ icon });
+  }
   
   render() {
     return (
@@ -320,7 +324,7 @@ class App extends React.Component {
           </div>
           <div className="tabContentDiv">
             <TabContent for="vertical-tab-editprofile" key="vertical-tab-editprofile">
-              <EditProfile args={this.core} />
+              <EditProfile args={this.core} image={this.state.icon} profileUpdated={this.profileUpdated.bind(this)}/>
             </TabContent>
             <TabContent for="vertical-tab-password" key="vertical-tab-password">
               <ChangePassword args={this.core}/>

@@ -53,7 +53,7 @@
         options,
         metadata
       });
-
+      proc.on('attention', () => win.focus())
       let session = core.make('osjs/settings').get('osjs/session');
       let sessions = Object.entries(session);
       for (i = 0; i < sessions.length; i++) {
@@ -65,7 +65,7 @@
         }
       }
 
-  proc.createWindow({ id: "TaskApplicationWindow", icon: proc.resource(proc.metadata.icon_white),
+  proc.createWindow({ id: "TaskApplicationWindow",  icon: metadata.fontIcon,
   title: metadata.title.en_EN, dimension: finalDimension ? finalDimension : {width: 400, height: 400},
     position:  finalposition ? finalposition : {left: 300, top: 100},
           attributes: {

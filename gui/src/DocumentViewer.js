@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, createElement } from "react";
 import Accordion from "react-bootstrap/Accordion";
 import { useAccordionToggle } from "react-bootstrap/AccordionToggle";
 import { Card, Button } from "react-bootstrap";
@@ -70,6 +70,19 @@ export default class DocumentViewer extends Component {
     };
     rawFile.send(null);
     return rawFile.onreadystatechange();
+  }
+
+  navigateOrDownload(e, doc, url){
+    e.stopPropagation();
+    if(doc?.file?.trim()?.length === 0 || !doc.file){
+      window.open(url || doc.url, '_blank').focus();
+      return
+    }
+    const anchor = document.createElement('a');
+    anchor.href = url || doc.url;
+    anchor.download = doc.name;
+    anchor.target =  "_blank";
+    anchor.click();
   }
 
   uploadAttachments(fileIndex) {
@@ -216,19 +229,22 @@ export default class DocumentViewer extends Component {
                         <Card
                           className="docItems"
                           onClick={(e) => {
-                            doc.file != this.state.selectedDocument
-                              ? this.state.selectedDocument.file
-                                ? this.handleDocumentClick(doc)
-                                : null
-                              : null;
+                            this.handleDocumentClick(doc)
+                            // doc.file != this.state.selectedDocument
+                            //   ? this.state.selectedDocument.file
+                            //     ? this.handleDocumentClick(doc)
+                            //     : null
+                            //   : null;
                           }}
                           key={i}
                         >
                           <div
                             className={
                               this.state.selectedDocument &&
-                              this.state.selectedDocument.file
-                                ? doc.file == this.state.selectedDocument.file
+                              // this.state.selectedDocument.file
+                              //   ? doc.file == this.state.selectedDocument.file
+                                this.state.selectedDocument.id
+                                  ? doc.id == this.state.selectedDocument.id
                                   ? "docListBody borderActive"
                                   : "docListBody border"
                                 : "docListBody border"
@@ -239,8 +255,9 @@ export default class DocumentViewer extends Component {
                             ></i>
                             <p>
                               <a
-                                href={doc.url}
+                                // href={doc.url}
                                 target="_blank"
+                                onClick={e => this.navigateOrDownload(e, doc)}
                                 rel="noopener noreferrer"
                               >
                                 {doc.originalName &&
@@ -344,6 +361,7 @@ export default class DocumentViewer extends Component {
   };
 
   handleDocumentClick = (doc) => {
+    if(this.state.selectedDocument?.id === doc.id) return;
     var documentViewerDiv = document.querySelector(".docViewerWindow");
     this.loader.show(documentViewerDiv);
     this.setState({
@@ -458,11 +476,12 @@ export default class DocumentViewer extends Component {
           ) : null}
           {downloadUrl ? (
             <a
-              href={downloadUrl}
-              download
-              target="_blank"
+              // href={downloadUrl}
+              // download
+              // target="_blank"
               className="image-download-button btn btn-primary"
               title="Download"
+              onClick={e => this.navigateOrDownload(e, this.state.selectedDocument, downloadUrl)}
             >
               <i className="fad fa-download" aria-hidden="true"></i>
             </a>
@@ -525,6 +544,8 @@ export default class DocumentViewer extends Component {
         </div>
       );
     } else if (type == "pdf") {
+      const fileEmpty = !documentData.file || documentData?.file?.trim()?.length === 0;
+      if(fileEmpty) this.loader.destroy()
       url =
         // this.core.config("ui.url") +
         // "/ViewerJS/#" +
@@ -538,7 +559,7 @@ export default class DocumentViewer extends Component {
       return (
         <div className="pdf-frame">
           {this.attachmentOperations(documentData, true, true)}
-          <iframe
+         {!fileEmpty && <iframe
             onLoad={() => {
               setTimeout(() => {
                 this.loader.destroy();
@@ -547,7 +568,7 @@ export default class DocumentViewer extends Component {
             key={Math.random() * 20}
             src={url}
             className="iframeDoc"
-          ></iframe>
+          ></iframe>}
         </div>
       );
     } else if (type == "plain") {
@@ -602,7 +623,7 @@ export default class DocumentViewer extends Component {
         return (
           <div className="docViewerComponent">
             <Notification ref={this.notif} />
-            <div className="col-md-3 docListDiv">
+            <div className="col-md-3 docListDiv docViewerComponent_docListDiv">
               <Accordion defaultActiveKey={this.state.documentTypes[0]}>
                 {this.generateDocumentList()}
               </Accordion>

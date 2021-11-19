@@ -153,7 +153,8 @@ class Announcement extends React.Component {
     Swal.fire({
       title: "Are you sure?",
       text: "Do you really want to delete the record? This cannot be undone.",
-      imageUrl: "https://image.flaticon.com/icons/svg/1632/1632714.svg",
+      // imageUrl: "https://image.flaticon.com/icons/svg/1632/1632714.svg",
+      icon: 'question',
       imageWidth: 75,
       imageHeight: 75,
       confirmButtonText: "Delete",
