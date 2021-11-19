@@ -1,6 +1,7 @@
 import moment from "moment";
 import React, { Component } from "react";
 import JsxParser from "react-jsx-parser";
+import Swal from "sweetalert2";
 export default class CustomPage extends Component {
   constructor(props) {
     super(props);
@@ -11,6 +12,9 @@ export default class CustomPage extends Component {
     this.fileId = this.props.fileId;
     this.proc = this.props.proc;
     this.data = this.props.data;
+    this.loader = this.core.make("oxzion/splash");
+    this.helper = this.core.make("oxzion/restClient");
+    this.rowData = this.props.rowData;
     this.state = {};
   }
 
@@ -45,14 +49,13 @@ export default class CustomPage extends Component {
         fileDetails.data &&
         fileDetails.data.entity_id
       ) {
-        // const fileData = await this.getEntityPage(fileDetails.data.entity_id);
-        // if (!fileData?.data?.data?.uuid) {
-        //   fileData.data.data.uuid = fileData?.data?.uuid;
-        // }
         const data = fileDetails.data;
+        let { template, params, functions, api } = this.data;
         const wrapperUrl = this.core.config("wrapper.url");
-        let { template, params, functions } = this.data;
         const _moment = moment;
+        const sweetAlert = Swal;
+        const helper = this.core.config("oxzion/restClient");
+        const loader = this.core.make("oxzion/splash");
         for (let name in params) {
           params[name] = eval(params[name]);
         }
@@ -60,16 +63,15 @@ export default class CustomPage extends Component {
           eval(func)
         })
         this.preload()
-        console.log("params-", params);
         this.setState({
           ...this.state,
           data: fileDetails?.data,
           template,
           params,
+          api
         });
       }
     } catch (e) {
-      console.log("params-", e);
     }
   }
 
@@ -81,10 +83,43 @@ export default class CustomPage extends Component {
     })
   }
 
-  clickEvent(e) {
-    if (this.state?.params[e?.target?.id]) {
-      eval(this.state?.params[e?.target?.id])?.();
+  async apiCall(id){
+    try{
+      const apiData = this.state.api?.find((data) => data.id === id)
+      console.log(apiData)
+      if(!apiData) return;
+      if(apiData?.priorConfirm){
+        const {isConfirmed} = await Swal.fire({
+          text: apiData?.priorConfirm,
+          showCancelButton: true,
+        })
+        if(!isConfirmed) return;
+      }
+      this.loader.show();
+      const rowData = this.rowData;
+      const params = this.state.params;
+      const parsedPayload = eval(apiData?.payload);
+      this.helper.request("v1", apiData.url, parsedPayload, apiData.type || 'POST').
+      then(() => {
+        this.loader.destroy();
+        apiData.callback && eval(apiData.callback)?.();
+      }).catch(() => {
+        this.loader.destroy()
+      })
+    }catch(e){
+      this.loader.destroy();
     }
+  }
+
+  clickEvent(e) {
+    try{
+      const isApi = e?.target?.attributes?.[0]?.name === 'data-api' && e?.target?.attributes?.[0]?.value
+      if(isApi){
+        this.apiCall(isApi)
+        return
+      }
+      this.state?.params[e?.target?.id]?.();
+    }catch(e){}
   }
   render() {
     return this.state?.data ? (

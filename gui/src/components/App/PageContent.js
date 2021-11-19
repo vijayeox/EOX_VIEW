@@ -683,12 +683,13 @@ class PageContent extends React.Component {
         );
       } else if(item.type === 'CustomPage'){
         var fileId = this.props.fileId ? this.props.fileId : this.state.currentRow.uuid;
-        content.push(
+        return content.push(
           <CustomPage
             appId={this.appId}
             fileId={fileId}
             core={this.core}
             data={item.content}
+            rowData={this.state.currentRow}
           />
         );
       } else {
