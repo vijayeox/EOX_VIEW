@@ -105,7 +105,7 @@ export default function Work(props) {
 
   return (
     <>
-      <ListGroup.Item id="horizontalCards">
+      <ListGroup.Item>
         <Droppable droppableId={props.info.value} key={props.index}>
           {(provided, snapshot) => {
             return (

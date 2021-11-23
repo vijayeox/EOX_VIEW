@@ -1,9 +1,9 @@
 import React from "react";
-
- import { ListGroup } from "react-bootstrap";
- import { Draggable } from "react-beautiful-dnd";
- import { Card, CardImg, CardBody } from "reactstrap";
- import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import "./WorkGroup.css";
+import { ListGroup } from "react-bootstrap";
+import { Draggable } from "react-beautiful-dnd";
+import { Card, CardImg, CardBody } from "reactstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
  //import { faHistory } from "@fortawesome/fontawesome-free-solid";
 
  const dateConvert = date => {
@@ -53,15 +53,20 @@ export default function WorkItem(props) {
                  }}
               >
                 <div className="taskcardDisplay">
-                   <CardImg
+                  <CardImg
                     style={{
                       margin: "5px",
                       padding: "auto",
                       borderRadius: "50%",
                      }}
                      className="img"
-                     src={CardInfo.img ? CardInfo.img : "./Images/noimage.png"}
-                  />
+                     src="https://source.unsplash.com/user/c_v_r/100x100"
+                     />
+                     {/*<FontAwesomeIcon
+                    size="1.5x"
+                    icon={['fal', 'user-circle']}
+                     /> */}
+                    
                   <p className="taskcard-p">{CardInfo.created_by}</p>
                 </div>
                  <div>

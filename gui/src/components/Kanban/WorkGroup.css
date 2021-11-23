@@ -1,11 +1,11 @@
-.expenseItem {
+.expense-item {
     display:flex;
     flex-direction:row;
     flex-flow: row; 
     align-items: flex-start;
-    /* padding: 0.5rem; */
-    /* margin: 1rem 0; */
-  flex-wrap: initial;
+    /*padding: 0.5rem;*/
+    margin: 1rem 0; 
+    flex-wrap: initial;
   
 
 }
@@ -76,10 +76,6 @@
     background-clip: border-box;
     /* border: 1px solid rgba(0, 0, 0, 0.125); */
     border-radius: 0;
-}
-
-.horizontalCards{
-    border: 0;
 }
 
 .lanes_list{

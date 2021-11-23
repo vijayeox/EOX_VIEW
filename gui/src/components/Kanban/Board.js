@@ -94,12 +94,9 @@ export default function Board(props) {
   return (
     <div>
       <div className="expense-item">
-
-        <div>
         <Badge>
             <CalenderDropDown onDateRange={dateRangeHandler} />
         </Badge>
-        </div>
         
         <Button variant="link" style={{ color: "black" }}>
            <Badge>
