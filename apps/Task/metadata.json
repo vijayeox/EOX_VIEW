@@ -3,7 +3,6 @@
   "name": "Task",
   "category": null,
   "server": "server.js",
-  "singleton": true,
   "icon": "icon.png",
   "hidden": false,
   "fontIcon":"fad fa-folder-tree",
