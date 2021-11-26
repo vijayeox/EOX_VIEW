@@ -53,7 +53,7 @@
         options,
         metadata
       });
-      proc.on('attention', () => win.focus())
+
       let session = core.make('osjs/settings').get('osjs/session');
       let sessions = Object.entries(session);
       for (i = 0; i < sessions.length; i++) {
