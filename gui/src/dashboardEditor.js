@@ -10,9 +10,9 @@ import './public/css/sweetalert.css';
 import './components/widget/editor/widgetEditorApp.scss';
 import './public/css/dashboardEditor.scss'
 import '@progress/kendo-theme-bootstrap/dist/all.css';
-import CkEditorConfig from './CkEditorConfig';
+import { ckeditorConfig } from './CkEditorConfig';
 
-class DashboardEditor extends CkEditorConfig {
+class DashboardEditor extends React.Component {
 	constructor(props) {
 		super(props);
 		this.core = this.props.args;
@@ -125,23 +125,13 @@ class DashboardEditor extends CkEditorConfig {
 	setupCkEditor = () => {
 		//Without this setting CKEditor removes empty inline widgets (which is <span></span> tag).
 		CKEDITOR.dtd.$removeEmpty['span'] = false;
-		let editor = CKEDITOR.appendTo('ckEditorInstance', this.ckeditorConfig());
+		let editor = CKEDITOR.appendTo('ckEditorInstance', ckeditorConfig);
 		//Kendo theme CSS is added like this for rendering Kendo grid inside a widget displayed within ckeditor.
 		editor.addContentsCss('/apps/Analytics/kendo-theme-default-all.css');
 		this.editor = editor;
 		let thisInstance = this;
 		editor.on('instanceReady', function (event) {
 			thisInstance.getDashboard(editor);
-			event.editor.on("beforeCommandExec", function (event) {
-				// Show the paste dialog for the paste buttons and right-click paste
-				if (event.data.name == "paste") {
-					event.editor._.forcePasteDialog = true;
-				}
-				// Don't show the paste dialog for Ctrl+Shift+V
-				if (event.data.name == "pastetext" && event.data.commandData.from == "keystrokeHandler") {
-					event.cancel();
-				}
-			})
 		});
 		editor.on('oxzionWidgetInitialization', function (event) {
 			try {
