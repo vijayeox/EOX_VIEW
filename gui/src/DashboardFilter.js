@@ -486,14 +486,15 @@ class DashboardFilter extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
+        let dashboardUuid = (this.props.dashboardStack) ? this.props.dashboardStack[this.props.dashboardStack.length - 1]["data"]["uuid"] : this.props.dashboardId
         if ((prevProps.filterConfiguration != this.props.filterConfiguration) || (prevProps.applyFilterOption != this.props.applyFilterOption)) {
-            (this.props.filterMode != "CREATE" && this.props.dashboardStack.length == 1) ? this.displayDefaultFilters() : this.setState({ filters: this.props.filterConfiguration, applyFilterOption: this.props.applyFilterOption, uuid: this.props.dashboardStack[this.props.dashboardStack.length - 1]["data"]["uuid"]})
+            (this.props.filterMode != "CREATE" && this.props.dashboardStack.length == 1) ? this.displayDefaultFilters() : this.setState({ filters: this.props.filterConfiguration, applyFilterOption: this.props.applyFilterOption, uuid: dashboardUuid})
         }
         if (this.props.filterMode == "APPLY" && (prevProps.applyFilterOption !== this.props.applyFilterOption)) {
-            this.setState({ applyFilterOption: this.props.applyFilterOption.length == 0 ? this.state.applyFilterOption : this.props.applyFilterOption, uuid: this.props.dashboardStack[this.props.dashboardStack.length - 1]["data"]["uuid"] })
+            this.setState({ applyFilterOption: this.props.applyFilterOption.length == 0 ? this.state.applyFilterOption : this.props.applyFilterOption, uuid: dashboardUuid })
         }
-        if (this.props.filterMode == "APPLY" && (prevProps.filterConfiguration !== this.props.filterConfiguration)) {
-            this.setState({ filters: this.props.filterConfiguration, uuid: this.props.dashboardStack[this.props.dashboardStack.length - 1]["data"]["uuid"] })
+        if (this.props.filterMode == "APPLY" && (prevProps.filterConfiguration !== this.props.filterConfiguration )) {
+            this.setState({ filters: this.props.filterConfiguration, uuid: dashboardUuid })
         }
     }
 
