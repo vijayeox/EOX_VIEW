@@ -3,16 +3,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 // import { faHistory } from '@fortawesome/fontawesome-free-solid';
 import './ColumnCount.css';
 import colorHandler from './ColorCodes'
-import axios from'axios';
 import React,{ useState } from 'react';
+import Requests from '../../Requests';
 // //import  apiForCount from './ApiAcess'
-import authorizationValue from './Authorization'
 
  function ColumnCard(props){
 
      const [Count, setCount] = useState('0');
-
-//     // console.log(props)
     
      function apiForCount(){
          var params = [{
@@ -28,16 +25,17 @@ import authorizationValue from './Authorization'
              "take": 10
                }]
 
-         axios.get('https://qa3.eoxvantage.com:9080/app/454a1ec4-eeab-4dc2-8a3f-6a4255ffaee1/file/search?filter='+ JSON.stringify(params),{headers:{
-             authorization :authorizationValue
-         }})
-         .then((res)=> {setCount(res.data.total)})
-         .catch((error) =>{console.log(error)})
+        let url = "/app/" + props.appId + "/file/search?filter=" +JSON.stringify(params);
+        Requests.doRestRequest(props.core, url, {}, 'get',
+          function (res) {
+            setCount(res.total)
+          },
+          function (error) {
+            setError(true);
+          });
 
          return Count
      }
-    console.log(Count)
-
      return (
              <Card  style={{border:'0', boxShadow: '0px 3px 2px lightgrey'}}>
                 

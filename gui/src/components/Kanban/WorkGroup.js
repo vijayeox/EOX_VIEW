@@ -25,7 +25,6 @@ export default function Work(props) {
     if(Observer.current) Observer.current.disconnect()
       Observer.current = new IntersectionObserver(entries =>{
         if(entries[0].isIntersecting && hasMore){
-          // console.log(props.info.value + 'End Element Visible' + List.length)
           var params = [{
             "filter": {
               "logic": "and",
@@ -41,16 +40,14 @@ export default function Work(props) {
           }]
           setLoading(true)
           setError(false)
-          axios.get('https://qa3.eoxvantage.com:9080/app/454a1ec4-eeab-4dc2-8a3f-6a4255ffaee1/file/search?filter='+ JSON.stringify(params),
-            {headers:{
-              authorization : authorizationValue
-            }
-          })
+
+          let url = "/app/" + props.appId + "/file/search?filter=" + JSON.stringify(params)
+          doRestRequestCall(url)
         .then((res) =>{ 
             setList( List => {
-              return [...List, ...res.data.data]
+              return [...List, ...res.data]
             })
-            setHasMore(res.data.data.length > 0)
+            setHasMore(res.data.length > 0)
             setLoading(false)
           })
           .catch(()=> setError(true))
@@ -84,16 +81,13 @@ export default function Work(props) {
 
     setLoading(true)
     setError(false)
-    axios.get('https://qa3.eoxvantage.com:9080/app/454a1ec4-eeab-4dc2-8a3f-6a4255ffaee1/file/search?filter='+ JSON.stringify(params),
-    {headers:{
-      authorization :authorizationValue
-    }
-  })
+    let url = "/app/" + props.appId + "/file/search?filter=" + JSON.stringify(params)
+
+    doRestRequestCall(url)
     .then((res) =>{ 
-        console.log(res.data)
-        setList(res.data.data)
-        setGroupCount(res.data.total)
-        setHasMore(res.data.data.length > 0)
+        setList(res.data)
+        setGroupCount(res.total)
+        setHasMore(res.data.length > 0)
         setLoading(false)
         
       })
@@ -101,12 +95,16 @@ export default function Work(props) {
       
   },[props])
 
-  // console.log(props)
+  const doRestRequestCall = async (url) => {
+    const helper = props.core.make("oxzion/restClient");
+    let response = await helper.request("v1", url, {}, "get");
+    return response;
+  }
 
   return (
     <>
       <ListGroup.Item>
-        <Droppable droppableId={props.info.value} key={props.index}>
+        <Droppable droppableId={props.info.value} key={props.index} style={{width:"98vw !important"}}>
           {(provided, snapshot) => {
             return (
               <ListGroup
@@ -115,15 +113,16 @@ export default function Work(props) {
                 style={{
                   background: snapshot.isDraggingOver ? "lightblue" : "white",
                   padding: 0,
-                  width: 200,
+                  width: "19vw",
                   minHeight: 400,
+                  top: "50%"
                 }}
               >
                 <ListGroup.Item
                   className="itemCard"
-                  style={{ border: "0", borderBottom: '2px solid black' }}
+                  style={{ border: "0", borderBottom: '2px solid black',width: "18vw !important"}}
                 >
-                  <p >
+                  <p>
                     <b>  
                       {props.info.label} ({Count})
                     </b>
@@ -144,7 +143,6 @@ export default function Work(props) {
                                 </div>
                             );
                           }else{
-                            // console.log(" Inside else")
                             return (
                               <Item
                                 cardInfo={listItem}
@@ -156,7 +154,6 @@ export default function Work(props) {
                           
                         })
                       
-                        // console.log(List)                        
                         : console.log("false") }
                         <div>{Loading && 'Loading...'}</div>
                         <div>{Error && 'Error'}</div>

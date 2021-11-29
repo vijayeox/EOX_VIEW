@@ -1,37 +1,28 @@
 import React, { useEffect, useState } from "react";
 import Work from "./WorkGroup";
-import { ListGroup, Button, Badge } from "react-bootstrap";
+import { ListGroup, Button, Badge, Container } from "react-bootstrap";
 import { DragDropContext } from "react-beautiful-dnd";
 import StatusCard from "./ColumnCounts";
 import "./WorkGroup.css";
-import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 //import {faUserAlt, faEye,} from "@fortawesome/fontawesome-free-solid";
 import CalenderDropDown from "./CalendarDropdown";
-import authorizationValue from "./Authorization";
+import Requests from "../../Requests";
 
-const onDragEnd = (result, setRefresh, setReload) => {
+const onDragEnd = (result, setRefresh, setReload, props) => {
   if (!result.destination) return;
-
   console.log(result);
   const { draggableId, destination } = result;
 
-  axios
-    .put(
-      "https://qa3.eoxvantage.com:9080/app/454a1ec4-eeab-4dc2-8a3f-6a4255ffaee1/file/crud/" +
-        draggableId,
-      { status: destination.droppableId },
-      {
-        headers: {
-          Authorization: authorizationValue,
-        },
-      }
-    )
-    .then(() => {
+  let url = "/app/" + props.appId + "/file/crud"
+  Requests.doRestRequest(props.core, url, {}, 'put',
+    function () {
       setReload(true);
       setRefresh(true);
-    })
-    .catch((e) => console.log("Error Couldn't update the File " + e));
+    },
+    function (e) {
+      console.log("Error Couldn't update the File " + e);
+    });
 };
 
 export default function Board(props) {
@@ -45,25 +36,19 @@ export default function Board(props) {
   const [Filter, setFilter] = useState([]);
 
   useEffect(() => {
-    axios
-      .get(
-        "https://qa3.eoxvantage.com:9080/app/454a1ec4-eeab-4dc2-8a3f-6a4255ffaee1/field/b0fd5ad1-607b-11eb-a441-06a328860aa2",
-        {
-          headers: {
-            authorization: authorizationValue,
-          },
-        }
-      )
-      .then((res) => {
+
+    let url = "/app/" + props.appId + "/field/b0fd5ad1-607b-11eb-a441-06a328860aa2"
+    Requests.doRestRequest(props.core, url, {}, 'get',
+      function (response) {
         var tempField;
-        tempField = JSON.parse(res.data.data.options);
+        tempField = JSON.parse(response.options);
         setFieldset([]);
-        // console.log(tempField.values)
         setFields(tempField.values);
         setFieldset(tempField.values);
-
-      })
-      .catch((error) => console.log("error " + error));
+      },
+      function (error) {
+        console.log("error " + error)
+      });
   }, [Refresh]);
 
   const dateRangeHandler = (mindatevalue, maxdatevalue) => {
@@ -89,20 +74,19 @@ export default function Board(props) {
 
     return tempArray;
   };
-  console.log("In board component")
 
   return (
-    <div>
+    <Container fluid>
       <div className="expense-item">
         <Badge>
-            <CalenderDropDown onDateRange={dateRangeHandler} />
+          <CalenderDropDown onDateRange={dateRangeHandler} />
         </Badge>
-        
+
         <Button variant="link" style={{ color: "black" }}>
-           <Badge>
-                  <div>
-                     <FontAwesomeIcon   size = 'sm' icon={['fal', 'user-friends']}  /> Users
-                  </div>
+          <Badge>
+            <div>
+              <FontAwesomeIcon size='sm' icon={['fal', 'user-friends']} /> Users
+            </div>
           </Badge>
 
           <Badge>
@@ -125,7 +109,7 @@ export default function Board(props) {
               <option value="Low">Low</option>
             </select>
           </Badge>
-          </Button>
+        </Button>
         <Button variant="link" style={{ color: "black", fontWeight: 400 }}>
           <Badge>
             <div>Status</div>
@@ -177,10 +161,10 @@ export default function Board(props) {
         </Button>
         <Button variant="link" style={{ color: "black", fontWeight: 400 }}>
           <Badge>
-                  <div>
-                     <FontAwesomeIcon   size = 'sm' icon={['fal', 'eye']}  /> Views
+            <div>
+              <FontAwesomeIcon size='sm' icon={['fal', 'eye']} /> Views
                   </div>
-            </Badge> 
+          </Badge>
 
           <Badge>
             <select
@@ -202,12 +186,14 @@ export default function Board(props) {
         {fields.map((dataItem, index) => {
           return (
             <StatusCard
-               statusInfo={dataItem}
-               filter={filterMaker(dataItem.value)}
-               key={index}
-               index={index}
+              statusInfo={dataItem}
+              filter={filterMaker(dataItem.value)}
+              key={index}
+              index={index}
+              core={props.core}
+              appId={props.appId}
             />
-            
+
           );
         })}
       </ListGroup>
@@ -219,15 +205,17 @@ export default function Board(props) {
           {fieldset.map((dataItem, index) => {
             return (
               <Work
+                core={props.core}
+                appId={props.appId}
                 info={dataItem}
                 filter={filterMaker(dataItem.value)}
                 index={index}
                 key={index}
-              /> 
+              />
             );
           })}
         </ListGroup>
       </DragDropContext>
-    </div>
+    </Container>
   );
 }
