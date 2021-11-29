@@ -55,7 +55,7 @@ class CommentsView extends React.Component {
 				this.getEntityPage().then((entityPage) => {
 					if (entityPage.data) {
 						this.setState({ entityConfig: entityPage.data });
-						this.generateViewButton(entityPage.data.enable_auditlog, this.getDisableHeaderButtons(entityPage.data), fileData);
+						this.generateViewButton(entityPage.data.enable_auditlog, fileData);
 					}
 					this.fetchCommentData();
 				});
@@ -177,7 +177,7 @@ class CommentsView extends React.Component {
 			this.loader.destroy();
 		});
 	}
-	generateViewButton(enableAuditLog, disableHeaderButtons, fileData) {
+	generateViewButton(enableAuditLog, fileData) {
 		let gridToolbarContent = [];
 		let filePage = [{ type: "EntityViewer", fileId: this.state.fileId }];
 		let pageContent = {
@@ -186,9 +186,9 @@ class CommentsView extends React.Component {
 			icon: "fa fa-eye",
 			fileId: this.state.fileId
 		};
-		if(this.appId === 'ff1ecbb7-3a45-4966-b38c-bf203f171423'){
-            gridToolbarContent.push(GetCrmHeader(this.props.currentRow, this.appId,this.loader, this.core.make("oxzion/restClient"), false, this.state, fileData, this.core, this.profile?.key?.preferences?.dateformat ))
-        }else{
+		// if(this.appId === 'ff1ecbb7-3a45-4966-b38c-bf203f171423'){
+        //     gridToolbarContent.push(GetCrmHeader(this.props.currentRow, this.appId,this.loader, this.core.make("oxzion/restClient"), false, this.state, fileData, this.core, this.profile?.key?.preferences?.dateformat ))
+        // }else{
 			gridToolbarContent.push(
 				<Button
 					title={"View"}
@@ -199,7 +199,7 @@ class CommentsView extends React.Component {
 					<i className={"fa fa-eye"}></i>
 				</Button>
 			);
-		}
+		// }
 		if (this.state.entityConfig && !this.state.entityConfig.has_workflow) {
 			filePage = [
 				{
@@ -237,7 +237,6 @@ class CommentsView extends React.Component {
 				</Button>
 			);
 		}
-		if (disableHeaderButtons) return;
 		let ev = new CustomEvent("addcustomActions", {
 			detail: { customActions: gridToolbarContent },
 			bubbles: true
@@ -490,16 +489,16 @@ class CommentsView extends React.Component {
 			imageDetails: { data: imageDetails, index }
 		});
 	}
-	getDisableHeaderButtons(entityData) {
-		//disableHeaderButtons
-		try {
-			const disableCommentHeader = entityData?.content?.find((c) => c.type === 'TabSegment')?.content?.tabs?.map((tab) => tab)?.map((t) => t?.content?.find(c => c?.disableHeaderButtons))?.filter(v => v)?.length > 0 || ( !entityData?.enable_comments && this.appId == 'af6056c1-be46-4266-b83c-4b2177bcc7ca')
-			return disableCommentHeader;
-		} catch (e) {
-			console.error(`disableHeaderButtons `, e)
-			return false;
-		}
-	}
+	// getDisableHeaderButtons(entityData) {
+	// 	//disableHeaderButtons
+	// 	try {
+	// 		const disableCommentHeader = entityData?.content?.find((c) => c.type === 'TabSegment')?.content?.tabs?.map((tab) => tab)?.map((t) => t?.content?.find(c => c?.disableHeaderButtons))?.filter(v => v)?.length > 0 || ( !entityData?.enable_comments && this.appId == 'af6056c1-be46-4266-b83c-4b2177bcc7ca')
+	// 		return disableCommentHeader;
+	// 	} catch (e) {
+	// 		console.error(`disableHeaderButtons `, e)
+	// 		return false;
+	// 	}
+	// }
 	render() {
 		var that = this;
 		if (this.state.dataReady) {
