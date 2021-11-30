@@ -43,6 +43,7 @@ import Visualization from "./src/Visualization";
 import WidgetManager from "./src/WidgetManager";
 import TemplateManager from "./src/TemplateManager";
 import SSOCustom from "./src/components/Custom/SSOCustom";
+import EOXGrid from "./src/components/EOXGrid/EOXGrid"
 //import Mapbox from "./src/components/Custom/Mapbox";
 
 const LazyLoad = ({ component: Component, ...rest }) => (
@@ -125,6 +126,7 @@ export {
   Antd,
   AntdIcons,
   TemplateManager,
-  SSOCustom
-//  Mapbox
+  SSOCustom,
+  //  Mapbox
+  EOXGrid,
 };
