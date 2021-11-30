@@ -19,9 +19,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 export default function WorkItem(props) {
    const CardInfo = props.cardInfo;
 
-  console.log(props)
-
-  return ( 
+   return ( 
      <Draggable
        key={CardInfo.myId}
        draggableId={CardInfo.uuid}
