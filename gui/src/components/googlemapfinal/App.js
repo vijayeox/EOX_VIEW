@@ -576,7 +576,7 @@ const libraries = ["places"];
 
 const defaultOption = options[0];
 
-function MyComponent() {
+function CustomGoogleMapComponent() {
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
     googleMapsApiKey: "AIzaSyC3U9SDLkMeTovczI9CFZJrj6hZNS37ThA",
@@ -644,7 +644,7 @@ function MyComponent() {
     }
   };
 
-  useEffect(() => {}, [markers]);
+  useEffect(() => { }, [markers]);
   const markerHandler = markers => {
     setMarkers([...markers]);
     console.log(markers);
@@ -657,43 +657,35 @@ function MyComponent() {
   console.log(zoom);
 
   return isLoaded ? (
-    <>
-      <br />
-      <>
-        <input
-          name="radius"
-          style={{
-            margin: "5px",
-            padding: "5px",
-            boxShadow: "2px 3px 5px 5px whitesmoke",
-          }}
-          value={radius}
-          onChange={handleChangeRadius}
-          placeholder="Enter Radius"
-        />
-      </>
+    <div className="mt-4">
+      <input
+        name="radius"
+        style={{
+          margin: "5px",
+          padding: "5px",
+        }}
+        value={radius}
+        onChange={handleChangeRadius}
+        placeholder="Enter Radius"
+      />
+      <Dropdown
+        options={place.map(i => {
+          return <>{i.name}</>;
+        })}
+        value={defaultOption}
+        placeholder="Select an option"
+        onChange={handleChage}
+        style={{ marginBottom: "20px" }}
+      />
+      {/*className="custom-select" */}
 
-      <br />
-      <br />
-      <br />
-
-      <div>
+      <div className="mt-4">
         <GoogleMap
           mapContainerStyle={containerStyle}
           center={center}
           zoom={zoom}
           onLoad={onMapLoad}
         >
-          <Dropdown
-            options={place.map(i => {
-              return <>{i.name}</>;
-            })}
-            value={defaultOption}
-            placeholder="Select an option"
-            className="custom-select"
-            onChange={handleChage}
-          />
-
           <p>Selected Value is: {ddstate}</p>
           <br />
 
@@ -745,10 +737,10 @@ function MyComponent() {
           ) : null}
         </GoogleMap>
       </div>
-    </>
+    </div>
   ) : (
     <></>
   );
 }
 
-export default React.memo(MyComponent);
+export default React.memo(CustomGoogleMapComponent);

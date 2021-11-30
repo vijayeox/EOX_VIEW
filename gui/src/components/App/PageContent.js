@@ -22,6 +22,7 @@ import Dashboard from "../../Dashboard";
 import DashboardManager from "../../DashboardManager";
 import ActivityLog from "./ActivityLog";
 import KanbanView from "../Kanban/KanbanRoutes";
+import CustomGoogleMapComponent from "../googlemapfinal/App";
 
 
 class PageContent extends React.Component {
@@ -685,6 +686,10 @@ class PageContent extends React.Component {
       } else if (item.type == "KanbanViewer") {
         content.push(
           <KanbanView core={this.core} appId={this.appId}/>
+        );
+      } else if (item.type == "GoogleMapViewer") {
+        content.push(
+          <CustomGoogleMapComponent core={this.core} appId={this.appId}/>
         );
       } else {
         if (this.extGUICompoents && this.extGUICompoents[item.type]) {
