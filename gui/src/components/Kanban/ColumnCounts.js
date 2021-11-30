@@ -37,9 +37,9 @@ import Requests from '../../Requests';
          return Count
      }
      return (
-             <Card  style={{border:'0', boxShadow: '0px 3px 2px lightgrey'}}>
+             <Card  style={{border:'0', boxShadow: '0px 3px 2px lightgrey', width:"18vw"}}>
                 
-                 <Card.Body style={{padding:'0.5em',}}>
+                 <Card.Body>
                      <Container fluid>
                          <Row>
                              <Col lg="auto" sm="auto" md="auto" >

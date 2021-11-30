@@ -77,7 +77,7 @@ export default function Board(props) {
 
   return (
     <Container fluid>
-      <div className="expense-item">
+      <div className="expense-item" style={{width:"98vw"}}>
         <Badge>
           <CalenderDropDown onDateRange={dateRangeHandler} />
         </Badge>
