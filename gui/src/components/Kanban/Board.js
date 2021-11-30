@@ -104,11 +104,90 @@ export default function Board(props) {
               <option value="All"> ALL</option>
               <option value="Completed">Completed</option>
               <option value="Delayed">Delayed</option>
-              <option value="InProgress">In Progress</option>
+              <option value="In Progress">In Progress</option>
               <option value="Open">Open</option>
             </select>
           </Badge>
         </Button>
+
+        {/* <Button variant="link" style={{ color: "black" }}>
+          <Badge>
+            <div>
+              <FontAwesomeIcon size='sm' icon={['fal', 'user-friends']} /> Users
+            </div>
+          </Badge>
+
+          <Badge>
+            <select
+              className="form-control"
+              style={{
+                fontSize: "small",
+                borderColor: "transparent",
+                outlineColor: "transparent",
+                background: "transparent",
+              }}
+              name="priority"
+              onChange={(e) => {
+                setPriority(e.target.value);
+              }}
+            >
+              <option value="All"> ALL</option>
+              <option value="High">High</option>
+              <option value="Medium">Medium</option>
+              <option value="Low">Low</option>
+            </select>
+          </Badge>
+        </Button>
+        <Button variant="link" style={{ color: "black", fontWeight: 400 }}>
+          <Badge>
+            <div>Priority</div>
+          </Badge>
+
+          <Badge>
+            <select
+              className="form-control"
+              style={{
+                fontSize: "small",
+                borderColor: "transparent",
+                outlineColor: "transparent",
+                background: "transparent",
+              }}
+              name="priority"
+              onChange={(e) => {
+                setPriority(e.target.value);
+              }}
+            >
+              <option value="All"> ALL</option>
+              <option value="High">High</option>
+              <option value="Medium">Medium</option>
+              <option value="Low">Low</option>
+            </select>
+          </Badge>
+        </Button>
+                
+        <Button variant="link" style={{ color: "black", fontWeight: 400 }}>
+          <Badge>
+            <div>
+              <FontAwesomeIcon size='sm' icon={['fal', 'eye']} /> Views
+                  </div>
+          </Badge>
+
+          <Badge>
+            <select
+              className="form-control"
+              style={{
+                fontSize: "small",
+                borderColor: "transparent",
+                background: "transparent",
+                outlineColor: "transparent",
+              }}
+              name="priority"
+            >
+              <option value="All"> </option>
+            </select>
+          </Badge>
+        </Button> */}
+
       </div>
 
       <ListGroup horizontal>
