@@ -1,7 +1,7 @@
 {
     "type": "application",
     "name": "Chat",
-    "autostart":false,
+    "autostart":true,
     "singleton":true,
     "hidden":true,
     "defaultAppforOrgs" : true,
