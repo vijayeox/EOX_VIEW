@@ -11,11 +11,14 @@ import Requests from "../../Requests";
 
 const onDragEnd = (result, setRefresh, setReload, props) => {
   if (!result.destination) return;
-  console.log(result);
   const { draggableId, destination } = result;
 
   let url = "/app/" + props.appId + "/file/crud"
-  Requests.doRestRequest(props.core, url, {}, 'put',
+  Requests.doRestRequest(
+    props.core,
+    url,
+    {},
+    'put',
     function () {
       setReload(true);
       setRefresh(true);
@@ -36,9 +39,12 @@ export default function Board(props) {
   const [Filter, setFilter] = useState([]);
 
   useEffect(() => {
-
     let url = "/app/" + props.appId + "/field/b0fd5ad1-607b-11eb-a441-06a328860aa2"
-    Requests.doRestRequest(props.core, url, {}, 'get',
+    Requests.doRestRequest(
+      props.core,
+      url,
+      {},
+      'get',
       function (response) {
         var tempField;
         tempField = JSON.parse(response.options);
@@ -49,6 +55,7 @@ export default function Board(props) {
       function (error) {
         console.log("error " + error)
       });
+
   }, [Refresh]);
 
   const dateRangeHandler = (mindatevalue, maxdatevalue) => {
@@ -67,8 +74,6 @@ export default function Board(props) {
     tempArray.push({ field: "status", operator: "eq", value: status });
 
     if (Filter.length > 0) {
-      console.log("inside if");
-
       tempArray = tempArray.concat(Filter);
     }
 
@@ -77,12 +82,17 @@ export default function Board(props) {
 
   return (
     <Container fluid>
-      <div className="expense-item" style={{width:"98vw"}}>
+      <div className="expense-item"
+        style={{ width: "98vw" }}>
         <Badge>
           <CalenderDropDown onDateRange={dateRangeHandler} />
         </Badge>
 
-        <Button variant="link" style={{ color: "black", fontWeight: 400 }}>
+        <Button variant="link"
+          style={{
+            color: "black",
+            fontWeight: 400
+          }}>
           <Badge>
             <div>Status</div>
           </Badge>

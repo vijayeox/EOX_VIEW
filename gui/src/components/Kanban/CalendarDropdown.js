@@ -45,15 +45,10 @@ function CalenderDropDown(props) {
   const droptoggle = () => setOpen((prevState) => !prevState);
 
   const onChange = (date) => {
-    console.log("In onchange-", date.range1.endDate)
     let date1 = date.range1.startDate
     let date11 = Moment(date1).format("YYYY-MM-DD")
     let date2 = date.range1.endDate
     let date21 = Moment(date2).format("YYYY-MM-DD")
-    console.log("date1",date1)
-    console.log("date11",date11)
-    console.log("date2",date2)
-    console.log("date21",date21)
     setlowerRange(date11);
     sethigherRange(date21);
     //setValue(date);
@@ -81,7 +76,6 @@ function CalenderDropDown(props) {
   }, [value]);
 
   const onSelectRange = (range) => {
-//     // console.log(range);
     const day = value.getDate();
     const month = value.getMonth();
     const year = value.getFullYear();
@@ -96,12 +90,10 @@ function CalenderDropDown(props) {
     } else if (range === "7") {
       newDate = new Date(year, month, day + 7);
     }
-    console.log(newDate);
 
     setValue1(newDate);
     const date2 = Moment.utc(value).format("YYYY-MM-DD");
 
-    console.log(date2);
 
     const date1 = Moment(newDate).format("YYYY-MM-DD");
 
@@ -135,13 +127,6 @@ function CalenderDropDown(props) {
     return myEpoch;
   };
   const buttonClick = () => {
-    console.log(
-      "start date:",
-      DateConv(lowerRange),
-      "\n",
-      "End Date:",
-      DateConv(higherRange)
-    );
     const mindateRanges = DateConv(lowerRange);
     const maxdateRanges = DateConv(higherRange);
 
@@ -167,12 +152,8 @@ function CalenderDropDown(props) {
 
     setApiDates(apidateRange);
 
-//     // console.log(mindateRanges);
   };
-//   // console.log(apiDate);
-//   // console.log(range);
 
-//   // console.log(props)
 
   const disabledDates = [];
 

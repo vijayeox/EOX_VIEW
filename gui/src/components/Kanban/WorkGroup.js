@@ -1,10 +1,8 @@
-import React, { useState, useEffect, useRef, useCallback} from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import ListGroup from "react-bootstrap/ListGroup";
 import { Droppable } from "react-beautiful-dnd";
 import "./WorkGroup.css";
 import Item from "./WorkItem";
-import axios from "axios";
-import authorizationValue from './Authorization'
 
 export default function Work(props) {
 
@@ -14,86 +12,11 @@ export default function Work(props) {
   const [Error, setError] = useState(false);
   const [List, setList] = useState([]);
   const [Count, setGroupCount] = useState(0);
-  const [hasMore, setHasMore] = useState(false);    
+  const [hasMore, setHasMore] = useState(false);
   const [filters, setFilters] = useState(props.filter);
 
 
   const Observer = useRef()
-  const lastItem = useCallback(node => {
-
-    if(Loading) return
-    if(Observer.current) Observer.current.disconnect()
-      Observer.current = new IntersectionObserver(entries =>{
-        if(entries[0].isIntersecting && hasMore){
-          var params = [{
-            "filter": {
-              "logic": "and",
-              "filters": props.filter
-            },
-            "sort": [{
-              "field": "next_action_date",
-              "dir": "desc"
-            }],
-            "skip": List.length,
-
-            "take": 10
-          }]
-          setLoading(true)
-          setError(false)
-
-          let url = "/app/" + props.appId + "/file/search?filter=" + JSON.stringify(params)
-          doRestRequestCall(url)
-        .then((res) =>{ 
-            setList( List => {
-              return [...List, ...res.data]
-            })
-            setHasMore(res.data.length > 0)
-            setLoading(false)
-          })
-          .catch(()=> setError(true))
-        }
-      })
-      if(node) Observer.current.observe(node)
-
-  },[Loading, hasMore])
-
-  useEffect(() => {
-    setList([])
-  }, [Query])
-
-  useEffect(() => {
-
-    console.log(props.filter)
-    console.log(List.length)
-
-    var params = [{
-                    "filter": {
-                                "logic": "and",
-                                "filters": props.filter
-                              },
-                              "sort": [{
-                                "field": "next_action_date",
-                                "dir": "desc"
-                              }],
-                    "skip": 0,
-                    "take": 10
-                      }]
-
-    setLoading(true)
-    setError(false)
-    let url = "/app/" + props.appId + "/file/search?filter=" + JSON.stringify(params)
-
-    doRestRequestCall(url)
-    .then((res) =>{ 
-        setList(res.data)
-        setGroupCount(res.total)
-        setHasMore(res.data.length > 0)
-        setLoading(false)
-        
-      })
-      .catch(()=> setError(true))
-      
-  },[props])
 
   const doRestRequestCall = async (url) => {
     const helper = props.core.make("oxzion/restClient");
@@ -101,10 +24,85 @@ export default function Work(props) {
     return response;
   }
 
+  const lastItem = useCallback(node => {
+
+    if (Loading) return
+    if (Observer.current) Observer.current.disconnect()
+    Observer.current = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting && hasMore) {
+        var params = [{
+          "filter": {
+            "logic": "and",
+            "filters": props.filter
+          },
+          "sort": [{
+            "field": "next_action_date",
+            "dir": "desc"
+          }],
+          "skip": List.length,
+
+          "take": 10
+        }]
+        setLoading(true)
+        setError(false)
+
+        let url = "/app/" + props.appId + "/file/search?filter=" + JSON.stringify(params)
+        doRestRequestCall(url)
+          .then((res) => {
+            setList(List => {
+              return [...List, ...res.data]
+            })
+            setHasMore(res.data.length > 0)
+            setLoading(false)
+          })
+          .catch(() => setError(true))
+      }
+    })
+    if (node) Observer.current.observe(node)
+
+  }, [Loading, hasMore])
+
+  useEffect(() => {
+    setList([])
+  }, [Query])
+
+  useEffect(() => {
+    var params = [{
+      "filter": {
+        "logic": "and",
+        "filters": props.filter
+      },
+      "sort": [{
+        "field": "next_action_date",
+        "dir": "desc"
+      }],
+      "skip": 0,
+      "take": 10
+    }]
+
+    setLoading(true)
+    setError(false)
+
+    let url = "/app/" + props.appId + "/file/search?filter=" + JSON.stringify(params)
+    doRestRequestCall(url)
+      .then((res) => {
+        setList(res.data)
+        setGroupCount(res.total)
+        setHasMore(res.data.length > 0)
+        setLoading(false)
+
+      })
+      .catch(() => setError(true))
+
+  }, [props])
+
   return (
     <>
       <ListGroup.Item>
-        <Droppable droppableId={props.info.value} key={props.index} style={{width:"98vw !important"}}>
+        <Droppable
+          droppableId={props.info.value}
+          key={props.index}
+          style={{ width: "98vw !important" }}>
           {(provided, snapshot) => {
             return (
               <ListGroup
@@ -120,44 +118,48 @@ export default function Work(props) {
               >
                 <ListGroup.Item
                   className="itemCard"
-                  style={{ border: "0", borderBottom: '2px solid black',width: "18vw !important"}}
+                  style={{
+                    border: "0",
+                    borderBottom: '2px solid black',
+                    width: "18vw !important"
+                  }}
                 >
                   <p>
-                    <b>  
+                    <b>
                       {props.info.label} ({Count})
                     </b>
                   </p>
                 </ListGroup.Item>
 
                 <div className="listDiv">
-                  {List != undefined ? 
-                        List.map((listItem, index) => {
-                          if(List.length === index+1){
-                            return (
-                              <div ref={lastItem}>
-                                <Item
-                                  cardInfo={listItem}
-                                  index={index}
-                                  key={index}
-                                />
-                                </div>
-                            );
-                          }else{
-                            return (
-                              <Item
-                                cardInfo={listItem}
-                                index={index}
-                                key={index}
-                              />
-                            );
-                          }
-                          
-                        })
-                      
-                        : console.log("false") }
-                        <div>{Loading && 'Loading...'}</div>
-                        <div>{Error && 'Error'}</div>
-                        
+                  {List != undefined ?
+                    List.map((listItem, index) => {
+                      if (List.length === index + 1) {
+                        return (
+                          <div ref={lastItem}>
+                            <Item
+                              cardInfo={listItem}
+                              index={index}
+                              key={index}
+                            />
+                          </div>
+                        );
+                      } else {
+                        return (
+                          <Item
+                            cardInfo={listItem}
+                            index={index}
+                            key={index}
+                          />
+                        );
+                      }
+
+                    })
+
+                    : console.log("false")}
+                  <div>{Loading && 'Loading...'}</div>
+                  <div>{Error && 'Error'}</div>
+
                 </div>
               </ListGroup>
             );

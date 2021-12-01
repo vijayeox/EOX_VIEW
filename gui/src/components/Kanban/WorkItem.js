@@ -73,7 +73,11 @@ export default function WorkItem(props) {
                     {CardInfo.date_created.substring(0,10)}
                   </label>
                   <FontAwesomeIcon
-                    style={{ color: CardInfo.rygStatus, float: "right", fontWeight: 'bold' }}
+                    style={{ 
+                      color: CardInfo.rygStatus, 
+                      float: "right", 
+                      fontWeight: 'bold' 
+                    }}
                     size="1x"
                     icon={['fal', 'history']}
                   /> 

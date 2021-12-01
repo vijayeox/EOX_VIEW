@@ -598,7 +598,6 @@ function CustomGoogleMapComponent() {
   const handleChage = e => {
     place.map(i => {
       if (e.value.props.children === i.name) {
-        console.log(true);
         setLat(i.latitude);
         setLog(i.longitude);
       }
@@ -614,10 +613,7 @@ function CustomGoogleMapComponent() {
     mapRef.current = map;
   }, []);
 
-  console.log(radius);
-  console.log(markers);
   const handleChangeRadius = event => {
-    console.log(event.target.value);
 
     parseInt(setRadius(event.target.value));
     if (radius >= 1000) {
@@ -634,8 +630,6 @@ function CustomGoogleMapComponent() {
       setZoom(20);
     }
   };
-  console.log(radius);
-  console.log(zoom);
   const handleMarkerTap = showInfo => {
     if (showInfo === false) {
       setShowInfo(true);
@@ -647,14 +641,10 @@ function CustomGoogleMapComponent() {
   useEffect(() => { }, [markers]);
   const markerHandler = markers => {
     setMarkers([...markers]);
-    console.log(markers);
   };
   const toggle = () => {
     setShowInfo(!showInfo);
   };
-  console.log(showInfo);
-  console.log(lat);
-  console.log(zoom);
 
   return isLoaded ? (
     <div className="mt-4">
