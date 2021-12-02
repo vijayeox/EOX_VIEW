@@ -1,7 +1,7 @@
 {
   "type": "application",
   "name": "Legacy CRM",
-  "category": "utilities",
+  "category": "sales",
   "singleton":true,
   "icon": "icon.svg",
   "fontIcon":"fad fa-handshake-alt",
