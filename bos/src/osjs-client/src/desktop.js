@@ -784,6 +784,7 @@ export default class Desktop extends EventEmitter {
    * @param {Event} ev
    */
   onContextMenu(ev) {
+    return;
     const lockSettings = this.core.config("desktop.lock");
     const extras = [].concat(
       ...this.contextmenuEntries.map((e) => (typeof e === "function" ? e() : e))
