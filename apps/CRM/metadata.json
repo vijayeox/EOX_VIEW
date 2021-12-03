@@ -1,16 +1,16 @@
 {
   "type": "application",
-  "name": "CRM",
-  "category": "organization",
+  "name": "Legacy CRM",
+  "category": "sales",
   "singleton":true,
   "icon": "icon.svg",
   "fontIcon":"fad fa-handshake-alt",
   "icon_white": "icon_white.svg",
   "title": {
-    "en_EN": "CRM"
+    "en_EN": "Legacy CRM"
   },
   "description": {
-    "en_EN": "CRM"
+    "en_EN": "Legacy CRM"
   },
   "files": [
     "main.js",
