@@ -158,5 +158,27 @@ class Requests {
     );
     return response;
   }
+
+  static async retryCall(core,api,dataItem) {
+    let helper2 = core.make("oxzion/restClient");
+    let response = await helper2.request(
+      "v1",
+      api+"/"+ dataItem.id + "/retry",
+      {},
+      "post"
+    );
+    return response;
+  }
+
+  static async resetPasswordCall(core,username) {
+    let helper = core.make("oxzion/restClient");
+    let response = await helper.request(
+      "v1",
+      "user/me/forgotpassword",
+      { username: username },
+      "post"
+    );
+    return response;
+  }
 }
 export default Requests;
