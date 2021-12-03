@@ -1,76 +1,121 @@
-import { React, GridTemplate } from "oxziongui";
+import { React, EOXGrid } from "oxziongui";
+
 import { TitleBar } from "./components/titlebar";
-import { DeleteEntry } from "./components/apiCalls";
-import DialogContainer from "./dialog/DialogContainerUser";
+import { GetData } from "./components/apiCalls";
+// import form  from "../modules/forms/editUser.json"
 
 class User extends React.Component {
   constructor(props) {
     super(props);
     this.core = this.props.args;
-    this.state = {
-      userInEdit: undefined,
-      permission: {
-        canAdd: this.props.userProfile.privileges.MANAGE_USER_CREATE,
-        canEdit: this.props.userProfile.privileges.MANAGE_USER_WRITE,
-        canDelete: this.props.userProfile.privileges.MANAGE_USER_DELETE,
+    this.drillDownRequired = false;
+    (this.actionItems = {
+      edit: {
+        type: "button",
+        api: "account/edit",
+        icon: "fad fa-pencil",
+        text: "EDIT",
+        title: "Edit User",
+        isPopup: true,
       },
-      selectedOrg: this.props.userProfile.accountId,
-    };
-    this.child = React.createRef();
+      delete: {
+        type: "button",
+        api: "account",
+        icon: "fad fa-trash",
+        text: "DELETE",
+        title: "Delete User",
+        isPopup: true,
+      },
+      create: {
+        type: "button",
+        api: "account/add",
+        icon: " fad fa-plus",
+        text: "CREATE",
+        title: "Create New",
+        isPopup: true,
+      },
+      resetPassword: {
+        type: "button",
+        api: "account/users",
+        icon: "fad fa-redo",
+        text: "RESET",
+        title: "Reset Password",
+        ispopup: true,
+      },
+    }),
+      (this.state = {
+        isLoading: true,
+        accountData: [],
+
+        selectedOrg: this.props.userProfile.accountId,
+
+        permission: {
+          canAdd: this.props.userProfile.privileges.MANAGE_USER_CREATE,
+          canEdit: this.props.userProfile.privileges.MANAGE_USER_WRITE,
+          canDelete: this.props.userProfile.privileges.MANAGE_USER_DELETE,
+        },
+        // userInEdit: undefined,
+      }),
+      (this.api = "account/" + this.state.selectedOrg + "/user");
   }
 
   orgChange = (event) => {
     this.setState({ selectedOrg: event.target.value });
   };
 
-  edit = (dataItem, required) => {
-    dataItem = this.cloneItem(dataItem);
-    this.setState({
-      userInEdit: dataItem,
+  componentDidMount() {
+    GetData(this.api).then((data) => {
+      this.setState({
+        accountData: (data.status === "success" && data.data) || [],
+        isLoading: false,
+      });
     });
-    this.inputTemplate = React.createElement(DialogContainer, {
-      args: this.core,
-      dataItem: dataItem || null,
-      selectedOrg: this.state.selectedOrg,
-      cancel: this.cancel,
-      formAction: "put",
-      action: this.child.current.refreshHandler,
-      userPreferences: this.props.userProfile.preferences,
-      diableField: required.diableField,
-    });
-  };
-
-  cloneItem(item) {
-    return Object.assign({}, item);
   }
 
-  remove = (dataItem) => {
-    DeleteEntry(
-      "account/" + this.state.selectedOrg + "/user",
-      dataItem.uuid
-    ).then((response) => {
-      this.child.current.refreshHandler(response);
-    });
-  };
-
-  cancel = () => {
-    this.setState({ userInEdit: undefined });
-  };
-
-  insert = () => {
-    this.setState({ userInEdit: {} });
-    this.inputTemplate = React.createElement(DialogContainer, {
-      args: this.core,
-      dataItem: [],
-      cancel: this.cancel,
-      formAction: "post",
-      selectedOrg: this.state.selectedOrg,
-      userPreferences: this.props.userProfile.preferences,
-      action: this.child.current.refreshHandler,
-    });
-  };
-
   render() {
+    let config = {
+      height: "100%",
+      width: "100%",
+      filterable: true,
+      reorderable: true,
+      sortable: true,
+      // sort:true,
+      pageSize: 10,
+      // pageable:true,
+      pageable: {
+        skip: 0,
+        // pageSize: 10,
+        buttonCount: 3,
+      },
+      groupable: true,
+      resizable: true,
+
+      isDrillDownTable: true,
+
+      column: [
+        {
+          title: "Image",
+          field: "logo",
+        },
+        {
+          title: "Name",
+          field: "name",
+        },
+        {
+          title: "Email",
+          field: "email",
+        },
+        {
+          title: "Designation",
+          field: "designation",
+        },
+        {
+          title: "Country",
+          field: "country",
+        },
+      ],
+    };
+
     return (
       <div style={{ height: "inherit" }}>
         <TitleBar
@@ -85,54 +130,27 @@ class User extends React.Component {
           }
         />
         <React.Suspense fallback={<div>Loading...</div>}>
-          <div style={{ marginTop: "-35px" }}>
-            <GridTemplate
-              args={this.core}
-              ref={this.child}
-              key={Math.random()}
-              config={{
-                showToolBar: true,
-                title: "User",
-                api: "account/" + this.state.selectedOrg + "/users",
-                column: [
-                  {
-                    title: "Image",
-                    field: "logo",
-                  },
-                  {
-                    title: "Name",
-                    field: "name",
-                  },
-                  {
-                    title: "Email",
-                    field: "email",
-                  },
-                  {
-                    title: "Designation",
-                    field: "designation",
-                  },
-                  {
-                    title: "Country",
-                    field: "country",
-                  },
-                ],
-              }}
-              manageGrid={{
-                add: this.insert,
-                edit: this.edit,
-                remove: this.remove,
-                resetPassword: {
-                  icon: "far fa-redo manageIcons",
-                },
-              }}
-              permission={this.state.permission}
-            />
+          <div>
+            {!this.state.isLoading && (
+              <EOXGrid
+                configuration={config}
+                data={this.state.accountData}
+                core={this.core}
+                isDrillDownTable={this.props.drillDownRequired}
+                actionItems={this.actionItems}
+                api={this.api}
+                permission={this.state.permission}
+                // editForm={form}
+                // key={Math.random()}
+              />
+            )}
           </div>
         </React.Suspense>
-        {this.state.userInEdit && this.inputTemplate}
+        {/* {this.state.userInEdit && this.inputTemplate} */}
       </div>
     );
   }
 }
 
 export default User;
+//add switch account for users
