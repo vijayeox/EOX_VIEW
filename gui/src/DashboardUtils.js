@@ -15,13 +15,13 @@ export function preparefilter(filter1, filter2) {
 
 export function prepareMultiFilter(filter1) {
   let subFilter = []
-  if (Array.isArray(filter1['2'])) {
+  if (Array.isArray(filter1['2']) && filter1['2']['value'] != null) {
     let filterValue = filter1['2']
     filterValue.map((filterArr, i) => {
       let multiFilter = []
       multiFilter.push(filter1['0'])
       multiFilter.push(filter1['1'])
-      multiFilter.push(filterArr['value'])
+      multiFilter.push((filterArr['value'] != null) ? filterArr['value'] : filter1['2'])
       subFilter.push(multiFilter)
       subFilter.push("OR")
     });
