@@ -28,9 +28,9 @@
  * @licence Simplified BSD License
  */
 
-import {clientLocale} from './utils/locale.js';
+import { clientLocale } from './utils/locale.js';
 
-const {pathname, href} = window.location;
+const { pathname, href } = window.location;
 const path = pathname.substr(-1) !== '/' ? pathname + '/' : pathname;
 const uri = href.replace(/[^/]*$/, '');
 
@@ -90,17 +90,9 @@ export const defaultConfiguration = {
         label: 'LBL_APP_CAT_MULTIMEDIA',
         icon: 'applications-multimedia'
       },
-      office: {
-        label: 'LBL_APP_CAT_OFFICE',
-        icon: 'applications-office'
-      },
       system: {
         label: 'LBL_APP_CAT_SYSTEM',
         icon: 'applications-system'
-      },
-      utilities: {
-        label: 'LBL_APP_CAT_UTILITIES',
-        icon: 'applications-utilities'
       },
       business: {
         label: 'LBL_APP_CAT_BUSINESS',
@@ -149,7 +141,30 @@ export const defaultConfiguration = {
       other: {
         label: 'LBL_APP_CAT_OTHER',
         icon: 'applications-other'
-      }
+      },
+      
+      // New Categories:
+      sales: {
+        label: 'LBL_APP_CAT_SALES',
+        icon: 'applications-sales'
+      },
+      utilities: {
+        label: 'LBL_APP_CAT_UTILITIES',
+        icon: 'applications-utilities'
+      },
+      office: {
+        label: 'LBL_APP_CAT_OFFICE',
+        icon: 'applications-office'
+      },
+      hrmanagement: {
+        label: 'LBL_APP_CAT_HRMANAGEMENT',
+        icon: 'applications-hrmanagement'
+      },
+      collaboration: {
+        label: 'LBL_APP_CAT_COLLABORATION',
+        icon: 'applications-collaboration'
+      },
+
     }
   },
 
@@ -241,31 +256,31 @@ export const defaultConfiguration = {
       name: 'bos',
       label: 'bOS',
       adapter: 'system',
-      icon: {name: 'folder-publicshare'}
+      icon: { name: 'folder-publicshare' }
     }, {
       name: 'home',
       label: 'Home',
       adapter: 'system',
-      icon: {name: 'user-home'}
+      icon: { name: 'user-home' }
     }],
     icons: {
-      '^application/zip': {name: 'package-x-generic'},
-      '^application/javascript': {name: 'text-x-script'},
-      '^application/json': {name: 'text-x-script'},
-      '^application/x-python': {name: 'text-x-script'},
-      '^application/php': {name: 'text-x-script'},
-      '^application/pdf': {name: 'x-office-document'},
-      '^application/rtf': {name: 'x-office-document'},
-      '^application/msword': {name: 'x-office-document'},
-      '^application/(xz|tar|gzip)': {name: 'package-x-generic'},
-      '^text/css': {name: 'text-x-script'},
-      '^text/html': {name: 'text-html'},
-      '^(application|text)/xml': {name: 'text-html'},
-      '^application': {name: 'application-x-executable'},
-      '^text': {name: 'text-x-generic'},
-      '^audio': {name: 'audio-x-generic'},
-      '^video': {name: 'video-x-generic'},
-      '^image': {name: 'image-x-generic'}
+      '^application/zip': { name: 'package-x-generic' },
+      '^application/javascript': { name: 'text-x-script' },
+      '^application/json': { name: 'text-x-script' },
+      '^application/x-python': { name: 'text-x-script' },
+      '^application/php': { name: 'text-x-script' },
+      '^application/pdf': { name: 'x-office-document' },
+      '^application/rtf': { name: 'x-office-document' },
+      '^application/msword': { name: 'x-office-document' },
+      '^application/(xz|tar|gzip)': { name: 'package-x-generic' },
+      '^text/css': { name: 'text-x-script' },
+      '^text/html': { name: 'text-html' },
+      '^(application|text)/xml': { name: 'text-html' },
+      '^application': { name: 'application-x-executable' },
+      '^text': { name: 'text-x-generic' },
+      '^audio': { name: 'audio-x-generic' },
+      '^video': { name: 'video-x-generic' },
+      '^image': { name: 'image-x-generic' }
     }
   },
 
