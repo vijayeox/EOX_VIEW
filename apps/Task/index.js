@@ -1,4 +1,4 @@
-  /*
+/*
    * OS.js - JavaScript Cloud/Web Desktop Platform
    *
    * Copyright (c) 2011-2018, Anders Evenrud <andersevenrud@gmail.com>
@@ -27,93 +27,97 @@
    * @author  Anders Evenrud <andersevenrud@gmail.com>
    * @licence Simplified BSD License
    */
-  import {
-    name as applicationName
-  } from "./metadata.json";
+import {
+  name as applicationName
+} from "./metadata.json";
 
 
-  var i, finalposition, finalDimension,finalMaximised,finalMinimised, parameters;
+var i, finalposition, finalDimension,finalMaximised=true,finalMinimised, parameters;
 
-  const baseUrl = process.env.SERVER;
-  OSjs.make("osjs/packages").register(
-    "Task",
-    (core, args, options, metadata) => {
-     
-      
-      if(Object.keys(args).length == 0){
-        parameters = "";
-      }
-      else{
-        parameters = args || "";
-      }
-      console.log(parameters);
-      // Create a new Application instance
-      const proc = core.make("osjs/application", {
-        args,
-        options,
-        metadata
-      });
-      proc.on('attention', () => win.focus())
-      let session = core.make('osjs/settings').get('osjs/session');
-      let sessions = Object.entries(session);
-      for (i = 0; i < sessions.length; i++) {
-        if (Object.keys(session[i].windows).length && session[i].name == "Task"){
-          finalposition = session[i].windows[0].position;
-          finalDimension = session[i].windows[0].dimension;
-          finalMaximised = session[i].windows[0].maximized;
-          finalMinimised = session[i].windows[0].minimized;
-        }
-      }
-
-  proc.createWindow({ id: "TaskApplicationWindow",  icon: metadata.fontIcon,
-  title: metadata.title.en_EN, dimension: finalDimension ? finalDimension : {width: 400, height: 400},
-    position:  finalposition ? finalposition : {left: 300, top: 100},
-          attributes: {
-           minDimension: { width: 800, height: 500 },
-          },})
-  .on('destroy', () => proc.destroy())
-  .render(($content, win) => {
-    // Add our process and window id to iframe URL
-    if(finalMinimised){
-      win.minimize();
+const baseUrl = process.env.SERVER;
+OSjs.make("osjs/packages").register(
+  "Task",
+  (core, args, options, metadata) => {
+   
+    
+    if(Object.keys(args).length == 0){
+      parameters = "";
     }
-    if(finalMaximised){
-      win.maximize();
+    else{
+      parameters = args || "";
     }
-    win.attributes.maximizable = true;
-    const profile = core.make("oxzion/profile");
-    const details = profile.get();
-    const suffix = `?pid=${proc.pid}&wid=${win.wid}`;
-    const user = core.make('osjs/auth').user();
-    console.log(user);
-
-    // Create an iframe
-    const iframe = document.createElement('iframe');
-    iframe.style.width = '100%';
-    iframe.style.height = '100%';
-    iframe.src = proc.resource(baseUrl+ "/oxindex" + suffix + '&oxauth=' + user.jwt + '&newParams=' + parameters);
-
-    iframe.setAttribute('border', '0');
-
-    // Bind window events to iframe
-    win.on('blur', () => iframe.contentWindow.blur());
-    win.on('focus', () => iframe.contentWindow.focus());
-    win.on('iframe:post', msg => iframe.contentWindow.postMessage(msg, window.location.href));
-
-    // Listen for messages from iframe
-    win.on('iframe:get', msg => {
-      console.warn('Message from Iframe', msg);
-      if (msg=== 'Ping') {
-      win.emit('iframe:post', 'Pong');
-    } else if(msg.message == 'help'){
-      core.emit("oxzion/application:launch", {app : "HelpApp", args : {topic  : 'task'}});
-    }
+    console.log(parameters);
+    // Create a new Application instance
+    const proc = core.make("osjs/application", {
+      args,
+      options,
+      metadata
     });
+    let session = core.make('osjs/settings').get('osjs/session');
+    let sessions = Object.entries(session);
+    for (i = 0; i < sessions.length; i++) {
+      if (Object.keys(session[i].windows).length && session[i].name == "Task"){
+        finalposition = session[i].windows[0].position;
+        finalDimension = session[i].windows[0].dimension;
+        finalMaximised = session[i].windows[0].maximized;
+        finalMinimised = session[i].windows[0].minimized;
+      }
+    }
 
-    $content.appendChild(iframe);
+const win = proc.createWindow({ id: "TaskApplicationWindow",  icon: metadata.fontIcon,
+title: metadata.title.en_EN, dimension: finalDimension ? finalDimension : {width: 400, height: 400},
+  position:  finalposition ? finalposition : {left: 300, top: 100},
+        attributes: {
+         minDimension: { width: 800, height: 500 },
+         closeable: true,
+        },})
+.on('destroy', () => proc.destroy())
+.render(($content, win) => {
+  // Add our process and window id to iframe URL
+  if(finalMinimised){
+    win.maximize();
+  }
+  if(finalMaximised){
+    win.maximize();
+  }
+  win.attributes.maximizable = true;
+  const profile = core.make("oxzion/profile");
+  const details = profile.get();
+  const suffix = `?pid=${proc.pid}&wid=${win.wid}`;
+  const user = core.make('osjs/auth').user();
+  console.log(user);
 
+  // Create an iframe
+  const iframe = document.createElement('iframe');
+  iframe.style.width = '100%';
+  iframe.style.height = '100%';
+  iframe.src = proc.resource(baseUrl+ "/oxindex" + suffix + '&oxauth=' + user.jwt + '&newParams=' + parameters);
+
+  iframe.setAttribute('border', '0');
+
+  // Bind window events to iframe
+  win.on('blur', () => iframe.contentWindow.blur());
+  win.on('focus', () => iframe.contentWindow.focus());
+  win.on('iframe:post', msg => iframe.contentWindow.postMessage(msg, window.location.href));
+
+  // Listen for messages from iframe
+  win.on('iframe:get', msg => {
+    console.warn('Message from Iframe', msg);
+    if (msg=== 'Ping') {
+    win.emit('iframe:post', 'Pong');
+  } else if(msg.message == 'help'){
+    core.emit("oxzion/application:launch", {app : "HelpApp", args : {topic  : 'task'}});
+  }
   });
-}
-);
+
+  $content.appendChild(iframe);
+
+});
+proc.on('attention', () => {
+  console.log("Project Management Triggered");
+  win.focus();
+})
+return proc;
+});
 
 
