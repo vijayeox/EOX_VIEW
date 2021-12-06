@@ -1,7 +1,7 @@
 {
   "type": "application",
   "name": "Task",
-  "category": null,
+  "category": "collaboration",
   "server": "server.js",
   "icon": "icon.png",
   "singleton": true,
