@@ -6,7 +6,7 @@
   "icon": "icon.png",
   "fontIcon":"fad fa-folder-open",
   "icon_white": "icon_white.png",
-  "hidden": true,
+  "hidden": false,
   "internal": true,
   "singleton": true,
   "title": {
