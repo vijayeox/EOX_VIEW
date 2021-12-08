@@ -5,6 +5,8 @@ import { IntlService } from "@progress/kendo-react-intl";
 import { ExcelExport } from "@progress/kendo-react-excel-export";
 import "@progress/kendo-theme-bootstrap/dist/all.css";
 import GridActions from "./GridActions";
+import edit from "./GridActions"
+
 
 const loadingPanel = (
   <div className="k-loading-mask">
@@ -68,7 +70,7 @@ export default class EOXGrid extends React.Component {
         ? configuration.pageSize
         : 10
       : 10;
-      //need to pass these in org config
+    //need to pass these in org config
     let oxzionMeta = configuration
       ? configuration["oxzion-meta"]
         ? configuration["oxzion-meta"]
@@ -83,6 +85,9 @@ export default class EOXGrid extends React.Component {
     this.helper = this.core.make("oxzion/link");
     this.actionItems = this.props.actionItems;
     this.api = this.props.api;
+    this.permission = this.props.permission;
+    this.editForm= this.props.editForm;
+    this.editApi=this.props.editApi;
 
     this.state = {
       filter: null,
@@ -115,12 +120,39 @@ export default class EOXGrid extends React.Component {
   }
 
   //updating the data on delete
-  updateDisplayData = ({ crudType, deleteIndex }) => {
+  updateDisplayData = ({ crudType, deleteIndex,index,data }) => {
     if (crudType == "DELETE") {
       const displayedData = this.state.displayedData;
       displayedData.data.splice(deleteIndex, 1);
       displayedData.total--;
       this.setState({ displayedData });
+    }
+    if (crudType == "RETRY") {
+      const displayedData = this.state.displayedData;
+      console.log("retry update eoxgrids");
+      this.setState({ displayedData });
+    }
+    if (crudType == "RESET") {
+      const displayedData = this.state.displayedData;
+      console.log("reset update eoxgrids");
+      this.setState({ displayedData });
+    }
+    if (crudType == "ADD") {
+      // const displayedData = this.state.displayedData;
+      console.log("Addition  eoxgrids");
+      // this.setState({ displayedData });
+    }
+    if (crudType == "EDIT") {
+      const displayedData = {...this.state.displayedData};
+      displayedData.data[index]= {...data};
+      console.log("edit eoxgrids");
+      this.setState({ displayedData });
+    }
+    if (crudType == "CREATE") {
+    //   const displayedData = this.state.displayedData;
+      console.log("create eoxgrids");
+    //   console.log(displayedData);
+    //   this.setState({ displayedData });
     }
   };
 
@@ -281,21 +313,35 @@ export default class EOXGrid extends React.Component {
 
   render() {
     let gridTag = (
-      <div>
+      <div id="eox-grid" style={{ position: "relative" }}>
+        <div id="eox-grid-form">
+
+        </div>
         {/* create new user */}
         <div style={{ float: "right" }} className="dash-manager-buttons">
-          {/* {this.actionItems?.addUsers && 
-                <button
-                    type="button"
-                    className="btn btn-primary EOXGrids"
-                    onClick={() => {
-                        
-                        console.log(" user");
-                        }}
-                    >
-                    <i className="fad fa-plus"></i>
-                </button>
-            } */}
+          {Object["values"](this.actionItems).map((actions, key) => (
+            (actions.text === "CREATE")?
+            <abbr title={actions.title} key ={key}>
+            <button
+              type={actions.type}
+              key={key}
+              className="btn btn-primary EOXGrids"
+              onClick={() => {
+                console.log(" CREATEEE ");
+                {
+                  actions.text === "CREATE"
+                    ? 
+                      // <GridActions edit(false,this.editForm)/>
+                      console.log("created")
+                    :  console.log("Not CREATED");
+                }
+                
+              }}
+            >
+             <i className={actions.icon}></i>
+            </button>
+            </abbr> :console.log("not adding")
+          ))}
         </div>
         <Grid
           style={{ height: this.height, width: this.width }}
@@ -343,6 +389,9 @@ export default class EOXGrid extends React.Component {
                 api={this.api}
                 actionItems={this.actionItems}
                 onUpdate={this.updateDisplayData}
+                permission={this.permission}
+                editForm= {this.editForm}
+                editApi={this.editApi}
               />
             )}
           ></GridColumn>
@@ -372,6 +421,7 @@ export default class EOXGrid extends React.Component {
         )}
 
         {!this.exportToExcel && gridTag}
+        {/* {this.state.visible && this.addUsersTemplate} */}
         {/* {gridTag} */}
       </>
     );

@@ -180,5 +180,18 @@ class Requests {
     );
     return response;
   }
+  
+  static async editFormPushData(core,api,dataItem) {
+    
+    let helper = core.make("oxzion/restClient");
+    let response = await helper.request(
+      "v1",
+      "/" + api + "/" + dataItem.uuid,
+      dataItem
+      ,
+      "put"
+    );
+    return response;
+  }
 }
 export default Requests;

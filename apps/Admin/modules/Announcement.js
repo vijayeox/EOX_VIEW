@@ -1,257 +1,131 @@
-import { React, ReactDOM, MultiSelect, OX_Grid, Notification } from "oxziongui";
+import { React, EOXGrid } from "oxziongui";
 import { TitleBar } from "./components/titlebar";
-import { DeleteEntry } from "./components/apiCalls";
-import Swal from "sweetalert2";
-import config from "./moduleConfig";
-
+import { GetData } from "./components/apiCalls";
+import form from "../modules/forms/editCreateAnnouncement.json";
 class Announcement extends React.Component {
   constructor(props) {
     super(props);
     this.core = this.props.args;
-    this.loader = this.core.make("oxzion/splash");
-    this.adminWindow = document.getElementsByClassName("Window_Admin")[0];
-    this.moduleConfig = config[this.props.name];
-    this.listConfig = this.moduleConfig.listConfig;
-    this.state = {
-      itemInEdit: undefined,
-      visible: false,
-      permission: {
-        canAdd:
-          this.props.userProfile.privileges[
-            this.moduleConfig.permission.canAdd
-          ],
-        canEdit:
-          this.props.userProfile.privileges[
-            this.moduleConfig.permission.canEdit
-          ],
-        canDelete:
-          this.props.userProfile.privileges[
-            this.moduleConfig.permission.canDelete
-          ],
+    this.drillDownRequired = false;
+    (this.actionItems = {
+      edit: {
+        type: "button",
+        api: "account/edit",
+        icon: "fad fa-pencil",
+        text: "EDIT",
+        title: "Edit User",
+        isPopup: true,
       },
-      selectedOrg: this.props.userProfile.accountId,
-    };
-
-    this.notif = React.createRef();
-    this.OX_Grid = React.createRef();
-    this.toggleDialog = this.toggleDialog.bind(this);
-    this.renderButtons = this.renderButtons.bind(this);
-  }
-
-  insert = () => {
-    this.setState({ itemInEdit: {} });
-    this.inputTemplate = React.createElement(this.moduleConfig.dialogWindow, {
-      args: this.core,
-      dataItem: [],
-      selectedOrg: this.state.selectedOrg,
-      cancel: this.cancel,
-      formAction: "post",
-      action: this.OX_Grid.current.refreshHandler,
-      userPreferences: this.props.userProfile.preferences,
-    });
-  };
-
-  async pushAnnouncementTeams(dataItem, dataObject) {
-    let helper = this.core.make("oxzion/restClient");
-    let addTeams = await helper.request(
-      "v1",
-      "account/" +
-        this.state.selectedOrg +
-        "/announcement/" +
-        dataItem +
-        "/save",
-      {
-        teams: dataObject,
+      delete: {
+        type: "button",
+        api: "account",
+        icon: "fad fa-trash",
+        text: "DELETE",
+        title: "Delete User",
+        isPopup: true,
       },
-      "post"
-    );
-    return addTeams;
-  }
+      add: {
+        type: "button",
+        api: "account/add",
+        icon: "fad fa-user-plus",
+        text: "ADD",
+        title: "Add Users to Account",
+        isPopup: true,
+      },
+      create: {
+        type: "button",
+        api: "account/add",
+        icon: " fad fa-plus",
+        text: "CREATE",
+        title: "Create New",
+        isPopup: true,
+      },
+      // resetPassword: {
+      //   type: "button",
+      //   api: "account/users",
+      //   icon: "fad fa-redo",
+      //   text: "RESET",
+      //   title: "Reset Password",
+      //   ispopup: true,
+      // },
+    }),
+      (this.state = {
+        isLoading: true,
+        accountData: [],
 
-  async getAnnouncementTeams(dataItem) {
-    let helper = this.core.make("oxzion/restClient");
-    let groupUsers = await helper.request(
-      "v1",
-      "/announcement/" + dataItem + "/teams",
-      {},
-      "get"
-    );
-    return groupUsers;
-  }
+        selectedOrg: this.props.userProfile.accountId,
 
-  addUsersToEntity = (dataItem) => {
-    this.loader.show(this.adminWindow);
-    this.getAnnouncementTeams(dataItem.uuid).then((response) => {
-      this.addUsersTemplate = React.createElement(MultiSelect, {
-        args: this.core,
-        config: {
-          dataItem: dataItem,
-          title: "Announcement",
-          mainList: "account/" + this.state.selectedOrg + "/teams/list",
-          subList: response.data,
-          members: "Teams",
+        permission: {
+          canAdd: this.props.userProfile.privileges.MANAGE_ANNOUNCEMENT_WRITE,
+          canEdit: this.props.userProfile.privileges.MANAGE_ANNOUNCEMENT_WRITE,
+          canDelete:
+            this.props.userProfile.privileges.MANAGE_ANNOUNCEMENT_WRITE,
         },
-        manage: {
-          postSelected: this.sendTheData,
-          closeDialog: this.toggleDialog,
-        },
-      });
-      this.setState(
-        {
-          visible: !this.state.visible,
-        },
-        this.loader.destroy()
-      );
-    });
-  };
-
-  sendTheData = (selectedUsers, dataItem) => {
-    var temp2 = [];
-    for (var i = 0; i <= selectedUsers.length - 1; i++) {
-      var uid = { uuid: selectedUsers[i].uuid };
-      temp2.push(uid);
-    }
-    this.pushAnnouncementTeams(dataItem, temp2).then((response) => {
-      this.OX_Grid.current.refreshHandler(response);
-    });
-    this.toggleDialog();
-  };
-
-  toggleDialog() {
-    this.setState({
-      visible: !this.state.visible,
-    });
-  }
-
-  edit = (dataItem, required) => {
-    dataItem = this.cloneItem(dataItem);
-    this.setState({
-      itemInEdit: dataItem,
-    });
-    this.inputTemplate = React.createElement(this.moduleConfig.dialogWindow, {
-      args: this.core,
-      dataItem: dataItem,
-      selectedOrg: this.state.selectedOrg,
-      cancel: this.cancel,
-      formAction: "put",
-      action: this.OX_Grid.current.refreshHandler,
-      userPreferences: this.props.userProfile.preferences,
-      diableField: required.diableField,
-    });
-  };
-
-  cloneItem(item) {
-    return Object.assign({}, item);
+        // userInEdit: undefined,
+      }),
+      (this.api = "account/" + this.state.selectedOrg + "/announcements");
+      this.editApi="announcement";
   }
 
   orgChange = (event) => {
     this.setState({ selectedOrg: event.target.value });
   };
 
-  remove = (dataItem) => {
-    var adminWindow = document.querySelector(".Window_Admin");
-    Swal.fire({
-      title: "Are you sure?",
-      text: "Do you really want to delete the record? This cannot be undone.",
-      // imageUrl: "https://image.flaticon.com/icons/svg/1632/1632714.svg",
-      icon: 'question',
-      imageWidth: 75,
-      imageHeight: 75,
-      confirmButtonText: "Delete",
-      confirmButtonColor: "#d33",
-      showCancelButton: true,
-      cancelButtonColor: "#3085d6",
-      target: adminWindow,
-    }).then((result) => {
-      if (result.value) {
-        DeleteEntry(
-          "account/" + this.state.selectedOrg + "/announcement",
-          dataItem.uuid
-        ).then((response) => {
-          this.OX_Grid.current.refreshHandler(response);
-        });
-      }
+  componentDidMount() {
+    console.log(this.api);
+    GetData(this.api).then((data) => {
+      this.setState({
+        accountData: (data.status === "success" && data.data) || [],
+        isLoading: false,
+      });
     });
-  };
-
-  cancel = () => {
-    this.setState({ itemInEdit: undefined });
-  };
-
-  prepareColumnData() {
-    var columnInfo = [];
-    columnInfo = JSON.parse(JSON.stringify(this.listConfig.columnConfig));
-    columnInfo.push({
-      title: "Actions",
-      cell: (e) => this.renderButtons(e, this.listConfig.actions),
-      filterCell: {
-        type: "empty",
-      },
-    });
-    return columnInfo;
-  }
-
-  renderButtons(e, action) {
-    var actionButtons = [];
-    var that = this;
-    Object.keys(action).map(function (key, index) {
-      actionButtons.push(
-        <abbr title={action[key].title} key={index}>
-          <button
-            type="button"
-            className="btn btn-primary manage-btn"
-            onClick={() => {
-              switch (action[key].type) {
-                case "edit":
-                  that.edit(e, false);
-                  break;
-                case "assignEntity":
-                  that.addUsersToEntity(e);
-                  break;
-                case "delete":
-                  that.remove(e);
-                  break;
-              }
-            }}
-          >
-            <i className={action[key].icon + " manageIcons"}></i>
-          </button>
-        </abbr>
-      );
-    });
-    return actionButtons;
-  }
-
-  createAddButton() {
-    if (this.state.permission.canAdd && this.listConfig.addButton) {
-      return (
-        <button
-          key={2}
-          onClick={this.insert}
-          className="k-button btn btn-primary"
-          style={{
-            position: "absolute",
-            top: "2px",
-            right: "0px",
-            fontSize: "14px",
-            padding: "8px 6px 5px 10px",
-          }}
-        >
-          <i className="fad fa-plus" style={{ fontSize: "18px" }}></i>
-          <p style={{ margin: "0px", paddingLeft: "0px" }}>
-            {/* {this.listConfig.addButton.title} */}
-          </p>
-        </button>
-      );
-    }
   }
 
   render = () => {
+    let config = {
+      height: "100%",
+      width: "100%",
+      filterable: true,
+      reorderable: true,
+      sortable: true,
+      // sort:true,
+      pageSize: 10,
+      // pageable:true,
+      pageable: {
+        skip: 0,
+        // pageSize: 10,
+        buttonCount: 3,
+      },
+      groupable: true,
+      resizable: true,
+
+      isDrillDownTable: true,
+
+      column: [
+        {
+          //should be converted to logo
+          title: "Banner",
+          field: "media",
+        },
+        {
+          title: "Name",
+          field: "name",
+        },
+        {
+          title: "Description",
+          field: "description",
+        },
+        {
+          title: "Type",
+          field: "type",
+        },
+      ],
+    };
     return (
       <div style={{ height: "auto" }}>
-        <Notification ref={this.notif} />
+        {/* <Notification ref={this.notif} /> */}
         <TitleBar
-          title={this.moduleConfig.title}
+          title="Manage Announcements"
           menu={this.props.menu}
           args={this.core}
           orgChange={this.orgChange}
@@ -261,36 +135,25 @@ class Announcement extends React.Component {
               : false
           }
         />
-        <OX_Grid
-          osjsCore={this.core}
-          ref={this.OX_Grid}
-          data={
-            "account/" + this.state.selectedOrg + "/" + this.listConfig.route
-          }
-          wrapStyle={{
-            height: "calc(100% - 72px)",
-            marginleft: "15px",
-            marginRight: "0px",
-            marginTop: "-40px",
-            position: "relative",
-            top: "5px",
-          }}
-          onRowClick={(e) => this.edit(e.dataItem, false)}
-          filterable={true}
-          reorderable={true}
-          resizable={true}
-          defaultToolBar={true}
-          columnMenuFilter={false}
-          sortable={true}
-          pageable={{ buttonCount: 3, pageSizes: [10, 20, 30], info: true }}
-          columnConfig={this.prepareColumnData()}
-          gridToolbar={[
-            // this.listConfig.toolbarTemplate,
-            this.createAddButton(),
-          ]}
-        />
-        {this.state.visible && this.addUsersTemplate}
-        {this.state.itemInEdit && this.inputTemplate}
+        <React.Suspense fallback={<div>Loading...</div>}>
+          <div>
+            {!this.state.isLoading && (
+              <EOXGrid
+                configuration={config}
+                data={this.state.accountData}
+                core={this.core}
+                isDrillDownTable={this.props.drillDownRequired}
+                actionItems={this.actionItems}
+                api={this.api}
+                permission={this.state.permission}
+                editForm={form}
+                editApi={this.editApi}
+                // key={Math.random()}
+              />
+            )}
+          </div>
+        </React.Suspense>
+        {/* {this.state.userInEdit && this.inputTemplate} */}
       </div>
     );
   };
