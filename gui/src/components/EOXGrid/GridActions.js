@@ -1,12 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import Requests from "../../Requests";
-// import BaseFormRenderer from "../App/BaseFormRenderer";
 import FormRender from "../App/FormRender";
 import countryStateList from "../data/country-state-codes";
 // import MultiSelect  from "../../MultiSelect";
-// import form from "../../../../apps/Admin/modules/forms/editAccount.json"
-
 export default class GridActions extends React.Component {
   constructor(props) {
     console.log("gridactions");
@@ -17,7 +14,8 @@ export default class GridActions extends React.Component {
       (this.api = this.props.api);
     this.permission = this.props.permission;
     this.editForm = this.props.editForm;
-    this.editApi=this.props.editApi;
+    this.editApi = this.props.editApi;
+    this.gridId = this.props.gridId;
     this.onUpdate = this.props.onUpdate.bind(this);
     let countryList = countryStateList.map((item) => item.country);
     this.state = {
@@ -78,32 +76,43 @@ export default class GridActions extends React.Component {
     );
   }
 
-
   edit = (data, form, index) => {
-    
+    if (data) {
+      document.getElementById(this.gridId).classList.add("display-none");
+    } else {
+      document.getElementById(this.gridId).classList.remove("display-none");
+    }
+
     ReactDOM.render(
-      data ?
-      <div style={{position:"absolute",left:"0",top:"0",width:"100%",height:"100%",zIndex:"10"}}>
-         <FormRender
-        key={"abc"}
-        core={this.core}
-        data={data}
-        // editProfile = {true}
-        updateFormData={true}
-        postSubmitCallback={(formData) => this.handleSubmit(formData, index)}
-        content={form}
-        // route= {this.api}
-        appId={data.uuid}
-        
-      /> 
-      </div>:null,
-      // </div>
+      data ? (
+        <div
+          style={{
+            position: "absolute",
+            left: "0",
+            top: "0",
+            width: "100%",
+            height: "100%",
+            zIndex: "10",
+          }}
+        >
+          <FormRender
+            key={"abc"}
+            core={this.core}
+            data={data}
+            updateFormData={true}
+            postSubmitCallback={(formData) =>
+              this.handleSubmit(formData, index)
+            }
+            content={form}
+            appId={data.uuid}
+            // route= {this.api}
+          />
+        </div>
+      ) : null,
       document.getElementById("eox-grid-form")
     )
-      ? (document.getElementById("eox-grid-form").style.overflow =
-          "scroll")
-      : (document.getElementById("eox-grid-form").style.overflow =
-          "auto");
+      ? (document.getElementById("eox-grid-form").style.overflow = "scroll")
+      : (document.getElementById("eox-grid-form").style.overflow = "auto");
   };
 
   render() {
@@ -151,8 +160,7 @@ export default class GridActions extends React.Component {
                           this.editForm,
                           index
                         )
-                      :
-                        console.log("Not edited");
+                      : console.log("Not edited");
                   }
                   {
                     actions.text === "CREATE"

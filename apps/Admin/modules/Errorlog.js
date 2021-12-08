@@ -25,7 +25,7 @@ class Errorlog extends React.Component {
           canDelete: this.props.userProfile.privileges.MANAGE_TEAM_DELETE,
         },
     }),
-    (this.api = "errorlog")
+    (this.api = "errorlog");
   }
 
   componentDidMount() {
@@ -35,7 +35,6 @@ class Errorlog extends React.Component {
         isLoading: false,
       });
     });
-  
   }
 
   render() {
@@ -99,6 +98,7 @@ class Errorlog extends React.Component {
                 isDrillDownTable={this.props.drillDownRequired}
                 actionItems={this.actionItems}
                 api={this.api}
+                permission={this.state.permission}
                 // key={Math.random()}
               />
             )}

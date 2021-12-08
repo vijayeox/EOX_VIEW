@@ -1,6 +1,7 @@
 import { React, EOXGrid } from "oxziongui";
 import { TitleBar } from "./components/titlebar";
 import { GetData } from "./components/apiCalls";
+// import form from "../modules/forms/editCreateRole.json";
 
 class Role extends React.Component {
   constructor(props) {
@@ -47,7 +48,8 @@ class Role extends React.Component {
         },
           // roleInEdit: undefined,
       }),
-      (this.api = "account/"+this.state.selectedOrg+"/role")
+      (this.api = "account/"+this.state.selectedOrg+"/role");
+      this.editApi= "role";
    
   }
 
@@ -126,6 +128,8 @@ class Role extends React.Component {
                 actionItems={this.actionItems}
                 api={this.api}
                 permission={this.state.permission}
+                // editForm={form}
+                editApi= {this.editApi}
                 // key={Math.random()}
               />
             )}

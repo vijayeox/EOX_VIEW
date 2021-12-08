@@ -5,8 +5,6 @@ import { IntlService } from "@progress/kendo-react-intl";
 import { ExcelExport } from "@progress/kendo-react-excel-export";
 import "@progress/kendo-theme-bootstrap/dist/all.css";
 import GridActions from "./GridActions";
-import edit from "./GridActions"
-
 
 const loadingPanel = (
   <div className="k-loading-mask">
@@ -15,7 +13,6 @@ const loadingPanel = (
     <div className="k-loading-color"></div>
   </div>
 );
-
 export default class EOXGrid extends React.Component {
   constructor(props) {
     super(props);
@@ -89,6 +86,7 @@ export default class EOXGrid extends React.Component {
     this.editForm= this.props.editForm;
     this.editApi=this.props.editApi;
 
+    this.gridId=Date.now();
     this.state = {
       filter: null,
       props: this.props,
@@ -305,12 +303,6 @@ export default class EOXGrid extends React.Component {
     });
   };
 
-  //No implementation now. Add implementation if needed later.
-  // gridDataStageChanged = (e) => {
-  //   console.log("Called event handler - gridDataStageChanged. Event is:");
-  //   console.log(e);
-  // };
-
   render() {
     let gridTag = (
       <div id="eox-grid" style={{ position: "relative" }}>
@@ -330,9 +322,7 @@ export default class EOXGrid extends React.Component {
                 console.log(" CREATEEE ");
                 {
                   actions.text === "CREATE"
-                    ? 
-                      // <GridActions edit(false,this.editForm)/>
-                      console.log("created")
+                    ? console.log("created")
                     :  console.log("Not CREATED");
                 }
                 
@@ -343,9 +333,10 @@ export default class EOXGrid extends React.Component {
             </abbr> :console.log("not adding")
           ))}
         </div>
+        <div id={this.gridId}>       
         <Grid
           style={{ height: this.height, width: this.width }}
-          // className={this.isDrillDownTable ? "drillDownStyle" : ""}
+          // className={this.gridId}
           data={this.state.displayedData}
           resizable={this.resizable}
           reorderable={this.reorderable}
@@ -392,10 +383,12 @@ export default class EOXGrid extends React.Component {
                 permission={this.permission}
                 editForm= {this.editForm}
                 editApi={this.editApi}
+                gridId={this.gridId}
               />
             )}
           ></GridColumn>
         </Grid>
+        </div>
       </div>
     );
 
@@ -419,7 +412,6 @@ export default class EOXGrid extends React.Component {
             </ExcelExport>
           </>
         )}
-
         {!this.exportToExcel && gridTag}
         {/* {this.state.visible && this.addUsersTemplate} */}
         {/* {gridTag} */}

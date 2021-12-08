@@ -1,334 +1,112 @@
-import { React, Notification, MultiSelect, OX_Grid } from "oxziongui";
-import { DeleteEntry } from "./components/apiCalls";
+import { React, EOXGrid } from "oxziongui";
 import { TitleBar } from "./components/titlebar";
-import Swal from "sweetalert2";
-import config from "./moduleConfig";
-
+import { GetData } from "./components/apiCalls";
+import form from "../modules/forms/editCreateProject.json";
 class Project extends React.Component {
   constructor(props) {
     super(props);
     this.core = this.props.args;
-    this.loader = this.core.make("oxzion/splash");
-    this.adminWindow = document.getElementsByClassName("Window_Admin")[0];
-    this.moduleConfig = config[this.props.name];
-    this.listConfig = this.moduleConfig.listConfig;
-    this.state = {
-      itemInEdit: undefined,
-      visible: false,
-      permission: {
-        canAdd:
-          this.props.userProfile.privileges[
-            this.moduleConfig.permission.canAdd
-          ],
-        canEdit:
-          this.props.userProfile.privileges[
-            this.moduleConfig.permission.canEdit
-          ],
-        canDelete:
-          this.props.userProfile.privileges[
-            this.moduleConfig.permission.canDelete
-          ],
+    this.drillDownRequired = false;
+    (this.actionItems = {
+      edit: {
+        type: "button",
+        api: "account/edit",
+        icon: "fad fa-pencil",
+        text: "EDIT",
+        title: "Edit User",
+        isPopup: true,
       },
-      selectedOrg: this.props.userProfile.accountId,
-    };
-
-    this.notif = React.createRef();
-    this.OX_Grid = React.createRef();
-    this.toggleDialog = this.toggleDialog.bind(this);
-    this.renderButtons = this.renderButtons.bind(this);
-  }
-
-  async fetchCurrentEntries(route) {
-    let helper = this.core.make("oxzion/restClient");
-    let currentItems = await helper.request("v1", route, {}, "get");
-    return currentItems;
-  }
-
-  async pushProjectUsers(dataItem, dataObject) {
-    let helper = this.core.make("oxzion/restClient");
-    let addProjectUsers = await helper.request(
-      "v1",
-      "account/" + this.state.selectedOrg + "/project/" + dataItem + "/save",
-      {
-        userIdList: dataObject,
+      delete: {
+        type: "button",
+        api: "account",
+        icon: "fad fa-trash",
+        text: "DELETE",
+        title: "Delete User",
+        isPopup: true,
       },
-      "post"
-    );
-    return addProjectUsers;
+      add: {
+        type: "button",
+        api: "account/add",
+        icon: "fad fa-user-plus",
+        text: "ADD",
+        title: "Add Users to Account",
+        isPopup: true,
+      },
+      create: {
+        type: "button",
+        api: "account/add",
+        icon: " fad fa-plus",
+        text: "CREATE",
+        title: "Create New",
+        isPopup: true,
+      },
+    }),
+      (this.state = {
+        isLoading: true,
+        accountData: [],
+
+        selectedOrg: this.props.userProfile.accountId,
+
+        permission: {
+          canAdd: this.props.userProfile.privileges.MANAGE_PROJECT_WRITE,
+          canEdit: this.props.userProfile.privileges.MANAGE_PROJECT_WRITE,
+          canDelete: this.props.userProfile.privileges.MANAGE_PROJECT_WRITE,
+        },
+        // userInEdit: undefined,
+      }),
+      (this.api = "account/" + this.state.selectedOrg + "/project");
+      this.editApi = "project";
   }
 
-  sendTheData = (selectedUsers, item) => {
-    var temp1 = selectedUsers;
-    var temp2 = [];
-    for (var i = 0; i <= temp1.length - 1; i++) {
-      var uid = { uuid: temp1[i].uuid };
-      temp2.push(uid);
-    }
-    this.pushProjectUsers(item, temp2).then((response) => {
-      if (response.status == "success") {
-        this.notif.current.notify(
-          "Success",
-          "Operation succesfully completed",
-          "success"
-        );
-      } else {
-        this.notif.current.notify("Error", "Operation Failed", "danger");
-      }
-      this.OX_Grid.current.refreshHandler(response);
-    });
-    this.toggleDialog();
-  };
-
-  toggleDialog() {
-    this.setState({
-      visible: !this.state.visible,
-    });
-  }
-
+ 
   orgChange = (event) => {
     this.setState({ selectedOrg: event.target.value });
   };
 
-  createAddButton() {
-    if (this.state.permission.canAdd && this.listConfig.addButton) {
-      return (
-        <button
-          key={2}
-          onClick={this.insert}
-          className="k-button btn btn-primary"
-          style={{
-            position: "absolute",
-            top: "2px",
-            right: "0px",
-            fontSize: "14px",
-            padding: "8px 6px 5px 10px",
-          }}
-        >
-          <i className="fad fa-plus" style={{ fontSize: "18px" }}></i>
-          <p style={{ margin: "0px", paddingLeft: "0px" }}>
-            {/* {this.listConfig.addButton.title} */}
-          </p>
-        </button>
-      );
-    }
-  }
-
-  insert = () => {
-    this.setState({ itemInEdit: {} });
-    this.inputTemplate = React.createElement(this.moduleConfig.dialogWindow, {
-      args: this.core,
-      dataItem: [],
-      selectedOrg: this.state.selectedOrg,
-      cancel: this.cancel,
-      formAction: "post",
-      action: this.OX_Grid.current.refreshHandler,
-      userPreferences: this.props.userProfile.preferences,
-    });
-  };
-
-  edit = (dataItem, required) => {
-    dataItem = this.cloneItem(dataItem);
-    this.setState({
-      itemInEdit: dataItem,
-    });
-    this.inputTemplate = React.createElement(this.moduleConfig.dialogWindow, {
-      args: this.core,
-      dataItem: dataItem,
-      selectedOrg: this.state.selectedOrg,
-      cancel: this.cancel,
-      formAction: "put",
-      action: this.OX_Grid.current.refreshHandler,
-      userPreferences: this.props.userProfile.preferences,
-      diableField: required.diableField,
-    });
-  };
-
-  remove = (dataItem, config) => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "Do you really want to delete the record? This cannot be undone.",
-      // imageUrl: "https://image.flaticon.com/icons/svg/1632/1632714.svg",
-      icon: 'question',
-      imageWidth: 75,
-      imageHeight: 75,
-      confirmButtonText: "Delete",
-      confirmButtonColor: "#d33",
-      showCancelButton: true,
-      cancelButtonColor: "#3085d6",
-      target: this.adminWindow,
-    }).then((result) => {
-      if (result.value) {
-        DeleteEntry(
-          "account/" + this.state.selectedOrg + config.route,
-          dataItem.uuid
-        ).then((response) => {
-          if (response.message == "Project has subprojects") {
-            Swal.fire({
-              title: "Are you sure?",
-              text: "The following action will delete the project and its subprojects",
-              // imageUrl: "https://image.flaticon.com/icons/svg/1632/1632714.svg",
-              icon: 'question',
-              imageWidth: 75,
-              imageHeight: 75,
-              confirmButtonText: "Delete",
-              confirmButtonColor: "#d33",
-              showCancelButton: true,
-              cancelButtonColor: "#3085d6",
-              target: this.adminWindow,
-            }).then((result) => {
-              if (result.value) {
-                DeleteEntry(
-                  "account/" + this.state.selectedOrg + config.route,
-                  dataItem.uuid + "/true"
-                ).then((response) => {
-                  response.status == "success"
-                    ? (this.OX_Grid.current.refreshHandler(response),
-                      this.notif.current.notify(
-                        "Success",
-                        "Operation succesfully completed",
-                        "success"
-                      ))
-                    : this.notif.current.notify(
-                        "Error",
-                        "Operation Failed",
-                        "danger"
-                      );
-                });
-              }
-            });
-          } else if (response.status == "success") {
-            this.OX_Grid.current.refreshHandler(response);
-            this.notif.current.notify(
-              "Success",
-              "Operation succesfully completed",
-              "success"
-            );
-          } else {
-            this.notif.current.notify("Error", "Operation Failed", "danger");
-          }
-        });
-      }
-    });
-  };
-
-  addUsersToEntity = (dataItem, config) => {
-    this.setState({
-      visible: !this.state.visible,
-    });
-    var multiselectElement = React.createElement(MultiSelect, {
-      args: this.core,
-      config: {
-        dataItem: dataItem,
-        title: config.title,
-        mainList: "account/" + this.state.selectedOrg + config.mainList,
-        subList: "account/" + this.state.selectedOrg + config.subList,
-        members: config.members,
-      },
-      manage: {
-        postSelected: this.sendTheData,
-        closeDialog: this.toggleDialog,
-      },
-    });
-    if (config.prefetch) {
-      this.fetchCurrentEntries(this.replaceParams(config.route, dataItem)).then(
-        (response) => {
-          this.addUsersTemplate = multiselectElement;
-        }
-      );
-    } else {
-      this.addUsersTemplate = multiselectElement;
-    }
-  };
-
-  cancel = (mode) => {
-    this.setState({ itemInEdit: undefined });
-    if (mode && mode == "save") {
-      this.notif.current.notify(
-        "Success",
-        "Operation succesfully completed",
-        "success"
-      );
-    }
-  };
-
-  cloneItem(dataItem) {
-    return Object.assign({}, dataItem);
-  }
-
-  prepareColumnData(configData) {
-    var columnInfo = [];
-    columnInfo = JSON.parse(JSON.stringify(configData.columnConfig));
-    columnInfo.push({
-      title: "Actions",
-      cell: (e) => this.renderButtons(e, configData.actions),
-      filterCell: {
-        type: "empty",
-      },
-      columnMenuFilter: false,
-    });
-    return columnInfo;
-  }
-
-  renderButtons(e, action) {
-    var actionButtons = [];
-    var that = this;
-    Object.keys(action).map(function (key, index) {
-      actionButtons.push(
-        <abbr title={action[key].title} key={index}>
-          <button
-            type="button"
-            className="btn btn-primary manage-btn"
-            onClick={() => {
-              switch (action[key].type) {
-                case "edit":
-                  that.edit(e, false);
-                  break;
-                case "assignEntity":
-                  that.addUsersToEntity(e, action[key]);
-                  break;
-                case "delete":
-                  that.remove(e, action[key]);
-                  break;
-              }
-            }}
-          >
-            <i className={action[key].icon + " manageIcons"}></i>
-          </button>
-        </abbr>
-      );
-    });
-    return actionButtons;
-  }
-
-  renderRow(e, rowConfig) {
-    let subRoute = this.replaceParams(rowConfig.subRoute, e);
-    return (
-      <OX_Grid
-        osjsCore={this.core}
-        data={subRoute}
-        parentData={e}
-        gridToolbar={rowConfig.toolbarTemplate}
-        columnConfig={this.prepareColumnData(rowConfig)}
-      />
-    );
-  }
-
-  replaceParams(route, params) {
-    var regex = /\{\{.*?\}\}/g;
-    let m;
-    while ((m = regex.exec(route)) !== null) {
-      m.index === regex.lastIndex ? regex.lastIndex++ : null;
-      m.forEach((match) => {
-        route = route.replace(match, params[match.replace(/\{\{|\}\}/g, "")]);
+  componentDidMount() {
+    console.log(this.api);
+    GetData(this.api).then((data) => {
+      this.setState({
+        accountData: (data.status === "success" && data.data) || [],
+        isLoading: false,
       });
-    }
-    return route;
+    });
   }
 
   render() {
+    let config = {
+      height: "100%",
+      width: "100%",
+      filterable: true,
+      reorderable: true,
+      sortable: true,
+      // sort:true,
+      pageSize: 10,
+      // pageable:true,
+      pageable: {
+        skip: 0,
+        // pageSize: 10,
+        buttonCount: 3,
+      },
+      groupable: true,
+      resizable: true,
+
+      isDrillDownTable: true,
+
+      column: [
+        {
+          title: "Name",
+          field: "name",
+        },
+        {
+          title: "Description",
+          field: "description",
+        },
+      ],
+    };
     return (
       <div style={{ height: "inherit" }}>
-        <Notification ref={this.notif} />
+        {/* <Notification ref={this.notif} /> */}
         <TitleBar
           title="Manage Projects"
           menu={this.props.menu}
@@ -340,43 +118,26 @@ class Project extends React.Component {
               : false
           }
         />
-        <OX_Grid
-          osjsCore={this.core}
-          ref={this.OX_Grid}
-          rowTemplate={
-            this.listConfig.expandable
-              ? (e) => this.renderRow(e, this.listConfig.expandable)
-              : undefined
-          }
-          expandable={this.listConfig.expandable ? true : undefined}
-          data={
-            "account/" + this.state.selectedOrg + "/" + this.listConfig.route
-          }
-          wrapStyle={{
-            // height: "calc(100% - 72px)",
-            // marginleft: "15px",
-            // marginRight: "15px",
-            // marginTop: "-40px",
-            position: "relative",
-            top: "-33px",
-          }}
-          onRowClick={(e) => this.edit(e.dataItem, false)}
-          filterable={true}
-          gridDefaultFilters={this.listConfig.defaultFilters}
-          reorderable={true}
-          resizable={true}
-          sortable={true}
-          columnMenuFilter={false}
-          defaultToolBar={true}
-          pageable={{ buttonCount: 3, pageSizes: [10, 20, 30], info: true }}
-          columnConfig={this.prepareColumnData(this.listConfig)}
-          gridToolbar={[
-            // this.listConfig.toolbarTemplate,
-            this.createAddButton(),
-          ]}
-        />
-        {this.state.itemInEdit && this.inputTemplate}
-        {this.state.visible && this.addUsersTemplate}
+
+        <React.Suspense fallback={<div>Loading...</div>}>
+          <div>
+            {!this.state.isLoading && (
+              <EOXGrid
+                configuration={config}
+                data={this.state.accountData}
+                core={this.core}
+                isDrillDownTable={this.props.drillDownRequired}
+                actionItems={this.actionItems}
+                api={this.api}
+                permission={this.state.permission}
+                editForm={form}
+                editApi= {this.editApi}
+                // key={Math.random()}
+              />
+            )}
+          </div>
+        </React.Suspense>
+        {/* {this.state.userInEdit && this.inputTemplate} */}
       </div>
     );
   }

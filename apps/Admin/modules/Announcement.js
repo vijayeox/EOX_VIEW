@@ -10,7 +10,7 @@ class Announcement extends React.Component {
     (this.actionItems = {
       edit: {
         type: "button",
-        api: "account/edit",
+        api: "announcement",
         icon: "fad fa-pencil",
         text: "EDIT",
         title: "Edit User",
@@ -40,14 +40,7 @@ class Announcement extends React.Component {
         title: "Create New",
         isPopup: true,
       },
-      // resetPassword: {
-      //   type: "button",
-      //   api: "account/users",
-      //   icon: "fad fa-redo",
-      //   text: "RESET",
-      //   title: "Reset Password",
-      //   ispopup: true,
-      // },
+     
     }),
       (this.state = {
         isLoading: true,

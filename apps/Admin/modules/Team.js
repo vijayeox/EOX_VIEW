@@ -1,6 +1,8 @@
 import { React, EOXGrid } from "oxziongui";
 import { TitleBar } from "./components/titlebar";
 import { GetData } from "./components/apiCalls";
+import form from "../modules/forms/editCreateTeam.json";
+
 class Team extends React.Component {
   constructor(props) {
     super(props);
@@ -53,7 +55,8 @@ class Team extends React.Component {
         },
         // teamInEdit: undefined,
     }),
-    (this.api = "account/"+this.state.selectedOrg+"/team")
+    (this.api = "account/"+this.state.selectedOrg+"/team");
+    this.editApi="team";
 
 
   
@@ -127,6 +130,9 @@ class Team extends React.Component {
                 isDrillDownTable={this.props.drillDownRequired}
                 actionItems={this.actionItems}
                 api={this.api}
+                permission={this.state.permission}
+                editForm={form}
+                editApi={this.editApi}
                 // key={Math.random()}
               />
             )}

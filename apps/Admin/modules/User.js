@@ -1,8 +1,7 @@
 import { React, EOXGrid } from "oxziongui";
-
 import { TitleBar } from "./components/titlebar";
 import { GetData } from "./components/apiCalls";
-// import form  from "../modules/forms/editUser.json"
+import form from "../modules/forms/editCreateUser.json";
 
 class User extends React.Component {
   constructor(props) {
@@ -52,11 +51,12 @@ class User extends React.Component {
         permission: {
           canAdd: this.props.userProfile.privileges.MANAGE_USER_CREATE,
           canEdit: this.props.userProfile.privileges.MANAGE_USER_WRITE,
-          canDelete: this.props.userProfile.privileges.MANAGE_USER_DELETE,
+          canDelete: this.props.uskraerProfile.privileges.MANAGE_USER_DELETE,
         },
         // userInEdit: undefined,
       }),
       (this.api = "account/" + this.state.selectedOrg + "/user");
+      this.editApi = "user";
   }
 
   orgChange = (event) => {
@@ -140,7 +140,8 @@ class User extends React.Component {
                 actionItems={this.actionItems}
                 api={this.api}
                 permission={this.state.permission}
-                // editForm={form}
+                editForm={form}
+                editApi= {this.editApi}
                 // key={Math.random()}
               />
             )}

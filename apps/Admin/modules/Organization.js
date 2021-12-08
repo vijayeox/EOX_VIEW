@@ -1,6 +1,7 @@
 import { React, EOXGrid } from "oxziongui";
 import { TitleBar } from "./components/titlebar";
 import { GetData } from "./components/apiCalls";
+import form from "../modules/forms/editCreateAccount.json";
 
 class Organization extends React.Component {
   constructor(props) {
@@ -13,6 +14,7 @@ class Organization extends React.Component {
         api: "account/edit",
         icon: "fad fa-pencil",
         text: "EDIT",
+        title: "Edit Account",
         isPopup: true,
       },
       delete: {
@@ -20,26 +22,42 @@ class Organization extends React.Component {
         api: "account",
         icon: "fad fa-trash",
         text: "DELETE",
+        title: "Delete Account",
         isPopup: true,
       },
       add: {
         type: "button",
         api: "account/add",
-        icon: " fa fa-user-plus",
+        icon: "fad fa-user-plus",
         text: "ADD",
+        title: "Add Users to Account",
+        isPopup: true,
+      },
+      create: {
+        type: "button",
+        api: "account/add",
+        icon: " fad fa-plus",
+        text: "CREATE",
+        title: "Create New",
         isPopup: true,
       },
     }),
-      (this.api = "account"),
       (this.state = {
         isLoading: true,
         accountData: [],
+
+        permission: {
+          canAdd: this.props.userProfile.privileges.MANAGE_USER_CREATE,
+          canEdit: this.props.userProfile.privileges.MANAGE_USER_WRITE,
+          canDelete: this.props.userProfile.privileges.MANAGE_USER_DELETE,
+        },
       });
-    this.child = React.createRef();
+    this.api = "account";
+    this.editApi="account";
   }
 
   componentDidMount() {
-    GetData("account").then((data) => {
+    GetData(this.api).then((data) => {
       this.setState({
         accountData: (data.status === "success" && data.data) || [],
         isLoading: false,
@@ -69,10 +87,6 @@ class Organization extends React.Component {
 
       column: [
         {
-          title: "uuid",
-          field: "uuid",
-        },
-        {
           title: "Logo",
           field: "logo",
         },
@@ -93,6 +107,7 @@ class Organization extends React.Component {
     };
     return (
       <div style={{ height: "inherit" }}>
+         
         <TitleBar
           title="Manage Account"
           menu={this.props.menu}
@@ -108,6 +123,10 @@ class Organization extends React.Component {
                 isDrillDownTable={this.props.drillDownRequired}
                 actionItems={this.actionItems}
                 api={this.api}
+                permission={this.state.permission}
+                editForm={form}
+                editApi= {this.editApi}
+                // key={Math.random()}
               />
             )}
           </div>
