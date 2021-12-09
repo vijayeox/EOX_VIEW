@@ -20,6 +20,9 @@ import * as KendoReactWindow from "@progress/kendo-react-dialogs";
 import * as KendoReactGrid from "@progress/kendo-react-grid";
 import * as KendoReactInput from "@progress/kendo-react-inputs";
 // import * as KendoReactRipple from "@progress/kendo-react-ripple";
+import { library, config } from '@fortawesome/fontawesome-svg-core'
+import { fal } from '@fortawesome/pro-light-svg-icons'
+
 import * as Moment from "moment";
 import * as MomentTZ from "moment-timezone";
 import * as PopupDialog from 'sweetalert2';
@@ -43,6 +46,10 @@ import Visualization from "./src/Visualization";
 import WidgetManager from "./src/WidgetManager";
 import TemplateManager from "./src/TemplateManager";
 import SSOCustom from "./src/components/Custom/SSOCustom";
+import KanbanView from "./src/components/Kanban/KanbanRoutes";
+import BryntumView from "./src/components/bryntum/bryntum"
+import MapView from "./src/components/googlemapfinal/index"
+
 //import Mapbox from "./src/components/Custom/Mapbox";
 
 const LazyLoad = ({ component: Component, ...rest }) => (
@@ -71,6 +78,7 @@ const DropDown = (props) => <LazyLoad component={lazy(() => import('./src/compon
 
 // const OX_Grid = lazy(() => import("./src/OX_Grid"));
 // const GridTemplate = lazy(() => import("./src/GridTemplate"));
+library.add(fal)
 
 export {
   EOXApplication,
@@ -125,6 +133,9 @@ export {
   Antd,
   AntdIcons,
   TemplateManager,
-  SSOCustom
+  SSOCustom,
+  MapView,
+  BryntumView,
+  KanbanView
 //  Mapbox
 };
