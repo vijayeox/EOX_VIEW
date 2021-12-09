@@ -84,12 +84,12 @@ export default class OX_Grid extends React.Component {
   componentDidMount() {
     document.getElementById(this.appNavigationDiv)
       ? document
-          .getElementById(this.appNavigationDiv)
-          .addEventListener(
-            "handleGridRefresh",
-            () => this.refreshHandler(),
-            false
-          )
+        .getElementById(this.appNavigationDiv)
+        .addEventListener(
+          "handleGridRefresh",
+          () => this.refreshHandler(),
+          false
+        )
       : null;
     $(document).ready(function () {
       $(".k-textbox").attr("placeholder", "Search");
@@ -104,20 +104,20 @@ export default class OX_Grid extends React.Component {
       .addEventListener("getCustomActions", this.getCustomActions, false);
     document.getElementById(`navigation_${this.appId}`)?.addEventListener('exportPdf', this.exportPDF, false);
     this.toggleGridLoader();
-}
+  }
 
-componentWillUnmount(){
-  document.getElementById(`navigation_${this.appId}`)?.removeEventListener('exportPdf', this.exportPDF, false);
-}
+  componentWillUnmount() {
+    document.getElementById(`navigation_${this.appId}`)?.removeEventListener('exportPdf', this.exportPDF, false);
+  }
 
   getCustomActions = (e) => {
     this.generateGridToolbar();
   };
 
   dataStateChange = (e) => {
-    const showLoader = (()=>{try{return JSON.stringify(this.state?.dataState) !== JSON.stringify(e?.dataState)}catch(e){return false}})()
-    this.setState({ ...this.state, dataState: e.dataState, apiActivityCompleted : false }, () => showLoader && this.toggleGridLoader());
-   
+    const showLoader = (() => { try { return JSON.stringify(this.state?.dataState) !== JSON.stringify(e?.dataState) } catch (e) { return false } })()
+    this.setState({ ...this.state, dataState: e.dataState, apiActivityCompleted: false }, () => showLoader && this.toggleGridLoader());
+
   };
 
   dataRecieved = (data) => {
@@ -129,11 +129,11 @@ componentWillUnmount(){
     // Write different props which when changed we need to trigger a setState
     if (
       util.inspect(this.props.data, { depth: 2 }) !=
-        util.inspect(nextProps.data) ||
+      util.inspect(nextProps.data) ||
       util.inspect(this.props.gridDefaultFilters, { depth: 4 }) !=
-        util.inspect(nextProps.gridDefaultFilters, { depth: 4 }) ||
+      util.inspect(nextProps.gridDefaultFilters, { depth: 4 }) ||
       util.inspect(this.props.columnConfig) !=
-        util.inspect(nextProps.columnConfig)
+      util.inspect(nextProps.columnConfig)
     ) {
       if (nextProps.gridDefaultFilters) {
         let mergedFilters = {
@@ -149,7 +149,7 @@ componentWillUnmount(){
     let response = await this.restClient.request(
       "v1",
       "/" + api,
-      urlPostParams ? urlPostParams: {},
+      urlPostParams ? urlPostParams : {},
       item.typeOfRequest ? item.typeOfRequest : "post"
     );
     return response;
@@ -183,21 +183,21 @@ componentWillUnmount(){
     let table = [];
     this.props.checkBoxSelection
       ? table.push(
-          <GridColumn
-            field="selected"
-            filterable={false}
-            columnMenu={
-              this.props.columnMenuFilter != false
-                ? GridColumnMenuCheckboxFilter
-                : undefined
-            }
-            key={Math.random() * 20}
-            locked={true}
-            reorderable={false}
-            orderIndex={0}
-            width="50px"
-          />
-        )
+        <GridColumn
+          field="selected"
+          filterable={false}
+          columnMenu={
+            this.props.columnMenuFilter != false
+              ? GridColumnMenuCheckboxFilter
+              : undefined
+          }
+          key={Math.random() * 20}
+          locked={true}
+          reorderable={false}
+          orderIndex={0}
+          width="50px"
+        />
+      )
       : null;
     columnConfig.map((dataItem, i) => {
       table.push(
@@ -205,14 +205,14 @@ componentWillUnmount(){
           cell={
             dataItem.cell || dataItem.rygRule
               ? (item) => (
-                  <CustomCell
-                    cellTemplate={dataItem.cell}
-                    dataItem={item.dataItem}
-                    type={"cellTemplate"}
-                    userProfile={this.userprofile}
-                    baseUrl={this.baseUrl}
-                  />
-                )
+                <CustomCell
+                  cellTemplate={dataItem.cell}
+                  dataItem={item.dataItem}
+                  type={"cellTemplate"}
+                  userProfile={this.userprofile}
+                  baseUrl={this.baseUrl}
+                />
+              )
               : undefined
           }
           children={dataItem.children ? dataItem.children : undefined}
@@ -228,8 +228,8 @@ componentWillUnmount(){
             dataItem.columnMenuFilter == false
               ? undefined
               : this.props.columnMenuFilter != false
-              ? ColumnMenu
-              : undefined
+                ? ColumnMenu
+                : undefined
           }
           filterCell={
             dataItem.filterCell ? CustomFilter(dataItem.filterCell) : undefined
@@ -251,22 +251,22 @@ componentWillUnmount(){
             this.props.reorderable
               ? this.props.reorderable
               : dataItem.reorderable
-              ? dataItem.reorderable
-              : undefined
+                ? dataItem.reorderable
+                : undefined
           }
           resizable={
             this.props.resizable
               ? this.props.resizable
               : dataItem.resizable
-              ? dataItem.resizable
-              : undefined
+                ? dataItem.resizable
+                : undefined
           }
           sortable={
             this.props.sortable
               ? this.props.sortable
               : dataItem.sortable
-              ? dataItem.sortable
-              : undefined
+                ? dataItem.sortable
+                : undefined
           }
           width={dataItem.width ? dataItem.width : undefined}
           title={dataItem.title ? dataItem.title : undefined}
@@ -276,19 +276,19 @@ componentWillUnmount(){
 
     this.props.inlineEdit
       ? table.push(
-          <GridColumn
-            filterable={false}
-            key={Math.random() * 20}
-            reorderable={false}
-            width="175px"
-            title={"Actions"}
-            cell={InlineComponent(
-              this.props.inlineActions,
-              this.inlineEdit,
-              this.refreshHandler
-            )}
-          />
-        )
+        <GridColumn
+          filterable={false}
+          key={Math.random() * 20}
+          reorderable={false}
+          width="175px"
+          title={"Actions"}
+          cell={InlineComponent(
+            this.props.inlineActions,
+            this.inlineEdit,
+            this.refreshHandler
+          )}
+        />
+      )
       : null;
     return table;
   };
@@ -399,10 +399,10 @@ componentWillUnmount(){
         var buttonStyles = action[key].icon
           ? { width: "auto" }
           : {
-              width: "auto",
-              color: "white",
-              fontWeight: "600",
-            };
+            width: "auto",
+            color: "white",
+            fontWeight: "600",
+          };
         const itemRender = (props) => {
           return (
             <div style={{ padding: "5px" }} text={action[key].name}>
@@ -416,8 +416,8 @@ componentWillUnmount(){
         };
         showButton
           ? actionButtons.push(
-              <MenuItem text={action[key].name} render={itemRender} />
-            )
+            <MenuItem text={action[key].name} render={itemRender} />
+          )
           : null;
       }, this);
       this.setState({
@@ -576,39 +576,6 @@ componentWillUnmount(){
       : null;
   };
 
-  noRecordsJSX() {
-    return (
-      <GridNoRecords>
-        {this.props.gridNoRecords ? (
-          this.props.gridNoRecords
-        ) : (
-          <div className="grid-no-records">
-            <ul className="list-group" style={{ listStyle: "disc" }}>
-              <div
-                href="#"
-                className="list-group-item list-group-item-action bg-warning"
-                style={{
-                  display: "flex",
-                  width: "110%",
-                  alignItems: "center",
-                }}
-              >
-                <div style={{ marginLeft: "10px" }}>
-                  <i className="fas fa-info-circle"></i>
-                </div>
-                <div
-                  style={{ fontSize: "medium", paddingLeft: "30px" }}
-                  className="noRecords"
-                >
-                </div>
-              </div>
-            </ul>
-          </div>
-        )}
-      </GridNoRecords>
-    );
-  }
-
   selectionChange = (event) => {
     event.dataItem.selected = !event.dataItem.selected;
     this.forceUpdate();
@@ -676,7 +643,7 @@ componentWillUnmount(){
           {operationsList[0].icon ? (
             <i
               className={operationsList[0].icon}
-              // style={{ paddingRight: "5px" }}
+            // style={{ paddingRight: "5px" }}
             />
           ) : null}
           {/* {operationsList[0].name} */}
@@ -791,12 +758,12 @@ componentWillUnmount(){
               }
               item.params.successNotification
                 ? that.state.notif.current.notify(
-                    "Success",
-                    item.params.successNotification.length > 0
-                      ? item.params.successNotification
-                      : "Update Completed",
-                    "success"
-                  )
+                  "Success",
+                  item.params.successNotification.length > 0
+                    ? item.params.successNotification
+                    : "Update Completed",
+                  "success"
+                )
                 : null;
               this.props.postSubmitCallback();
               this.setState({ showLoader: false });
@@ -848,7 +815,7 @@ componentWillUnmount(){
                       } else {
                         this.state.notif.current.notify(
                           "Error",
-                          item.errorMessage ? item.errorMessage :response.message,
+                          item.errorMessage ? item.errorMessage : response.message,
                           "danger"
                         );
                       }
@@ -888,52 +855,52 @@ componentWillUnmount(){
               buttonPopup: buttonPopup,
               showButtonPopup: true,
             });
-          } else if (item.type == "APIRequest"){
-            action.updateOnly = true;                         
-              var urlPostParams = {};
-              if(item.params && item.params.urlPostParams){
-                urlPostParams = ParameterHandler.replaceParams(this.appId, item.params.urlPostParams, mergeRowData);
-              }
-              var url = ParameterHandler.replaceParams(
-                this.appId,
-                item.route,
-                mergeRowData
-              );
-              Swal.fire({
-                title: "Are you sure?",
-                text: "Do you really want to delete the record? This cannot be undone.",
-                // imageUrl:
-                //   "https://image.flaticon.com/icons/svg/1632/1632714.svg",
-                icon: 'question',
-                imageWidth: 75,
-                imageHeight: 75,
-                confirmButtonText: "Delete",
-                confirmButtonColor: "#d33",
-                showCancelButton: true,
-                cancelButtonColor: "#3085d6",
-              }).then((result) => {
-                if (result.value) {
-                  this.DeleteFile("app/" + this.appId + "/" + url, item,urlPostParams).then(
-                    (response) => {
-                      console.log(response);
-                      this.refreshHandler(response);
-                      if (response.status == "success") {
-                        this.state.notif.current.notify(
-                          "Success",
-                          "Deleted Successfully",
-                          "success"
-                        );
-                      } else {
-                        this.state.notif.current.notify(
-                          "Error",
-                          response.message,
-                          "danger"
-                        );
-                      }
+          } else if (item.type == "APIRequest") {
+            action.updateOnly = true;
+            var urlPostParams = {};
+            if (item.params && item.params.urlPostParams) {
+              urlPostParams = ParameterHandler.replaceParams(this.appId, item.params.urlPostParams, mergeRowData);
+            }
+            var url = ParameterHandler.replaceParams(
+              this.appId,
+              item.route,
+              mergeRowData
+            );
+            Swal.fire({
+              title: "Are you sure?",
+              text: "Do you really want to delete the record? This cannot be undone.",
+              // imageUrl:
+              //   "https://image.flaticon.com/icons/svg/1632/1632714.svg",
+              icon: 'question',
+              imageWidth: 75,
+              imageHeight: 75,
+              confirmButtonText: "Delete",
+              confirmButtonColor: "#d33",
+              showCancelButton: true,
+              cancelButtonColor: "#3085d6",
+            }).then((result) => {
+              if (result.value) {
+                this.DeleteFile("app/" + this.appId + "/" + url, item, urlPostParams).then(
+                  (response) => {
+                    console.log(response);
+                    this.refreshHandler(response);
+                    if (response.status == "success") {
+                      this.state.notif.current.notify(
+                        "Success",
+                        "Deleted Successfully",
+                        "success"
+                      );
+                    } else {
+                      this.state.notif.current.notify(
+                        "Error",
+                        response.message,
+                        "danger"
+                      );
                     }
-                  );
-                }
-              });
+                  }
+                );
+              }
+            });
 
           } else {
             if (item.params && item.params.page_id) {
@@ -978,17 +945,17 @@ componentWillUnmount(){
         action.updateOnly
           ? null
           : PageNavigation.loadPage(
-              this.appId,
-              this.pageId,
-              pageId,
-              action.icon,
-              true,
-              action.name,
-              mergeRowData,
-              copyPageContent,
-              undefined,
-              action.popupConfig
-            );
+            this.appId,
+            this.pageId,
+            pageId,
+            action.icon,
+            true,
+            action.name,
+            mergeRowData,
+            copyPageContent,
+            undefined,
+            action.popupConfig
+          );
       }
     }
   }
@@ -1125,20 +1092,20 @@ componentWillUnmount(){
     this.dataItem = dataItem;
     this.state.actions[key].confirmationMessage
       ? Swal.fire({
-          title: this.state.actions[key].confirmationMessage,
-          confirmButtonText: "Agree",
-          confirmButtonColor: "#275362",
-          showCancelButton: true,
-          cancelButtonColor: "#7b7878",
-          target: ".PageRender",
-        }).then((result) => {
-          result.value
-            ? this.buttonAction(this.state.actions[key], this.dataItem)
-            : null;
-        })
+        title: this.state.actions[key].confirmationMessage,
+        confirmButtonText: "Agree",
+        confirmButtonColor: "#275362",
+        showCancelButton: true,
+        cancelButtonColor: "#7b7878",
+        target: ".PageRender",
+      }).then((result) => {
+        result.value
+          ? this.buttonAction(this.state.actions[key], this.dataItem)
+          : null;
+      })
       : this.state.actions[key].details
-      ? this.buttonAction(this.state.actions[key], this.dataItem)
-      : null;
+        ? this.buttonAction(this.state.actions[key], this.dataItem)
+        : null;
   }
   handleOnSelect = (e) => {
     var dataItem = this.dataItem;
@@ -1153,22 +1120,35 @@ componentWillUnmount(){
   };
 
   toggleGridLoader() {
-      const selector = `#content_${this.appId}_${this.pageId} .k-grid-container `;
-      try {
-          document.querySelector(`${selector}>.osjs-boot-splash-grid`)?.remove();
-          if (!this.state.apiActivityCompleted ) {
-            const ele = document.createElement("div");
-            ele.className = "osjs-boot-splash-grid";
-            ele.innerHTML = ` <div class="spinner">
+    const selector = `#content_${this.appId}_${this.pageId} .k-grid-container `;
+    try {
+      document.querySelector(`${selector}>.osjs-boot-splash-grid`)?.remove();
+      if (!this.state.apiActivityCompleted) {
+        const ele = document.createElement("div");
+        ele.className = "osjs-boot-splash-grid";
+        ele.innerHTML = ` <div class="spinner">
                   <div class="bounce1"></div>
                   <div class="bounce2"></div>
                   <div class="bounce3"></div>
                 </div>`;
-            document.querySelector(selector)?.append(ele);
-        }
-      } catch (e) {
-        document.querySelector(`${selector}>.osjs-boot-splash-grid`)?.remove();
+        document.querySelector(selector)?.append(ele);
       }
+    } catch (e) {
+      document.querySelector(`${selector}>.osjs-boot-splash-grid`)?.remove();
+    }
+  }
+
+  loadData() {
+      return <DataLoader
+        ref={(r) => {
+          this.child = r;
+        }}
+        args={this.props.osjsCore}
+        url={this.props.data}
+        dataState={this.state.dataState}
+        onDataRecieved={this.dataRecieved}
+        {...this.props}
+      />
   }
 
   render() {
@@ -1228,18 +1208,7 @@ componentWillUnmount(){
             dataState={this.state.dataState}
             onDataRecieved={this.dataRecieved}
           />
-        ) : (
-          <DataLoader
-            ref={(r) => {
-              this.child = r;
-            }}
-            args={this.props.osjsCore}
-            url={this.props.data}
-            dataState={this.state.dataState}
-            onDataRecieved={this.dataRecieved}
-            {...this.props}
-          />
-        )}</>
+        ) : (this.loadData())}</>
         <div id="customActionsToolbar" />
         <Grid
           rowRender={this.rowRender}
@@ -1255,11 +1224,11 @@ componentWillUnmount(){
           detail={
             this.props.rowTemplate
               ? (dataItem) => (
-                  <DetailComponent
-                    rowTemplate={this.props.rowTemplate}
-                    dataItem={dataItem.dataItem}
-                  />
-                )
+                <DetailComponent
+                  rowTemplate={this.props.rowTemplate}
+                  dataItem={dataItem.dataItem}
+                />
+              )
               : undefined
           }
           filterable={this.props.filterable}
@@ -1267,9 +1236,9 @@ componentWillUnmount(){
           groupable={this.props.groupable}
           style={this.props.gridStyles}
           //pageable={{
-            //buttonCount: 5,
-            //info: true,
-            //pageSizes: [50, 100, 200],
+          //buttonCount: 5,
+          //info: true,
+          //pageSizes: [50, 100, 200],
           //}}
           pageable={this.props.pageable}
           take={this.props.take}
@@ -1290,15 +1259,22 @@ componentWillUnmount(){
           editField={this.props.inlineEdit ? "inEdit" : undefined}
           onItemChange={this.itemChange}
         >
+          {console.log(this.state.gridData.total)}
+          {this.state.gridData.total === 0 ? (
+            <GridNoRecords>
+              <div />
+            </GridNoRecords>
+          ) : (
+            <GridNoRecords>No Records Found</GridNoRecords>
+          )}
           {this.props.defaultToolBar &&
-          this.generateGridToolbar() &&
-          this.state.apiActivityCompleted ? (
+            this.generateGridToolbar() &&
+            this.state.apiActivityCompleted ? (
             <GridToolbar>
               <div className={"GridToolBar"}>{this.generateGridToolbar()}</div>
             </GridToolbar>
           ) : null}
           {this.createColumns(this.props.columnConfig)}
-          {/* {this.noRecordsJSX()} */}
         </Grid>
         {this.props.exportToPDF ? (
           <GridPDFExport
@@ -1314,15 +1290,16 @@ componentWillUnmount(){
             <Grid
               data={
                 this.props.exportToPDF.defaultFilters &&
-                this.state.gridData.data &&
-                typeof this.state.gridData.data == "array"
+                  this.state.gridData.data &&
+                  typeof this.state.gridData.data == "array"
                   ? process(
-                      this.state.gridData.data,
-                      JSON.parse(this.props.exportToPDF.defaultFilters)
-                    )
+                    this.state.gridData.data,
+                    JSON.parse(this.props.exportToPDF.defaultFilters)
+                  )
                   : this.state.gridData.data
               }
             >
+
               {this.createColumns(
                 this.props.exportToPDF.columnConfig
                   ? this.props.exportToPDF.columnConfig
@@ -1343,14 +1320,14 @@ componentWillUnmount(){
           >
             {this.props.exportToExcel.columnConfig
               ? this.props.exportToExcel.columnConfig.map((item) => (
-                  <ExcelExportColumn
-                    field={item.field}
-                    title={item.title}
-                    cellOptions={item.cellOptions}
-                    locked={item.locked}
-                    width={item.width}
-                  />
-                ))
+                <ExcelExportColumn
+                  field={item.field}
+                  title={item.title}
+                  cellOptions={item.cellOptions}
+                  locked={item.locked}
+                  width={item.width}
+                />
+              ))
               : null}
           </ExcelExport>
         ) : null}
@@ -1426,8 +1403,8 @@ class CustomCell extends React.Component {
             this.props.cellTemplate
               ? this.props.cellTemplate
               : this.props.dataItem.rygRule
-              ? this.props.dataItem.rygRule
-              : "<td></td>"
+                ? this.props.dataItem.rygRule
+                : "<td></td>"
           }
         />
       );
