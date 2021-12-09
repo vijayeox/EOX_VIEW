@@ -152,10 +152,12 @@ export default class EOXGrid extends React.Component {
     }
     if (crudType == "CREATE") {
       console.log("create eoxgrids");
-      const displayedData = { ...this.state.displayedData };
-      displayedData.data[0] = { ...data };
-      displayedData.data.add();
-      displayedData.total++;
+      console.log("displayedData",displayedData);
+      //add the created entry to the top of the table and increase the total of the data 
+      // const displayedData = { ...this.state.displayedData };
+      // displayedData.data[0] = { ...data };
+      // displayedData.data.add();
+      // displayedData.total++;
       this.setState({ displayedData });
     }
   };
@@ -175,7 +177,6 @@ export default class EOXGrid extends React.Component {
         }
       );
   }
-
 
     create = ( form,createFlag) => {
     if (createFlag) {
