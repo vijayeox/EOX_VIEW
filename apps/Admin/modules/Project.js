@@ -54,8 +54,9 @@ class Project extends React.Component {
         },
         // userInEdit: undefined,
       }),
-      (this.api = "account/" + this.state.selectedOrg + "/project");
+      (this.api = "account/" + this.state.selectedOrg + "/projects");
       this.editApi = "project";
+      this.createApi="account/" + this.state.selectedOrg+ "/project";
   }
 
  
@@ -132,6 +133,8 @@ class Project extends React.Component {
                 permission={this.state.permission}
                 editForm={form}
                 editApi= {this.editApi}
+                createApi={this.createApi}
+
                 // key={Math.random()}
               />
             )}

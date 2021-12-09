@@ -63,7 +63,7 @@ export default class GridActions extends React.Component {
     });
   };
 
-  async handleSubmit(formData, index) {
+  async handleSubmit(formData, index,createFlag) {
     console.log("on submittt----------------");
     console.log(formData);
     Requests.editFormPushData(this.core, this.editApi, formData).then(
@@ -82,7 +82,6 @@ export default class GridActions extends React.Component {
     } else {
       document.getElementById(this.gridId).classList.remove("display-none");
     }
-
     ReactDOM.render(
       data ? (
         <div
@@ -101,7 +100,7 @@ export default class GridActions extends React.Component {
             data={data}
             updateFormData={true}
             postSubmitCallback={(formData) =>
-              this.handleSubmit(formData, index)
+              this.handleSubmit(formData, index,false)
             }
             content={form}
             appId={data.uuid}
@@ -162,11 +161,11 @@ export default class GridActions extends React.Component {
                         )
                       : console.log("Not edited");
                   }
-                  {
-                    actions.text === "CREATE"
-                      ? console.log("Create")
-                      : console.log("Not Created");
-                  }
+                  // {
+                  //   actions.text === "CREATE"
+                  //     ? console.log("Create")
+                  //     : console.log("Not Created");
+                  // }
                 }}
               >
                 <i className={actions.icon}></i>

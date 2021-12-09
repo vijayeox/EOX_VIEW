@@ -55,8 +55,9 @@ class User extends React.Component {
         },
         // userInEdit: undefined,
       }),
-      (this.api = "account/" + this.state.selectedOrg + "/user");
+      (this.api = "account/" + this.state.selectedOrg + "/users");
       this.editApi = "user";
+      this.createApi="account/" + this.state.selectedOrg+ "/user"; 
   }
 
   orgChange = (event) => {
@@ -95,7 +96,7 @@ class User extends React.Component {
       column: [
         {
           title: "Image",
-          field: "logo",
+          field: "icon",
         },
         {
           title: "Name",
@@ -142,6 +143,7 @@ class User extends React.Component {
                 permission={this.state.permission}
                 editForm={form}
                 editApi= {this.editApi}
+                createApi={this.createApi}
                 // key={Math.random()}
               />
             )}

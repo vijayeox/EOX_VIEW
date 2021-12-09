@@ -58,6 +58,7 @@ class Announcement extends React.Component {
       }),
       (this.api = "account/" + this.state.selectedOrg + "/announcements");
       this.editApi="announcement";
+      this.createApi="account/" + this.state.selectedOrg+ "/announcement";
   }
 
   orgChange = (event) => {
@@ -141,6 +142,7 @@ class Announcement extends React.Component {
                 permission={this.state.permission}
                 editForm={form}
                 editApi={this.editApi}
+                createApi={this.createApi}
                 // key={Math.random()}
               />
             )}

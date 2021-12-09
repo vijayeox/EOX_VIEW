@@ -44,10 +44,10 @@ class Goal extends React.Component {
         },
         // teamInEdit: undefined,
     }),
-    (this.api = "account/"+this.state.selectedOrg+"/kra")
-    this.editApi="kra";
-
-  
+    (this.api = "account/"+this.state.selectedOrg+"/kra");//add filter here
+    // this.editApi="kra";
+    this.editApi ="account/" + this.state.selectedOrg+"/kra";
+    this.createApi="account/" + this.state.selectedOrg+"/kra"; 
   }
   orgChange = (event) => {
     this.setState({ selectedOrg: event.target.value });
@@ -117,6 +117,8 @@ class Goal extends React.Component {
                 permission={this.state.permission}
                 editForm={form}
                 editApi= {this.editApi}
+                createApi={this.createApi}
+
                 // key={Math.random()}
               />
             )}

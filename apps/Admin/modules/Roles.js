@@ -48,8 +48,9 @@ class Role extends React.Component {
         },
           // roleInEdit: undefined,
       }),
-      (this.api = "account/"+this.state.selectedOrg+"/role");
+      (this.api = "account/"+this.state.selectedOrg+"/roles");
       this.editApi= "role";
+      this.createApi="account/" + this.state.selectedOrg+ "/role";
    
   }
 
@@ -130,6 +131,8 @@ class Role extends React.Component {
                 permission={this.state.permission}
                 // editForm={form}
                 editApi= {this.editApi}
+                createApi={this.createApi}
+
                 // key={Math.random()}
               />
             )}

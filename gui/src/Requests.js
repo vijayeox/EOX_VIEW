@@ -4,18 +4,31 @@ import moment from "moment";
 // let helper = osjs.make("oxzion/restClient");
 
 class Requests {
-    static async getDashboardHtmlDataByUuid(core,uuid) {
-        let helper = core.make("oxzion/restClient");
-        let response = await helper.request("v1","analytics/dashboard/" + uuid,{},"get");
-        return response;
-    }
+  static async getDashboardHtmlDataByUuid(core, uuid) {
+    let helper = core.make("oxzion/restClient");
+    let response = await helper.request(
+      "v1",
+      "analytics/dashboard/" + uuid,
+      {},
+      "get"
+    );
+    return response;
+  }
 
-    static async getWidgetByUuid(core, uuid, filterParams) {
-        let helper = core.make("oxzion/restClient");
-        let filterParameter = (filterParams && filterParams != [] && filterParams.length != 0) ? ("&filter=" + JSON.stringify(filterParams)) : ''
-        let response = await helper.request("v1","analytics/widget/" + uuid + '?data=true' + filterParameter,{},"get");
-        return response;
-    }
+  static async getWidgetByUuid(core, uuid, filterParams) {
+    let helper = core.make("oxzion/restClient");
+    let filterParameter =
+      filterParams && filterParams != [] && filterParams.length != 0
+        ? "&filter=" + JSON.stringify(filterParams)
+        : "";
+    let response = await helper.request(
+      "v1",
+      "analytics/widget/" + uuid + "?data=true" + filterParameter,
+      {},
+      "get"
+    );
+    return response;
+  }
 
   static async getDocumentsListService(core, appId, url) {
     let helper = core.make("oxzion/restClient");
@@ -148,7 +161,8 @@ class Requests {
       });
   };
 
-  static async DeleteEntry(core,api, dataItem) {
+  //EOXGrids API calls
+  static async DeleteEntry(core, api, dataItem) {
     let helper = core.make("oxzion/restClient");
     let response = await helper.request(
       "v1",
@@ -159,18 +173,18 @@ class Requests {
     return response;
   }
 
-  static async retryCall(core,api,dataItem) {
+  static async retryCall(core, api, dataItem) {
     let helper2 = core.make("oxzion/restClient");
     let response = await helper2.request(
       "v1",
-      api+"/"+ dataItem.id + "/retry",
+      api + "/" + dataItem.id + "/retry",
       {},
       "post"
     );
     return response;
   }
 
-  static async resetPasswordCall(core,username) {
+  static async resetPasswordCall(core, username) {
     let helper = core.make("oxzion/restClient");
     let response = await helper.request(
       "v1",
@@ -180,16 +194,25 @@ class Requests {
     );
     return response;
   }
-  
-  static async editFormPushData(core,api,dataItem) {
-    
+
+  static async editFormPushData(core, editApi, dataItem) {
     let helper = core.make("oxzion/restClient");
     let response = await helper.request(
       "v1",
-      "/" + api + "/" + dataItem.uuid,
-      dataItem
-      ,
+      "/" + editApi + "/" + dataItem.uuid,
+      dataItem,
       "put"
+    );
+    return response;
+  }
+
+  static async createFormPushData(core, createApi, dataItem) {
+    let helper = core.make("oxzion/restClient");
+    let response = await helper.request(
+      "v1",
+      "/" + createApi,
+      dataItem,
+      "post"
     );
     return response;
   }

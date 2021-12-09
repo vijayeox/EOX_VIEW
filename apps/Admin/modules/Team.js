@@ -55,8 +55,9 @@ class Team extends React.Component {
         },
         // teamInEdit: undefined,
     }),
-    (this.api = "account/"+this.state.selectedOrg+"/team");
+    (this.api = "account/"+this.state.selectedOrg+"/teams");
     this.editApi="team";
+    this.createApi="account/" + this.state.selectedOrg+ "/team";
 
 
   
@@ -133,6 +134,7 @@ class Team extends React.Component {
                 permission={this.state.permission}
                 editForm={form}
                 editApi={this.editApi}
+                createApi={this.createApi}
                 // key={Math.random()}
               />
             )}

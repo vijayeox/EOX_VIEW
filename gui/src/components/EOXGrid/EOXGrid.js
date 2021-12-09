@@ -1,10 +1,13 @@
 import React from "react";
+import ReactDOM from "react-dom";
 import { Grid, GridColumn } from "@progress/kendo-react-grid";
 import { filterBy, orderBy, process } from "@progress/kendo-data-query";
-import { IntlService } from "@progress/kendo-react-intl";
 import { ExcelExport } from "@progress/kendo-react-excel-export";
 import "@progress/kendo-theme-bootstrap/dist/all.css";
 import GridActions from "./GridActions";
+import FormRender from "../App/FormRender";
+import Requests from "../../Requests";
+
 
 const loadingPanel = (
   <div className="k-loading-mask">
@@ -83,10 +86,11 @@ export default class EOXGrid extends React.Component {
     this.actionItems = this.props.actionItems;
     this.api = this.props.api;
     this.permission = this.props.permission;
-    this.editForm= this.props.editForm;
-    this.editApi=this.props.editApi;
+    this.editForm = this.props.editForm;
+    this.editApi = this.props.editApi;
+    this.createApi=this.props.createApi;
 
-    this.gridId=Date.now();
+    this.gridId = Date.now();
     this.state = {
       filter: null,
       props: this.props,
@@ -118,7 +122,7 @@ export default class EOXGrid extends React.Component {
   }
 
   //updating the data on delete
-  updateDisplayData = ({ crudType, deleteIndex,index,data }) => {
+  updateDisplayData = ({ crudType, deleteIndex, index, data }) => {
     if (crudType == "DELETE") {
       const displayedData = this.state.displayedData;
       displayedData.data.splice(deleteIndex, 1);
@@ -141,17 +145,71 @@ export default class EOXGrid extends React.Component {
       // this.setState({ displayedData });
     }
     if (crudType == "EDIT") {
-      const displayedData = {...this.state.displayedData};
-      displayedData.data[index]= {...data};
+      const displayedData = { ...this.state.displayedData };
+      displayedData.data[index] = { ...data };
       console.log("edit eoxgrids");
       this.setState({ displayedData });
     }
     if (crudType == "CREATE") {
-    //   const displayedData = this.state.displayedData;
       console.log("create eoxgrids");
-    //   console.log(displayedData);
-    //   this.setState({ displayedData });
+      const displayedData = { ...this.state.displayedData };
+      displayedData.data[0] = { ...data };
+      displayedData.data.add();
+      displayedData.total++;
+      this.setState({ displayedData });
     }
+  };
+
+  async handleCreateSubmit(formData,createFlag) {
+    console.log("on create submittt----------------");
+    console.log(formData);
+
+     Requests.createFormPushData(this.core, this.createApi, formData).then(
+        (response) => {
+          if (response.status == "success") {
+            // this.onUpdate({ crudType: "CREATE", index, data: response.data });
+            console.log("successfully created ",response);
+            console.log("creteflag ",createFlag);
+          }
+          this.create(null);
+        }
+      );
+  }
+
+
+    create = ( form,createFlag) => {
+    if (createFlag) {
+      document.getElementById(this.gridId).classList.add("display-none");
+    } else {
+      document.getElementById(this.gridId).classList.remove("display-none");
+    }
+
+    ReactDOM.render(
+      <div
+        style={{
+          position: "absolute",
+          left: "0",
+          top: "0",
+          width: "100%",
+          height: "100%",
+          zIndex: "10",
+        }}
+      >
+        <FormRender
+          key={"abc"}
+          core={this.core}
+          // data={data}
+          updateFormData={true}
+          postSubmitCallback={(formData) => this.handleCreateSubmit(formData,true)}
+          content={form}
+          // appId={data.uuid}
+          // route= {this.api}
+        />
+      </div>,
+      document.getElementById("eox-grid-form")
+    )
+      ? (document.getElementById("eox-grid-form").style.overflow = "scroll")
+      : (document.getElementById("eox-grid-form").style.overflow = "auto");
   };
 
   saveAsExcel = () => {
@@ -306,88 +364,89 @@ export default class EOXGrid extends React.Component {
   render() {
     let gridTag = (
       <div id="eox-grid" style={{ position: "relative" }}>
-        <div id="eox-grid-form">
-
-        </div>
+        <div id="eox-grid-form"></div>
         {/* create new user */}
         <div style={{ float: "right" }} className="dash-manager-buttons">
-          {Object["values"](this.actionItems).map((actions, key) => (
-            (actions.text === "CREATE")?
-            <abbr title={actions.title} key ={key}>
-            <button
-              type={actions.type}
-              key={key}
-              className="btn btn-primary EOXGrids"
-              onClick={() => {
-                console.log(" CREATEEE ");
-                {
-                  actions.text === "CREATE"
-                    ? console.log("created")
-                    :  console.log("Not CREATED");
-                }
-                
-              }}
-            >
-             <i className={actions.icon}></i>
-            </button>
-            </abbr> :console.log("not adding")
-          ))}
+          {Object["values"](this.actionItems).map((actions, key) =>
+            actions.text === "CREATE" ? (
+              <abbr title={actions.title} key={key}>
+                <button
+                  type={actions.type}
+                  key={key}
+                  className="btn btn-primary EOXGrids"
+                  onClick={() => {
+                    console.log(" CREATEEE ");
+                    {
+                      actions.text === "CREATE"
+                        ? this.create(this.editForm,true)
+                        // console.log("created")
+                        : console.log("Not CREATED");
+                    }
+                  }}
+                >
+                  <i className={actions.icon}></i>
+                </button>
+              </abbr>
+            ) : (
+              console.log("not adding")
+            )
+          )}
         </div>
-        <div id={this.gridId}>       
-        <Grid
-          style={{ height: this.height, width: this.width }}
-          // className={this.gridId}
-          data={this.state.displayedData}
-          resizable={this.resizable}
-          reorderable={this.reorderable}
-          // cellRender={(tdelement, cellProps) =>
-          //   this.cellRender(tdelement, cellProps, this)
-          // }
-          filterable={this.filterable}
-          filter={this.state.filter}
-          onFilterChange={this.gridFilterChanged}
-          pageSize={this.pageSize}
-          {...this.pagerConfig} //Sets grid "pageable" property
-          total={this.getFilteredRowCount()}
-          skip={this.state.pagination.skip}
-          take={this.state.pagination.take}
-          onPageChange={this.gridPageChanged}
-          sortable={this.sortable}
-          sort={this.state.sort}
-          onSortChange={this.gridSortChanged}
-          // onRowClick={this.drillDownClick}
-          groupable={this.groupable}
-          group={this.state.group}
-          onGroupChange={this.gridGroupChanged}
-          onExpandChange={this.gridGroupExpansionChanged}
-          // onDataStateChange={this.gridDataStageChanged}
-          expandField="expanded"
-        >
-          {this.columnConfig.map((columns) => (
+        <div id={this.gridId}>
+          <Grid
+            style={{ height: this.height, width: this.width }}
+            // className={this.gridId}
+            data={this.state.displayedData}
+            resizable={this.resizable}
+            reorderable={this.reorderable}
+            // cellRender={(tdelement, cellProps) =>
+            //   this.cellRender(tdelement, cellProps, this)
+            // }
+            filterable={this.filterable}
+            filter={this.state.filter}
+            onFilterChange={this.gridFilterChanged}
+            pageSize={this.pageSize}
+            {...this.pagerConfig} //Sets grid "pageable" property
+            total={this.getFilteredRowCount()}
+            skip={this.state.pagination.skip}
+            take={this.state.pagination.take}
+            onPageChange={this.gridPageChanged}
+            sortable={this.sortable}
+            sort={this.state.sort}
+            onSortChange={this.gridSortChanged}
+            // onRowClick={this.drillDownClick}
+            groupable={this.groupable}
+            group={this.state.group}
+            onGroupChange={this.gridGroupChanged}
+            onExpandChange={this.gridGroupExpansionChanged}
+            // onDataStateChange={this.gridDataStageChanged}
+            expandField="expanded"
+          >
+            {this.columnConfig.map((columns) => (
+              <GridColumn
+                key={columns.field}
+                field={columns.field}
+                title={columns.title}
+                // cell={columns.title == "Logo" ? (props) => <LogoCell2 {...props} myProp={this.props} /> :<div></div>}
+              ></GridColumn>
+            ))}
             <GridColumn
-              key={columns.field}
-              field={columns.field}
-              title={columns.title}
-              // cell={columns.title == "Logo" ? (props) => <LogoCell2 {...props} myProp={this.props} /> :<div></div>}
+              title="Actions"
+              cell={() => (
+                <GridActions
+                  dataItem={this.state.displayedData}
+                  core={this.props.core}
+                  api={this.api}
+                  actionItems={this.actionItems}
+                  onUpdate={this.updateDisplayData}
+                  permission={this.permission}
+                  editForm={this.editForm}
+                  editApi={this.editApi}
+                  gridId={this.gridId}
+                />
+              )}
             ></GridColumn>
-          ))}
-          <GridColumn
-            title="Actions"
-            cell={() => (
-              <GridActions
-                dataItem={this.state.displayedData}
-                core={this.props.core}
-                api={this.api}
-                actionItems={this.actionItems}
-                onUpdate={this.updateDisplayData}
-                permission={this.permission}
-                editForm= {this.editForm}
-                editApi={this.editApi}
-                gridId={this.gridId}
-              />
-            )}
-          ></GridColumn>
-        </Grid>
+          </Grid>
         </div>
       </div>
     );
