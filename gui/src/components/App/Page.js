@@ -103,7 +103,6 @@ class Page extends React.Component {
       !this.state.showLoader
     ) {
       this.loader.destroy();
-      console.log(this.props);
       if (this.props.popupConfig) {
         return (
           <Popup
