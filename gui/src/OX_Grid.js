@@ -1139,7 +1139,6 @@ export default class OX_Grid extends React.Component {
   }
 
   loadData() {
-    if (!this.state.gridData.total) {
       return <DataLoader
         ref={(r) => {
           this.child = r;
@@ -1150,7 +1149,6 @@ export default class OX_Grid extends React.Component {
         onDataRecieved={this.dataRecieved}
         {...this.props}
       />
-    }
   }
 
   render() {
