@@ -416,7 +416,7 @@ componentWillUnmount(){
         };
         showButton
           ? actionButtons.push(
-              <MenuItem text={action[key].name} render={itemRender} />
+              <MenuItem text={action[key].name} key={index} render={itemRender} />
             )
           : null;
       }, this);
