@@ -350,13 +350,7 @@ class CommentsView extends React.Component {
 	}
 
 	toggleEmojiPicker = () => {
-		this.setState({
-			showEmojiPicker: !this.state.showEmojiPicker,
-
-
-		})
-		{ console.log(this.state.showEmojiPicker) }
-
+		this.setState({ showEmojiPicker: !this.state.showEmojiPicker })
 	}
 
 	addEmoji = (emoji) => {
@@ -483,7 +477,6 @@ class CommentsView extends React.Component {
 	};
 
 	setModalShow(flag, imageDetails, index) {
-		console.log("CLICKINGGGGGGG");
 		this.setState({
 			showModal: flag,
 			imageDetails: { data: imageDetails, index }

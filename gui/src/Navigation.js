@@ -101,8 +101,7 @@ class Navigation extends React.Component {
                   .dispatchEvent(ev);
               }
             } catch (e) {
-              console.log("No params!");
-              console.log(e);
+              console.error(e);
               this.props.selectLoad(this.homepage);
             }
           } else {

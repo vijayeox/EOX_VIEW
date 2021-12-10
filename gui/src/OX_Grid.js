@@ -837,7 +837,6 @@ componentWillUnmount(){
                 if (result.value) {
                   this.DeleteFile("app/" + this.appId + "/" + url, item).then(
                     (response) => {
-                      console.log(response);
                       this.refreshHandler(response);
                       if (response.status == "success") {
                         this.state.notif.current.notify(
@@ -915,7 +914,6 @@ componentWillUnmount(){
                 if (result.value) {
                   this.DeleteFile("app/" + this.appId + "/" + url, item,urlPostParams).then(
                     (response) => {
-                      console.log(response);
                       this.refreshHandler(response);
                       if (response.status == "success") {
                         this.state.notif.current.notify(

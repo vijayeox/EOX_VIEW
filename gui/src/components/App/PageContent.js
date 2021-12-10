@@ -535,7 +535,6 @@ class PageContent extends React.Component {
         if (item.fileId) {
           fileId = item.fileId;
         }
-        console.log(item);
         content.push(
           <CommentsView
             appId={this.appId}

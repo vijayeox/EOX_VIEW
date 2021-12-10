@@ -86,7 +86,6 @@ export default class DynamicTemplateViewer extends Component {
   async apiCall(id){
     try{
       const apiData = this.state.api?.find((data) => data.id === id)
-      console.log(apiData)
       if(!apiData) return;
       if(apiData?.priorConfirm){
         const {isConfirmed} = await Swal.fire({

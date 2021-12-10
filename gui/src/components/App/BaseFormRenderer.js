@@ -152,7 +152,7 @@ class BaseFormRenderer extends React.Component {
       try {
         this.props.postSubmitCallback();
       } catch (e) {
-        console.log("Unable to Handle Callback");
+        console.error("Unable to Handle Callback");
       }
     }
   }
@@ -486,7 +486,7 @@ class BaseFormRenderer extends React.Component {
 
   handleError(e) {
     this.showFormLoader(false, 0);
-    console.log("ERROR" + e);
+    console.error("ERROR" + e);
     this.notif.current.notify(
       "Error",
       "Unexpected Error! Please try later",
@@ -1514,7 +1514,7 @@ class BaseFormRenderer extends React.Component {
     try {
       this.setState({ stylePath: theme });
     } catch (Exception) {
-      console.log("Unable to import " + theme);
+      console.error("Unable to import " + theme);
     }
   }
   createForm() {
