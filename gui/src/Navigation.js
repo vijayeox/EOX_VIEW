@@ -385,7 +385,7 @@ class Navigation extends React.Component {
         const listItems = list[i].parentNode.parentNode.parentNode;
         var breadcrumbClassName = listItems.className;
         if (breadcrumbClassName == "osjs-window" + " " + appName) {
-          ReactDOM.unmountComponentAtNode(list[i]);
+          // ReactDOM.unmountComponentAtNode(list[i]); =>>>> not a proper way to unmount unknown breadcrumb element, revert comment if navigation is breaking for some reason
           ReactDOM.render(breadcrumbsList, list[i]);
         }
       }
