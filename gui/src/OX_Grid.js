@@ -431,7 +431,7 @@ componentWillUnmount(){
     let gridToolbarContent = [];
     if (typeof this.props.gridToolbar == "string") {
       gridToolbarContent.push(
-        <div style={{ display: "inline-block" }}>
+        <div style={{ display: "inline-block" }} key={Math.random()}>
           <JsxParser
             bindings={{
               item: this.props.parentData,
@@ -463,6 +463,7 @@ componentWillUnmount(){
         <Button
           primary={true}
           onClick={this.exportPDF}
+          key={Math.random()}
           className={"toolBarButton btn btn-primary"}
           title="Export to PDF"
         >
@@ -475,6 +476,7 @@ componentWillUnmount(){
         <Button
           primary={true}
           className={"toolBarButton btn btn-primary"}
+          key={Math.random()}
           onClick={() => this.exportExcel(this.props.exportToExcel)}
         >
           <i className="fa fa-file-excel-o"></i>
@@ -483,7 +485,7 @@ componentWillUnmount(){
     }
     if (this.props.gridOperations) {
       gridToolbarContent.length == 0
-        ? gridToolbarContent.push(<div></div>)
+        ? gridToolbarContent.push(<div key={Math.random()}></div>)
         : null;
       gridToolbarContent.push(
         this.renderListOperations(this.props.gridOperations)
@@ -639,7 +641,7 @@ componentWillUnmount(){
     if (operationsList.length > 1) {
       const itemRender = (props) => {
         return (
-          <div style={{ padding: "5px" }} text={props.item.name}>
+          <div style={{ padding: "5px" }} text={props.item.name} key={Math.random()}>
             <i
               style={{ marginRight: "5px" }}
               className={props.item.icon + " manageIcons"}
@@ -662,6 +664,7 @@ componentWillUnmount(){
           items={operationsList}
           primary={true}
           className={"toolBarButton"}
+          key={Math.random()}
         />
       );
     } else if (operationsList.length == 1) {
@@ -672,6 +675,7 @@ componentWillUnmount(){
           primary={true}
           title={"Create New"}
           onClick={(e) => this.updatePageContent(operationsList[0])}
+          key={Math.random()}
         >
           {operationsList[0].icon ? (
             <i
@@ -687,6 +691,7 @@ componentWillUnmount(){
           className={"toolBarButton"}
           primary={true}
           onClick={(e) => this.updatePageContent(operationsList[0])}
+          key={Math.random()}
         >
           <i className={operationsList[0].icon}></i>
         </Button>

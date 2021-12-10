@@ -194,6 +194,7 @@ class CommentsView extends React.Component {
 					title={"View"}
 					className={"btn btn-primary"}
 					primary={true}
+					key={Math.random()}
 					onClick={e => this.updatePageContent(pageContent)}
 				>
 					<i className={"fa fa-eye"}></i>
@@ -219,6 +220,7 @@ class CommentsView extends React.Component {
 					title={"Edit"}
 					className={"btn btn-primary"}
 					primary={true}
+					key={Math.random()}
 					onClick={e => this.updatePageContent(pageContent)}
 				>
 					<i className={"fa fa-pencil"}></i>
@@ -231,6 +233,7 @@ class CommentsView extends React.Component {
 					title={"Audit Log"}
 					className={"btn btn-primary"}
 					primary={true}
+					key={Math.random()}
 					onClick={e => this.callAuditLog()}
 				>
 					<i className={"fa fa-history"}></i>

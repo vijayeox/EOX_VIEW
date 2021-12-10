@@ -194,7 +194,7 @@ class EntityViewer extends React.Component {
     );
     }
     gridToolbarContent.push(
-      <div className={`display-flex ${this.state.isTabSegment ? "task-header-pos-abs" : ""}`}>
+      <div className={`display-flex ${this.state.isTabSegment ? "task-header-pos-abs" : ""}`} key={Math.random()}>
         {toolbarButtons}
       </div>
     );

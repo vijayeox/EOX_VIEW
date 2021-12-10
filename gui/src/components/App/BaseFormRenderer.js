@@ -1480,6 +1480,7 @@ class BaseFormRenderer extends React.Component {
             title={"View"}
             className={"btn btn-primary"}
             primary={true}
+            key={Math.random()}
             onClick={(e) => this.updatePageContent(pageContent)}
           >
             <i className={"fa fa-eye"}></i>
@@ -1491,6 +1492,7 @@ class BaseFormRenderer extends React.Component {
               title={"Comments"}
               className={"btn btn-primary"}
               primary={true}
+              key={Math.random()}
               onClick={(e) => this.updatePageContent(commentContent)}
             >
               <i className={"fa fa-comment"}></i>
