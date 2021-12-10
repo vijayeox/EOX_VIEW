@@ -58,9 +58,19 @@
                   "label": "User",
                   "widget": "choicesjs",
                   "tableView": true,
+                  "dataSrc": "url",
+                  "data": {
+                    "url": "/{{data.api}}",
+                    "headers": [{ "key": "", "value": "" }]
+                  },
+                  "template": "<span>{{ item.name }}</span>",
+                  "validate": { "select": false },
                   "key": "userName",
+                  "properties": { "absoluteUrl": "true" },
                   "type": "select",
-                  "input": true
+                  "searchField": "name",
+                  "input": true,
+                  "disableLimit": false
                 }
               ],
               "width": 6,
@@ -76,9 +86,16 @@
                   "label": "Team",
                   "widget": "choicesjs",
                   "tableView": true,
+                  "dataSrc": "url",
+                  "data": {
+                    "url": "/team",
+                    "headers": [{ "key": "", "value": "" }]
+                  },
                   "key": "teamName",
+                  "properties": { "absoluteUrl": "true" },
                   "type": "select",
-                  "input": true
+                  "input": true,
+                  "disableLimit": false
                 }
               ],
               "width": 6,
@@ -103,10 +120,17 @@
                   "label": "Query",
                   "widget": "choicesjs",
                   "tableView": true,
+                  "dataSrc": "url",
+                  "data": {
+                    "url": "/analytics/query",
+                    "headers": [{ "key": "", "value": "" }]
+                  },
                   "validate": { "required": true },
                   "key": "queryName",
+                  "properties": { "absoluteUrl": "true" },
                   "type": "select",
-                  "input": true
+                  "input": true,
+                  "disableLimit": false
                 }
               ],
               "width": 6,
@@ -196,12 +220,14 @@
         },
         {
           "label": "Cancel",
+          "action": "event",
           "showValidations": false,
+          "theme": "secondary",
           "tableView": false,
           "key": "cancel",
           "type": "button",
-          "input": true,
-          "saveOnEnter": false
+          "event": "cancelSubmission",
+          "input": true
         }
       ]
     },
@@ -236,6 +262,6 @@
   "path": "admingoals",
   "project": "5dc1489e4f668513e9535090",
   "created": "2021-12-01T10:21:04.437Z",
-  "modified": "2021-12-07T07:03:09.754Z",
+  "modified": "2021-12-10T08:47:17.391Z",
   "machineName": "eoxproductsupport:adminGoal"
 }

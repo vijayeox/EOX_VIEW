@@ -88,8 +88,8 @@ export default class EOXGrid extends React.Component {
     this.permission = this.props.permission;
     this.editForm = this.props.editForm;
     this.editApi = this.props.editApi;
-    this.createApi=this.props.createApi;
-
+    this.createApi = this.props.createApi;
+    this.baseUrl = this.core.config("wrapper.url");
     this.gridId = Date.now();
     this.state = {
       filter: null,
@@ -152,8 +152,8 @@ export default class EOXGrid extends React.Component {
     }
     if (crudType == "CREATE") {
       console.log("create eoxgrids");
-      console.log("displayedData",displayedData);
-      //add the created entry to the top of the table and increase the total of the data 
+      console.log("displayedData", displayedData);
+      //add the created entry to the top of the table and increase the total of the data
       // const displayedData = { ...this.state.displayedData };
       // displayedData.data[0] = { ...data };
       // displayedData.data.add();
@@ -162,23 +162,23 @@ export default class EOXGrid extends React.Component {
     }
   };
 
-  async handleCreateSubmit(formData,createFlag) {
+  async handleCreateSubmit(formData, createFlag) {
     console.log("on create submittt----------------");
     console.log(formData);
 
-     Requests.createFormPushData(this.core, this.createApi, formData).then(
-        (response) => {
-          if (response.status == "success") {
-            // this.onUpdate({ crudType: "CREATE", index, data: response.data });
-            console.log("successfully created ",response);
-            console.log("creteflag ",createFlag);
-          }
-          this.create(null);
+    Requests.createFormPushData(this.core, this.createApi, formData).then(
+      (response) => {
+        if (response.status == "success") {
+          // this.onUpdate({ crudType: "CREATE", index, data: response.data });
+          console.log("successfully created ", response);
+          console.log("creteflag ", createFlag);
         }
-      );
+        this.create(null);
+      }
+    );
   }
 
-    create = ( form,createFlag) => {
+  create = (form, createFlag) => {
     if (createFlag) {
       document.getElementById(this.gridId).classList.add("display-none");
     } else {
@@ -201,7 +201,9 @@ export default class EOXGrid extends React.Component {
           core={this.core}
           // data={data}
           updateFormData={true}
-          postSubmitCallback={(formData) => this.handleCreateSubmit(formData,true)}
+          postSubmitCallback={(formData) =>
+            this.handleCreateSubmit(formData, true)
+          }
           content={form}
           // appId={data.uuid}
           // route= {this.api}
@@ -379,9 +381,9 @@ export default class EOXGrid extends React.Component {
                     console.log(" CREATEEE ");
                     {
                       actions.text === "CREATE"
-                        ? this.create(this.editForm,true)
-                        // console.log("created")
-                        : console.log("Not CREATED");
+                        ? this.create(this.editForm, true)
+                        : // console.log("created")
+                          console.log("Not CREATED");
                     }
                   }}
                 >
@@ -423,14 +425,29 @@ export default class EOXGrid extends React.Component {
             // onDataStateChange={this.gridDataStageChanged}
             expandField="expanded"
           >
-            {this.columnConfig.map((columns) => (
-              <GridColumn
-                key={columns.field}
-                field={columns.field}
-                title={columns.title}
-                // cell={columns.title == "Logo" ? (props) => <LogoCell2 {...props} myProp={this.props} /> :<div></div>}
-              ></GridColumn>
-            ))}
+            {this.columnConfig.map((columns) =>
+              columns.title == "Image" || columns.title == "Banner" ? (
+                <GridColumn
+                  key={columns.field}
+                  // field={columns.field}
+                  title={columns.title}
+                  cell={(props) => (
+                    <LogoCell
+                      {...props}
+                      myProp={this.props}
+                      title={columns.title}
+                      url={this.baseUrl}
+                    />
+                  )}
+                ></GridColumn>
+              ) : (
+                <GridColumn
+                  key={columns.field}
+                  field={columns.field}
+                  title={columns.title}
+                ></GridColumn>
+              )
+            )}
             <GridColumn
               title="Actions"
               cell={() => (
@@ -480,24 +497,71 @@ export default class EOXGrid extends React.Component {
   }
 }
 
-// class LogoCell2 extends React.Component {
-//     render() {
-//       return this.props.dataItem.logo ? (
-//         <td>
-//           <img
-//             src={this.props.dataItem.logo + "?" + new Date()}
-//             alt="Logo"
-//             className="text-center circle gridBanner"
-//           />
-//         </td>
-//       ) : this.props.dataItem.icon ? (
-//         <td>
-//           <img
-//             src={this.props.dataItem.icon + "?" + new Date()}
-//             alt="Logo"
-//             className="text-center circle gridBanner"
-//           />
-//         </td>
-//       ) : null;
-//     }
-//   }
+class LogoCell extends React.Component {
+  render() {
+    // Image -Account & User
+    if (this.props.title === "Image") {
+      return this.props.dataItem.logo ? (
+        <td>
+          <img
+            src={this.props.dataItem.logo + "?" + new Date()}
+            alt="Logo"
+            className="text-center circle gridBanner"
+          />
+        </td>
+      ) : this.props.dataItem.icon ? (
+        <td>
+          <img
+            src={this.props.dataItem.icon + "?" + new Date()}
+            alt="Logo"
+            className="text-center circle gridBanner"
+          />
+        </td>
+      ) : null;
+    }
+    // Banner - Announcement
+    else if (this.props.title == "Banner") {
+      if (this.props.dataItem.media_type == "image") {
+        return this.props.dataItem.media ? (
+          <td>
+            <img
+              src={
+                this.props.url +
+                "resource/" +
+                this.props.dataItem.media +
+                "?" +
+                new Date()
+              }
+              alt="Logo"
+              className="text-center circle gridBanner"
+            />
+            {console.log(
+              this.props.url +
+                "resource/" +
+                this.props.dataItem.media +
+                "?" +
+                new Date()
+            )}
+          </td>
+        ) : null;
+      } else {
+        return this.props.dataItem.media ? (
+          <td>
+            <video className="text-center circle gridBanner">
+              <source
+                src={
+                  this.props.url +
+                  "resource/" +
+                  this.props.dataItem.media +
+                  "?" +
+                  new Date()
+                }
+                type="video/mp4"
+              />
+            </video>
+          </td>
+        ) : null;
+      }
+    }
+  }
+}

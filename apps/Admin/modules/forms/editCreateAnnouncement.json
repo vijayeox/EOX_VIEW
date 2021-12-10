@@ -241,6 +241,7 @@
               "fileTypes": [{ "label": "", "value": "" }],
               "calculateValue": "console.log(data);",
               "key": "fUpload",
+              "properties": { "absoluteUrl": "true" },
               "type": "file",
               "url": "attachment",
               "input": true
@@ -289,6 +290,6 @@
   "path": "adminannouncement",
   "project": "5dc1489e4f668513e9535090",
   "created": "2021-12-01T10:23:25.474Z",
-  "modified": "2021-12-09T06:30:47.423Z",
+  "modified": "2021-12-10T04:41:24.579Z",
   "machineName": "eoxproductsupport:adminAnnouncement"
 }

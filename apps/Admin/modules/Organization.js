@@ -53,8 +53,8 @@ class Organization extends React.Component {
         },
       });
     this.api = "account";
-    this.editApi="account";
-    this.createApi="account";
+    this.editApi = "account";
+    this.createApi = "account";
   }
 
   componentDidMount() {
@@ -88,7 +88,7 @@ class Organization extends React.Component {
 
       column: [
         {
-          title: "Logo",
+          title: "Image",
           field: "logo",
         },
 
@@ -108,7 +108,6 @@ class Organization extends React.Component {
     };
     return (
       <div style={{ height: "inherit" }}>
-         
         <TitleBar
           title="Manage Account"
           menu={this.props.menu}
@@ -126,7 +125,7 @@ class Organization extends React.Component {
                 api={this.api}
                 permission={this.state.permission}
                 editForm={form}
-                editApi= {this.editApi}
+                editApi={this.editApi}
                 createApi={this.createApi}
                 // key={Math.random()}
               />
