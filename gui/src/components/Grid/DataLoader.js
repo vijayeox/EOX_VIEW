@@ -170,10 +170,8 @@ export class DataLoader extends React.Component {
         gridConfig.filter.filters.map((filterItem1, i) => {
           filterItem1.filters && filterItem1.filters.map((filterItems1, j) => {
             this.processFilters(filterItems1, ColumnItem, gridConfig, i, j, filterItem1);
-            console.log(gridConfig);
           });
           filterItem1 && this.processFilters(filterItem1, ColumnItem, gridConfig, i);
-          console.log(gridConfig);
         });
       }
       if (ColumnItem.multiFieldFilter && gridConfig.filter) {

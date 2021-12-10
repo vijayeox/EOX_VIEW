@@ -345,10 +345,10 @@ class Navigation extends React.Component {
       }
       currentValue.title
         ? breadcrumbsList.push(
-            <span className="page-inactive">
+            <span className="page-inactive" key={Math.random()}>
               {index == "0" ? null : <div style={{ marginLeft: "7px" }} />}
               {childNode}
-              <i class="fad fa-angle-right" style={{ marginRight: "-5px" }}></i>
+              <i className="fad fa-angle-right" style={{ marginRight: "-5px" }}></i>
               <div
                 value={""}
                 disabled={!clickable}
@@ -398,9 +398,9 @@ class Navigation extends React.Component {
       this.state.pages.map((item, i) => {
         var pageId = item.pageId + "_page";
         var pageClasses = this.pageClass + " page-active";
-        if (i == this.state.pages.length - 1 || true) {
+        // if (i == this.state.pages.length - 1 || true) {
           pageList.push(
-            <div className={pageClasses} id={pageId}>
+            <div className={pageClasses} id={pageId} key={pageId+i}>
               <Page
                 key={item.pageId}
                 config={this.props.config}
@@ -417,9 +417,9 @@ class Navigation extends React.Component {
               />
             </div>
           );
-        } else {
-          pageList.push(<div></div>);
-        }
+        // } else {
+        //   pageList.push(<div></div>);
+        // }
       });
     }
     return pageList;
