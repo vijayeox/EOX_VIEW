@@ -189,11 +189,11 @@ class Navigation extends React.Component {
         e.detail.popupConfig ? true : false
       );
     } else {
-      if (pages[pages.length - 2] && pages[pages.length - 2].pageId) {
+      // if (pages[pages.length - 2] && pages[pages.length - 2].pageId) {
         pages.length > 0
           ? this.pageInActive(pages[pages.length - 2].pageId)
           : null;
-      }
+      // }
     }
     this.setState({ pages: pages });
     this.resetCustomActions();
@@ -265,6 +265,7 @@ class Navigation extends React.Component {
         });
       }
     }
+    this.state.pages.length > 0 &&  this.renderBreadcrumbs()
   }
 
   stepDownPage = (e) => {
@@ -436,8 +437,8 @@ class Navigation extends React.Component {
         >
           {this.state.pages.length > 0 ? (
             <div className="row">
-              <div className="breadcrumbs">{this.renderBreadcrumbs()}</div>
-              <div className="breadcrumbs"></div>
+              {/* <div className="breadcrumbs">{this.renderBreadcrumbs()}</div>
+              <div className="breadcrumbs"></div> */}
 
               <div
                 className="col-md-12 customActions dash-manager-buttons"
