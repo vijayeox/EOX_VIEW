@@ -1420,6 +1420,7 @@ class CustomCell extends React.Component {
             profile: this.props.userProfile,
             baseUrl: this.props.baseUrl,
           }}
+          renderInWrapper={false}
           jsx={
             this.props.cellTemplate
               ? this.props.cellTemplate
