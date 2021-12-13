@@ -1,6 +1,6 @@
 {
   "type": "application",
-  "name": "Legacy CRM",
+  "name": "CRM",
   "category": "sales",
   "singleton":true,
   "icon": "icon.svg",
