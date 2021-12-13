@@ -134,7 +134,21 @@ export default class DocumentViewer extends Component {
 
     return response;
   }
-
+  appendUrlIfNotExist(attachmentTypes) {
+    try {
+      for (let attachmentType in attachmentTypes) {
+        let attachments = attachmentTypes[attachmentType]?.value || [];
+        attachments?.forEach((attachment, index) => {
+          if (!attachment.url && attachment.file) {
+            attachments[index]["url"] = `${this.baseUrl}${attachment.file}`
+            attachments[index]["id"] =
+              attachments[index]["id"] || attachment.file;
+          }
+        });
+      }
+      console.log("attachmentTypes-", attachmentTypes);
+    } catch (e) {}
+  }
   getDocumentsList = () => {
     if (this.props.url) {
       this.loader.show();
@@ -144,6 +158,7 @@ export default class DocumentViewer extends Component {
         this.props.url
       ).then((response) => {
         if (response.data) {
+          this.appendUrlIfNotExist(response.data);
           var documentsList = {};
           var folderType = {};
           var documentTypes = Object.keys(response.data);
