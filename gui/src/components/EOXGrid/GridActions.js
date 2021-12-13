@@ -16,6 +16,7 @@ export default class GridActions extends React.Component {
     this.editForm = this.props.editForm;
     this.editApi = this.props.editApi;
     this.gridId = this.props.gridId;
+    this.addConfig = this.props.addConfig;
     this.onUpdate = this.props.onUpdate.bind(this);
     let countryList = countryStateList.map((item) => item.country);
     this.state = {
@@ -28,8 +29,9 @@ export default class GridActions extends React.Component {
   delete = (data, index) => {
     Requests.DeleteEntry(this.core, this.api, data.uuid).then((response) => {
       console.log(response);
-      this.onUpdate({ crudType: "DELETE", index });
-      // grid.refresh();
+      response.status == "success"
+        ? this.onUpdate({ crudType: "DELETE", index })
+        : console.log("not deleted");
     });
   };
 
@@ -63,17 +65,21 @@ export default class GridActions extends React.Component {
     });
   };
 
-  async handleSubmit(formData, index,createFlag) {
+  async handleSubmit(formData, index, createFlag) {
     console.log("on submittt----------------");
     console.log(formData);
-    Requests.editFormPushData(this.core, this.editApi, formData).then(
-      (response) => {
-        if (response.status == "success") {
-          this.onUpdate({ crudType: "EDIT", index, data: response.data });
+    if (formData) {
+      Requests.editFormPushData(this.core, this.editApi, formData).then(
+        (response) => {
+          if (response.status == "success") {
+            this.onUpdate({ crudType: "EDIT", index, data: response.data });
+          }
+          this.edit(null);
         }
-        this.edit(null);
-      }
-    );
+      );
+    } else {
+      this.edit(null);
+    }
   }
 
   edit = (data, form, index) => {
@@ -100,7 +106,7 @@ export default class GridActions extends React.Component {
             data={data}
             updateFormData={true}
             postSubmitCallback={(formData) =>
-              this.handleSubmit(formData, index,false)
+              this.handleSubmit(formData, index, false)
             }
             content={form}
             appId={data.uuid}
@@ -147,8 +153,8 @@ export default class GridActions extends React.Component {
 
                   {
                     actions.text === "ADD" && this.permission.canAdd
-                      ? //  console.log("Not added")
-                        this.addOrgUsers(this.dataItems.data[index], index)
+                      ?   console.log("Not added")
+                          // this.add(this.dataItems.data[index], index)
                       : console.log("Not added");
                   }
                   {
@@ -179,11 +185,3 @@ export default class GridActions extends React.Component {
     );
   }
 }
-// list of actions to be defined
-//  1.EDIT -----formIO
-//  2.ADD
-//  3.DELETE -completed
-//  4.RESET PASSWORD FOR USERS
-//  5.RETRY FOR MANAGE SYSTEM Error(ERRORLOG)
-//  6.Manage teams in Announcement
-//  7. and 8. Also the top actions ---switch account and create new user/account/role/

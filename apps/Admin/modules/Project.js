@@ -54,14 +54,23 @@ class Project extends React.Component {
         },
         // userInEdit: undefined,
       }),
-      (this.api = "account/" + this.state.selectedOrg + "/projects");
+      this.api = "account/" + this.state.selectedOrg + "/projects";
       this.editApi = "project";
       this.createApi="account/" + this.state.selectedOrg+ "/project";
   }
 
  
   orgChange = (event) => {
-    this.setState({ selectedOrg: event.target.value });
+    this.setState({selectedOrg: event.target.value, isLoading : true}, () => {
+      this.api = "account/" + this.state.selectedOrg + "/projects";
+      this.createApi="account/" + this.state.selectedOrg+ "/project";
+        GetData(this.api).then((data) => {
+            this.setState({
+                accountData : data.status === "success" && data?.data || [],
+                isLoading: false
+            })
+        })
+    })
   };
 
   componentDidMount() {

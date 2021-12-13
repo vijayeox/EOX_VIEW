@@ -55,6 +55,12 @@ class Organization extends React.Component {
     this.api = "account";
     this.editApi = "account";
     this.createApi = "account";
+    this.addConfig={
+      title: "Account",
+      mainList: "users/list",
+      subList: "account",
+      members: "Users",
+    };
   }
 
   componentDidMount() {
@@ -127,6 +133,7 @@ class Organization extends React.Component {
                 editForm={form}
                 editApi={this.editApi}
                 createApi={this.createApi}
+                addConfig={this.addConfig}
                 // key={Math.random()}
               />
             )}

@@ -44,13 +44,23 @@ class Goal extends React.Component {
         },
         // teamInEdit: undefined,
     }),
-    (this.api = "account/"+this.state.selectedOrg+"/kra");//add filter here
+    this.api = "account/"+this.state.selectedOrg+"/kra";//add filter here
     // this.editApi="kra";
     this.editApi ="account/" + this.state.selectedOrg+"/kra";
     this.createApi="account/" + this.state.selectedOrg+"/kra"; 
   }
   orgChange = (event) => {
-    this.setState({ selectedOrg: event.target.value });
+    this.setState({selectedOrg: event.target.value, isLoading : true}, () => {
+      this.api = "account/"+this.state.selectedOrg+"/kra";//add filter here
+      this.editApi ="account/" + this.state.selectedOrg+"/kra";
+    this.createApi="account/" + this.state.selectedOrg+"/kra"; 
+      GetData(this.api).then((data) => {
+          this.setState({
+              accountData : data.status === "success" && data?.data || [],
+              isLoading: false
+          })
+      })
+  })
   };
 
   componentDidMount() {

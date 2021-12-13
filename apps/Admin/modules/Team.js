@@ -55,7 +55,7 @@ class Team extends React.Component {
         },
         // teamInEdit: undefined,
     }),
-    (this.api = "account/"+this.state.selectedOrg+"/teams");
+    this.api = "account/"+this.state.selectedOrg+"/teams";
     this.editApi="team";
     this.createApi="account/" + this.state.selectedOrg+ "/team";
 
@@ -63,7 +63,16 @@ class Team extends React.Component {
   
   }
   orgChange = (event) => {
-    this.setState({ selectedOrg: event.target.value });
+    this.setState({selectedOrg: event.target.value, isLoading : true}, () => {
+    this.api = "account/"+this.state.selectedOrg+"/teams";
+    this.createApi="account/" + this.state.selectedOrg+ "/team";
+      GetData(this.api).then((data) => {
+          this.setState({
+              accountData : data.status === "success" && data?.data || [],
+              isLoading: false
+          })
+      })
+  })
   };
 
   componentDidMount() {

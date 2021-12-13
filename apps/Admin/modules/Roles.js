@@ -1,7 +1,7 @@
 import { React, EOXGrid } from "oxziongui";
 import { TitleBar } from "./components/titlebar";
 import { GetData } from "./components/apiCalls";
-// import form from "../modules/forms/editCreateRole.json";
+import form from "../modules/forms/editCreateRole.json";
 
 class Role extends React.Component {
   constructor(props) {
@@ -48,7 +48,7 @@ class Role extends React.Component {
         },
           // roleInEdit: undefined,
       }),
-      (this.api = "account/"+this.state.selectedOrg+"/roles");
+      this.api = "account/"+this.state.selectedOrg+"/roles";
       this.editApi= "role";
       this.createApi="account/" + this.state.selectedOrg+ "/role";
    
@@ -56,7 +56,16 @@ class Role extends React.Component {
 
  
   orgChange = (event) => {
-    this.setState({ selectedOrg: event.target.value });
+    this.setState({selectedOrg: event.target.value, isLoading : true}, () => {
+      this.api = "account/"+this.state.selectedOrg+"/roles";
+      this.createApi="account/" + this.state.selectedOrg+ "/role";
+      GetData(this.api).then((data) => {
+          this.setState({
+              accountData : data.status === "success" && data?.data || [],
+              isLoading: false
+          })
+      })
+  })
   };
 
   componentDidMount() {
@@ -129,7 +138,7 @@ class Role extends React.Component {
                 actionItems={this.actionItems}
                 api={this.api}
                 permission={this.state.permission}
-                // editForm={form}
+                editForm={form}
                 editApi= {this.editApi}
                 createApi={this.createApi}
 

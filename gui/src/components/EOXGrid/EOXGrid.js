@@ -8,7 +8,6 @@ import GridActions from "./GridActions";
 import FormRender from "../App/FormRender";
 import Requests from "../../Requests";
 
-
 const loadingPanel = (
   <div className="k-loading-mask">
     <span className="k-loading-text">Loading</span>
@@ -89,6 +88,7 @@ export default class EOXGrid extends React.Component {
     this.editForm = this.props.editForm;
     this.editApi = this.props.editApi;
     this.createApi = this.props.createApi;
+    this.addConfig = this.props.addConfig;
     this.baseUrl = this.core.config("wrapper.url");
     this.gridId = Date.now();
     this.state = {
@@ -122,7 +122,14 @@ export default class EOXGrid extends React.Component {
   }
 
   //updating the data on delete
-  updateDisplayData = ({ crudType, deleteIndex, index, data }) => {
+  updateDisplayData = ({
+    crudType,
+    deleteIndex,
+    index,
+    data,
+    addTemplate,
+    visible,
+  }) => {
     if (crudType == "DELETE") {
       const displayedData = this.state.displayedData;
       displayedData.data.splice(deleteIndex, 1);
@@ -142,7 +149,6 @@ export default class EOXGrid extends React.Component {
     if (crudType == "ADD") {
       // const displayedData = this.state.displayedData;
       console.log("Addition  eoxgrids");
-      // this.setState({ displayedData });
     }
     if (crudType == "EDIT") {
       const displayedData = { ...this.state.displayedData };
@@ -165,17 +171,20 @@ export default class EOXGrid extends React.Component {
   async handleCreateSubmit(formData, createFlag) {
     console.log("on create submittt----------------");
     console.log(formData);
-
-    Requests.createFormPushData(this.core, this.createApi, formData).then(
-      (response) => {
-        if (response.status == "success") {
-          // this.onUpdate({ crudType: "CREATE", index, data: response.data });
-          console.log("successfully created ", response);
-          console.log("creteflag ", createFlag);
+    if (formData) {
+      Requests.createFormPushData(this.core, this.createApi, formData).then(
+        (response) => {
+          if (response.status == "success") {
+            // this.onUpdate({ crudType: "CREATE", index, data: response.data });
+            console.log("successfully created ", response);
+            console.log("creteflag ", createFlag);
+          }
+          this.create(null);
         }
-        this.create(null);
-      }
-    );
+      );
+    } else {
+      this.create(null);
+    }
   }
 
   create = (form, createFlag) => {
@@ -186,29 +195,31 @@ export default class EOXGrid extends React.Component {
     }
 
     ReactDOM.render(
-      <div
-        style={{
-          position: "absolute",
-          left: "0",
-          top: "0",
-          width: "100%",
-          height: "100%",
-          zIndex: "10",
-        }}
-      >
-        <FormRender
-          key={"abc"}
-          core={this.core}
-          // data={data}
-          updateFormData={true}
-          postSubmitCallback={(formData) =>
-            this.handleCreateSubmit(formData, true)
-          }
-          content={form}
-          // appId={data.uuid}
-          // route= {this.api}
-        />
-      </div>,
+      createFlag ? (
+        <div
+          style={{
+            position: "absolute",
+            left: "0",
+            top: "0",
+            width: "100%",
+            height: "100%",
+            zIndex: "10",
+          }}
+        >
+          <FormRender
+            key={"abc"}
+            core={this.core}
+            // data={data}
+            updateFormData={true}
+            postSubmitCallback={(formData) =>
+              this.handleCreateSubmit(formData, true)
+            }
+            content={form}
+            // appId={data.uuid}
+            // route= {this.api}
+          />
+        </div>
+      ) : null,
       document.getElementById("eox-grid-form")
     )
       ? (document.getElementById("eox-grid-form").style.overflow = "scroll")
@@ -461,6 +472,7 @@ export default class EOXGrid extends React.Component {
                   editForm={this.editForm}
                   editApi={this.editApi}
                   gridId={this.gridId}
+                  addConfig={this.addConfig}
                 />
               )}
             ></GridColumn>
@@ -472,6 +484,7 @@ export default class EOXGrid extends React.Component {
     return (
       <>
         {this.state.displayedData.length === 0 && loadingPanel}
+        {/* {!this.updateDisplayData.visible && this.updateDisplayData.addTemplate} */}
         {this.exportToExcel && (
           <>
             <div

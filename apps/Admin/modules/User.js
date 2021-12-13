@@ -55,15 +55,23 @@ class User extends React.Component {
         },
         // userInEdit: undefined,
       }),
-      (this.api = "account/" + this.state.selectedOrg + "/users");
+      this.api = "account/" + this.state.selectedOrg + "/users";
       this.editApi = "user";
       this.createApi="account/" + this.state.selectedOrg+ "/user"; 
   }
 
   orgChange = (event) => {
-    this.setState({ selectedOrg: event.target.value });
+    this.setState({selectedOrg: event.target.value, isLoading : true}, () => {
+      this.api = "account/" + this.state.selectedOrg + "/users";
+      this.createApi="account/" + this.state.selectedOrg+ "/user"; 
+      GetData(this.api).then((data) => {
+          this.setState({
+              accountData : data.status === "success" && data?.data || [],
+              isLoading: false
+          })
+      })
+  })
   };
-
   componentDidMount() {
     GetData(this.api).then((data) => {
       this.setState({

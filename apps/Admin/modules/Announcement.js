@@ -56,13 +56,22 @@ class Announcement extends React.Component {
         },
         // userInEdit: undefined,
       }),
-      (this.api = "account/" + this.state.selectedOrg + "/announcements");
+      this.api = "account/" + this.state.selectedOrg + "/announcements";
       this.editApi="announcement";
       this.createApi="account/" + this.state.selectedOrg+ "/announcement";
   }
 
   orgChange = (event) => {
-    this.setState({ selectedOrg: event.target.value });
+    this.setState({selectedOrg: event.target.value, isLoading : true}, () => {
+      this.api = "account/" + this.state.selectedOrg + "/announcements";
+      this.createApi="account/" + this.state.selectedOrg+ "/announcement";
+        GetData(this.api).then((data) => {
+            this.setState({
+                accountData : data.status === "success" && data?.data || [],
+                isLoading: false
+            })
+        })
+    })
   };
 
   componentDidMount() {
