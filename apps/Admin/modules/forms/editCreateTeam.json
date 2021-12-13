@@ -81,7 +81,6 @@
                                     "idPath": "uuid",
                                     "valueProperty": "uuid",
                                     "template": "<span>{{item.name}}</span>",
-                                    "calculateValue": "console.log(\"Dropdown Data\", data)",
                                     "validate": {
                                         "required": true,
                                         "select": false
@@ -110,9 +109,32 @@
                                     "label": "Parent Team",
                                     "widget": "choicesjs",
                                     "tableView": true,
-                                    "key": "parentTeamName",
+                                    "dataSrc": "url",
+                                    "data": {
+                                        "url": "/team",
+                                        "headers": [
+                                            {
+                                                "key": "",
+                                                "value": ""
+                                            }
+                                        ]
+                                    },
+                                    "idPath": "uuid",
+                                    "valueProperty": "uuid",
+                                    "template": "<span>{{ item.name }}</span>",
+                                    "customDefaultValue": "console.log(\"Teams,\", data)",
+                                    "validate": {
+                                        "select": false
+                                    },
+                                    "key": "parent_id",
+                                    "properties": {
+                                        "absoluteUrl": "true"
+                                    },
                                     "type": "select",
-                                    "input": true
+                                    "searchField": "name",
+                                    "input": true,
+                                    "lazyLoad": false,
+                                    "disableLimit": false
                                 }
                             ],
                             "width": 6,
@@ -170,6 +192,6 @@
     "path": "adminteam",
     "project": "5dc1489e4f668513e9535090",
     "created": "2021-12-01T10:14:34.756Z",
-    "modified": "2021-12-13T02:51:14.879Z",
+    "modified": "2021-12-13T08:26:18.275Z",
     "machineName": "eoxproductsupport:adminTeam"
 }
