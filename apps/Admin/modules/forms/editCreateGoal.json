@@ -60,12 +60,15 @@
                   "tableView": true,
                   "dataSrc": "url",
                   "data": {
-                    "url": "/{{data.api}}",
+                    "url": "/user",
                     "headers": [{ "key": "", "value": "" }]
                   },
+                  "idPath": "uuid",
+                  "valueProperty": "uuid",
                   "template": "<span>{{ item.name }}</span>",
+                  "calculateValue": "console.log(\"Dropdown Data\", data)",
                   "validate": { "select": false },
-                  "key": "userName",
+                  "key": "userId",
                   "properties": { "absoluteUrl": "true" },
                   "type": "select",
                   "searchField": "name",
@@ -91,9 +94,14 @@
                     "url": "/team",
                     "headers": [{ "key": "", "value": "" }]
                   },
-                  "key": "teamName",
+                  "idPath": "uuid",
+                  "valueProperty": "uuid",
+                  "template": "<span>{{ item.name }}</span>",
+                  "validate": { "select": false },
+                  "key": "teamId",
                   "properties": { "absoluteUrl": "true" },
                   "type": "select",
+                  "searchField": "name",
                   "input": true,
                   "disableLimit": false
                 }
@@ -125,10 +133,15 @@
                     "url": "/analytics/query",
                     "headers": [{ "key": "", "value": "" }]
                   },
-                  "validate": { "required": true },
-                  "key": "queryName",
+                  "idPath": "uuid",
+                  "valueProperty": "uuid",
+                  "template": " <span>{{ item.name}}</span>",
+                  "calculateValue": "console.log(\"query Data\" ,data)",
+                  "validate": { "required": true, "select": false },
+                  "key": "queryId",
                   "properties": { "absoluteUrl": "true" },
                   "type": "select",
+                  "searchField": "name",
                   "input": true,
                   "disableLimit": false
                 }
@@ -262,6 +275,6 @@
   "path": "admingoals",
   "project": "5dc1489e4f668513e9535090",
   "created": "2021-12-01T10:21:04.437Z",
-  "modified": "2021-12-10T08:47:17.391Z",
+  "modified": "2021-12-13T05:20:59.487Z",
   "machineName": "eoxproductsupport:adminGoal"
 }
