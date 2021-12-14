@@ -309,7 +309,7 @@
        }
        100% { 
          transform: rotate(-49deg);
-         transform: rotate(calc(((45deg*100)/75)*(180/100)-90deg));
+         transform: rotate(calc(((45deg*100)/75)*(180/100) - 90deg));
          background: gold; 
        }
      }
@@ -332,7 +332,7 @@
        }
        100% { 
          transform: rotate(-90deg);
-         transform: rotate(calc(((0deg*100)/35)*(180/100)-90deg));
+         transform: rotate(calc(((0deg*100)/35)*(180/100) - 90deg));
          background: red; 
        }
      }
@@ -355,7 +355,7 @@
        }
        100% { 
          transform: rotate(-45deg);
-         transform: rotate(calc(((3deg*100)/35)*(180/100)-90deg));
+         transform: rotate(calc(((3deg*100)/35)*(180/100) - 90deg));
          background: gold; 
        }
      }
