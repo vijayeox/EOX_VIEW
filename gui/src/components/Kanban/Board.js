@@ -3,7 +3,7 @@ import Work from "./WorkGroup";
 import { ListGroup, Button, Badge, Container } from "react-bootstrap";
 import { DragDropContext } from "react-beautiful-dnd";
 import StatusCard from "./ColumnCounts";
-import "./WorkGroup.css";
+import "./WorkGroup.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 //import {faUserAlt, faEye,} from "@fortawesome/fontawesome-free-solid";
 import CalenderDropDown from "./CalendarDropdown";
@@ -81,7 +81,7 @@ export default function Board(props) {
   };
 
   return (
-    <Container fluid>
+    <Container fluid id="kanbanBoard">
       <div className="expense-item"
         style={{ width: "98vw" }}>
         <Badge>
