@@ -61,7 +61,7 @@ class RenderButtons extends React.Component {
           >
             <div className="block">
               {currentValue.icon ? (
-                <i className={currentValue.icon}></i>
+                <i className={currentValue.icon} title={currentValue.name}></i>
               ) : (
                 currentValue.name
               )}
