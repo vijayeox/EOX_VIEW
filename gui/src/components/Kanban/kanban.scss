@@ -1,4 +1,5 @@
-.containerbox{
+#kanbanBoard{
+  .containerbox{
     display:flex !important;
       flex-direction:column !important;
       flex-flow: column !important;
@@ -159,3 +160,4 @@
     border:ivory
   
   } */
+}

@@ -1,6 +1,6 @@
 import React from 'react';
 //import ReactDOM from 'react-dom';
-import './index.css';
+import './index.scss';
 import Map from './App';
 //import reportWebVitals from './reportWebVitals';
 //import Context from "./Context"
@@ -10,10 +10,10 @@ import Map from './App';
 const MapView = () => {
   
   return (
-    <div>
+    <Container id="maps">
        < Map/> 
       {/*<h1>Map view</h1>*/}
-    </div>
+    </Container>
   );
 };
 
