@@ -1,7 +1,7 @@
 import { Card, Container, Row, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 // import { faHistory } from '@fortawesome/fontawesome-free-solid';
-import './ColumnCount.css';
+import './ColumnCount.scss';
 import colorHandler from './ColorCodes'
 import React, { useState } from 'react';
 import Requests from '../../Requests';
@@ -41,32 +41,34 @@ function ColumnCard(props) {
         return Count
     }
     return (
-        <Card style={{
-            border: '0',
-            boxShadow: '0px 3px 2px lightgrey',
-            width: "18vw"
-        }}>
+        <Container fluid id="kanbanBoard">
+            <Card style={{
+                border: '0',
+                boxShadow: '0px 3px 2px lightgrey',
+                width: "18vw"
+            }}>
 
-            <Card.Body>
-                <Container fluid>
-                    <Row>
-                        <Col lg="auto" sm="auto" md="auto" >
-                            <FontAwesomeIcon
-                                className="cardIcon"
-                                style={{ color: colorHandler(props.statusCardId) }}
-                                size='small'
-                                icon={['fal', 'history']} />
-                        </Col>
-                        <Col lg="auto" sm="auto" md="auto" style={{ padding: '0' }}>
-                            <p>{apiForCount()}</p>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col lg="12"><h2>{props.statusInfo.label}</h2></Col>
-                    </Row>
-                </Container>
-            </Card.Body>
-        </Card>
+                <Card.Body>
+                    <Container fluid>
+                        <Row>
+                            <Col lg="auto" sm="auto" md="auto" >
+                                <FontAwesomeIcon
+                                    className="cardIcon"
+                                    style={{ color: colorHandler(props.statusCardId) }}
+                                    size='small'
+                                    icon={['fal', 'history']} />
+                            </Col>
+                            <Col lg="auto" sm="auto" md="auto" style={{ padding: '0' }}>
+                                <p>{apiForCount()}</p>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col lg="12"><h2>{props.statusInfo.label}</h2></Col>
+                        </Row>
+                    </Container>
+                </Card.Body>
+            </Card>
+        </Container>
     )
 }
 

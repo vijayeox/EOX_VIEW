@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import ListGroup from "react-bootstrap/ListGroup";
 import { Droppable } from "react-beautiful-dnd";
-import "./WorkGroup.css";
+import "./WorkGroup.scss";
 import Item from "./WorkItem";
+import { Container } from "react-bootstrap";
 
 export default function Work(props) {
 
@@ -97,7 +98,7 @@ export default function Work(props) {
   }, [props])
 
   return (
-    <>
+    <Container fluid id="kanbanBoard">
       <ListGroup.Item>
         <Droppable
           droppableId={props.info.value}
@@ -166,6 +167,6 @@ export default function Work(props) {
           }}
         </Droppable>
       </ListGroup.Item>
-    </>
+    </Container>
   );
 }

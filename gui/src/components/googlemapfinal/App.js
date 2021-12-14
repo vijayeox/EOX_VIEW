@@ -1,4 +1,4 @@
-import "./App.css";
+import "./App.scss";
 import React, { Fragment, useEffect, useState } from "react";
 import Dropdown from "react-dropdown";
 import "react-dropdown/style.css";
@@ -10,6 +10,7 @@ import {
   Marker,
   InfoWindow,
 } from "@react-google-maps/api";
+import { Container } from "react-bootstrap";
 const places = [
   {
     id: 1,
@@ -647,7 +648,8 @@ function CustomGoogleMapComponent() {
   };
 
   return isLoaded ? (
-    <div className="mt-4">
+    <Container fluid id="maps">
+      <div className="mt-4">
       <input
         name="radius"
         style={{
@@ -728,7 +730,9 @@ function CustomGoogleMapComponent() {
         </GoogleMap>
       </div>
     </div>
-  ) : (
+  
+    </Container>
+    ) : (
     <></>
   );
 }

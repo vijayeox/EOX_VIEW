@@ -5,7 +5,7 @@ import 'react-date-range/dist/theme/default.css'; // theme css file
 
 import { DateRangePicker } from 'react-date-range';
 // // import "react-calendar/dist/Calendar.css";
-import "./WorkGroup.css";
+import "./WorkGroup.scss";
 import Moment from "moment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -21,6 +21,7 @@ import {
    DropdownMenu,
    DropdownItem,
 } from "reactstrap";
+import { Container } from "react-bootstrap";
 // // import "./Css/kunbun.css";
 // // import { faCalendarAlt } from "@fortawesome/fontawesome-free-solid";
 
@@ -177,6 +178,7 @@ function CalenderDropDown(props) {
   }, []);
 
   return (
+    <Container fluid id="kanbanBoard">
     <Dropdown
       isOpen={dropdownOpen}
       toggle={toggle}
@@ -304,6 +306,7 @@ function CalenderDropDown(props) {
         </DropdownItem>
       </DropdownMenu>
     </Dropdown>
+    </Container>
   );
 }
 export default CalenderDropDown;
