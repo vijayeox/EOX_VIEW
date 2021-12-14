@@ -144,9 +144,11 @@ export default class DocumentViewer extends Component {
             attachments[index]["id"] =
               attachments[index]["id"] || attachment.file;
           }
+          if(!attachment?.id || attachment?.id?.trim()?.length === 0){
+            attachments[index]["id"] = `${math.random()}${math.random()}`;
+          }
         });
       }
-      console.log("attachmentTypes-", attachmentTypes);
     } catch (e) {}
   }
   getDocumentsList = () => {
@@ -240,6 +242,7 @@ export default class DocumentViewer extends Component {
                 <Accordion.Collapse eventKey={docType}>
                   <Card.Body>
                     {this.state.documentsList[docType].map((doc, i) => {
+                      const fileName = doc.name?.trim()?.length > 0 && doc.name || doc.originalName;
                       return (
                         <Card
                           className="docItems"
@@ -275,10 +278,10 @@ export default class DocumentViewer extends Component {
                                 onClick={e => this.navigateOrDownload(e, doc)}
                                 rel="noopener noreferrer"
                               >
-                                {doc.originalName &&
-                                doc.originalName.length > 30
-                                  ? this.chopFileName(doc.originalName)
-                                  : doc.originalName}
+                                {fileName &&
+                                fileName.length > 30
+                                  ? this.chopFileName(fileName)
+                                  : fileName}
                               </a>
                             </p>
                           </div>
