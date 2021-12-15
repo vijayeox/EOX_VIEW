@@ -20,7 +20,7 @@
         "@progress/kendo-data-query": "^1.5.5",
         "@progress/kendo-licensing": "^1.1.4",
         "@progress/kendo-react-buttons": "^4.7.0",
-        "@progress/kendo-react-dialogs": "^4.7.0",
+        "@progress/kendo-react-dialogs": "4.7.0",
         "@progress/kendo-react-excel-export": "^4.7.0",
         "@progress/kendo-react-grid": "^4.6.0",
         "@progress/kendo-react-layout": "^4.7.0",
