@@ -7,6 +7,7 @@ import "@progress/kendo-theme-bootstrap/dist/all.css";
 import GridActions from "./GridActions";
 import FormRender from "../App/FormRender";
 import Requests from "../../Requests";
+import Swal from "sweetalert2";
 
 const loadingPanel = (
   <div className="k-loading-mask">
@@ -88,6 +89,7 @@ export default class EOXGrid extends React.Component {
     this.editForm = this.props.editForm;
     this.editApi = this.props.editApi;
     this.createApi = this.props.createApi;
+    this.deleteApi = this.props.deleteApi;
     this.addConfig = this.props.addConfig;
     this.baseUrl = this.core.config("wrapper.url");
     this.gridId = Date.now();
@@ -149,6 +151,7 @@ export default class EOXGrid extends React.Component {
     if (crudType == "ADD") {
       // const displayedData = this.state.displayedData;
       console.log("Addition  eoxgrids");
+      // console.log(visible,addTemplate);
     }
     if (crudType == "EDIT") {
       const displayedData = { ...this.state.displayedData };
@@ -178,8 +181,18 @@ export default class EOXGrid extends React.Component {
             // this.onUpdate({ crudType: "CREATE", index, data: response.data });
             console.log("successfully created ", response);
             console.log("creteflag ", createFlag);
+            Swal.fire({
+              icon: "success",
+              title: response.status,
+              showConfirmButton: true,
+            });
           }
           this.create(null);
+          Swal.fire({
+            icon: "error",
+            title: response.status,
+            showConfirmButton: true,
+          });
         }
       );
     } else {
@@ -409,7 +422,7 @@ export default class EOXGrid extends React.Component {
         <div id={this.gridId}>
           <Grid
             style={{ height: this.height, width: this.width }}
-            // className={this.gridId}
+            className="eox-grids"
             data={this.state.displayedData}
             resizable={this.resizable}
             reorderable={this.reorderable}
@@ -471,6 +484,8 @@ export default class EOXGrid extends React.Component {
                   permission={this.permission}
                   editForm={this.editForm}
                   editApi={this.editApi}
+                  createApi={this.createApi}
+                  deleteApi={this.deleteApi}
                   gridId={this.gridId}
                   addConfig={this.addConfig}
                 />
@@ -484,7 +499,7 @@ export default class EOXGrid extends React.Component {
     return (
       <>
         {this.state.displayedData.length === 0 && loadingPanel}
-        {/* {!this.updateDisplayData.visible && this.updateDisplayData.addTemplate} */}
+        {/* {this.updateDisplayData.visible && this.updateDisplayData.addTemplate} */}
         {this.exportToExcel && (
           <>
             <div

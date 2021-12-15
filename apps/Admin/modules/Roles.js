@@ -51,7 +51,7 @@ class Role extends React.Component {
       this.api = "account/"+this.state.selectedOrg+"/roles";
       this.editApi= "role";
       this.createApi="account/" + this.state.selectedOrg+ "/role";
-   
+      this.deleteApi="account/" + this.state.selectedOrg+ "/role";
   }
 
  
@@ -141,7 +141,7 @@ class Role extends React.Component {
                 editForm={form}
                 editApi= {this.editApi}
                 createApi={this.createApi}
-
+                deleteApi={this.deleteApi}
                 // key={Math.random()}
               />
             )}

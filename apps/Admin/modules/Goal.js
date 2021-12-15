@@ -38,9 +38,9 @@ class Goal extends React.Component {
       selectedOrg: this.props.userProfile.accountId,
 
       permission: {
-          canAdd: this.props.userProfile.privileges.MANAGE_TEAM_CREATE,
+          canAdd: this.props.userProfile.privileges.MANAGE_KRA_WRITE,
           canEdit: this.props.userProfile.privileges.MANAGE_TEAM_WRITE,
-          canDelete: this.props.userProfile.privileges.MANAGE_TEAM_DELETE,
+          canDelete: this.props.userProfile.privileges.MANAGE_KRA_WRITE,
         },
         // teamInEdit: undefined,
     }),
@@ -48,6 +48,7 @@ class Goal extends React.Component {
     // this.editApi="kra";
     this.editApi ="account/" + this.state.selectedOrg+"/kra";
     this.createApi="account/" + this.state.selectedOrg+"/kra"; 
+    this.deleteApi="account/" + this.state.selectedOrg+"/kra"; 
   }
   orgChange = (event) => {
     this.setState({selectedOrg: event.target.value, isLoading : true}, () => {
@@ -128,7 +129,7 @@ class Goal extends React.Component {
                 editForm={form}
                 editApi= {this.editApi}
                 createApi={this.createApi}
-
+                deleteApi={this.deleteApi}
                 // key={Math.random()}
               />
             )}

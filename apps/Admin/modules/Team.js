@@ -49,17 +49,23 @@ class Team extends React.Component {
       selectedOrg: this.props.userProfile.accountId,
 
       permission: {
-          canAdd: this.props.userProfile.privileges.MANAGE_TEAM_CREATE,
+          canAdd: this.props.userProfile.privileges.MANAGE_TEAM_WRITE,
           canEdit: this.props.userProfile.privileges.MANAGE_TEAM_WRITE,
-          canDelete: this.props.userProfile.privileges.MANAGE_TEAM_DELETE,
+          canDelete: this.props.userProfile.privileges.MANAGE_TEAM_WRITE,
         },
         // teamInEdit: undefined,
     }),
     this.api = "account/"+this.state.selectedOrg+"/teams";
     this.editApi="team";
     this.createApi="account/" + this.state.selectedOrg+ "/team";
-
-
+    this.deleteApi="account/" + this.state.selectedOrg+ "/team";
+    this.addConfig= {
+      title: "Add Members",
+      mainList: "account/"+this.state.selectedOrg +"/users/list", 
+      subList: "account/" + this.state.selectedOrg +"/team",
+      members:"Users",
+      prefetch:false,
+    }
   
   }
   orgChange = (event) => {
@@ -144,6 +150,8 @@ class Team extends React.Component {
                 editForm={form}
                 editApi={this.editApi}
                 createApi={this.createApi}
+                deleteApi={this.deleteApi}
+                addConfig={this.addConfig}
                 // key={Math.random()}
               />
             )}

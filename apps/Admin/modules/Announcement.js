@@ -59,7 +59,15 @@ class Announcement extends React.Component {
       this.api = "account/" + this.state.selectedOrg + "/announcements";
       this.editApi="announcement";
       this.createApi="account/" + this.state.selectedOrg+ "/announcement";
-  }
+      this.deleteApi="account/" + this.state.selectedOrg+ "/announcement";
+      this.addConfig={
+        title: "Announcement",
+        mainList: "account/" + this.state.selectedOrg + "/teams/list",
+        // subList: "account",
+        members: "Teams",
+        addAnnouncementFlag:true,
+      };
+    }
 
   orgChange = (event) => {
     this.setState({selectedOrg: event.target.value, isLoading : true}, () => {
@@ -152,6 +160,8 @@ class Announcement extends React.Component {
                 editForm={form}
                 editApi={this.editApi}
                 createApi={this.createApi}
+                deleteApi={this.deleteApi}
+                addConfig={this.addConfig}
                 // key={Math.random()}
               />
             )}

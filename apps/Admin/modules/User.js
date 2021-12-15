@@ -58,7 +58,8 @@ class User extends React.Component {
       this.api = "account/" + this.state.selectedOrg + "/users";
       this.editApi = "user";
       this.createApi="account/" + this.state.selectedOrg+ "/user"; 
-  }
+      this.deleteApi="account/" + this.state.selectedOrg+ "/user"; 
+    }
 
   orgChange = (event) => {
     this.setState({selectedOrg: event.target.value, isLoading : true}, () => {
@@ -152,6 +153,7 @@ class User extends React.Component {
                 editForm={form}
                 editApi= {this.editApi}
                 createApi={this.createApi}
+                deleteApi={this.deleteApi}
                 // key={Math.random()}
               />
             )}

@@ -55,6 +55,7 @@ class Organization extends React.Component {
     this.api = "account";
     this.editApi = "account";
     this.createApi = "account";
+    this.deleteApi = "account";
     this.addConfig={
       title: "Account",
       mainList: "users/list",
@@ -133,6 +134,7 @@ class Organization extends React.Component {
                 editForm={form}
                 editApi={this.editApi}
                 createApi={this.createApi}
+                deleteApi={this.deleteApi}
                 addConfig={this.addConfig}
                 // key={Math.random()}
               />

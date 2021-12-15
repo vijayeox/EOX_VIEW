@@ -57,7 +57,15 @@ class Project extends React.Component {
       this.api = "account/" + this.state.selectedOrg + "/projects";
       this.editApi = "project";
       this.createApi="account/" + this.state.selectedOrg+ "/project";
-  }
+      this.deleteApi="account/" + this.state.selectedOrg+ "/project";
+      this.addConfig= {
+        title: "Add Members",
+        mainList: "account/"+this.state.selectedOrg +"/users/list", 
+        subList: "account/" + this.state.selectedOrg +"/project",
+        members:"Users",
+        prefetch:false,
+      }
+    }
 
  
   orgChange = (event) => {
@@ -143,7 +151,8 @@ class Project extends React.Component {
                 editForm={form}
                 editApi= {this.editApi}
                 createApi={this.createApi}
-
+                deleteApi={this.deleteApi}
+                addConfig={this.addConfig}
                 // key={Math.random()}
               />
             )}

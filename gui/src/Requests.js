@@ -216,5 +216,43 @@ class Requests {
     );
     return response;
   }
+  static async pushOrgUsers(core,dataItem, dataObject,api) {
+    let helper = core.make("oxzion/restClient");
+    let response = await helper.request(
+      "v1",
+      api +"/" + dataItem + "/save",
+      {
+        userIdList: dataObject,
+      },
+      "post"
+    );
+    return response;
+  }
+
+  static async getAnnouncementTeams(core ,dataItem) {
+    let helper = core.make("oxzion/restClient");
+    let groupUsers = await helper.request(
+      "v1",
+      "/announcement/" + dataItem + "/teams",
+      {},
+      "get"
+    );
+    return groupUsers;
+  }
+
+  static async pushAnnouncementTeams(core ,api,dataItem, dataObject) {
+    let helper = core.make("oxzion/restClient");
+    let addTeams = await helper.request(
+      "v1",
+      api +"/"+
+        dataItem +
+        "/save",
+      {
+        teams: dataObject,
+      },
+      "post"
+    );
+    return addTeams;
+  }
 }
 export default Requests;
