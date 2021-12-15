@@ -1,6 +1,6 @@
 
 import $ from 'jquery';
-import { React, Query, DataSource, Visualization, TemplateManager, SSOCustom, KanbanView, MapView, BryntumView } from 'oxziongui';
+import { React, Query, DataSource, Visualization, TemplateManager} from 'oxziongui';
 import { WidgetManager, DashboardManager } from 'oxziongui';
 import SideNav, { Toggle, Nav, NavItem, NavIcon, NavText } from '@trendmicro/react-sidenav';
 import "@trendmicro/react-sidenav/dist/react-sidenav.css";
@@ -12,10 +12,6 @@ const SECTION_EDIT_DASHBOARD = 'EDB'; //Edit DashBoard
 const SECTION_WIDGET = 'WD'; //Edit DashBoard
 const SECTION_VISULAIZATION = 'VS' //Visualization
 const SECTION_TEMPLATEMANGER = 'TM' //TemplateManager
-const SECTION_SSOCustom = 'SC' //SSO
-const SECTION_KanbanView = 'KV' //KV
-const SECTION_MapView = 'MV' //MapView
-const SECTION_BryntumView = 'BV' //BryntumView
 
 class Body extends React.Component {
 	constructor(props) {
@@ -129,18 +125,6 @@ class Body extends React.Component {
 			case SECTION_TEMPLATEMANGER:
 				sectionContent = <TemplateManager args={this.core} setTitle={this.setTitle} />;
 				break;
-			case SECTION_SSOCustom:
-				sectionContent = <SSOCustom args={this.core} setTitle={this.setTitle} />;
-				break;
-			case SECTION_KanbanView:
-				sectionContent = <KanbanView />;
-				break;
-			case SECTION_MapView:
-				sectionContent = <MapView />;
-				break;
-			case SECTION_BryntumView:
-				sectionContent = <BryntumView />;
-				break;
 		}
 
 		return (
@@ -198,38 +182,6 @@ class Body extends React.Component {
 								Template Manager
 							</NavText>
 						</NavItem>
-						<NavItem eventKey={SECTION_SSOCustom} key={SECTION_SSOCustom}>
-							<NavIcon>
-								<i className="fas fa-code" aria-hidden="true"></i>
-							</NavIcon>
-							<NavText>
-								SSO Custom
-							</NavText>
-						</NavItem>
-						<NavItem eventKey={SECTION_KanbanView} key={SECTION_KanbanView}>
-							<NavIcon>
-								<i className="fas fa-code" aria-hidden="true"></i>
-							</NavIcon>
-							<NavText>
-								Kanban VIew
-							</NavText>
-						</NavItem>
-						 <NavItem eventKey={SECTION_MapView} key={SECTION_MapView}>
-							<NavIcon>
-								<i class="fas fa-map-marked-alt" aria-hidden="true"></i>
-							</NavIcon>
-							<NavText>
-								Map View
-							</NavText>
-						</NavItem>
-						<NavItem eventKey={SECTION_BryntumView} key={SECTION_BryntumView}>
-							<NavIcon>
-								<i class="fas fa-code" aria-hidden="true"></i>
-							</NavIcon>
-							<NavText>
-								Bryntum View
-							</NavText>
-						</NavItem>  
 					</SideNav.Nav>
 				</SideNav>
 				<div className="page-content full-width" id="page-content">
