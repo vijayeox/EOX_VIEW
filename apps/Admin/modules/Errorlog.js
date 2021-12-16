@@ -15,30 +15,7 @@ class Errorlog extends React.Component {
         ispopup:true,
       }
     }),
-    (this.state = {
-      isLoading: true,
-      accountData: [],
-      
-      permission: {
-          canAdd: this.props.userProfile.privileges.MANAGE_TEAM_CREATE,
-          canEdit: this.props.userProfile.privileges.MANAGE_TEAM_WRITE,
-          canDelete: this.props.userProfile.privileges.MANAGE_TEAM_DELETE,
-        },
-    }),
-    (this.api = "errorlog");
-  }
-
-  componentDidMount() {
-      GetData(this.api).then((data) => {
-      this.setState({
-        accountData: (data.status === "success" && data.data) || [],
-        isLoading: false,
-      });
-    });
-  }
-
-  render() {
-    let config = {
+    this.config = {
       height: "100%",
       width: "100%",
       filterable: true,
@@ -79,8 +56,32 @@ class Errorlog extends React.Component {
           field: "date_created",
         },
       ],
-    };
+    },
 
+    (this.state = {
+      isLoading: true,
+      accountData: [],
+      
+      permission: {
+          canAdd: this.props.userProfile.privileges.MANAGE_TEAM_CREATE,
+          canEdit: this.props.userProfile.privileges.MANAGE_TEAM_WRITE,
+          canDelete: this.props.userProfile.privileges.MANAGE_TEAM_DELETE,
+        },
+    }),
+    (this.api = "errorlog");
+  }
+
+  componentDidMount() {
+      GetData(this.api).then((data) => {
+      this.setState({
+        accountData: (data.status === "success" && data.data) || [],
+        isLoading: false,
+      });
+    });
+  }
+
+  render() {
+   
     return (
       <div style={{ height: "inherit" }}>
          <TitleBar
@@ -92,7 +93,7 @@ class Errorlog extends React.Component {
           <div >
           {!this.state.isLoading && (
               <EOXGrid
-                configuration={config}
+                configuration={this.config}
                 data={this.state.accountData}
                 core={this.core}
                 isDrillDownTable={this.props.drillDownRequired}

@@ -31,6 +31,32 @@ class Goal extends React.Component {
         isPopup: true,
       },
     }),
+    this.config = {
+      height: "100%",
+      width: "100%",
+      filterable: true,
+      reorderable: true,
+      sortable: true,
+      // sort:true,
+      pageSize: 10,
+      // pageable:true,
+      pageable: {
+        skip: 0,
+        // pageSize: 10,
+        buttonCount: 3,
+      },
+      groupable: true,
+      resizable: true,
+
+      isDrillDownTable: true,
+
+      column: [
+        {
+          title: "Name",
+          field: "name",
+        }
+      ],
+    },
     (this.state = {
       isLoading: true,
       accountData: [],
@@ -75,32 +101,7 @@ class Goal extends React.Component {
   }
 
   render() {
-    let config = {
-      height: "100%",
-      width: "100%",
-      filterable: true,
-      reorderable: true,
-      sortable: true,
-      // sort:true,
-      pageSize: 10,
-      // pageable:true,
-      pageable: {
-        skip: 0,
-        // pageSize: 10,
-        buttonCount: 3,
-      },
-      groupable: true,
-      resizable: true,
-
-      isDrillDownTable: true,
-
-      column: [
-        {
-          title: "Name",
-          field: "name",
-        }
-      ],
-    };
+ 
 
     return (
       <div style={{ height: "inherit" }}>
@@ -119,7 +120,7 @@ class Goal extends React.Component {
           <div >
           {!this.state.isLoading && (
               <EOXGrid
-                configuration={config}
+                configuration={this.config}
                 data={this.state.accountData}
                 core={this.core}
                 isDrillDownTable={this.props.drillDownRequired}

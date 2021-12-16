@@ -162,6 +162,12 @@ class Requests {
   };
 
   //EOXGrids API calls
+  static  async  GetData(core,api) {
+    let helper = core.make("oxzion/restClient");
+    let response = await helper.request("v1", "/" + api, {}, "get");
+    return response;
+  } 
+
   static async DeleteEntry(core, api, dataItem) {
     let helper = core.make("oxzion/restClient");
     let response = await helper.request(

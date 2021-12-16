@@ -14,7 +14,7 @@ class Team extends React.Component {
         api: "account/edit",
         icon: "fad fa-pencil",
         text: "EDIT",
-        title:"Edit Team",
+        title: "Edit Team",
         isPopup: true,
       },
       delete: {
@@ -22,7 +22,7 @@ class Team extends React.Component {
         api: "account",
         icon: "fad fa-trash",
         text: "DELETE",
-        title:"Delete Team",
+        title: "Delete Team",
         isPopup: true,
       },
       add: {
@@ -30,7 +30,7 @@ class Team extends React.Component {
         api: "account/add",
         icon: "fad fa-users",
         text: "ADD",
-        title:"Add Members",
+        title: "Add Members",
         isPopup: true,
       },
       create: {
@@ -38,94 +38,143 @@ class Team extends React.Component {
         api: "account/add",
         icon: " fad fa-plus",
         text: "CREATE",
-        title:"Create New",
+        title: "Create New",
         isPopup: true,
       },
     }),
-    (this.state = {
-      isLoading: true,
-      accountData: [],
+    this.noCreateAction= true;
+      (this.config = {
+        height: "100%",
+        width: "100%",
+        filterable: true,
+        reorderable: true,
+        sortable: true,
+        // sort:true,
+        pageSize: 10,
+        // pageable:true,
+        pageable: {
+          skip: 0,
+          // pageSize: 10,
+          buttonCount: 3,
+        },
+        groupable: true,
+        resizable: true,
 
-      selectedOrg: this.props.userProfile.accountId,
+        isDrillDownTable: true,
 
-      permission: {
+        subRoute: "team/{{uuid}}/subteam",
+        column: [
+          {
+            title: "Name",
+            field: "name",
+          },
+          {
+            title: "Description",
+            field: "description",
+          },
+        ],
+      });
+
+      (this.state = {
+        isLoading: true,
+        accountData: [],
+        displayChildGrid:[],
+        selectedOrg: this.props.userProfile.accountId,
+
+        permission: {
           canAdd: this.props.userProfile.privileges.MANAGE_TEAM_WRITE,
           canEdit: this.props.userProfile.privileges.MANAGE_TEAM_WRITE,
           canDelete: this.props.userProfile.privileges.MANAGE_TEAM_WRITE,
         },
         // teamInEdit: undefined,
-    }),
-    this.api = "account/"+this.state.selectedOrg+"/teams";
-    this.editApi="team";
-    this.createApi="account/" + this.state.selectedOrg+ "/team";
-    this.deleteApi="account/" + this.state.selectedOrg+ "/team";
-    this.addConfig= {
+      }),
+      (this.api = "account/" + this.state.selectedOrg + "/teams");
+    this.editApi = "team";
+    this.createApi = "account/" + this.state.selectedOrg + "/team";
+    this.deleteApi = "account/" + this.state.selectedOrg + "/team";
+    this.addConfig = {
       title: "Add Members",
-      mainList: "account/"+this.state.selectedOrg +"/users/list", 
-      subList: "account/" + this.state.selectedOrg +"/team",
-      members:"Users",
-      prefetch:false,
-    }
-  
+      mainList: "account/" + this.state.selectedOrg + "/users/list",
+      subList: "account/" + this.state.selectedOrg + "/team",
+      members: "Users",
+      prefetch: false,
+    };
   }
   orgChange = (event) => {
-    this.setState({selectedOrg: event.target.value, isLoading : true}, () => {
-    this.api = "account/"+this.state.selectedOrg+"/teams";
-    this.createApi="account/" + this.state.selectedOrg+ "/team";
+    this.setState({ selectedOrg: event.target.value, isLoading: true }, () => {
+      this.api = "account/" + this.state.selectedOrg + "/teams";
+      this.createApi = "account/" + this.state.selectedOrg + "/team";
       GetData(this.api).then((data) => {
-          this.setState({
-              accountData : data.status === "success" && data?.data || [],
-              isLoading: false
-          })
-      })
-  })
+        this.setState({
+          accountData: (data.status === "success" && data?.data) || [],
+          isLoading: false,
+        });
+      });
+    });
   };
 
   componentDidMount() {
-      GetData(this.api).then((data) => {
+    GetData(this.api).then((data) => {
       this.setState({
         accountData: (data.status === "success" && data.data) || [],
         isLoading: false,
       });
     });
-  
+  }
+
+  replaceParams(route, params) {
+    var regex = /\{\{.*?\}\}/g;
+    let m;
+    while ((m = regex.exec(route)) !== null) {
+      m.index === regex.lastIndex ? regex.lastIndex++ : null;
+      m.forEach((match) => {
+        route = route.replace(match, params[match.replace(/\{\{|\}\}/g, "")]);
+      });
+    }
+    return route;
+  }
+
+  renderRow(e, rowConfig) {
+    let subRoute = this.replaceParams(rowConfig.subRoute, e);
+    GetData(subRoute).then((data) => {
+      this.setState({
+        displayChildGrid: (data.status === "success" && data.data) || [],
+        isLoading: false,
+      });
+    });
+    return (
+      // <React.Suspense fallback={<div>Loading...</div>}>
+      <div>
+        {!this.state.isLoading && (
+          <EOXGrid
+            configuration={this.config}
+            data={this.state.displayChildGrid}
+            core={this.core}
+            isDrillDownTable={this.props.drillDownRequired}
+            actionItems={this.actionItems}
+            api={subRoute}
+            permission={this.state.permission}
+            editForm={form}
+            editApi={this.editApi}
+            createApi={this.createApi}
+            deleteApi={this.deleteApi}
+            addConfig={this.addConfig}
+            expandable={this.config ? true : undefined}
+            noCreateAction={this.noCreateAction}
+            // key={Math.random()}
+          />
+        )}
+      </div>
+      // </React.Suspense>
+    );
   }
 
   render() {
-    let config = {
-      height: "100%",
-      width: "100%",
-      filterable: true,
-      reorderable: true,
-      sortable: true,
-      // sort:true,
-      pageSize: 10,
-      // pageable:true,
-      pageable: {
-        skip: 0,
-        // pageSize: 10,
-        buttonCount: 3,
-      },
-      groupable: true,
-      resizable: true,
-
-      isDrillDownTable: true,
-
-      column: [
-        {
-          title: "Name",
-          field: "name",
-        },
-        {
-          title: "Description",
-          field: "description",
-        },
-      ],
-    };
+    
 
     return (
       <div style={{ height: "inherit" }}>
-         <TitleBar
+        <TitleBar
           title="Manage Teams"
           menu={this.props.menu}
           args={this.core}
@@ -137,10 +186,10 @@ class Team extends React.Component {
           }
         />
         <React.Suspense fallback={<div>Loading...</div>}>
-          <div >
-          {!this.state.isLoading && (
+          <div>
+            {!this.state.isLoading && (
               <EOXGrid
-                configuration={config}
+                configuration={this.config}
                 data={this.state.accountData}
                 core={this.core}
                 isDrillDownTable={this.props.drillDownRequired}
@@ -152,7 +201,12 @@ class Team extends React.Component {
                 createApi={this.createApi}
                 deleteApi={this.deleteApi}
                 addConfig={this.addConfig}
-                // key={Math.random()}
+                rowTemplate={
+                  this.config
+                    ? (e) => this.renderRow(e, this.config)
+                    : undefined
+                }
+                key={Math.random()}
               />
             )}
           </div>

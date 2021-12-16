@@ -42,6 +42,45 @@ class Announcement extends React.Component {
       },
      
     }),
+    this.config = {
+      height: "100%",
+      width: "100%",
+      filterable: true,
+      reorderable: true,
+      sortable: true,
+      // sort:true,
+      pageSize: 10,
+      // pageable:true,
+      pageable: {
+        skip: 0,
+        // pageSize: 10,
+        buttonCount: 3,
+      },
+      groupable: true,
+      resizable: true,
+
+      isDrillDownTable: true,
+
+      column: [
+        {
+          //should be converted to logo
+          title: "Banner",
+          field: "media",
+        },
+        {
+          title: "Name",
+          field: "name",
+        },
+        {
+          title: "Description",
+          field: "description",
+        },
+        {
+          title: "Type",
+          field: "type",
+        },
+      ],
+    },
       (this.state = {
         isLoading: true,
         accountData: [],
@@ -93,45 +132,7 @@ class Announcement extends React.Component {
   }
 
   render = () => {
-    let config = {
-      height: "100%",
-      width: "100%",
-      filterable: true,
-      reorderable: true,
-      sortable: true,
-      // sort:true,
-      pageSize: 10,
-      // pageable:true,
-      pageable: {
-        skip: 0,
-        // pageSize: 10,
-        buttonCount: 3,
-      },
-      groupable: true,
-      resizable: true,
-
-      isDrillDownTable: true,
-
-      column: [
-        {
-          //should be converted to logo
-          title: "Banner",
-          field: "media",
-        },
-        {
-          title: "Name",
-          field: "name",
-        },
-        {
-          title: "Description",
-          field: "description",
-        },
-        {
-          title: "Type",
-          field: "type",
-        },
-      ],
-    };
+    
     return (
       <div style={{ height: "auto" }}>
         {/* <Notification ref={this.notif} /> */}
@@ -150,7 +151,7 @@ class Announcement extends React.Component {
           <div>
             {!this.state.isLoading && (
               <EOXGrid
-                configuration={config}
+                configuration={this.config}
                 data={this.state.accountData}
                 core={this.core}
                 isDrillDownTable={this.props.drillDownRequired}

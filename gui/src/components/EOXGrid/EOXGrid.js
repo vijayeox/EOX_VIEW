@@ -8,6 +8,7 @@ import GridActions from "./GridActions";
 import FormRender from "../App/FormRender";
 import Requests from "../../Requests";
 import Swal from "sweetalert2";
+import {GridDetailRow} from "@progress/kendo-react-grid";
 
 const loadingPanel = (
   <div className="k-loading-mask">
@@ -49,6 +50,8 @@ export default class EOXGrid extends React.Component {
         ? configuration.height
         : "100%"
       : "100%";
+    this.subRoute = configuration.subRoute
+       
     this.width = configuration
       ? configuration.width
         ? configuration.width
@@ -91,6 +94,7 @@ export default class EOXGrid extends React.Component {
     this.createApi = this.props.createApi;
     this.deleteApi = this.props.deleteApi;
     this.addConfig = this.props.addConfig;
+    this.noCreateAction=this.props.noCreateAction ? this.props.noCreateAction :false;
     this.baseUrl = this.core.config("wrapper.url");
     this.gridId = Date.now();
     this.state = {
@@ -129,8 +133,6 @@ export default class EOXGrid extends React.Component {
     deleteIndex,
     index,
     data,
-    addTemplate,
-    visible,
   }) => {
     if (crudType == "DELETE") {
       const displayedData = this.state.displayedData;
@@ -310,13 +312,27 @@ export default class EOXGrid extends React.Component {
   };
 
   componentDidMount() {
+    if(this.props.expandableApi){
+      this.props.expandableApi((childGridResponse) => {
+        this.allData = childGridResponse;
+        this.parseData();
+        this.prepareData(true);
+      })
+      return;
+    }
     this.parseData();
     this.prepareData(true);
+   
   }
 
   gridPageChanged = (e) => {
     console.log("page event clicked");
     // call the api to get the data for the next page by passing the new page
+    // Requests.GetData(this.core,this.api).then((data) => {
+    //   this.setState({
+    //     displayedData: (data.status === "success" && data.data) || [],
+    //   });
+    // });
     let pagination = {
       skip: e.page.skip,
       take: e.page.take,
@@ -395,7 +411,7 @@ export default class EOXGrid extends React.Component {
         {/* create new user */}
         <div style={{ float: "right" }} className="dash-manager-buttons">
           {Object["values"](this.actionItems).map((actions, key) =>
-            actions.text === "CREATE" ? (
+           ( actions.text === "CREATE")  && (!(this.noCreateAction))? (
               <abbr title={actions.title} key={key}>
                 <button
                   type={actions.type}
@@ -422,13 +438,23 @@ export default class EOXGrid extends React.Component {
         <div id={this.gridId}>
           <Grid
             style={{ height: this.height, width: this.width }}
-            className="eox-grids"
+            className={ "eox-grids"}
             data={this.state.displayedData}
             resizable={this.resizable}
             reorderable={this.reorderable}
             // cellRender={(tdelement, cellProps) =>
             //   this.cellRender(tdelement, cellProps, this)
             // }
+            detail={
+              this.props.rowTemplate 
+                ? (dataItem) => (
+                    <DetailComponent
+                      rowTemplate={this.props.rowTemplate}
+                      dataItem={dataItem.dataItem}
+                    />
+                  )
+                : undefined
+            }
             filterable={this.filterable}
             filter={this.state.filter}
             onFilterChange={this.gridFilterChanged}
@@ -591,5 +617,11 @@ class LogoCell extends React.Component {
         ) : null;
       }
     }
+  }
+}
+ class DetailComponent extends GridDetailRow {
+  render() {
+    const dataItem = this.props.dataItem;
+    return <React.Fragment>{this.props.rowTemplate(dataItem)}</React.Fragment>;
   }
 }
