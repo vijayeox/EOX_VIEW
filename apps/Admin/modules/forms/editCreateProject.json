@@ -125,10 +125,11 @@
                                     "idPath": "uuid",
                                     "valueProperty": "uuid",
                                     "template": "<span>{{ item.name }}</span>",
+                                    "customDefaultValue": "console.log(\"Projectdata\", data)",
                                     "validate": {
                                         "select": false
                                     },
-                                    "key": "parentProject",
+                                    "key": "parent_id",
                                     "properties": {
                                         "absoluteUrl": "true"
                                     },
@@ -196,6 +197,6 @@
     "path": "adminproject",
     "project": "5dc1489e4f668513e9535090",
     "created": "2021-12-01T09:35:49.729Z",
-    "modified": "2021-12-16T11:21:33.076Z",
+    "modified": "2021-12-16T12:48:04.759Z",
     "machineName": "eoxproductsupport:adminProject"
 }
