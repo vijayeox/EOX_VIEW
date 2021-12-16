@@ -42,7 +42,7 @@ class Team extends React.Component {
         isPopup: true,
       },
     }),
-    this.noCreateAction= true;
+    this.noCreateAction= true,
       (this.config = {
         height: "100%",
         width: "100%",
@@ -75,20 +75,20 @@ class Team extends React.Component {
         ],
       });
 
-      (this.state = {
-        isLoading: true,
-        accountData: [],
-        displayChildGrid:[],
-        selectedOrg: this.props.userProfile.accountId,
-
-        permission: {
-          canAdd: this.props.userProfile.privileges.MANAGE_TEAM_WRITE,
-          canEdit: this.props.userProfile.privileges.MANAGE_TEAM_WRITE,
-          canDelete: this.props.userProfile.privileges.MANAGE_TEAM_WRITE,
-        },
-        // teamInEdit: undefined,
-      }),
-      (this.api = "account/" + this.state.selectedOrg + "/teams");
+    (this.state = {
+      isLoading: true,
+      accountData: [],
+      displayChildGrid: [],
+      selectedOrg: this.props.userProfile.accountId,
+      isChildGrid: true,
+      permission: {
+        canAdd: this.props.userProfile.privileges.MANAGE_TEAM_WRITE,
+        canEdit: this.props.userProfile.privileges.MANAGE_TEAM_WRITE,
+        canDelete: this.props.userProfile.privileges.MANAGE_TEAM_WRITE,
+      },
+      // teamInEdit: undefined,
+    }),
+    this.api = "account/" + this.state.selectedOrg + "/teams";
     this.editApi = "team";
     this.createApi = "account/" + this.state.selectedOrg + "/team";
     this.deleteApi = "account/" + this.state.selectedOrg + "/team";
@@ -100,6 +100,7 @@ class Team extends React.Component {
       prefetch: false,
     };
   }
+
   orgChange = (event) => {
     this.setState({ selectedOrg: event.target.value, isLoading: true }, () => {
       this.api = "account/" + this.state.selectedOrg + "/teams";
@@ -136,42 +137,49 @@ class Team extends React.Component {
 
   renderRow(e, rowConfig) {
     let subRoute = this.replaceParams(rowConfig.subRoute, e);
-    GetData(subRoute).then((data) => {
-      this.setState({
-        displayChildGrid: (data.status === "success" && data.data) || [],
-        isLoading: false,
-      });
-    });
-    return (
-      // <React.Suspense fallback={<div>Loading...</div>}>
-      <div>
-        {!this.state.isLoading && (
-          <EOXGrid
-            configuration={this.config}
-            data={this.state.displayChildGrid}
-            core={this.core}
-            isDrillDownTable={this.props.drillDownRequired}
-            actionItems={this.actionItems}
-            api={subRoute}
-            permission={this.state.permission}
-            editForm={form}
-            editApi={this.editApi}
-            createApi={this.createApi}
-            deleteApi={this.deleteApi}
-            addConfig={this.addConfig}
-            expandable={this.config ? true : undefined}
-            noCreateAction={this.noCreateAction}
-            // key={Math.random()}
-          />
-        )}
-      </div>
-      // </React.Suspense>
-    );
+    // if(this.state.isChildGrid){
+      // GetData(subRoute).then((data) => {
+      //   this.setState({
+      //     displayChildGrid: (data.status === "success" && data.data) || [],
+      //     // isLoading: false,
+      //     isChildGrid:false,
+      //   });
+      // });
+      return (
+        // <React.Suspense fallback={<div>Loading...</div>}>
+            <EOXGrid
+              configuration={this.config}
+              data={this.state.displayChildGrid}
+              core={this.core}
+              isDrillDownTable={this.props.drillDownRequired}
+              actionItems={this.actionItems}
+              api={subRoute}
+              permission={this.state.permission}
+              editForm={form}
+              editApi={this.editApi}
+              createApi={this.createApi}
+              deleteApi={this.deleteApi}
+              addConfig={this.addConfig}
+              expandableApi={(callback) => {
+                GetData(subRoute).then((response) => {
+                 callback?.((response.status === "success" && response.data) || [])
+                })
+              }}
+              noCreateAction={this.noCreateAction}
+              // key={Math.random()}
+            />
+        
+        
+        // </React.Suspense>
+      );
+    // }
+    // else{
+    //   return null;
+    // }
+    
   }
 
   render() {
-    
-
     return (
       <div style={{ height: "inherit" }}>
         <TitleBar
@@ -202,9 +210,10 @@ class Team extends React.Component {
                 deleteApi={this.deleteApi}
                 addConfig={this.addConfig}
                 rowTemplate={
-                  this.config
-                    ? (e) => this.renderRow(e, this.config)
-                    : undefined
+                  // this.config
+                    // ? (e) => (this.state.isChildGrid) ? this.renderRow(e, this.config) : <h1>hello</h1>
+                    (e) => this.renderRow(e, this.config) 
+                    // : undefined
                 }
                 key={Math.random()}
               />

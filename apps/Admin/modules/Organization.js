@@ -49,13 +49,13 @@ class Organization extends React.Component {
       reorderable: true,
       sortable: true,
       // sort:true,
-      pageSize: 5,
+      pageSize: 10,
       // pageable:true,
       pageable: {
         skip: 0,
         // pageSize: 10,
         buttonCount: 3,
-        info: true
+        // info: true
       },
       groupable: true,
       resizable: true,
@@ -105,7 +105,7 @@ class Organization extends React.Component {
   }
 
   componentDidMount() {
-    GetData(this.api).then((data) => {
+    GetData(this.api+`?filter=[{"skip":0,"take":${this.config.pageSize}]`).then((data) => {
       this.setState({
         accountData: (data.status === "success" && data.data) || [],
         isLoading: false,
