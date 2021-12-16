@@ -1,1 +1,524 @@
-{"_id":"61a747ec1e28f500f5e5500d","type":"form","tags":[],"owner":"5df87f7ef5bff0ba0e620c87","components":[{"title":"Create User","collapsible":false,"key":"createUser","type":"panel","label":"Panel","input":false,"tableView":false,"components":[{"label":"Columns","columns":[{"components":[{"label":"First Name","tableView":true,"validate":{"required":true},"key":"firstname","type":"textfield","input":true}],"width":6,"offset":0,"push":0,"pull":0,"size":"md","currentWidth":6},{"components":[{"label":"Last Name","tableView":true,"validate":{"required":true},"key":"lastname","type":"textfield","input":true}],"width":6,"offset":0,"push":0,"pull":0,"size":"md","currentWidth":6}],"key":"columns","type":"columns","input":false,"tableView":false},{"label":"Columns","columns":[{"components":[{"label":"Email","tableView":true,"validate":{"required":true},"key":"email","type":"email","input":true}],"width":6,"offset":0,"push":0,"pull":0,"size":"md","currentWidth":6},{"components":[{"label":"Username","tableView":true,"validate":{"required":true},"key":"username","type":"textfield","input":true}],"width":6,"offset":0,"push":0,"pull":0,"size":"md","currentWidth":6}],"key":"columns1","type":"columns","input":false,"tableView":false},{"label":"Columns","columns":[{"components":[{"label":"Manager Assigned","widget":"choicesjs","tableView":true,"validate":{"required":true},"key":"manager_name","type":"select","input":true}],"width":6,"offset":0,"push":0,"pull":0,"size":"md","currentWidth":6},{"components":[{"label":"Designation","tableView":true,"validate":{"required":true},"key":"designation","type":"textfield","input":true}],"width":6,"offset":0,"push":0,"pull":0,"size":"md","currentWidth":6}],"key":"columns2","type":"columns","input":false,"tableView":false},{"label":"Columns","columns":[{"components":[{"label":"Country","widget":"choicesjs","tableView":true,"validate":{"required":true},"key":"country","type":"select","input":true}],"width":6,"offset":0,"push":0,"pull":0,"size":"md","currentWidth":6},{"components":[{"label":"State","widget":"choicesjs","tableView":true,"key":"state","type":"select","input":true}],"width":6,"offset":0,"push":0,"pull":0,"size":"md","currentWidth":6}],"key":"columns3","type":"columns","input":false,"tableView":false},{"label":"Columns","columns":[{"components":[{"label":"Gender","optionsLabelPosition":"right","inline":true,"tableView":false,"values":[{"label":"Male","value":"male","shortcut":""},{"label":"Female","value":"female","shortcut":""}],"calculateValue":"value= data.gender;","validate":{"required":true},"key":"gender","type":"radio","input":true}],"width":6,"offset":0,"push":0,"pull":0,"size":"md","currentWidth":6},{"components":[{"label":"Date of Birth","tableView":false,"enableMinDateInput":false,"datePicker":{"disableWeekends":false,"disableWeekdays":false},"enableMaxDateInput":false,"validate":{"required":true},"key":"date_of_birth","type":"datetime","input":true,"widget":{"type":"calendar","displayInTimezone":"viewer","locale":"en","useLocaleSettings":false,"allowInput":true,"mode":"single","enableTime":true,"noCalendar":false,"format":"yyyy-MM-dd hh:mm a","hourIncrement":1,"minuteIncrement":1,"time_24hr":false,"minDate":null,"disableWeekends":false,"disableWeekdays":false,"maxDate":null}}],"width":3,"offset":0,"push":0,"pull":0,"size":"md","currentWidth":3},{"components":[{"label":"Date of Joining","tableView":false,"enableMinDateInput":false,"datePicker":{"disableWeekends":false,"disableWeekdays":false},"enableMaxDateInput":false,"validate":{"required":true},"key":"date_of_join","type":"datetime","input":true,"widget":{"type":"calendar","displayInTimezone":"viewer","locale":"en","useLocaleSettings":false,"allowInput":true,"mode":"single","enableTime":true,"noCalendar":false,"format":"yyyy-MM-dd hh:mm a","hourIncrement":1,"minuteIncrement":1,"time_24hr":false,"minDate":null,"disableWeekends":false,"disableWeekdays":false,"maxDate":null}}],"size":"md","width":3,"offset":0,"push":0,"pull":0,"currentWidth":3}],"key":"columns4","type":"columns","input":false,"tableView":false},{"label":"Columns","columns":[{"components":[{"label":"Role","widget":"choicesjs","tableView":true,"dataSrc":"custom","data":{"custom":"values = data[\"access\"];\nconsole.log(data[\"access\"]);"},"valueProperty":"roles","template":"<span>{{ item.roles }}</span>","validate":{"required":true},"key":"role","type":"select","input":true}],"width":6,"offset":0,"push":0,"pull":0,"size":"md","currentWidth":6},{"components":[{"label":"Select Projects","widget":"choicesjs","tableView":true,"dataSrc":"custom","data":{"custom":"values= data[\"project\"];\nconsole.log(values);"},"key":"project","type":"select","input":true}],"width":6,"offset":0,"push":0,"pull":0,"size":"md","currentWidth":6}],"key":"columns5","type":"columns","input":false,"tableView":false},{"label":"Cancel","action":"event","showValidations":false,"theme":"secondary","tableView":false,"key":"cancel","type":"button","input":true,"event":"cancelSubmission"}]},{"type":"button","label":"Submit","key":"submit","disableOnInvalid":true,"input":true,"tableView":false}],"revisions":"","_vid":0,"title":"Admin - User","display":"form","access":[{"roles":["5dc1489e4f66850fb0535091","5dc1489e4f6685cbf7535092","5dc1489e4f668531f7535093"],"type":"read_all"}],"submissionAccess":[],"controller":"","properties":{},"settings":{},"name":"adminUser","path":"adminuser","project":"5dc1489e4f668513e9535090","created":"2021-12-01T10:01:16.951Z","modified":"2021-12-13T10:15:36.642Z","machineName":"eoxproductsupport:adminUser"}
+{
+    "_id": "61a747ec1e28f500f5e5500d",
+    "type": "form",
+    "tags": [],
+    "owner": "5df87f7ef5bff0ba0e620c87",
+    "components": [
+        {
+            "title": "Create User",
+            "collapsible": false,
+            "key": "createUser",
+            "type": "panel",
+            "label": "Panel",
+            "input": false,
+            "tableView": false,
+            "components": [
+                {
+                    "label": "Columns",
+                    "columns": [
+                        {
+                            "components": [
+                                {
+                                    "label": "First Name",
+                                    "tableView": true,
+                                    "key": "firstname",
+                                    "type": "textfield",
+                                    "input": true
+                                }
+                            ],
+                            "width": 6,
+                            "offset": 0,
+                            "push": 0,
+                            "pull": 0,
+                            "size": "md",
+                            "currentWidth": 6
+                        },
+                        {
+                            "components": [
+                                {
+                                    "label": "Last Name",
+                                    "tableView": true,
+                                    "key": "lastname",
+                                    "type": "textfield",
+                                    "input": true
+                                }
+                            ],
+                            "width": 6,
+                            "offset": 0,
+                            "push": 0,
+                            "pull": 0,
+                            "size": "md",
+                            "currentWidth": 6
+                        }
+                    ],
+                    "key": "columns",
+                    "type": "columns",
+                    "input": false,
+                    "tableView": false
+                },
+                {
+                    "label": "Name",
+                    "tableView": true,
+                    "key": "name",
+                    "type": "textfield",
+                    "input": true
+                },
+                {
+                    "label": "Columns",
+                    "columns": [
+                        {
+                            "components": [
+                                {
+                                    "label": "Username",
+                                    "tableView": true,
+                                    "validate": {
+                                        "required": true
+                                    },
+                                    "key": "username",
+                                    "type": "textfield",
+                                    "input": true
+                                }
+                            ],
+                            "width": 6,
+                            "offset": 0,
+                            "push": 0,
+                            "pull": 0,
+                            "size": "md",
+                            "currentWidth": 6
+                        },
+                        {
+                            "components": [
+                                {
+                                    "label": "Email",
+                                    "tableView": true,
+                                    "validate": {
+                                        "required": true
+                                    },
+                                    "key": "email",
+                                    "type": "email",
+                                    "input": true
+                                }
+                            ],
+                            "width": 6,
+                            "offset": 0,
+                            "push": 0,
+                            "pull": 0,
+                            "size": "md",
+                            "currentWidth": 6
+                        }
+                    ],
+                    "key": "columns1",
+                    "type": "columns",
+                    "input": false,
+                    "tableView": false
+                },
+                {
+                    "label": "Columns",
+                    "columns": [
+                        {
+                            "components": [
+                                {
+                                    "label": "Manager Assigned",
+                                    "widget": "choicesjs",
+                                    "tableView": true,
+                                    "dataSrc": "url",
+                                    "data": {
+                                        "url": "/user",
+                                        "headers": [
+                                            {
+                                                "key": "",
+                                                "value": ""
+                                            }
+                                        ]
+                                    },
+                                    "idPath": "uuid",
+                                    "valueProperty": "uuid",
+                                    "template": "<span>{{ item.name }}</span>",
+                                    "customDefaultValue": "console.log(\"userData\", data)",
+                                    "validate": {
+                                        "required": true,
+                                        "select": false
+                                    },
+                                    "key": "manager_id",
+                                    "properties": {
+                                        "absoluteUrl": "true"
+                                    },
+                                    "type": "select",
+                                    "searchField": "name",
+                                    "input": true,
+                                    "lazyLoad": false,
+                                    "disableLimit": false
+                                }
+                            ],
+                            "width": 6,
+                            "offset": 0,
+                            "push": 0,
+                            "pull": 0,
+                            "size": "md",
+                            "currentWidth": 6
+                        },
+                        {
+                            "components": [
+                                {
+                                    "label": "Designation",
+                                    "tableView": true,
+                                    "validate": {
+                                        "required": true
+                                    },
+                                    "key": "designation",
+                                    "type": "textfield",
+                                    "input": true
+                                }
+                            ],
+                            "width": 6,
+                            "offset": 0,
+                            "push": 0,
+                            "pull": 0,
+                            "size": "md",
+                            "currentWidth": 6
+                        }
+                    ],
+                    "key": "columns2",
+                    "type": "columns",
+                    "input": false,
+                    "tableView": false
+                },
+                {
+                    "label": "Columns",
+                    "columns": [
+                        {
+                            "components": [
+                                {
+                                    "label": "Country",
+                                    "widget": "choicesjs",
+                                    "tableView": true,
+                                    "dataSrc": "custom",
+                                    "data": {
+                                        "custom": "values = data[\"countryList\"];"
+                                    },
+                                    "valueProperty": "country",
+                                    "template": "<span>{{ item.country }}</span>",
+                                    "validate": {
+                                        "required": true
+                                    },
+                                    "key": "country",
+                                    "type": "select",
+                                    "input": true
+                                }
+                            ],
+                            "width": 6,
+                            "offset": 0,
+                            "push": 0,
+                            "pull": 0,
+                            "size": "md",
+                            "currentWidth": 6
+                        },
+                        {
+                            "components": [
+                                {
+                                    "label": "State",
+                                    "widget": "choicesjs",
+                                    "customClass": ".choices__list--dropdown",
+                                    "tableView": true,
+                                    "dataSrc": "custom",
+                                    "data": {
+                                        "custom": "values = {};\nvar selectedCountry = data.country;\nvar countryList = data.countryList;\nvar country = countryList.find((filteredCountryList)=>filteredCountryList.country === selectedCountry);\nvalues = country.states;"
+                                    },
+                                    "template": "<span>{{ item.name }}</span>",
+                                    "clearOnHide": false,
+                                    "validate": {
+                                        "required": true
+                                    },
+                                    "key": "state",
+                                    "attributes": {
+                                        "style": "max-height:150px;"
+                                    },
+                                    "type": "select",
+                                    "input": true,
+                                    "lockKey": true,
+                                    "hideOnChildrenHidden": false,
+                                    "isNew": false,
+                                    "searchThreshold": 0.3
+                                }
+                            ],
+                            "width": 6,
+                            "offset": 0,
+                            "push": 0,
+                            "pull": 0,
+                            "size": "md",
+                            "currentWidth": 6
+                        }
+                    ],
+                    "key": "columns3",
+                    "type": "columns",
+                    "input": false,
+                    "tableView": false
+                },
+                {
+                    "label": "Columns",
+                    "columns": [
+                        {
+                            "components": [
+                                {
+                                    "label": "Role",
+                                    "widget": "choicesjs",
+                                    "tableView": true,
+                                    "dataSrc": "url",
+                                    "data": {
+                                        "url": "/role",
+                                        "headers": [
+                                            {
+                                                "key": "",
+                                                "value": ""
+                                            }
+                                        ]
+                                    },
+                                    "idPath": "uuid",
+                                    "valueProperty": "uuid",
+                                    "template": "<span>{{ item.name }}</span>",
+                                    "validate": {
+                                        "required": true,
+                                        "select": false
+                                    },
+                                    "key": "role",
+                                    "properties": {
+                                        "absoluteUrl": "true"
+                                    },
+                                    "type": "select",
+                                    "searchField": "name",
+                                    "input": true,
+                                    "lazyLoad": false,
+                                    "disableLimit": false
+                                }
+                            ],
+                            "width": 6,
+                            "offset": 0,
+                            "push": 0,
+                            "pull": 0,
+                            "size": "md",
+                            "currentWidth": 6
+                        },
+                        {
+                            "components": [
+                                {
+                                    "label": "Date of Birth",
+                                    "tableView": false,
+                                    "enableMinDateInput": false,
+                                    "datePicker": {
+                                        "disableWeekends": false,
+                                        "disableWeekdays": false
+                                    },
+                                    "enableMaxDateInput": false,
+                                    "validate": {
+                                        "required": true
+                                    },
+                                    "key": "date_of_birth",
+                                    "type": "datetime",
+                                    "input": true,
+                                    "widget": {
+                                        "type": "calendar",
+                                        "displayInTimezone": "viewer",
+                                        "locale": "en",
+                                        "useLocaleSettings": false,
+                                        "allowInput": true,
+                                        "mode": "single",
+                                        "enableTime": true,
+                                        "noCalendar": false,
+                                        "format": "yyyy-MM-dd hh:mm a",
+                                        "hourIncrement": 1,
+                                        "minuteIncrement": 1,
+                                        "time_24hr": false,
+                                        "minDate": null,
+                                        "disableWeekends": false,
+                                        "disableWeekdays": false,
+                                        "maxDate": null
+                                    }
+                                }
+                            ],
+                            "width": 3,
+                            "offset": 0,
+                            "push": 0,
+                            "pull": 0,
+                            "size": "md",
+                            "currentWidth": 3
+                        },
+                        {
+                            "components": [
+                                {
+                                    "label": "Date of Joining",
+                                    "tableView": false,
+                                    "enableMinDateInput": false,
+                                    "datePicker": {
+                                        "disableWeekends": false,
+                                        "disableWeekdays": false
+                                    },
+                                    "enableMaxDateInput": false,
+                                    "validate": {
+                                        "required": true
+                                    },
+                                    "key": "date_of_join",
+                                    "type": "datetime",
+                                    "input": true,
+                                    "widget": {
+                                        "type": "calendar",
+                                        "displayInTimezone": "viewer",
+                                        "locale": "en",
+                                        "useLocaleSettings": false,
+                                        "allowInput": true,
+                                        "mode": "single",
+                                        "enableTime": true,
+                                        "noCalendar": false,
+                                        "format": "yyyy-MM-dd hh:mm a",
+                                        "hourIncrement": 1,
+                                        "minuteIncrement": 1,
+                                        "time_24hr": false,
+                                        "minDate": null,
+                                        "disableWeekends": false,
+                                        "disableWeekdays": false,
+                                        "maxDate": null
+                                    }
+                                }
+                            ],
+                            "size": "md",
+                            "width": 3,
+                            "offset": 0,
+                            "push": 0,
+                            "pull": 0,
+                            "currentWidth": 3
+                        }
+                    ],
+                    "key": "columns4",
+                    "type": "columns",
+                    "input": false,
+                    "tableView": false
+                },
+                {
+                    "label": "Columns",
+                    "columns": [
+                        {
+                            "components": [
+                                {
+                                    "label": "Select Projects",
+                                    "widget": "choicesjs",
+                                    "tableView": true,
+                                    "dataSrc": "url",
+                                    "data": {
+                                        "url": "/project",
+                                        "headers": [
+                                            {
+                                                "key": "",
+                                                "value": ""
+                                            }
+                                        ]
+                                    },
+                                    "idPath": "uuid",
+                                    "valueProperty": "uuid",
+                                    "template": "<span>{{ item.name }}</span>",
+                                    "validate": {
+                                        "select": false
+                                    },
+                                    "key": "project",
+                                    "properties": {
+                                        "absoluteUrl": "true"
+                                    },
+                                    "type": "select",
+                                    "searchField": "name",
+                                    "input": true,
+                                    "disableLimit": false,
+                                    "lazyLoad": false
+                                }
+                            ],
+                            "width": 6,
+                            "offset": 0,
+                            "push": 0,
+                            "pull": 0,
+                            "size": "md",
+                            "currentWidth": 6
+                        },
+                        {
+                            "components": [
+                                {
+                                    "label": "Gender",
+                                    "optionsLabelPosition": "right",
+                                    "inline": true,
+                                    "tableView": false,
+                                    "values": [
+                                        {
+                                            "label": "Male",
+                                            "value": "Male",
+                                            "shortcut": ""
+                                        },
+                                        {
+                                            "label": "Female",
+                                            "value": "Female",
+                                            "shortcut": ""
+                                        }
+                                    ],
+                                    "validate": {
+                                        "required": true
+                                    },
+                                    "key": "gender",
+                                    "type": "radio",
+                                    "input": true
+                                }
+                            ],
+                            "width": 6,
+                            "offset": 0,
+                            "push": 0,
+                            "pull": 0,
+                            "size": "md",
+                            "currentWidth": 6
+                        }
+                    ],
+                    "key": "columns5",
+                    "type": "columns",
+                    "input": false,
+                    "tableView": false
+                },
+                {
+                    "label": "Cancel",
+                    "action": "event",
+                    "showValidations": false,
+                    "theme": "secondary",
+                    "tableView": false,
+                    "key": "cancel",
+                    "type": "button",
+                    "input": true,
+                    "event": "cancelSubmission"
+                }
+            ]
+        },
+        {
+            "type": "button",
+            "label": "Submit",
+            "key": "submit",
+            "disableOnInvalid": true,
+            "input": true,
+            "tableView": false
+        }
+    ],
+    "revisions": "",
+    "_vid": 0,
+    "title": "Admin - User",
+    "display": "form",
+    "access": [
+        {
+            "roles": [
+                "5dc1489e4f66850fb0535091",
+                "5dc1489e4f6685cbf7535092",
+                "5dc1489e4f668531f7535093"
+            ],
+            "type": "read_all"
+        }
+    ],
+    "submissionAccess": [],
+    "controller": "",
+    "properties": {},
+    "settings": {},
+    "name": "adminUser",
+    "path": "adminuser",
+    "project": "5dc1489e4f668513e9535090",
+    "created": "2021-12-01T10:01:16.951Z",
+    "modified": "2021-12-16T11:20:01.418Z",
+    "machineName": "eoxproductsupport:adminUser"
+}
