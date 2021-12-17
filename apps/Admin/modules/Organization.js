@@ -49,11 +49,11 @@ class Organization extends React.Component {
       reorderable: true,
       sortable: true,
       // sort:true,
-      pageSize: 10,
+      pageSize: 20,
       // pageable:true,
       pageable: {
         skip: 0,
-        // pageSize: 10,
+        pageSize: 20,
         buttonCount: 3,
         // info: true
       },
@@ -91,6 +91,8 @@ class Organization extends React.Component {
           canEdit: this.props.userProfile.privileges.MANAGE_USER_WRITE,
           canDelete: this.props.userProfile.privileges.MANAGE_USER_DELETE,
         },
+        total : 0,
+        skip : 0
       });
     this.api = "account";
     this.editApi = "account";
@@ -105,14 +107,35 @@ class Organization extends React.Component {
   }
 
   componentDidMount() {
-    GetData(this.api+`?filter=[{"skip":0,"take":${this.config.pageSize}]`).then((data) => {
+    GetData(this.api+`?filter=[{"skip":0,"take":${this.config.pageSize}}]`).then((data) => {
       this.setState({
-        accountData: (data.status === "success" && data.data) || [],
+        accountData: data?.status === 'success' ? data : {data : [], total : 0},
         isLoading: false,
       });
-    });
+    }).catch(() => {
+      this.setState({
+        accountData: {data : [], total : 0},
+        isLoading : false
+      });
+    })
   }
 
+
+  dataStateChanged({dataState : { filter, group, skip, sort, take}}){
+    this.setState({ isLoading : true });
+    GetData(this.api+`?filter=[{"skip":${skip},"take":${this.config.pageSize}, "filter" : ${JSON.stringify(filter)}}]`).then((data) => {
+      this.setState({
+        accountData: data?.status === 'success' ? data : {data : [], total : 0},
+        skip,
+        isLoading : false
+      });
+    }).catch(() => {
+      this.setState({
+        accountData: {data : [], total : 0},
+        isLoading : false
+      });
+    })
+  }
   render () {
     
     return (
@@ -124,7 +147,7 @@ class Organization extends React.Component {
         />
         <React.Suspense fallback={<div>Loading...</div>}>
           <div>
-            {!this.state.isLoading && (
+            {/* {!this.state.isLoading && ( */}
               <EOXGrid
                 configuration={this.config}
                 data={this.state.accountData}
@@ -138,9 +161,12 @@ class Organization extends React.Component {
                 createApi={this.createApi}
                 deleteApi={this.deleteApi}
                 addConfig={this.addConfig}
+                skip={this.state.skip}
+                dataStateChanged={this.dataStateChanged.bind(this)}
+                isLoading={this.state.isLoading}
                 // key={Math.random()}
               />
-            )}
+            {/* )} */}
           </div>
         </React.Suspense>
       </div>

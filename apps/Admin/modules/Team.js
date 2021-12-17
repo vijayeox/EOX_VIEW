@@ -42,7 +42,7 @@ class Team extends React.Component {
         isPopup: true,
       },
     }),
-    this.noCreateAction= true,
+    this.noCreateAction= false,
       (this.config = {
         height: "100%",
         width: "100%",
@@ -76,6 +76,7 @@ class Team extends React.Component {
       });
 
     (this.state = {
+      skip : 0,
       isLoading: true,
       accountData: [],
       displayChildGrid: [],
@@ -114,15 +115,37 @@ class Team extends React.Component {
     });
   };
 
+  
   componentDidMount() {
-    GetData(this.api).then((data) => {
+    GetData(this.api+`?filter=[{"skip":0,"take":${this.config.pageSize}}]`).then((data) => {
       this.setState({
-        accountData: (data.status === "success" && data.data) || [],
+        accountData: data?.status === 'success' ? data : {data : [], total : 0},
         isLoading: false,
       });
-    });
+    }).catch(() => {
+      this.setState({
+        accountData: {data : [], total : 0},
+        isLoading : false
+      });
+    })
   }
 
+
+  dataStateChanged({dataState : { filter, group, skip, sort, take}}){
+    this.setState({ isLoading : true });
+    GetData(this.api+`?filter=[{"skip":${skip},"take":${this.config.pageSize}, "filter" : ${JSON.stringify(filter)}}]`).then((data) => {
+      this.setState({
+        accountData: data?.status === 'success' ? data : {data : [], total : 0},
+        skip,
+        isLoading : false
+      });
+    }).catch(() => {
+      this.setState({
+        accountData: {data : [], total : 0},
+        isLoading : false
+      });
+    })
+  }
   replaceParams(route, params) {
     var regex = /\{\{.*?\}\}/g;
     let m;
@@ -177,8 +200,8 @@ class Team extends React.Component {
           }
         />
         <React.Suspense fallback={<div>Loading...</div>}>
-          <div>
-            {!this.state.isLoading && (
+          {/* <div>
+            {!this.state.isLoading && ( */}
               <EOXGrid
                 configuration={this.config}
                 data={this.state.accountData}
@@ -194,10 +217,13 @@ class Team extends React.Component {
                 addConfig={this.addConfig}
                 rowTemplate={ (e) => this.renderRow(e, this.config) 
                 }
-                key={Math.random()}
+                // key={Math.random()}
+                skip={this.state.skip}
+                dataStateChanged={this.dataStateChanged.bind(this)}
+                isLoading={this.state.isLoading}
               />
-            )}
-          </div>
+            {/* )}
+          </div> */}
         </React.Suspense>
         {/* {this.state.userInEdit && this.inputTemplate} */}
       </div>

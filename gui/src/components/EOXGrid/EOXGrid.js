@@ -110,8 +110,10 @@ export default class EOXGrid extends React.Component {
           : null
         : null,
       group: null,
-      displayedData: [],
+      displayedData: {data : this.props.data},
+      isLoading : props.isLoading,
       exportFilterData: [],
+      dataState:{}
     };
 
     let beginWith = configuration ? configuration.beginWith : null;
@@ -142,47 +144,39 @@ export default class EOXGrid extends React.Component {
     }
     if (crudType == "RETRY") {
       const displayedData = this.state.displayedData;
-      console.log("retry update eoxgrids");
+      //console.log("retry update eoxgrids");
       this.setState({ displayedData });
     }
     if (crudType == "RESET") {
       const displayedData = this.state.displayedData;
-      console.log("reset update eoxgrids");
+      //console.log("reset update eoxgrids");
       this.setState({ displayedData });
     }
     if (crudType == "ADD") {
       // const displayedData = this.state.displayedData;
-      console.log("Addition  eoxgrids");
-      // console.log(visible,addTemplate);
+      //console.log("Addition  eoxgrids");
+      // //console.log(visible,addTemplate);
     }
     if (crudType == "EDIT") {
       const displayedData = { ...this.state.displayedData };
-      displayedData.data[index] = { ...data };
-      console.log("edit eoxgrids");
+      displayedData.data[index] = { ...displayedData.data[index], ...data };
       this.setState({ displayedData });
     }
     if (crudType == "CREATE") {
-      console.log("create eoxgrids");
-      console.log("displayedData", displayedData);
-      //add the created entry to the top of the table and increase the total of the data
-      // const displayedData = { ...this.state.displayedData };
-      // displayedData.data[0] = { ...data };
-      // displayedData.data.add();
-      // displayedData.total++;
       this.setState({ displayedData });
     }
   };
 
   async handleCreateSubmit(formData, createFlag) {
-    console.log("on create submittt----------------");
-    console.log(formData);
+    //console.log("on create submittt----------------");
+    //console.log(formData);
     if (formData) {
       Requests.createFormPushData(this.core, this.createApi, formData).then(
         (response) => {
           if (response.status == "success") {
             // this.onUpdate({ crudType: "CREATE", index, data: response.data });
-            console.log("successfully created ", response);
-            console.log("creteflag ", createFlag);
+            //console.log("successfully created ", response);
+            //console.log("creteflag ", createFlag);
             Swal.fire({
               icon: "success",
               title: response.status,
@@ -315,18 +309,24 @@ export default class EOXGrid extends React.Component {
     if(this.props.expandableApi){
       this.props.expandableApi((childGridResponse) => {
         this.allData = childGridResponse;
+        // this.setState({displayedData :childGridResponse, isLoading : props.isLoading})
         this.parseData();
         this.prepareData(true);
       })
       return;
     }
     this.parseData();
-    this.prepareData(true);
-   
+    // this.prepareData(true);
+  }
+
+  componentWillReceiveProps(props){
+    if(props.isLoading !== this.state.displayedData?.isLoading){
+      this.setState({displayedData : props.data, isLoading : props.isLoading})
+    }
   }
 
   gridPageChanged = (e) => {
-    console.log("page event clicked");
+    //console.log("page event clicked");
     // call the api to get the data for the next page by passing the new page
     // Requests.GetData(this.core,this.api).then((data) => {
     //   this.setState({
@@ -418,12 +418,11 @@ export default class EOXGrid extends React.Component {
                   key={key}
                   className="btn btn-primary EOXGrids"
                   onClick={() => {
-                    console.log(" CREATEEE ");
+                    //console.log(" CREATEEE ");
                     {
                       actions.text === "CREATE"
                         ? this.create(this.editForm, true)
-                        : // console.log("created")
-                          console.log("Not CREATED");
+                        : null
                     }
                   }}
                 >
@@ -431,7 +430,7 @@ export default class EOXGrid extends React.Component {
                 </button>
               </abbr>
             ) : (
-              console.log("not adding")
+            null
             )
           )}
         </div>
@@ -457,23 +456,28 @@ export default class EOXGrid extends React.Component {
             }
             filterable={this.filterable}
             filter={this.state.filter}
-            onFilterChange={this.gridFilterChanged}
+            // onFilterChange={this.gridFilterChanged}
             pageSize={this.pageSize}
             {...this.pagerConfig} //Sets grid "pageable" property
-            total={this.getFilteredRowCount()}
-            skip={this.state.pagination.skip}
+            total={this.state.displayedData.total}
+            skip={this.props.skip}
             take={this.state.pagination.take}
-            onPageChange={this.gridPageChanged}
+            // onPageChange={this.gridPageChanged}
             sortable={this.sortable}
             sort={this.state.sort}
-            onSortChange={this.gridSortChanged}
+            // onSortChange={this.gridSortChanged}
             // onRowClick={this.drillDownClick}
             groupable={this.groupable}
             group={this.state.group}
             onGroupChange={this.gridGroupChanged}
             onExpandChange={this.gridGroupExpansionChanged}
-            // onDataStateChange={this.gridDataStageChanged}
+            onDataStateChange={(e) => {
+              if(e?.dataState?.filter?.filters?.find(v => !v.field)) return
+              this.setState({dataState : e.dataState});
+              this.props.dataStateChanged(e)
+            }}
             expandField="expanded"
+            {...this.state.dataState}
           >
             {this.columnConfig.map((columns) =>
               columns.title == "Image" || columns.title == "Banner" ? (
@@ -524,7 +528,7 @@ export default class EOXGrid extends React.Component {
 
     return (
       <>
-        {this.state.displayedData.length === 0 && loadingPanel}
+        {this.state.isLoading && loadingPanel}
         {/* {this.updateDisplayData.visible && this.updateDisplayData.addTemplate} */}
         {this.exportToExcel && (
           <>
@@ -589,13 +593,13 @@ class LogoCell extends React.Component {
               alt="Logo"
               className="text-center circle gridBanner"
             />
-            {console.log(
+            {//console.log(
               this.props.url +
                 "resource/" +
                 this.props.dataItem.media +
                 "?" +
                 new Date()
-            )}
+            }
           </td>
         ) : null;
       } else {

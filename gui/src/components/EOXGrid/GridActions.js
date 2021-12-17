@@ -7,7 +7,6 @@ import Swal from "sweetalert2";
 import MultiSelect from "../../MultiSelect";
 export default class GridActions extends React.Component {
   constructor(props) {
-    console.log("gridactions");
     super(props);
     this.core = this.props.core;
     (this.actionItems = this.props.actionItems),
@@ -91,7 +90,7 @@ export default class GridActions extends React.Component {
       Requests.editFormPushData(this.core, this.editApi, formData).then(
         (response) => {
           if (response.status == "success") {
-            // this.onUpdate({ crudType: "EDIT", index, data: response.data });
+            this.onUpdate({ crudType: "EDIT", index, data: response.data });
             Swal.fire({
               icon: "success",
               title: response.status,
