@@ -177,7 +177,8 @@ export default class Panel extends EventEmitter {
       appmenuElement.style['margin-top'] = '3.5em';
     } else {
       appmenuElement.style['margin-top'] = '0';
-      appmenuElement.style['height'] = "calc(100% - 5.5em)";
+      appmenuElement.style['height'] = "calc(100% - 2.5em)"//"calc(100% - 5.5em)";
+      appmenuElement.style['transform'] = "translateY(-2.5em)"
     }
 
 
