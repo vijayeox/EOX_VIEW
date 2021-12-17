@@ -41,6 +41,7 @@ class Project extends React.Component {
         isPopup: true,
       },
     }),
+    this.noCreateAction= true,
     this.config = {
       height: "100%",
       width: "100%",
@@ -59,7 +60,7 @@ class Project extends React.Component {
       resizable: true,
 
       isDrillDownTable: true,
-
+      subRoute: "project/{{uuid}}/subproject",
       column: [
         {
           title: "Name",
@@ -121,6 +122,44 @@ class Project extends React.Component {
     });
   }
 
+  replaceParams(route, params) {
+    var regex = /\{\{.*?\}\}/g;
+    let m;
+    while ((m = regex.exec(route)) !== null) {
+      m.index === regex.lastIndex ? regex.lastIndex++ : null;
+      m.forEach((match) => {
+        route = route.replace(match, params[match.replace(/\{\{|\}\}/g, "")]);
+      });
+    }
+    return route;
+  }
+
+  renderRow(e, rowConfig) {
+    let subRoute = this.replaceParams(rowConfig.subRoute, e);
+    return (
+      <EOXGrid
+      configuration={this.config}
+      data={this.state.displayChildGrid}
+      core={this.core}
+      isDrillDownTable={this.props.drillDownRequired}
+      actionItems={this.actionItems}
+      api={subRoute}
+      permission={this.state.permission}
+      editForm={form}
+      editApi={this.editApi}
+      createApi={this.createApi}
+      deleteApi={this.deleteApi}
+      addConfig={this.addConfig}
+      expandableApi={(callback) => {
+        GetData(subRoute).then((response) => {
+         callback?.((response.status === "success" && response.data) || [])
+        })
+      }}
+      noCreateAction={this.noCreateAction}
+      // key={Math.random()}
+    />
+    );
+  }
   render() {
     
     return (
@@ -155,6 +194,11 @@ class Project extends React.Component {
                 deleteApi={this.deleteApi}
                 addConfig={this.addConfig}
                 // key={Math.random()}
+                rowTemplate={
+                 
+                     (e) => this.renderRow(e, this.config)
+                   
+                }
               />
             )}
           </div>

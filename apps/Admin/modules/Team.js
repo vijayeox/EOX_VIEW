@@ -137,16 +137,7 @@ class Team extends React.Component {
 
   renderRow(e, rowConfig) {
     let subRoute = this.replaceParams(rowConfig.subRoute, e);
-    // if(this.state.isChildGrid){
-      // GetData(subRoute).then((data) => {
-      //   this.setState({
-      //     displayChildGrid: (data.status === "success" && data.data) || [],
-      //     // isLoading: false,
-      //     isChildGrid:false,
-      //   });
-      // });
       return (
-        // <React.Suspense fallback={<div>Loading...</div>}>
             <EOXGrid
               configuration={this.config}
               data={this.state.displayChildGrid}
@@ -168,15 +159,7 @@ class Team extends React.Component {
               noCreateAction={this.noCreateAction}
               // key={Math.random()}
             />
-        
-        
-        // </React.Suspense>
       );
-    // }
-    // else{
-    //   return null;
-    // }
-    
   }
 
   render() {
@@ -209,11 +192,7 @@ class Team extends React.Component {
                 createApi={this.createApi}
                 deleteApi={this.deleteApi}
                 addConfig={this.addConfig}
-                rowTemplate={
-                  // this.config
-                    // ? (e) => (this.state.isChildGrid) ? this.renderRow(e, this.config) : <h1>hello</h1>
-                    (e) => this.renderRow(e, this.config) 
-                    // : undefined
+                rowTemplate={ (e) => this.renderRow(e, this.config) 
                 }
                 key={Math.random()}
               />
