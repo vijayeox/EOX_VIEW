@@ -61,20 +61,20 @@ export default class Menu extends React.Component {
         type: "internal",
         privileges:"TEAM",
       },
-      {
-        name: "Errorlog",
-        icon: <i className="fad fa-bug" aria-hidden="true"></i>,
-        component: "Errorlog",
-        type: "internal",
-        privileges:"ERROR"
-      },
-      {
-        name: "Goals",
-        icon: <i className="fad fa-bullseye-arrow" aria-hidden="true"></i>,
-        component: "Goal",
-        type: "internal",
-        privileges:"KRA"
-      },
+      // {
+      //   name: "Errorlog",
+      //   icon: <i className="fad fa-bug" aria-hidden="true"></i>,
+      //   component: "Errorlog",
+      //   type: "internal",
+      //   privileges:"ERROR"
+      // },
+      // {
+      //   name: "Goals",
+      //   icon: <i className="fad fa-bullseye-arrow" aria-hidden="true"></i>,
+      //   component: "Goal",
+      //   type: "internal",
+      //   privileges:"KRA"
+      // },
       {
         name: "Projects",
         icon: <i className="fad fa-cogs" aria-hidden="true"></i>,
