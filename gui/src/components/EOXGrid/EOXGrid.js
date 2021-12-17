@@ -130,41 +130,8 @@ export default class EOXGrid extends React.Component {
   }
 
   //updating the data on delete
-  updateDisplayData = ({
-    crudType,
-    deleteIndex,
-    index,
-    data,
-  }) => {
-    if (crudType == "DELETE") {
-      const displayedData = this.state.displayedData;
-      displayedData.data.splice(deleteIndex, 1);
-      displayedData.total--;
-      this.setState({ displayedData });
-    }
-    if (crudType == "RETRY") {
-      const displayedData = this.state.displayedData;
-      //console.log("retry update eoxgrids");
-      this.setState({ displayedData });
-    }
-    if (crudType == "RESET") {
-      const displayedData = this.state.displayedData;
-      //console.log("reset update eoxgrids");
-      this.setState({ displayedData });
-    }
-    if (crudType == "ADD") {
-      // const displayedData = this.state.displayedData;
-      //console.log("Addition  eoxgrids");
-      // //console.log(visible,addTemplate);
-    }
-    if (crudType == "EDIT") {
-      const displayedData = { ...this.state.displayedData };
-      displayedData.data[index] = { ...displayedData.data[index], ...data };
-      this.setState({ displayedData });
-    }
-    if (crudType == "CREATE") {
-      this.setState({ displayedData });
-    }
+  updateDisplayData = () => {
+    this.props.dataStateChanged({dataState : {skip : this.props.skip, take : this.pageSize, filter: null, group: null, sort: null}})
   };
 
   async handleCreateSubmit(formData, createFlag) {
@@ -474,6 +441,7 @@ export default class EOXGrid extends React.Component {
             onDataStateChange={(e) => {
               if(e?.dataState?.filter?.filters?.find(v => !v.field)) return
               this.setState({dataState : e.dataState});
+              console.log('datastate-',e)
               this.props.dataStateChanged(e)
             }}
             expandField="expanded"

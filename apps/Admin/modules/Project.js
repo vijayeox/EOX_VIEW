@@ -41,7 +41,7 @@ class Project extends React.Component {
         isPopup: true,
       },
     }),
-    this.noCreateAction= true,
+    this.noCreateAction= false,
     this.config = {
       height: "100%",
       width: "100%",
@@ -76,7 +76,7 @@ class Project extends React.Component {
         skip : 0,
         isLoading: true,
         accountData: [],
-
+        displayChildGrid: [],
         selectedOrg: this.props.userProfile.accountId,
 
         permission: {
