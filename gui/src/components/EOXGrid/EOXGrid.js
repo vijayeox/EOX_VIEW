@@ -138,7 +138,7 @@ export default class EOXGrid extends React.Component {
     if (formData) {
       Requests.createFormPushData(this.core, this.createApi, formData).then(
         (response) => {
-          if (response.status == "success") {
+          if (response.status === "success") {
             Swal.fire({
               icon: "success",
               title: response.status,
@@ -146,13 +146,15 @@ export default class EOXGrid extends React.Component {
             });
             this.create(null);
           }
-          this.create(null);
+          else{
           Swal.fire({
             icon: "error",
             title: response.status,
             showConfirmButton: true,
           });
+          this.create(null);
         }
+      }
       );
     } else {
       this.create(null);

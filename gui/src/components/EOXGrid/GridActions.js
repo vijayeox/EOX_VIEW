@@ -29,7 +29,7 @@ export default class GridActions extends React.Component {
   delete = (data, index) => {
     Requests.DeleteEntry(this.core, this.deleteApi, data.uuid).then(
       (response) => {
-        response.status == "success"
+        response.status === "success"
           ? (this.onUpdate({ crudType: "DELETE", index }),
             Swal.fire({
               icon: "success",
@@ -66,7 +66,7 @@ export default class GridActions extends React.Component {
   //Reset Password-Users
   resetPassword = (data, index) => {
     Requests.resetPasswordCall(this.core, data.username).then((response) => {
-      response.status == "success"
+      response.status === "success"
         ? (this.onUpdate({ crudType: "RESET", index }),
           Swal.fire({
             icon: "success",
