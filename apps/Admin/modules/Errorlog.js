@@ -9,10 +9,9 @@ class Errorlog extends React.Component {
     (this.actionItems = {
       retry:{
         type:"button",
-        api:"errorlog",
         icon:"fad fa-redo",
         text:"RETRY",
-        ispopup:true,
+        title:"Reload "
       }
     }),
     this.config = {
@@ -31,9 +30,7 @@ class Errorlog extends React.Component {
       },
       groupable: true,
       resizable: true,
-
       isDrillDownTable: true,
-
       column: [
         {
           title: "ID",
@@ -57,12 +54,10 @@ class Errorlog extends React.Component {
         },
       ],
     },
-
     (this.state = {
       skip : 0,
       isLoading: true,
-      accountData: [],
-      
+      accountData: [], 
       permission: {
           canAdd: this.props.userProfile.privileges.MANAGE_TEAM_CREATE,
           canEdit: this.props.userProfile.privileges.MANAGE_TEAM_WRITE,
@@ -86,7 +81,6 @@ class Errorlog extends React.Component {
     })
   }
 
-
   dataStateChanged({dataState : { filter, group, skip, sort, take}}){
     this.setState({ isLoading : true });
     GetData(this.api+`?filter=[{"skip":${skip},"take":${this.config.pageSize}, "filter" : ${JSON.stringify(filter)}}]`).then((data) => {
@@ -104,7 +98,6 @@ class Errorlog extends React.Component {
   }
 
   render() {
-   
     return (
       <div style={{ height: "inherit" }}>
          <TitleBar
@@ -113,8 +106,7 @@ class Errorlog extends React.Component {
           args={this.core}
         />
         <React.Suspense fallback={<div>Loading...</div>}>
-          <div >
-          {/* {!this.state.isLoading && ( */}
+          <div>
               <EOXGrid
                 configuration={this.config}
                 data={this.state.accountData}
@@ -128,10 +120,8 @@ class Errorlog extends React.Component {
                 dataStateChanged={this.dataStateChanged.bind(this)}
                 isLoading={this.state.isLoading}
               />
-            {/* )} */}
           </div>
         </React.Suspense>
-        {/* {this.state.userInEdit && this.inputTemplate} */}
       </div>
     );
   }

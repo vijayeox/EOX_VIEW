@@ -11,72 +11,62 @@ class Team extends React.Component {
     (this.actionItems = {
       edit: {
         type: "button",
-        api: "account/edit",
         icon: "fad fa-pencil",
         text: "EDIT",
         title: "Edit Team",
-        isPopup: true,
       },
       delete: {
         type: "button",
-        api: "account",
         icon: "fad fa-trash",
         text: "DELETE",
         title: "Delete Team",
-        isPopup: true,
       },
       add: {
         type: "button",
-        api: "account/add",
         icon: "fad fa-users",
         text: "ADD",
         title: "Add Members",
-        isPopup: true,
       },
       create: {
         type: "button",
-        api: "account/add",
         icon: " fad fa-plus",
         text: "CREATE",
         title: "Create New",
-        isPopup: true,
       },
     }),
-    this.noCreateAction= false,
-      (this.config = {
-        height: "100%",
-        width: "100%",
-        filterable: true,
-        reorderable: true,
-        sortable: true,
-        // sort:true,
-        pageSize: 10,
-        // pageable:true,
-        pageable: {
-          skip: 0,
-          // pageSize: 10,
-          buttonCount: 3,
+    (this.noCreateAction = false),
+    (this.config = {
+      height: "100%",
+      width: "100%",
+      filterable: true,
+      reorderable: true,
+      sortable: true,
+      // sort:true,
+      pageSize: 10,
+      // pageable:true,
+      pageable: {
+        skip: 0,
+        // pageSize: 10,
+        buttonCount: 3,
+      },
+      groupable: true,
+      resizable: true,
+      isDrillDownTable: true,
+      subRoute: "team/{{uuid}}/subteam",
+      column: [
+        {
+          title: "Name",
+          field: "name",
         },
-        groupable: true,
-        resizable: true,
-
-        isDrillDownTable: true,
-
-        subRoute: "team/{{uuid}}/subteam",
-        column: [
-          {
-            title: "Name",
-            field: "name",
-          },
-          {
-            title: "Description",
-            field: "description",
-          },
-        ],
-      });
+        {
+          title: "Description",
+          field: "description",
+        },
+      ],
+    });
 
     (this.state = {
-      skip : 0,
+      skip: 0,
       isLoading: true,
       accountData: [],
       displayChildGrid: [],
@@ -87,9 +77,8 @@ class Team extends React.Component {
         canEdit: this.props.userProfile.privileges.MANAGE_TEAM_WRITE,
         canDelete: this.props.userProfile.privileges.MANAGE_TEAM_WRITE,
       },
-      // teamInEdit: undefined,
     }),
-    this.api = "account/" + this.state.selectedOrg + "/teams";
+      (this.api = "account/" + this.state.selectedOrg + "/teams");
     this.editApi = "team";
     this.createApi = "account/" + this.state.selectedOrg + "/team";
     this.deleteApi = "account/" + this.state.selectedOrg + "/team";
@@ -115,37 +104,47 @@ class Team extends React.Component {
     });
   };
 
-  
   componentDidMount() {
-    GetData(this.api+`?filter=[{"skip":0,"take":${this.config.pageSize}}]`).then((data) => {
-      this.setState({
-        accountData: data?.status === 'success' ? data : {data : [], total : 0},
-        isLoading: false,
+    GetData(this.api + `?filter=[{"skip":0,"take":${this.config.pageSize}}]`)
+      .then((data) => {
+        this.setState({
+          accountData:
+            data?.status === "success" ? data : { data: [], total: 0 },
+          isLoading: false,
+        });
+      })
+      .catch(() => {
+        this.setState({
+          accountData: { data: [], total: 0 },
+          isLoading: false,
+        });
       });
-    }).catch(() => {
-      this.setState({
-        accountData: {data : [], total : 0},
-        isLoading : false
-      });
-    })
   }
 
-
-  dataStateChanged({dataState : { filter, group, skip, sort, take}}){
-    this.setState({ isLoading : true });
-    GetData(this.api+`?filter=[{"skip":${skip},"take":${this.config.pageSize}, "filter" : ${JSON.stringify(filter)}}]`).then((data) => {
-      this.setState({
-        accountData: data?.status === 'success' ? data : {data : [], total : 0},
-        skip,
-        isLoading : false
+  dataStateChanged({ dataState: { filter, group, skip, sort, take } }) {
+    this.setState({ isLoading: true });
+    GetData(
+      this.api +
+        `?filter=[{"skip":${skip},"take":${
+          this.config.pageSize
+        }, "filter" : ${JSON.stringify(filter)}}]`
+    )
+      .then((data) => {
+        this.setState({
+          accountData:
+            data?.status === "success" ? data : { data: [], total: 0 },
+          skip,
+          isLoading: false,
+        });
+      })
+      .catch(() => {
+        this.setState({
+          accountData: { data: [], total: 0 },
+          isLoading: false,
+        });
       });
-    }).catch(() => {
-      this.setState({
-        accountData: {data : [], total : 0},
-        isLoading : false
-      });
-    })
   }
+
   replaceParams(route, params) {
     var regex = /\{\{.*?\}\}/g;
     let m;
@@ -160,29 +159,29 @@ class Team extends React.Component {
 
   renderRow(e, rowConfig) {
     let subRoute = this.replaceParams(rowConfig.subRoute, e);
-      return (
-            <EOXGrid
-              configuration={this.config}
-              data={this.state.displayChildGrid}
-              core={this.core}
-              isDrillDownTable={this.props.drillDownRequired}
-              actionItems={this.actionItems}
-              api={subRoute}
-              permission={this.state.permission}
-              editForm={form}
-              editApi={this.editApi}
-              createApi={this.createApi}
-              deleteApi={this.deleteApi}
-              addConfig={this.addConfig}
-              expandableApi={(callback) => {
-                GetData(subRoute).then((response) => {
-                 callback?.((response.status === "success" && response.data) || [])
-                })
-              }}
-              noCreateAction={this.noCreateAction}
-              // key={Math.random()}
-            />
-      );
+    return (
+      <EOXGrid
+        configuration={this.config}
+        data={this.state.displayChildGrid}
+        core={this.core}
+        isDrillDownTable={this.props.drillDownRequired}
+        actionItems={this.actionItems}
+        api={subRoute}
+        permission={this.state.permission}
+        editForm={form}
+        editApi={this.editApi}
+        createApi={this.createApi}
+        deleteApi={this.deleteApi}
+        addConfig={this.addConfig}
+        expandableApi={(callback) => {
+          GetData(subRoute).then((response) => {
+            callback?.((response.status === "success" && response.data) || []);
+          });
+        }}
+        noCreateAction={this.noCreateAction}
+        // key={Math.random()}
+      />
+    );
   }
 
   render() {
@@ -200,32 +199,26 @@ class Team extends React.Component {
           }
         />
         <React.Suspense fallback={<div>Loading...</div>}>
-          {/* <div>
-            {!this.state.isLoading && ( */}
-              <EOXGrid
-                configuration={this.config}
-                data={this.state.accountData}
-                core={this.core}
-                isDrillDownTable={this.props.drillDownRequired}
-                actionItems={this.actionItems}
-                api={this.api}
-                permission={this.state.permission}
-                editForm={form}
-                editApi={this.editApi}
-                createApi={this.createApi}
-                deleteApi={this.deleteApi}
-                addConfig={this.addConfig}
-                rowTemplate={ (e) => this.renderRow(e, this.config) 
-                }
-                // key={Math.random()}
-                skip={this.state.skip}
-                dataStateChanged={this.dataStateChanged.bind(this)}
-                isLoading={this.state.isLoading}
-              />
-            {/* )}
-          </div> */}
+          <EOXGrid
+            configuration={this.config}
+            data={this.state.accountData}
+            core={this.core}
+            isDrillDownTable={this.props.drillDownRequired}
+            actionItems={this.actionItems}
+            api={this.api}
+            permission={this.state.permission}
+            editForm={form}
+            editApi={this.editApi}
+            createApi={this.createApi}
+            deleteApi={this.deleteApi}
+            addConfig={this.addConfig}
+            rowTemplate={(e) => this.renderRow(e, this.config)}
+            // key={Math.random()}
+            skip={this.state.skip}
+            dataStateChanged={this.dataStateChanged.bind(this)}
+            isLoading={this.state.isLoading}
+          />
         </React.Suspense>
-        {/* {this.state.userInEdit && this.inputTemplate} */}
       </div>
     );
   }

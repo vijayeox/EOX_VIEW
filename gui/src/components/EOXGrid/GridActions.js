@@ -2,7 +2,6 @@ import React from "react";
 import ReactDOM from "react-dom";
 import Requests from "../../Requests";
 import FormRender from "../App/FormRender";
-import countryStateList from "../data/country-state-codes";
 import Swal from "sweetalert2";
 import MultiSelect from "../../MultiSelect";
 export default class GridActions extends React.Component {
@@ -20,10 +19,8 @@ export default class GridActions extends React.Component {
     this.gridId = this.props.gridId;
     this.addConfig = this.props.addConfig;
     this.onUpdate = this.props.onUpdate.bind(this);
-    let countryList = countryStateList.map((item) => item.country);
     this.state = {
       visible: false,
-      countryList: countryList,
     };
     this.toggleDialog = this.toggleDialog.bind(this);
   }
@@ -85,7 +82,6 @@ export default class GridActions extends React.Component {
   };
 
   async handleSubmit(formData, index, createFlag) {
-    // console.log(formData);
     if (formData) {
       Requests.editFormPushData(this.core, this.editApi, formData).then(
         (response) => {
@@ -96,6 +92,7 @@ export default class GridActions extends React.Component {
               title: response.status,
               showConfirmButton: true,
             });
+            this.edit(null);
           } else {
             this.edit(null);
             Swal.fire({
@@ -227,7 +224,6 @@ export default class GridActions extends React.Component {
               this.addUsersTemplate,
               document.getElementById("eox-grid-form")
             );
-            console.log(this.state);
           } else {
             return null;
           }
@@ -238,7 +234,6 @@ export default class GridActions extends React.Component {
           this.addUsersTemplate,
           document.getElementById("eox-grid-form")
         );
-        console.log(this.state);
       }
     } else {
       let addUsersTemplate = React.createElement(MultiSelect, {
@@ -259,12 +254,10 @@ export default class GridActions extends React.Component {
         addUsersTemplate,
         document.getElementById("eox-grid-form")
       );
-      console.log(this.state);
     }
   };
 
   toggleDialog() {
-    console.log(this.state);
     ReactDOM.unmountComponentAtNode(document.getElementById("eox-grid-form"));
     this.setState({
       visible: !this.state.visible,
@@ -347,12 +340,10 @@ export default class GridActions extends React.Component {
                 onClick={(e) => {
                   var tr = e.target.closest("tr");
                   let index = tr.getAttribute("data-grid-row-index");
-                  // console.log(this.dataItems);
                   // console.log(this.dataItems.data[index]);
-                  console.log("permissions", this.permission);
                   {
                     actions.text === "DELETE" && this.permission.canDelete
-                      ? // e.preventDefault(),
+                      ? 
                         Swal.fire({
                           title: "Are you sure?",
                           text: "Do you really want to delete the record? This cannot be undone.",
@@ -371,13 +362,13 @@ export default class GridActions extends React.Component {
                             this.delete(this.dataItems.data[index], index);
                           }
                         })
-                      : // this.delete(this.dataItems.data[index], index)
-                        console.log("Not Deleted");
+                      : " "
+                        
                   }
                   {
                     actions.text === "RETRY"
                       ? this.retry(this.dataItems.data[index], index)
-                      : console.log("not retry");
+                      : " "
                   }
                   {
                     actions.text === "RESET"
@@ -402,27 +393,24 @@ export default class GridActions extends React.Component {
                             );
                           }
                         })
-                      : console.log(" not reset");
+                      : " "
                   }
 
                   {
                     actions.text === "ADD" && this.permission.canAdd
-                      ? // console.log("Not added")
-                        // (
-                        (this.add(this.dataItems.data[index], this.addConfig),
+                      ? (this.add(this.dataItems.data[index], this.addConfig),
                         this.state.visible)
-                      : // this.state.visible && this.multiselectElement)
-                        console.log("Not added");
+                      : " "
                   }
                   {
                     actions.text === "EDIT" && this.permission.canEdit
-                      ? // console.log("edited")
+                      ? 
                         this.edit(
                           this.dataItems.data[index],
                           this.editForm,
                           index
                         )
-                      : console.log("Not edited");
+                      : " "
                   }
                 }}
               >

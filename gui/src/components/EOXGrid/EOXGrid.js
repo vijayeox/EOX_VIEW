@@ -129,26 +129,22 @@ export default class EOXGrid extends React.Component {
     }
   }
 
-  //updating the data on delete
+  //updating the data 
   updateDisplayData = () => {
     this.props.dataStateChanged({dataState : {skip : this.props.skip, take : this.pageSize, filter: null, group: null, sort: null}})
   };
 
   async handleCreateSubmit(formData, createFlag) {
-    //console.log("on create submittt----------------");
-    //console.log(formData);
     if (formData) {
       Requests.createFormPushData(this.core, this.createApi, formData).then(
         (response) => {
           if (response.status == "success") {
-            // this.onUpdate({ crudType: "CREATE", index, data: response.data });
-            //console.log("successfully created ", response);
-            //console.log("creteflag ", createFlag);
             Swal.fire({
               icon: "success",
               title: response.status,
               showConfirmButton: true,
             });
+            this.create(null);
           }
           this.create(null);
           Swal.fire({
@@ -292,64 +288,6 @@ export default class EOXGrid extends React.Component {
     }
   }
 
-  gridPageChanged = (e) => {
-    //console.log("page event clicked");
-    // call the api to get the data for the next page by passing the new page
-    // Requests.GetData(this.core,this.api).then((data) => {
-    //   this.setState({
-    //     displayedData: (data.status === "success" && data.data) || [],
-    //   });
-    // });
-    let pagination = {
-      skip: e.page.skip,
-      take: e.page.take,
-    };
-    this.setState(
-      {
-        pagination: pagination,
-      },
-      () => {
-        this.prepareData(false);
-      }
-    );
-  };
-
-  gridFilterChanged = (e) => {
-    if (e.filter == null) {
-      this.setState(
-        {
-          filter: e.filter,
-          exportFilterData: this.allData,
-        },
-        () => {
-          this.prepareData(true);
-        }
-      );
-    } else {
-      this.setState(
-        {
-          filter: e.filter,
-          exportFilterData: e.target.props.data,
-        },
-        () => {
-          this.prepareData(true);
-        }
-      );
-    }
-  };
-
-  gridSortChanged = (e) => {
-    this.allData = orderBy(this.allData, e.sort);
-    this.setState(
-      {
-        sort: e.sort,
-      },
-      () => {
-        this.prepareData(true);
-      }
-    );
-  };
-
   gridGroupChanged = (e) => {
     this.setState(
       {
@@ -385,7 +323,6 @@ export default class EOXGrid extends React.Component {
                   key={key}
                   className="btn btn-primary EOXGrids"
                   onClick={() => {
-                    //console.log(" CREATEEE ");
                     {
                       actions.text === "CREATE"
                         ? this.create(this.editForm, true)
@@ -441,7 +378,7 @@ export default class EOXGrid extends React.Component {
             onDataStateChange={(e) => {
               if(e?.dataState?.filter?.filters?.find(v => !v.field)) return
               this.setState({dataState : e.dataState});
-              console.log('datastate-',e)
+              // console.log('datastate-',e)
               this.props.dataStateChanged(e)
             }}
             expandField="expanded"
@@ -497,7 +434,6 @@ export default class EOXGrid extends React.Component {
     return (
       <>
         {this.state.isLoading && loadingPanel}
-        {/* {this.updateDisplayData.visible && this.updateDisplayData.addTemplate} */}
         {this.exportToExcel && (
           <>
             <div
@@ -516,8 +452,6 @@ export default class EOXGrid extends React.Component {
           </>
         )}
         {!this.exportToExcel && gridTag}
-        {/* {this.state.visible && this.addUsersTemplate} */}
-        {/* {gridTag} */}
       </>
     );
   }
@@ -561,7 +495,7 @@ class LogoCell extends React.Component {
               alt="Logo"
               className="text-center circle gridBanner"
             />
-            {//console.log(
+            {
               this.props.url +
                 "resource/" +
                 this.props.dataItem.media +
