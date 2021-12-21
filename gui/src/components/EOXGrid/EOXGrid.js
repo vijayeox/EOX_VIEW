@@ -144,16 +144,17 @@ export default class EOXGrid extends React.Component {
               title: response.status,
               showConfirmButton: true,
             });
+            this.updateDisplayData({ crudType: "CREATE", data: response.data });
             this.create(null);
           }
-          else{
-          Swal.fire({
-            icon: "error",
-            title: response.status,
-            showConfirmButton: true,
-          });
-          this.create(null);
-        }
+          else if(response.status === "error"){
+            Swal.fire({
+              icon: "error",
+              title: response.status + "(" + response.message +")",
+              showConfirmButton: true,
+            });
+            this.create(null);
+          }
       }
       );
     } else {
