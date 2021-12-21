@@ -38,7 +38,7 @@ export default class LeftMenuTemplate extends React.Component {
   }
 
   componentDidMount(){
-
+    this.getReactComponents();
   }
   getReactComponents(){
     document.getElementById(this.leftMenuTemplateId).addEventListener('GET_REACT_COMPONENT', 

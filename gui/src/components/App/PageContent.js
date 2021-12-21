@@ -23,7 +23,7 @@ import DashboardManager from "../../DashboardManager";
 import ActivityLog from "./ActivityLog";
 import KanbanView from "../Kanban/KanbanRoutes";
 import CustomGoogleMapComponent from "../googlemapfinal/App";
-
+import ReactComponent from "./ReactComponent";
 
 class PageContent extends React.Component {
   constructor(props) {
@@ -690,6 +690,10 @@ class PageContent extends React.Component {
       } else if (item.type == "GoogleMapViewer") {
         content.push(
           <CustomGoogleMapComponent core={this.core} appId={this.appId}/>
+        );
+      } else if(item.type == "ReactComponent"){
+        content.push(
+          <ReactComponent core={this.core} appId={this.appId} data={item.content}/>
         );
       } else {
         if (this.extGUICompoents && this.extGUICompoents[item.type]) {
