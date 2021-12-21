@@ -498,13 +498,13 @@ class LogoCell extends React.Component {
               alt="Logo"
               className="text-center circle gridBanner"
             />
-            {
+            {/* {
               this.props.url +
                 "resource/" +
                 this.props.dataItem.media +
                 "?" +
                 new Date()
-            }
+            } */}
           </td>
         ) : null;
       } else {
