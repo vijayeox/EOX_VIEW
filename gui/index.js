@@ -20,6 +20,9 @@ import * as KendoReactWindow from "@progress/kendo-react-dialogs";
 import * as KendoReactGrid from "@progress/kendo-react-grid";
 import * as KendoReactInput from "@progress/kendo-react-inputs";
 // import * as KendoReactRipple from "@progress/kendo-react-ripple";
+import { library, config } from '@fortawesome/fontawesome-svg-core'
+import { fal } from '@fortawesome/pro-light-svg-icons'
+
 import * as Moment from "moment";
 import * as MomentTZ from "moment-timezone";
 import * as PopupDialog from 'sweetalert2';
@@ -72,6 +75,7 @@ const DropDown = (props) => <LazyLoad component={lazy(() => import('./src/compon
 
 // const OX_Grid = lazy(() => import("./src/OX_Grid"));
 // const GridTemplate = lazy(() => import("./src/GridTemplate"));
+library.add(fal)
 
 export {
   EOXApplication,

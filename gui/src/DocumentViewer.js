@@ -134,7 +134,23 @@ export default class DocumentViewer extends Component {
 
     return response;
   }
-
+  appendUrlIfNotExist(attachmentTypes) {
+    try {
+      for (let attachmentType in attachmentTypes) {
+        let attachments = attachmentTypes[attachmentType]?.value || [];
+        attachments?.forEach((attachment, index) => {
+          if (!attachment.url && attachment.file) {
+            attachments[index]["url"] = `${this.baseUrl}${attachment.file}`
+            attachments[index]["id"] =
+              attachments[index]["id"] || attachment.file;
+          }
+          if(!attachment?.id || attachment?.id?.trim()?.length === 0){
+            attachments[index]["id"] = `${math.random()}${math.random()}`;
+          }
+        });
+      }
+    } catch (e) {}
+  }
   getDocumentsList = () => {
     if (this.props.url) {
       this.loader.show();
@@ -144,6 +160,7 @@ export default class DocumentViewer extends Component {
         this.props.url
       ).then((response) => {
         if (response.data) {
+          this.appendUrlIfNotExist(response.data);
           var documentsList = {};
           var folderType = {};
           var documentTypes = Object.keys(response.data);
@@ -225,6 +242,7 @@ export default class DocumentViewer extends Component {
                 <Accordion.Collapse eventKey={docType}>
                   <Card.Body>
                     {this.state.documentsList[docType].map((doc, i) => {
+                      const fileName = doc.name?.trim()?.length > 0 && doc.name || doc.originalName;
                       return (
                         <Card
                           className="docItems"
@@ -260,10 +278,10 @@ export default class DocumentViewer extends Component {
                                 onClick={e => this.navigateOrDownload(e, doc)}
                                 rel="noopener noreferrer"
                               >
-                                {doc.originalName &&
-                                doc.originalName.length > 30
-                                  ? this.chopFileName(doc.originalName)
-                                  : doc.originalName}
+                                {fileName &&
+                                fileName.length > 30
+                                  ? this.chopFileName(fileName)
+                                  : fileName}
                               </a>
                             </p>
                           </div>

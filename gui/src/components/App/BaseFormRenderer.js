@@ -188,25 +188,24 @@ class BaseFormRenderer extends React.Component {
             this.props.customSaveForm(that.cleanData(submission.data));
             next(null);
           } else {
-              // if(that.props.updateFormData){
-              //     return ;
-              // }
-            try {var response = await that
-              .saveForm(null, that.cleanData(submission.data))
-              .then(function (response) {
-                if (response.status == "success") {
-                  next(null);
-                } else {
-                  next([
-                    response.message
-                      ? response.message
-                      : response.errors[0].message,
-                  ]);
-                }
-              });}
-              catch(e){
-
-              }
+            // if(that.props.updateFormData){
+            //     return ;
+            // }
+            try {
+              var response = await that
+                .saveForm(null, that.cleanData(submission.data))
+                .then(function (response) {
+                  if (response.status == "success") {
+                    next(null);
+                  } else {
+                    next([
+                      response.message
+                        ? response.message
+                        : response.errors[0].message,
+                    ]);
+                  }
+                });
+            } catch (e) {}
           }
         } else {
           that.state.currentForm.triggerChange();
@@ -215,6 +214,23 @@ class BaseFormRenderer extends React.Component {
       },
     };
     return hook;
+  }
+
+  circularToJson(formData) {
+    var circ = {};
+    circ.circ = formData;
+    var cache = [];
+    JSON.stringify(circ, (key, value) => {
+      if (typeof value === "object" && value !== null) {
+        // Duplicate reference found, discard key
+        if (cache.includes(value)) return;
+
+        // Store value in our collection
+        cache.push(value);
+      }
+      return value;
+    });
+    cache = null;
   }
 
   cleanData(formData) {
@@ -523,6 +539,7 @@ class BaseFormRenderer extends React.Component {
       ...params,
       bos: this.getBOSData(),
     };
+    delegateParams = this.circularToJson(delegateParams);
     if (this.hasCore) {
       return await this.helper.request(
         "v1",

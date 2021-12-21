@@ -15,7 +15,7 @@ function CommentsAttachments(props) {
   const [showModal, setShowModal] = useState(false);
   useEffect(() => {
     setCommentPath(
-      `${props.config.wrapper.url}comment/${props.commentData.comment_id}/attachment/${props.commentData.fileName}`
+      `${props.config.wrapper.url}comment/${props.commentData.comment_id}/attachment/${props.commentData.fileName[props.index]}`
     );
   }, []);
     var extension = props.commentData.fileName[props.index]

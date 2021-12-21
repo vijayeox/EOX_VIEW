@@ -9,7 +9,7 @@ export class DataLoader extends React.Component {
     this.core = this.props.args;
     this.state = {
       url: this.props.url,
-      dataState: this.props.dataState
+      dataState: this.props.dataState,
     };
     this.init = { method: "GET", accept: "application/json", headers: {} };
     this.timeout = null;
@@ -62,8 +62,9 @@ export class DataLoader extends React.Component {
   }
 
   triggerGetCall(hideLoader) {
-    hideLoader ? null : this.loader.showGrid();
+    hideLoader ? null : this.loader.show();
     this.pending = toODataString(this.props.dataState);
+    console.log("this.props",this.props, this.pending);
     this.getData(this.props.url).then((response) => {
       this.lastSuccess = this.pending;
       this.pending = undefined;
@@ -85,7 +86,7 @@ export class DataLoader extends React.Component {
       } else {
         this.requestDataIfNeeded();
       }
-      hideLoader ? null : this.loader.destroyGrid();
+      hideLoader ? null : this.loader.destroy();
     });
   }
 
@@ -145,6 +146,7 @@ export class DataLoader extends React.Component {
           "post"
         )
         : await helper.request("v1", "/" + route, {}, "get");
+
       if (data.status == "success") {
         return data;
       } else {
