@@ -98,8 +98,8 @@ export default function Work(props) {
   }, [props])
 
   return (
-    <Container fluid id="kanbanBoard">
-      <ListGroup.Item>
+    <Container fluid>
+      <ListGroup.Item style={{ width:"18vw" }}>
         <Droppable
           droppableId={props.info.value}
           key={props.index}
@@ -112,17 +112,17 @@ export default function Work(props) {
                 style={{
                   background: snapshot.isDraggingOver ? "lightblue" : "white",
                   padding: 0,
-                  width: "19vw",
+                  width: "100%",
                   minHeight: 400,
                   top: "50%"
                 }}
               >
                 <ListGroup.Item
-                  className="itemCard"
+                  className="itemCard k_itemCard"
                   style={{
                     border: "0",
                     borderBottom: '2px solid black',
-                    width: "18vw !important"
+                    width: "100%"
                   }}
                 >
                   <p>
@@ -132,7 +132,7 @@ export default function Work(props) {
                   </p>
                 </ListGroup.Item>
 
-                <div className="listDiv">
+                <div className="listDiv k_listDiv">
                   {List != undefined ?
                     List.map((listItem, index) => {
                       if (List.length === index + 1) {

@@ -20,7 +20,6 @@ export default function WorkItem(props) {
   const CardInfo = props.cardInfo;
 
   return (
-    <Container id="kanbanBoard">
       <Draggable
         key={CardInfo.myId}
         draggableId={CardInfo.uuid}
@@ -42,7 +41,7 @@ export default function WorkItem(props) {
                 ...provided.draggableProps.style,
               }}
             >
-              <Card className="taskcards" style={{ border: "0" }}>
+              <Card className="taskcards k_taskcards" style={{ border: "0" }}>
                 <CardBody
                   style={{
                     width: "100%",
@@ -51,14 +50,14 @@ export default function WorkItem(props) {
                     border: "0",
                   }}
                 >
-                  <div className="taskcardDisplay">
+                  <div className="k_taskcardDisplay">
                     <CardImg
                       style={{
                         margin: "5px",
                         padding: "auto",
                         borderRadius: "50%",
                       }}
-                      className="img"
+                      className="img k_img"
                       src="https://source.unsplash.com/user/c_v_r/100x100"
                     />
                     {/*<FontAwesomeIcon
@@ -66,11 +65,11 @@ export default function WorkItem(props) {
                     icon={['fal', 'user-circle']}
                      /> */}
 
-                    <p className="taskcard-p">{CardInfo.created_by}</p>
+                    <p className="k_taskcard-p">{CardInfo.created_by}</p>
                   </div>
                   <div>
-                    <label className="taskcard-label">
-                      <label className="taskcard-sublabel"> Due:</label>{" "}
+                    <label className="k_taskcard-label">
+                      <label className="k_taskcard-sublabel"> Due:</label>{" "}
                       {CardInfo.date_created.substring(0, 10)}
                     </label>
                     <FontAwesomeIcon
@@ -89,6 +88,5 @@ export default function WorkItem(props) {
           );
         }}
       </Draggable>
-    </Container>
   );
 }

@@ -41,7 +41,7 @@ function ColumnCard(props) {
         return Count
     }
     return (
-        <Container fluid id="kanbanBoard">
+        <Container fluid>
             <Card style={{
                 border: '0',
                 boxShadow: '0px 3px 2px lightgrey',
@@ -49,23 +49,22 @@ function ColumnCard(props) {
             }}>
 
                 <Card.Body>
-                    <Container fluid>
-                        <Row>
-                            <Col lg="auto" sm="auto" md="auto" >
-                                <FontAwesomeIcon
-                                    className="cardIcon"
-                                    style={{ color: colorHandler(props.statusCardId) }}
-                                    size='small'
-                                    icon={['fal', 'history']} />
-                            </Col>
-                            <Col lg="auto" sm="auto" md="auto" style={{ padding: '0' }}>
-                                <p>{apiForCount()}</p>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col lg="12"><h2>{props.statusInfo.label}</h2></Col>
-                        </Row>
-                    </Container>
+                    <Row>
+                        <Col lg="auto" sm="auto" md="auto" style={{ float: 'left' }}>
+                            <FontAwesomeIcon
+                                className="cardIcon k_cardIcon"
+                                style={{ color: colorHandler(props.statusCardId) }}
+                                size='small'
+                                icon={['fal', 'history']} />
+                        </Col>
+                        <Col lg="auto" sm="auto" md="auto" style={{ float: 'left' }}>
+                            <p>{apiForCount()}</p>
+                        </Col>
+                        <Col lg="auto" sm="auto" md="auto" style={{ float: 'left' }}>
+                            <h2>{props.statusInfo.label}</h2>
+                        </Col>
+                    </Row>
+                    {/* <Row></Row> */}
                 </Card.Body>
             </Card>
         </Container>
