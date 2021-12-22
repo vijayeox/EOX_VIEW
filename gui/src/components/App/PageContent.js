@@ -683,7 +683,7 @@ class PageContent extends React.Component {
             disableControls={item?.disableControls}
           />
         );
-      } else if(item.type === 'CustomPage'){
+      } else if (item.type === 'CustomPage') {
         var fileId = this.props.fileId ? this.props.fileId : this.state.currentRow.uuid;
         return content.push(
           <DynamicTemplateViewer
@@ -692,14 +692,14 @@ class PageContent extends React.Component {
             core={this.core}
             data={item.content}
             rowData={this.state.currentRow}
-          />
+          />);
       } else if (item.type == "KanbanViewer") {
         content.push(
-          <KanbanView core={this.core} appId={this.appId}/>
+          <KanbanView core={this.core} appId={this.appId} />
         );
       } else if (item.type == "GoogleMapViewer") {
         content.push(
-          <CustomGoogleMapComponent core={this.core} appId={this.appId}/>
+          <CustomGoogleMapComponent core={this.core} appId={this.appId} />
         );
       } else {
         if (this.extGUICompoents && this.extGUICompoents[item.type]) {
