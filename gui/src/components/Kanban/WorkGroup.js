@@ -3,7 +3,6 @@ import ListGroup from "react-bootstrap/ListGroup";
 import { Droppable } from "react-beautiful-dnd";
 import "./WorkGroup.scss";
 import Item from "./WorkItem";
-import { Container } from "react-bootstrap";
 
 export default function Work(props) {
 
@@ -98,8 +97,13 @@ export default function Work(props) {
   }, [props])
 
   return (
-    <Container fluid>
-      <ListGroup.Item style={{ width:"18vw" }}>
+    <>
+      <ListGroup.Item
+        style={{
+          width: "18vw",
+          marginRight: "15px",
+          marginLeft: "15px",
+        }}>
         <Droppable
           droppableId={props.info.value}
           key={props.index}
@@ -113,7 +117,7 @@ export default function Work(props) {
                   background: snapshot.isDraggingOver ? "lightblue" : "white",
                   padding: 0,
                   width: "100%",
-                  minHeight: 400,
+                  minHeight: "30vh",
                   top: "50%"
                 }}
               >
@@ -167,6 +171,6 @@ export default function Work(props) {
           }}
         </Droppable>
       </ListGroup.Item>
-    </Container>
+    </>
   );
 }

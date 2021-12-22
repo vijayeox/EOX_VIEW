@@ -4,7 +4,7 @@
         flex-flow: row; 
         align-items: flex-start;
         /*padding: 0.5rem;*/
-        margin: 1rem 0; 
+        margin: 5px 0; 
         flex-wrap: initial;
       
     
@@ -84,7 +84,7 @@
     }
     
     .k_listDiv{
-        max-height:340px;
+        max-height:40vh;
         overflow: hidden;
     }
     .k_listDiv:hover{

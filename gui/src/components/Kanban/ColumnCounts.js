@@ -1,4 +1,4 @@
-import { Card, Container, Row, Col } from 'react-bootstrap';
+import { Card, Row, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 // import { faHistory } from '@fortawesome/fontawesome-free-solid';
 import './ColumnCount.scss';
@@ -41,11 +41,13 @@ function ColumnCard(props) {
         return Count
     }
     return (
-        <Container fluid>
+        <>
             <Card style={{
                 border: '0',
                 boxShadow: '0px 3px 2px lightgrey',
-                width: "18vw"
+                width: "18vw",
+                marginRight: "15px",
+                marginLeft: "15px",
             }}>
 
                 <Card.Body>
@@ -61,13 +63,13 @@ function ColumnCard(props) {
                             <p>{apiForCount()}</p>
                         </Col>
                         <Col lg="auto" sm="auto" md="auto" style={{ float: 'left' }}>
-                            <h2>{props.statusInfo.label}</h2>
+                            <h5>{props.statusInfo.label}</h5>
                         </Col>
                     </Row>
                     {/* <Row></Row> */}
                 </Card.Body>
             </Card>
-        </Container>
+        </>
     )
 }
 

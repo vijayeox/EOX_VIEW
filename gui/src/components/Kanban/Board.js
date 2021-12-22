@@ -81,9 +81,8 @@ export default function Board(props) {
   };
 
   return (
-    <>
-      <div className="expense-item k_expense-item"
-        style={{ width: "98vw" }}>
+    <Container fluid>
+      <div className="expense-item k_expense-item">
         <Badge>
           <CalenderDropDown onDateRange={dateRangeHandler} />
         </Badge>
@@ -232,6 +231,6 @@ export default function Board(props) {
           })}
         </ListGroup>
       </DragDropContext>
-    </>
+    </Container>
   );
 }

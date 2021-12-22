@@ -1,6 +1,6 @@
 import React from "react";
 import "./WorkGroup.scss";
-import { Container, ListGroup } from "react-bootstrap";
+import { ListGroup } from "react-bootstrap";
 import { Draggable } from "react-beautiful-dnd";
 import { Card, CardImg, CardBody } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
