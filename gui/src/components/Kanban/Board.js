@@ -81,9 +81,8 @@ export default function Board(props) {
   };
 
   return (
-    <Container fluid id="kanbanBoard">
-      <div className="expense-item"
-        style={{ width: "98vw" }}>
+    <Container fluid>
+      <div className="expense-item k_expense-item">
         <Badge>
           <CalenderDropDown onDateRange={dateRangeHandler} />
         </Badge>
@@ -96,7 +95,6 @@ export default function Board(props) {
           <Badge>
             <div>Status</div>
           </Badge>
-
           <Badge>
             <select
               className="form-control"
@@ -199,21 +197,21 @@ export default function Board(props) {
         </Button> */}
 
       </div>
+        <ListGroup horizontal>
+          {fields.map((dataItem, index) => {
+            return (
+              <StatusCard
+                statusInfo={dataItem}
+                filter={filterMaker(dataItem.value)}
+                key={index}
+                index={index}
+                core={props.core}
+                appId={props.appId}
+              />
+            );
+          })}
+        </ListGroup>
 
-      <ListGroup horizontal>
-        {fields.map((dataItem, index) => {
-          return (
-            <StatusCard
-              statusInfo={dataItem}
-              filter={filterMaker(dataItem.value)}
-              key={index}
-              index={index}
-              core={props.core}
-              appId={props.appId}
-            />
-          );
-        })}
-      </ListGroup>
       <br />
       <DragDropContext
         onDragEnd={(result) => onDragEnd(result, setRefresh, setReload)}

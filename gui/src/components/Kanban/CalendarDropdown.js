@@ -10,18 +10,17 @@ import Moment from "moment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import {
-   Collapse,
-   Button,
-   CardBody,
-   Row,
-   Col,
-   Label,
-   Dropdown,
-   DropdownToggle,
-   DropdownMenu,
-   DropdownItem,
+  Collapse,
+  Button,
+  CardBody,
+  Row,
+  Col,
+  Label,
+  Dropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
 } from "reactstrap";
-import { Container } from "react-bootstrap";
 // // import "./Css/kunbun.css";
 // // import { faCalendarAlt } from "@fortawesome/fontawesome-free-solid";
 
@@ -53,7 +52,7 @@ function CalenderDropDown(props) {
     setlowerRange(date11);
     sethigherRange(date21);
     //setValue(date);
-   };
+  };
 
   const onChange1 = (date) => {
     const day = date.getDate();
@@ -178,7 +177,6 @@ function CalenderDropDown(props) {
   }, []);
 
   return (
-    <Container fluid id="kanbanBoard">
     <Dropdown
       isOpen={dropdownOpen}
       toggle={toggle}
@@ -187,7 +185,7 @@ function CalenderDropDown(props) {
       <DropdownToggle
         caret
         style={{
-          backgroundColor: "white",
+          backgroundColor: "transparent",
           border: "none",
           color: "black",
           fontSize: "small",
@@ -195,8 +193,8 @@ function CalenderDropDown(props) {
           fontWeight: "bold",
         }}
       >
-        <FontAwesomeIcon   size = 'sm' icon={['fal', 'calendar-alt']}  />
-         Date Range
+        <FontAwesomeIcon style={{ marginRight: "5px" }} size='sm' icon={['fal', 'calendar-alt']} />
+          Date Range
         </DropdownToggle>
       <DropdownMenu style={{ margin: "0", padding: "0" }}>
         <DropdownItem
@@ -228,7 +226,7 @@ function CalenderDropDown(props) {
           />
           <div style={{ display: "flex", flexDirection: "column" }}>
             <div style={{ display: "flex", flexDirection: "row" }}>
-              <label className="label-calendar">Select Range</label>
+              <label className="label-calendar k_label-calendar">Select Range</label>
 
               <select
                 className="select-input"
@@ -268,7 +266,7 @@ function CalenderDropDown(props) {
                 type="date"
                 value={lowerRange}
                 disabled
-                className="input"
+                className="input k_input"
               />
 
               <p
@@ -287,14 +285,14 @@ function CalenderDropDown(props) {
                 type="date"
                 value={higherRange}
                 disabled
-                className="input"
+                className="input k_input"
                 style={{ marginRight: "1rem" }}
               />
             </div>
             <br />
 
             <Button
-              id="button"
+              id="k_button"
               onClick={() => {
                 buttonClick();
                 toggle();
@@ -306,7 +304,6 @@ function CalenderDropDown(props) {
         </DropdownItem>
       </DropdownMenu>
     </Dropdown>
-    </Container>
   );
 }
 export default CalenderDropDown;
