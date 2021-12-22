@@ -26,13 +26,25 @@ export default class LeftMenuTemplate extends React.Component {
       menus: this.props.menus ? this.props.menus : [],
       selected: "",
       expanded: this.keepExpanded ? true : false,
+      childrenComponents : this.props.childrenComponents
     };
     this.onSelect = this.onSelect.bind(this);
     this.onToggle = this.onToggle.bind(this);
+    this.leftMenuTemplateId = `left-navigation-${this.appId}`;
   }
 
   onToggle(expanded) {
     this.setState({ expanded: expanded });
+  }
+
+  componentDidMount(){
+    this.getReactComponents();
+  }
+  getReactComponents(){
+    document.getElementById(this.leftMenuTemplateId).addEventListener('GET_REACT_COMPONENT', 
+      ({ detail : { cb, type } }) => {
+        cb?.(this.state.childrenComponents[type])
+      })
   }
 
   onSelect(selected) {
@@ -62,6 +74,7 @@ export default class LeftMenuTemplate extends React.Component {
           "LeftMenuTemplate" +
           (this.props.proc.metadata.hideMenu ? " hideMenu" : "")
         }
+        id={this.leftMenuTemplateId}
       >
         <SideNav
           onSelect={this.onSelect}
