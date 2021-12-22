@@ -804,7 +804,6 @@ export default class OX_Grid extends React.Component {
                 if (result.value) {
                   this.DeleteFile("app/" + this.appId + "/" + url, item).then(
                     (response) => {
-                      console.log(response);
                       this.refreshHandler(response);
                       if (response.status == "success") {
                         this.state.notif.current.notify(
@@ -882,7 +881,6 @@ export default class OX_Grid extends React.Component {
               if (result.value) {
                 this.DeleteFile("app/" + this.appId + "/" + url, item, urlPostParams).then(
                   (response) => {
-                    console.log(response);
                     this.refreshHandler(response);
                     if (response.status == "success") {
                       this.state.notif.current.notify(
@@ -1106,6 +1104,7 @@ export default class OX_Grid extends React.Component {
       : this.state.actions[key].details
         ? this.buttonAction(this.state.actions[key], this.dataItem)
         : null;
+        this.state.actions[key].callback?.(dataItem)
   }
   handleOnSelect = (e) => {
     var dataItem = this.dataItem;
@@ -1259,7 +1258,6 @@ export default class OX_Grid extends React.Component {
           editField={this.props.inlineEdit ? "inEdit" : undefined}
           onItemChange={this.itemChange}
         >
-          {console.log(this.state.gridData.total)}
           {this.state.gridData.total === 0 ? (
             <GridNoRecords>
               <div />

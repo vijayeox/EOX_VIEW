@@ -429,7 +429,6 @@ class BaseFormRenderer extends React.Component {
 
         handleError(e) {
             this.showFormLoader(false, 0);
-            console.log("ERROR" + e);
             this.notif.current.notify("Error", "Unexpected Error! Please try later", "danger");
         }
 
@@ -474,6 +473,10 @@ class BaseFormRenderer extends React.Component {
 
         async saveForm(form, data) {
             var that = this;
+            if (that.props.updateFormData) {
+                that.props.postSubmitCallback(data);
+                return;
+            }
         if(that.props.customSaveForm && typeof that.props.customSaveForm=='function'){
                 that.props.customSaveForm(that.cleanData(submission.data));
                 next(null);
