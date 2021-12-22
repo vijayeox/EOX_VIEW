@@ -52,7 +52,7 @@ const Context = () => {
 
     //  }
     return (
-        <Container id="maps">
+        <Container>
             <PersonContext.Provider value={{ removeItem, names }}>
                 <h1>Context API Example</h1>
                 <List people={people} removeItem={removeItem} />
@@ -63,7 +63,7 @@ const Context = () => {
 const List = ({ people }) => {
     console.log(people)
     return (
-        <Container id="maps">
+        <Container>
                 {people.map((person) => {
                     return (
                         //  <h4>{person.name}</h4>
@@ -81,10 +81,10 @@ const SinglePerson = ({ id, name }) => {
     const { removeItem, names } = useContext(PersonContext)
     console.log(removeItem, names)
     return (
-        <Container id="maps">
-                <div className='item'>
+        <Container>
+                <div className='item m_item'>
                     <h4>{name}</h4>
-                    <button className='btn' onClick={() => removeItem(id)}>Remove</button>
+                    <button className='btn m_btn' onClick={() => removeItem(id)}>Remove</button>
 
                 </div>
         </Container>

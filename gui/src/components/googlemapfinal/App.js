@@ -648,13 +648,13 @@ function CustomGoogleMapComponent() {
   };
 
   return isLoaded ? (
-    <Container fluid id="maps">
+    <Container fluid>
       <div className="mt-4">
       <input
         name="radius"
         style={{
-          margin: "5px",
-          padding: "5px",
+          margin: "5px 5px 5px 0px",
+          padding: "5px 5px 5px 0px",
         }}
         value={radius}
         onChange={handleChangeRadius}
