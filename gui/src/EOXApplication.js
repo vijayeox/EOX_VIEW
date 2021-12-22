@@ -24,6 +24,7 @@ class EOXApplication extends React.Component {
             params={this.params}
             proc={this.proc}
             appId={this.props.application_id}
+            childrenComponents={this.props.childrenComponents}
           />
       </div>
     );
