@@ -859,46 +859,46 @@ export default class OX_Grid extends React.Component {
               buttonPopup: buttonPopup,
               showButtonPopup: true,
             });
-          } else if (item.type == "APIRequest"){
-            action.updateOnly = true;                         
-              var urlPostParams = {};
-              if(item.params && item.params.urlPostParams){
-                urlPostParams = ParameterHandler.replaceParams(this.appId, item.params.urlPostParams, mergeRowData);
-              }
-              var url = ParameterHandler.replaceParams(
-                this.appId,
-                item.route,
-                mergeRowData
-              );
-              Swal.fire({
-                title: "Are you sure?",
-                text: "Do you really want to delete the record? This cannot be undone.",
-                // imageUrl:
-                //   "https://image.flaticon.com/icons/svg/1632/1632714.svg",
-                icon: 'question',
-                imageWidth: 75,
-                imageHeight: 75,
-                confirmButtonText: "Delete",
-                confirmButtonColor: "#d33",
-                showCancelButton: true,
-                cancelButtonColor: "#3085d6",
-              }).then((result) => {
-                if (result.value) {
-                  this.DeleteFile("app/" + this.appId + "/" + url, item,urlPostParams).then(
-                    (response) => {
-                      this.refreshHandler(response);
-                      if (response.status == "success") {
-                        this.state.notif.current.notify(
-                          "Success",
-                          "Deleted Successfully",
-                          "success"
-                        );
-                      } else {
-                        this.state.notif.current.notify(
-                          "Error",
-                          response.message,
-                          "danger"
-                        );
+          } else if (item.type == "APIRequest") {
+            action.updateOnly = true;
+            var urlPostParams = {};
+            if (item.params && item.params.urlPostParams) {
+              urlPostParams = ParameterHandler.replaceParams(this.appId, item.params.urlPostParams, mergeRowData);
+            }
+            var url = ParameterHandler.replaceParams(
+              this.appId,
+              item.route,
+              mergeRowData
+            );
+            Swal.fire({
+              title: "Are you sure?",
+              text: "Do you really want to delete the record? This cannot be undone.",
+              // imageUrl:
+              //   "https://image.flaticon.com/icons/svg/1632/1632714.svg",
+              icon: 'question',
+              imageWidth: 75,
+              imageHeight: 75,
+              confirmButtonText: "Delete",
+              confirmButtonColor: "#d33",
+              showCancelButton: true,
+              cancelButtonColor: "#3085d6",
+            }).then((result) => {
+              if (result.value) {
+                this.DeleteFile("app/" + this.appId + "/" + url, item, urlPostParams).then(
+                  (response) => {
+                    this.refreshHandler(response);
+                    if (response.status == "success") {
+                      this.state.notif.current.notify(
+                        "Success",
+                        "Deleted Successfully",
+                        "success"
+                      );
+                    } else {
+                      this.state.notif.current.notify(
+                        "Error",
+                        response.message,
+                        "danger"
+                      );
                     }
                   }
                 );
@@ -1109,6 +1109,7 @@ export default class OX_Grid extends React.Component {
       : this.state.actions[key].details
         ? this.buttonAction(this.state.actions[key], this.dataItem)
         : null;
+        this.state.actions[key].callback?.(dataItem)
   }
   handleOnSelect = (e) => {
     var dataItem = this.dataItem;
@@ -1262,7 +1263,6 @@ export default class OX_Grid extends React.Component {
           editField={this.props.inlineEdit ? "inEdit" : undefined}
           onItemChange={this.itemChange}
         >
-          {console.log(this.state.gridData.total)}
           {this.state.gridData.total === 0 ? (
             <GridNoRecords>
               <div />

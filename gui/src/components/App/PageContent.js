@@ -702,8 +702,9 @@ class PageContent extends React.Component {
           <CustomGoogleMapComponent core={this.core} appId={this.appId}/>
         );
       } else if(item.type == "ReactComponent"){
+        var fileId = this.props.fileId ? this.props.fileId : this.state.currentRow.uuid;
         content.push(
-          <ReactComponent core={this.core} appId={this.appId} data={item.content}/>
+          <ReactComponent core={this.core} appId={this.appId} data={item.content} fileId={fileId}/>
         );
       } else {
         if (this.extGUICompoents && this.extGUICompoents[item.type]) {
