@@ -156,6 +156,7 @@ class Navigation extends React.Component {
         title: "View",
         icon: "fa fa-eye",
         fileId: e.detail.fileId,
+        ...e.detail
       };
       if (!this.checkIfEntityViewerPageExists(pageContent)) {
         pages.push(pageContent);
@@ -415,6 +416,7 @@ class Navigation extends React.Component {
                 pageContent={item.pageContent}
                 currentRow={item.currentRow}
                 popupConfig={item.popupConfig}
+                {...item}
               />
             </div>
           );

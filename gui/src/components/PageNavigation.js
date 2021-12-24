@@ -10,7 +10,8 @@ class PageNavigation {
     currentRow,
     pageContent,
     fileId,
-    popupConfig
+    popupConfig,
+    parentRowData
   ) {
     let ev = new CustomEvent("addPage", {
       detail: {
@@ -22,7 +23,8 @@ class PageNavigation {
         parentPage: parentPage,
         pageContent: pageContent,
         fileId: fileId,
-        popupConfig: popupConfig
+        popupConfig: popupConfig,
+        parentRowData
       },
       bubbles: true,
     });
