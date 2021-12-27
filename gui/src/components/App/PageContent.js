@@ -40,6 +40,7 @@ class PageContent extends React.Component {
     this.isTab = this.props.isTab;
     this.parentPage = this.props.parentPage ? this.props.parentPage : null;
     this.loader = this.core.make("oxzion/splash");
+    this.parentPageData = props.parentRowData
     this.fetchExternalComponents().then((response) => {
       this.extGUICompoents = response.guiComponent
         ? response.guiComponent
@@ -704,7 +705,7 @@ class PageContent extends React.Component {
       } else if(item.type == "ReactComponent"){
         var fileId = this.props.fileId ? this.props.fileId : this.state.currentRow.uuid;
         content.push(
-          <ReactComponent core={this.core} appId={this.appId} data={item.content} fileId={fileId}/>
+          <ReactComponent parentPageData={this.parentPageData} core={this.core} appId={this.appId} data={item.content} fileId={fileId}/>
         );
       } else {
         if (this.extGUICompoents && this.extGUICompoents[item.type]) {

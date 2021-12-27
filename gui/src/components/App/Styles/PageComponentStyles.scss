@@ -425,3 +425,6 @@ div[class="k-actions k-hstack k-justify-content-end"]
 div#customActions > div[class="display-flex task-header-pos-abs"] {
   margin-top: 10px;
 }
+#customActions>button[title="View"]{
+  display: none;
+}
