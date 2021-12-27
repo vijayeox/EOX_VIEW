@@ -188,18 +188,18 @@ class CommentsView extends React.Component {
 		};
 		// if(this.appId === 'ff1ecbb7-3a45-4966-b38c-bf203f171423'){
         //     gridToolbarContent.push(GetCrmHeader(this.props.currentRow, this.appId,this.loader, this.core.make("oxzion/restClient"), false, this.state, fileData, this.core, this.profile?.key?.preferences?.dateformat ))
-        // }else{
-			gridToolbarContent.push(
-				<Button
-					title={"View"}
-					className={"btn btn-primary"}
-					primary={true}
-					key={Math.random()}
-					onClick={e => this.updatePageContent(pageContent)}
-				>
-					<i className={"fa fa-eye"}></i>
-				</Button>
-			);
+        // }
+		// else{
+		gridToolbarContent.push(
+			<Button
+				title={"View"}
+				className={"btn btn-primary"}
+				primary={true}
+				onClick={e => this.updatePageContent(pageContent)}
+			>
+				<i className={"fa fa-eye"}></i>
+			</Button>
+		);
 		// }
 		if (this.state.entityConfig && !this.state.entityConfig.has_workflow) {
 			filePage = [
