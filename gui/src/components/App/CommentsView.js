@@ -55,7 +55,7 @@ class CommentsView extends React.Component {
 				this.getEntityPage().then((entityPage) => {
 					if (entityPage.data) {
 						this.setState({ entityConfig: entityPage.data });
-						this.generateViewButton(entityPage.data.enable_auditlog, this.getDisableHeaderButtons(entityPage.data), fileData);
+						this.generateViewButton(entityPage.data.enable_auditlog, fileData);
 					}
 					this.fetchCommentData();
 				});
@@ -177,7 +177,7 @@ class CommentsView extends React.Component {
 			this.loader.destroy();
 		});
 	}
-	generateViewButton(enableAuditLog, disableHeaderButtons, fileData) {
+	generateViewButton(enableAuditLog, fileData) {
 		let gridToolbarContent = [];
 		let filePage = [{ type: "EntityViewer", fileId: this.state.fileId }];
 		let pageContent = {
@@ -220,6 +220,7 @@ class CommentsView extends React.Component {
 					title={"Edit"}
 					className={"btn btn-primary"}
 					primary={true}
+					key={Math.random()}
 					onClick={e => this.updatePageContent(pageContent)}
 				>
 					<i className={"fa fa-pencil"}></i>
@@ -232,13 +233,13 @@ class CommentsView extends React.Component {
 					title={"Audit Log"}
 					className={"btn btn-primary"}
 					primary={true}
+					key={Math.random()}
 					onClick={e => this.callAuditLog()}
 				>
 					<i className={"fa fa-history"}></i>
 				</Button>
 			);
 		}
-		if (disableHeaderButtons) return;
 		let ev = new CustomEvent("addcustomActions", {
 			detail: { customActions: gridToolbarContent },
 			bubbles: true
@@ -352,13 +353,7 @@ class CommentsView extends React.Component {
 	}
 
 	toggleEmojiPicker = () => {
-		this.setState({
-			showEmojiPicker: !this.state.showEmojiPicker,
-
-
-		})
-		{ console.log(this.state.showEmojiPicker) }
-
+		this.setState({ showEmojiPicker: !this.state.showEmojiPicker })
 	}
 
 	addEmoji = (emoji) => {
@@ -485,22 +480,21 @@ class CommentsView extends React.Component {
 	};
 
 	setModalShow(flag, imageDetails, index) {
-		console.log("CLICKINGGGGGGG");
 		this.setState({
 			showModal: flag,
 			imageDetails: { data: imageDetails, index }
 		});
 	}
-	getDisableHeaderButtons(entityData) {
-		//disableHeaderButtons
-		try {
-			const disableCommentHeader = entityData?.content?.find((c) => c.type === 'TabSegment')?.content?.tabs?.map((tab) => tab)?.map((t) => t?.content?.find(c => c?.disableHeaderButtons))?.filter(v => v)?.length > 0 || ( !entityData?.enable_comments && this.appId == 'af6056c1-be46-4266-b83c-4b2177bcc7ca')
-			return disableCommentHeader;
-		} catch (e) {
-			console.error(`disableHeaderButtons `, e)
-			return false;
-		}
-	}
+	// getDisableHeaderButtons(entityData) {
+	// 	//disableHeaderButtons
+	// 	try {
+	// 		const disableCommentHeader = entityData?.content?.find((c) => c.type === 'TabSegment')?.content?.tabs?.map((tab) => tab)?.map((t) => t?.content?.find(c => c?.disableHeaderButtons))?.filter(v => v)?.length > 0 || ( !entityData?.enable_comments && this.appId == 'af6056c1-be46-4266-b83c-4b2177bcc7ca')
+	// 		return disableCommentHeader;
+	// 	} catch (e) {
+	// 		console.error(`disableHeaderButtons `, e)
+	// 		return false;
+	// 	}
+	// }
 	render() {
 		var that = this;
 		if (this.state.dataReady) {

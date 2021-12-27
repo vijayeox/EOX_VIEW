@@ -1,74 +1,138 @@
-import { React, GridTemplate } from "oxziongui";
+import { React, EOXGrid } from "oxziongui";
 import { TitleBar } from "./components/titlebar";
-import { DeleteEntry } from "./components/apiCalls";
-import DialogContainer from "./dialog/DialogContainerRole";
+import { GetData } from "./components/apiCalls";
+import form from "../modules/forms/editCreateRole.json";
 
 class Role extends React.Component {
   constructor(props) {
     super(props);
     this.core = this.props.args;
-    this.state = {
-      roleInEdit: undefined,
-      roleToBeEdited: [],
-      permission: {
-        canAdd: this.props.userProfile.privileges.MANAGE_ROLE_WRITE,
-        canEdit: this.props.userProfile.privileges.MANAGE_ROLE_WRITE,
-        canDelete: this.props.userProfile.privileges.MANAGE_ROLE_WRITE,
+    this.drillDownRequired = false;
+    (this.actionItems = {
+      // edit: {
+      //   type: "button",
+      //   icon: "fad fa-pencil",
+      //   text: "EDIT",
+      //   title: "Edit Role",
+      // },
+      delete: {
+        type: "button",
+        icon: "fad fa-trash",
+        text: "DELETE",
+        title: "Delete Role",
       },
-      selectedOrg: this.props.userProfile.accountId,
-    };
-    this.child = React.createRef();
-  }
+      // create: {
+      //   type: "button",
+      //   icon: " fad fa-plus",
+      //   text: "CREATE",
+      //   title: "Create New",
+      // },
+    }),
+      (this.config = {
+        height: "100%",
+        width: "100%",
+        filterable: true,
+        reorderable: true,
+        sortable: true,
+        // sort:true,
+        pageSize: 10,
+        // pageable:true,
+        pageable: {
+          skip: 0,
+          // pageSize: 10,
+          buttonCount: 3,
+        },
+        groupable: true,
+        resizable: true,
 
-  edit = (dataItem, required) => {
-    dataItem = this.cloneItem(dataItem);
-    this.setState({
-      roleInEdit: dataItem,
-    });
-    this.inputTemplate = React.createElement(DialogContainer, {
-      args: this.core,
-      dataItem: dataItem || null,
-      selectedOrg: this.state.selectedOrg,
-      cancel: this.cancel,
-      formAction: "put",
-      action: this.child.current.refreshHandler,
-      diableField: required.diableField,
-    });
-  };
+        isDrillDownTable: true,
 
-  cloneItem(item) {
-    return Object.assign({}, item);
+        column: [
+          {
+            title: "Name",
+            field: "name",
+          },
+
+          {
+            title: "Description",
+            field: "description",
+          },
+          {
+            title: "App Name",
+            field: "appName",
+          },
+        ],
+      }),
+      (this.state = {
+        skip: 0,
+        isLoading: true,
+        accountData: [],
+        selectedOrg: this.props.userProfile.accountId,
+        permission: {
+          canAdd: this.props.userProfile.privileges.MANAGE_ROLE_WRITE,
+          canEdit: this.props.userProfile.privileges.MANAGE_ROLE_WRITE,
+          canDelete: this.props.userProfile.privileges.MANAGE_ROLE_WRITE,
+        },
+      }),
+      (this.api = "account/" + this.state.selectedOrg + "/roles");
+    this.editApi = "role";
+    this.createApi = "account/" + this.state.selectedOrg + "/role";
+    this.deleteApi = "account/" + this.state.selectedOrg + "/role";
   }
 
   orgChange = (event) => {
-    this.setState({ selectedOrg: event.target.value });
-  };
-
-  remove = (dataItem) => {
-    DeleteEntry(
-      "account/" + this.state.selectedOrg + "/role",
-      dataItem.uuid
-    ).then((response) => {
-      this.child.current.refreshHandler(response);
+    this.setState({ selectedOrg: event.target.value, isLoading: true }, () => {
+      this.api = "account/" + this.state.selectedOrg + "/roles";
+      this.createApi = "account/" + this.state.selectedOrg + "/role";
+      GetData(this.api).then((data) => {
+        this.setState({
+          accountData: (data.status === "success" && data?.data) || [],
+          isLoading: false,
+        });
+      });
     });
   };
 
-  cancel = () => {
-    this.setState({ roleInEdit: undefined });
-  };
+  componentDidMount() {
+    GetData(this.api + `?filter=[{"skip":0,"take":${this.config.pageSize}}]`)
+      .then((data) => {
+        this.setState({
+          accountData:
+            data?.status === "success" ? data : { data: [], total: 0 },
+          isLoading: false,
+        });
+      })
+      .catch(() => {
+        this.setState({
+          accountData: { data: [], total: 0 },
+          isLoading: false,
+        });
+      });
+  }
 
-  insert = () => {
-    this.setState({ roleInEdit: {} });
-    this.inputTemplate = React.createElement(DialogContainer, {
-      args: this.core,
-      dataItem: [],
-      cancel: this.cancel,
-      formAction: "post",
-      action: this.child.current.refreshHandler,
-      selectedOrg: this.state.selectedOrg,
-    });
-  };
-
+  dataStateChanged({ dataState: { filter, group, skip, sort, take } }) {
+    this.setState({ isLoading: true });
+    GetData(
+      this.api +
+        `?filter=[{"skip":${skip},"take":${
+          this.config.pageSize
+        }, "filter" : ${JSON.stringify(filter)}}]`
+    )
+      .then((data) => {
+        this.setState({
+          accountData:
+            data?.status === "success" ? data : { data: [], total: 0 },
+          skip,
+          isLoading: false,
+        });
+      })
+      .catch(() => {
+        this.setState({
+          accountData: { data: [], total: 0 },
+          isLoading: false,
+        });
+      });
+  }
   render() {
     return (
       <div style={{ height: "inherit" }}>
@@ -83,41 +147,25 @@ class Role extends React.Component {
               : false
           }
         />
-        <div style={{ marginTop: "-35px" }}>
-          <GridTemplate
-            args={this.core}
-            ref={this.child}
-            config={{
-              showToolBar: true,
-              title: "Role",
-              api: "role",
-              api: "account/" + this.state.selectedOrg + "/roles",
-              column: [
-                {
-                  title: "Name",
-                  field: "name",
-                },
-
-                {
-                  title: "Description",
-                  field: "description",
-                },
-                {
-                  title: "App Name",
-                  field: "appName",
-                },
-              ],
-              sortMode: [{ field: "is_system_role", dir: "desc" }],
-            }}
-            manageGrid={{
-              add: this.insert,
-              edit: this.edit,
-              remove: this.remove,
-            }}
+        <React.Suspense fallback={<div>Loading...</div>}>
+          <EOXGrid
+            configuration={this.config}
+            data={this.state.accountData}
+            core={this.core}
+            isDrillDownTable={this.props.drillDownRequired}
+            actionItems={this.actionItems}
+            api={this.api}
             permission={this.state.permission}
+            editForm={form}
+            editApi={this.editApi}
+            createApi={this.createApi}
+            deleteApi={this.deleteApi}
+            skip={this.state.skip}
+            dataStateChanged={this.dataStateChanged.bind(this)}
+            isLoading={this.state.isLoading}
+            // key={Math.random()}
           />
-        </div>
-        {this.state.roleInEdit && this.inputTemplate}
+        </React.Suspense>
       </div>
     );
   }

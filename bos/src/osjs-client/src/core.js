@@ -148,7 +148,7 @@ export default class Core extends CoreBase {
           xhr.onload = function() {
             let data = JSON.parse(this.responseText);
             if(data['status'] === 'success' && data['message'] === 'Token Valid') {
-              console.log('token validated');
+              // console.log('token validated');
               autoLogin = true;
             } else if(data['status'] === 'error' && data['message'] === 'Token Expired') {
               //console.log('token has expired. make request to get new');

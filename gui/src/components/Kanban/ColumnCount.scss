@@ -1,15 +1,14 @@
-#kanbanBoard{
-    .cardStyle{
+    .k_cardStyle{
         width: 150px;
     }
     
-    .cardBody .card{
+    .k_cardBody .card{
         border: 0;
         border-radius: 0;
     }
     
     
-    .cardCount{
+    .k_cardCount{
         font-size: 42px;
         font-weight: 600;
         color: #6c6c6c;
@@ -17,15 +16,14 @@
     }
     
     
-    .cardStatusName{
+    .k_cardStatusName{
         text-align : center;
         font-size : smaller;
         color : #b7b7b7;
     }
     
-    .cardIcon{
+    .k_cardIcon{
         color:black;
         float : left;
         margin: 0;
     }
-}

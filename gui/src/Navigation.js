@@ -101,8 +101,7 @@ class Navigation extends React.Component {
                   .dispatchEvent(ev);
               }
             } catch (e) {
-              console.log("No params!");
-              console.log(e);
+              console.error(e);
               this.props.selectLoad(this.homepage);
             }
           } else {
@@ -191,11 +190,11 @@ class Navigation extends React.Component {
         e.detail.popupConfig ? true : false
       );
     } else {
-      if (pages[pages.length - 2] && pages[pages.length - 2].pageId) {
+      // if (pages[pages.length - 2] && pages[pages.length - 2].pageId) {
         pages.length > 0
           ? this.pageInActive(pages[pages.length - 2].pageId)
           : null;
-      }
+      // }
     }
     this.setState({ pages: pages });
     this.resetCustomActions();
@@ -267,6 +266,7 @@ class Navigation extends React.Component {
         });
       }
     }
+    this.state.pages.length > 0 &&  this.renderBreadcrumbs()
   }
 
   stepDownPage = (e) => {
@@ -347,10 +347,10 @@ class Navigation extends React.Component {
       }
       currentValue.title
         ? breadcrumbsList.push(
-            <span className="page-inactive">
+            <span className="page-inactive" key={Math.random()}>
               {index == "0" ? null : <div style={{ marginLeft: "7px" }} />}
               {childNode}
-              <i class="fad fa-angle-right" style={{ marginRight: "-5px" }}></i>
+              <i className="fad fa-angle-right" style={{ marginRight: "-5px" }}></i>
               <div
                 value={""}
                 disabled={!clickable}
@@ -386,7 +386,7 @@ class Navigation extends React.Component {
         const listItems = list[i].parentNode.parentNode.parentNode;
         var breadcrumbClassName = listItems.className;
         if (breadcrumbClassName == "osjs-window" + " " + appName) {
-          ReactDOM.unmountComponentAtNode(list[i]);
+          // ReactDOM.unmountComponentAtNode(list[i]); =>>>> not a proper way to unmount unknown breadcrumb element, revert comment if navigation is breaking for some reason
           ReactDOM.render(breadcrumbsList, list[i]);
         }
       }
@@ -400,9 +400,9 @@ class Navigation extends React.Component {
       this.state.pages.map((item, i) => {
         var pageId = item.pageId + "_page";
         var pageClasses = this.pageClass + " page-active";
-        if (i == this.state.pages.length - 1 || true) {
+        // if (i == this.state.pages.length - 1 || true) {
           pageList.push(
-            <div className={pageClasses} id={pageId}>
+            <div className={pageClasses} id={pageId} key={pageId+i}>
               <Page
                 key={item.pageId}
                 config={this.props.config}
@@ -420,9 +420,9 @@ class Navigation extends React.Component {
               />
             </div>
           );
-        } else {
-          pageList.push(<div></div>);
-        }
+        // } else {
+        //   pageList.push(<div></div>);
+        // }
       });
     }
     return pageList;
@@ -439,8 +439,8 @@ class Navigation extends React.Component {
         >
           {this.state.pages.length > 0 ? (
             <div className="row">
-              <div className="breadcrumbs">{this.renderBreadcrumbs()}</div>
-              <div className="breadcrumbs"></div>
+              {/* <div className="breadcrumbs">{this.renderBreadcrumbs()}</div>
+              <div className="breadcrumbs"></div> */}
 
               <div
                 className="col-md-12 customActions dash-manager-buttons"

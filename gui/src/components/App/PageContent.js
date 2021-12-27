@@ -21,6 +21,7 @@ import EntityViewer from "./EntityViewer";
 import Dashboard from "../../Dashboard";
 import DashboardManager from "../../DashboardManager";
 import ActivityLog from "./ActivityLog";
+import DynamicTemplateViewer from "./DynamicTemplateViewer";
 import KanbanView from "../Kanban/KanbanRoutes";
 import CustomGoogleMapComponent from "../googlemapfinal/App";
 import ReactComponent from "./ReactComponent";
@@ -538,7 +539,6 @@ class PageContent extends React.Component {
         if (item.fileId) {
           fileId = item.fileId;
         }
-        console.log(item);
         content.push(
           <CommentsView
             appId={this.appId}
@@ -684,6 +684,16 @@ class PageContent extends React.Component {
             disableControls={item?.disableControls}
           />
         );
+      } else if(item.type === 'CustomPage'){
+        var fileId = this.props.fileId ? this.props.fileId : this.state.currentRow.uuid;
+        return content.push(
+          <DynamicTemplateViewer
+            appId={this.appId}
+            fileId={fileId}
+            core={this.core}
+            data={item.content}
+            rowData={this.state.currentRow}
+          />
       } else if (item.type == "KanbanViewer") {
         content.push(
           <KanbanView core={this.core} appId={this.appId}/>

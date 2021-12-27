@@ -195,7 +195,7 @@ class EntityViewer extends React.Component {
     );
     }
     gridToolbarContent.push(
-      <div className={`display-flex ${this.state.isTabSegment ? "task-header-pos-abs" : ""}`}>
+      <div className={`display-flex ${this.state.isTabSegment ? "task-header-pos-abs" : ""}`} key={Math.random()}>
         {toolbarButtons}
       </div>
     );
@@ -371,7 +371,6 @@ class EntityViewer extends React.Component {
         var file = fileData.data.data ? fileData.data.data : fileData.data;
         this.setState({ entityId: fileData.data.entity_id, fileData: file });
         this.getEntityPage().then((entityPage) => {
-          console.log(`fileData-`, fileData)
           if (!fileData?.data?.data?.uuid) {
             fileData.data.data.uuid = fileData?.data?.uuid;
           }

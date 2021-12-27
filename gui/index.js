@@ -46,10 +46,7 @@ import Visualization from "./src/Visualization";
 import WidgetManager from "./src/WidgetManager";
 import TemplateManager from "./src/TemplateManager";
 import SSOCustom from "./src/components/Custom/SSOCustom";
-import KanbanView from "./src/components/Kanban/KanbanRoutes";
-import BryntumView from "./src/components/bryntum/bryntum"
-import MapView from "./src/components/googlemapfinal/index"
-
+import EOXGrid from "./src/components/EOXGrid/EOXGrid"
 //import Mapbox from "./src/components/Custom/Mapbox";
 
 const LazyLoad = ({ component: Component, ...rest }) => (
@@ -134,8 +131,6 @@ export {
   AntdIcons,
   TemplateManager,
   SSOCustom,
-  MapView,
-  BryntumView,
-  KanbanView
-//  Mapbox
+  //  Mapbox
+  EOXGrid,
 };
