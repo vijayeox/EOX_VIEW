@@ -730,7 +730,7 @@ export default class OX_Grid extends React.Component {
       ? { ...this.props.currentRow, ...rowData }
       : rowData;
     if (action.page_id) {
-      PageNavigation.loadPage(this.appId, this.pageId, action.page_id);
+      PageNavigation.loadPage(this.appId, this.pageId, action.page_id, null, null, null, null, null, null, null, rowData);
     } else if (action.details) {
       var pageDetails = this.state.pageContent;
       var that = this;
@@ -957,7 +957,8 @@ export default class OX_Grid extends React.Component {
             mergeRowData,
             copyPageContent,
             undefined,
-            action.popupConfig
+            action.popupConfig, 
+            mergeRowData
           );
       }
     }
