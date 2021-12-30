@@ -3,7 +3,6 @@ import ListGroup from "react-bootstrap/ListGroup";
 import { Droppable } from "react-beautiful-dnd";
 import "./WorkGroup.scss";
 import Item from "./WorkItem";
-import { Container } from "react-bootstrap";
 
 export default function Work(props) {
 
@@ -98,8 +97,13 @@ export default function Work(props) {
   }, [props])
 
   return (
-    <Container fluid id="kanbanBoard">
-      <ListGroup.Item>
+    <>
+      <ListGroup.Item
+        style={{
+          width: "18vw",
+          marginRight: "15px",
+          marginLeft: "15px",
+        }}>
         <Droppable
           droppableId={props.info.value}
           key={props.index}
@@ -112,17 +116,17 @@ export default function Work(props) {
                 style={{
                   background: snapshot.isDraggingOver ? "lightblue" : "white",
                   padding: 0,
-                  width: "19vw",
-                  minHeight: 400,
+                  width: "100%",
+                  minHeight: "30vh",
                   top: "50%"
                 }}
               >
                 <ListGroup.Item
-                  className="itemCard"
+                  className="itemCard k_itemCard"
                   style={{
                     border: "0",
                     borderBottom: '2px solid black',
-                    width: "18vw !important"
+                    width: "100%"
                   }}
                 >
                   <p>
@@ -132,7 +136,7 @@ export default function Work(props) {
                   </p>
                 </ListGroup.Item>
 
-                <div className="listDiv">
+                <div className="listDiv k_listDiv">
                   {List != undefined ?
                     List.map((listItem, index) => {
                       if (List.length === index + 1) {
@@ -167,6 +171,6 @@ export default function Work(props) {
           }}
         </Droppable>
       </ListGroup.Item>
-    </Container>
+    </>
   );
 }

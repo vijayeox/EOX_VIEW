@@ -1,17 +1,16 @@
-#kanbanBoard{
-    .expense-item {
+    .k_expense-item {
         display:flex;
         flex-direction:row;
         flex-flow: row; 
         align-items: flex-start;
         /*padding: 0.5rem;*/
-        margin: 1rem 0; 
+        margin: 5px 0; 
         flex-wrap: initial;
       
     
     }
     
-    .nav-button {
+    .k_nav-button {
         display:flex;
         flex-direction:row;
         flex-flow: row;
@@ -21,7 +20,7 @@
         flex-wrap: initial;
     }
     
-    .cards {
+    .k_cards {
         flex: 0 0 12.5%;padding: 1px;
         margin: 20px;
         box-shadow :2px 3px 4px 4px lightgrey;
@@ -30,7 +29,7 @@
         height: 145px;
     }
     
-    .taskcards {
+    .k_taskcards {
         flex: 0 0 25%;padding: 1px;
         margin: 0px;
         background-color: white;
@@ -40,25 +39,25 @@
         border: 0;
     }
     
-    .taskcards:hover .img {
+    .k_taskcards:hover .img {
         border-color: rgb(99, 204, 131);
     }
     
-    .img{
+    .k_img{
         border: solid 2px transparent;
         border-radius: 50%;
         width: 20px!important;
         height: 20px !important;
     }
     
-    .taskcardDisplay{
+    .k_taskcardDisplay{
         margin-top: 1rem;
         padding: 0;
         display: flex;
         flex-direction: row;
     }
     
-    .taskcardDisplay1{
+    .k_taskcardDisplay1{
         height: auto;
         width: auto;
     
@@ -66,7 +65,7 @@
         flex-direction: row;
     }
     
-    .card{
+    .k_card{
         position: relative;
         display: flex;
         flex-direction: column;
@@ -79,29 +78,29 @@
         border-radius: 0;
     }
     
-    .lanes_list{
+    .k_lanes_list{
         box-shadow: 0px 2px 9px 4px #302b2b08;
         width: fit-content;
     }
     
-    .listDiv{
-        max-height:340px;
+    .k_listDiv{
+        max-height:40vh;
         overflow: hidden;
     }
-    .listDiv:hover{
+    .k_listDiv:hover{
         overflow-y:auto;
     }
     
     /* .listDiv:hover{overflow-y: scroll;}  */
-    .listDiv:active::-webkit-scrollbar-thumb {
+    .k_listDiv:active::-webkit-scrollbar-thumb {
         visibility: visible;
     }
     
-    .itemCard{
+    .k_itemCard{
         text-align: center;
     }
     /*
-    .calendar{
+    .k_calendar{
     top: 2rem;
     display: flex;
     flex-direction: row;
@@ -110,14 +109,14 @@
     align-items: flex-start;
     
     }
-    .fab{
+    .k_fab{
     display: flex;
     margin-left: 15px;
     margin-right: 5px;
     margin-top: 5px;
     margin-bottom: 2px;
     }
-    .select{
+    .k_select{
     top: 2rem;
     position: initial;
     display: flex;
@@ -128,43 +127,43 @@
     align-items: flex-start;
     
     }
-    .button{
+    .k_button{
     box-shadow :2px 3px 4px 4px lightgrey;
     background-color: white;
     border:ivory
     
     }
     
-    .Dropdown_menu__3FlHi{
+    .k_Dropdown_menu__3FlHi{
     right: inherit;
     } */
     
-    .list-group-item{
+    .k_list-group-item{
         padding: 0;
     }
     
-    p{
+    pk_{
         margin: 0;
     }
     
     
-    .itemGroupName{
+    .k_itemGroupName{
         font-size: small;
         margin: 5%;
         color: black;
     }
-    .menu-icon{
+    .k_menu-icon{
         color: black;
         padding-right: 5px;
     }
-    .toggle{
+    .k_toggle{
         background-color: white;
         border: none;
         padding-top: 7px;
         color:black;
         font-size: small;
     }
-    .labels{
+    .k_labels{
         background-color: #fff;
         border: none;
         color: black;
@@ -175,17 +174,17 @@
         margin-right: 0px;
         font-size: small;
     }
-    .taskcard-label{
+    .k_taskcard-label{
        color: #FF6347;
        font-size: smaller;
        text-align: center;
        margin-left: 30px;
     }
-    .taskcard-sublabel{
+    .k_taskcard-sublabel{
         color:#B3B3B3;
         font-weight: 600;
     }
-    .taskcard-p{
+    .k_taskcard-p{
         padding: 0px;
         font-size: smaller;
         margin: 0;
@@ -193,7 +192,7 @@
         font-weight: 600;
         color:#6c6c6c;
     }
-    .label-calendar{
+    .k_label-calendar{
         background-color: #fff;
         border: none;
         color: black;
@@ -206,8 +205,7 @@
         margin-top: 2.5rem;
         margin:45px
     }
-    .input{
+    .k_input{
         width: 150px;
         margin-left: 1rem;
     }
-}

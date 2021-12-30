@@ -10,7 +10,7 @@ import Map from './App';
 const MapView = () => {
   
   return (
-    <Container id="maps">
+    <Container>
        < Map/> 
       {/*<h1>Map view</h1>*/}
     </Container>

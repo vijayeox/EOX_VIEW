@@ -24,7 +24,7 @@ import ActivityLog from "./ActivityLog";
 import DynamicTemplateViewer from "./DynamicTemplateViewer";
 import KanbanView from "../Kanban/KanbanRoutes";
 import CustomGoogleMapComponent from "../googlemapfinal/App";
-
+import ReactComponent from "./ReactComponent";
 
 class PageContent extends React.Component {
   constructor(props) {
@@ -40,6 +40,7 @@ class PageContent extends React.Component {
     this.isTab = this.props.isTab;
     this.parentPage = this.props.parentPage ? this.props.parentPage : null;
     this.loader = this.core.make("oxzion/splash");
+    this.parentPageData = props.parentRowData
     this.fetchExternalComponents().then((response) => {
       this.extGUICompoents = response.guiComponent
         ? response.guiComponent
@@ -700,6 +701,11 @@ class PageContent extends React.Component {
       } else if (item.type == "GoogleMapViewer") {
         content.push(
           <CustomGoogleMapComponent core={this.core} appId={this.appId} />
+        );
+      } else if(item.type == "ReactComponent"){
+        var fileId = this.props.fileId ? this.props.fileId : this.state.currentRow.uuid;
+        content.push(
+          <ReactComponent parentPageData={this.parentPageData} core={this.core} appId={this.appId} data={item.content} fileId={fileId}/>
         );
       } else {
         if (this.extGUICompoents && this.extGUICompoents[item.type]) {

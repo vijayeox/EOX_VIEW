@@ -1,5 +1,4 @@
-#kanbanBoard{
-  .containerbox{
+  .k_containerbox{
     display:flex !important;
       flex-direction:column !important;
       flex-flow: column !important;
@@ -23,7 +22,7 @@
     
     
   
-  #button{
+  #k_button{
     box-shadow :2px 3px 4px 4px lightgrey;
     background-color: white;
     border:ivory;
@@ -32,17 +31,17 @@
     margin: auto; 
   
   }
-  .hover:hover, .hover:active {
+  .k_hover:hover, .hover:active {
     color: #fff;
     text-decoration: none;
     background-color: white!important;
     background-image: none;
     
   }
-  .containerbox:hover{
+  .k_containerbox:hover{
     background-color: none;
   }
-  .containerbox:active{
+  .k_containerbox:active{
     background-color: none;
   }
   /* .expense-item  {
@@ -58,7 +57,7 @@
      
     
     }
-    .taskdiv{
+    .k_taskdiv{
       display:flex;
       flex-direction:row;
       flex-flow: row;
@@ -74,7 +73,7 @@
      
     
     }
-    .nav-button {
+    .k_nav-button {
       display:flex;
       flex-direction:row;
       flex-flow: row;
@@ -87,7 +86,7 @@
      
     
     }
-    .cards {
+    .k_cards {
       flex: 0 0 12.5%;padding: 1px;
       margin: 20px;
       box-shadow :2px 3px 4px 4px lightgrey;
@@ -95,7 +94,7 @@
       max-width: 120px;
       height: 145px;
   }
-  .taskcards {
+  .k_taskcards {
     flex: 0 0 25%;padding: 1px;
     margin: 0px;
     top:1rem;
@@ -104,30 +103,30 @@
     height: auto;
     border: none;
   }
-  .taskcards:hover .img {
+  .k_taskcards:hover .img {
     border-color: rgb(99, 204, 131);
   }
-  .img{
+  .k_img{
     border: solid 2px transparent;
     border-radius: 50%;
     width: 20px!important;
     
     height: 20px !important;
   }
-  .taskcardDisplay{
+  .k_taskcardDisplay{
     margin-top: 1rem;
    padding: 0;
     display: flex;
     flex-direction: row;
   }
-  .taskcardDisplay1{
+  .k_taskcardDisplay1{
     height: auto;
     width: auto;
    
     display: flex;
     flex-direction: row;
   }
-  .calendar{
+  .k_calendar{
     top: 2rem;
     display: flex;
     flex-direction: row;
@@ -136,14 +135,14 @@
     align-items: flex-start;
     
   }
-  .fab{
+  .k_fab{
     display: flex;
     margin-left: 15px;
     margin-right: 5px;
     margin-top: 5px;
     margin-bottom: 2px;
   }
-  .select{
+  .k_select{
     top: 2rem;
     position: initial;
     display: flex;
@@ -154,10 +153,9 @@
     align-items: flex-start;
     
   }
-  .button{
+  .k_button{
     box-shadow :2px 3px 4px 4px lightgrey;
     background-color: white;
     border:ivory
   
   } */
-}

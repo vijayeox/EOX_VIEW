@@ -16,6 +16,7 @@ class Page extends React.Component {
     this.contentDivID = "root_" + this.appId + "_" + this.props.pageId;
     this.postSubmitCallback = this.props.postSubmitCallback;
     this.params = this.props.params;
+    this.parentRowData = props.parentRowData;
     this.state = {
       pageId: this.props.pageId,
       fileId: this.props.fileId,
@@ -129,6 +130,7 @@ class Page extends React.Component {
               fileData={this.state.fileData}
               currentRow={this.props.currentRow}
               postSubmitCallback={this.props.postSubmitCallback}
+              parentRowData={this.parentRowData}
             />
             <div style={{display: 'contents'}}>
               <Button primary={true} onClick={()=>this.stepDownPage()}>
@@ -156,6 +158,7 @@ class Page extends React.Component {
             fileData={this.state.fileData}
             currentRow={this.props.currentRow}
             postSubmitCallback={this.props.postSubmitCallback}
+            parentRowData={this.parentRowData}
           />
         );
       }
