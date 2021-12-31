@@ -131,7 +131,7 @@ export default class Panel extends EventEmitter {
     footerElement.classList.add('footer-CR');
     footerElement.id = 'footer-CR';
     footerElement.innerHTML = '<div class="coppyRight">'
-         + 'Copyright © 2004-2021 EOX Vantage. All rights reserved.'
+         + `Copyright © 2004-${new Date().getFullYear()} EOX Vantage. All rights reserved.`
          + '</div>  ';
 
     this.core.$root.appendChild(footerElement);
