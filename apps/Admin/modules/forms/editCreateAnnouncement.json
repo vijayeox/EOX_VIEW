@@ -99,8 +99,8 @@
               "components": [
                 {
                   "label": "Start Date",
-                  "format": "MM/dd/yyyy",
-                  "placeholder": "MM/DD/YYYY",
+                  "format": "yyyy-MM-dd",
+                  "placeholder": "Start Date",
                   "tableView": false,
                   "enableMinDateInput": false,
                   "datePicker": {
@@ -110,9 +110,7 @@
                   "enableMaxDateInput": false,
                   "enableTime": false,
                   "timePicker": { "showMeridian": false },
-                  "customDefaultValue": "// if(!data.start_date){\n//   value=moment().format(\"YYYY-MM-DD\");\n// }\nvalue=data.start_date;",
-                  "calculateValue": "if(data.start_date){\n  value=moment(data.start_date).format(\"YYYY-MM-DD\");\n}",
-                  "allowCalculateOverride": true,
+                  "calculateValue": "if(data.start_date){\n  value=moment(data.date_of_birth).format(\"YYYY-MM-DD\");\n}",
                   "validate": { "required": true },
                   "key": "start_date",
                   "type": "datetime",
@@ -126,7 +124,7 @@
                     "mode": "single",
                     "enableTime": false,
                     "noCalendar": false,
-                    "format": "MM/dd/yyyy",
+                    "format": "yyyy-MM-dd",
                     "hourIncrement": 1,
                     "minuteIncrement": 1,
                     "time_24hr": true,
@@ -148,8 +146,8 @@
               "components": [
                 {
                   "label": "End Date",
-                  "format": "MM/dd/yyyy",
-                  "placeholder": "MM/DD/YYYY",
+                  "format": "yyyy-MM-dd",
+                  "placeholder": "End Date",
                   "tableView": false,
                   "enableMinDateInput": false,
                   "datePicker": {
@@ -159,9 +157,8 @@
                   "enableMaxDateInput": false,
                   "enableTime": false,
                   "timePicker": { "showMeridian": false },
-                  "customDefaultValue": "// if(!data.end_date){\n//   value=moment().format(\"YYYY-MM-DD\");\n// }\nvalue = data.end_date;",
+                  "customDefaultValue": "// if(!data.end_date){\n//   value=moment().format(\"YYYY-MM-DD\");\n// }\n// value = data.end_date;",
                   "calculateValue": "if(data.end_date){\n  value=moment(data.end_date).format(\"YYYY-MM-DD\");\n}",
-                  "allowCalculateOverride": true,
                   "validate": { "required": true },
                   "key": "end_date",
                   "type": "datetime",
@@ -175,7 +172,7 @@
                     "mode": "single",
                     "enableTime": false,
                     "noCalendar": false,
-                    "format": "MM/dd/yyyy",
+                    "format": "yyyy-MM-dd",
                     "hourIncrement": 1,
                     "minuteIncrement": 1,
                     "time_24hr": true,
@@ -238,7 +235,8 @@
           "storage": "url",
           "webcam": false,
           "fileTypes": [{ "label": "", "value": "" }],
-          "filePattern": ".pdf,.png,.jpeg,.jpg,.gif,.doc,.docx,.xlsx,.xls,.xlsm,.csv,.zip,.media,video/*",
+          "filePattern": ".media,video/*,.png,.jpeg,.jpg,.gif",
+          "calculateValue": "console.log(data);",
           "validate": { "required": true },
           "key": "upload",
           "properties": { "absoluteUrl": "true" },
@@ -306,6 +304,6 @@
   "path": "adminannouncement",
   "project": "5dc1489e4f668513e9535090",
   "created": "2021-12-01T10:23:25.474Z",
-  "modified": "2021-12-21T06:29:16.790Z",
+  "modified": "2021-12-24T10:02:54.162Z",
   "machineName": "eoxproductsupport:adminAnnouncement"
 }
