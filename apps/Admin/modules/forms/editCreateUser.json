@@ -309,7 +309,10 @@
                   "enableTime": false,
                   "timePicker": { "showMeridian": false },
                   "calculateValue": "if(data.date_of_join){\n  value=moment(data.date_of_join).format(\"YYYY-MM-DD\");\n}",
-                  "validate": { "required": true },
+                  "validate": {
+                    "required": true,
+                    "custom": "valid = (input > data.date_of_birth) ? true : 'Date of joining should be greater than date of birth';"
+                  },
                   "key": "date_of_join",
                   "type": "datetime",
                   "input": true,
@@ -499,6 +502,6 @@
   "path": "adminuser",
   "project": "5dc1489e4f668513e9535090",
   "created": "2021-12-01T10:01:16.951Z",
-  "modified": "2022-01-03T07:48:25.113Z",
+  "modified": "2022-01-03T08:45:17.387Z",
   "machineName": "eoxproductsupport:adminUser"
 }
