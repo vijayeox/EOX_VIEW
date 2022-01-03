@@ -74,7 +74,8 @@
                   },
                   "idPath": "uuid",
                   "valueProperty": "uuid",
-                  "template": "<span>{{ item.name }}</span>",
+                  "template": "<span>{{item.name}}</span>",
+                  "allowCalculateOverride": true,
                   "validate": { "required": true, "select": false },
                   "key": "managerId",
                   "properties": { "absoluteUrl": "true" },
@@ -106,6 +107,7 @@
                   "idPath": "uuid",
                   "valueProperty": "uuid",
                   "template": "<span>{{ item.name }}</span>",
+                  "allowCalculateOverride": true,
                   "validate": { "select": false },
                   "key": "parent_id",
                   "properties": { "absoluteUrl": "true" },
@@ -210,6 +212,6 @@
   "path": "adminproject",
   "project": "5dc1489e4f668513e9535090",
   "created": "2021-12-01T09:35:49.729Z",
-  "modified": "2022-01-03T08:03:04.794Z",
+  "modified": "2022-01-03T08:39:59.478Z",
   "machineName": "eoxproductsupport:adminProject"
 }
