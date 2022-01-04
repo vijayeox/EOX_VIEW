@@ -364,13 +364,11 @@
                     "url": "/project",
                     "headers": [{ "key": "", "value": "" }]
                   },
-                  "valueProperty": "uuid",
-                  "template": "<span>{{ item.name }}</span>\n<!--console.log(\"item.name\",item.name);-->",
-                  "validate": { "select": false },
+                  "idPath": "uuid",
+                  "template": "<span>{{ item.name }}</span>",
                   "key": "project",
                   "properties": { "absoluteUrl": "true" },
                   "type": "select",
-                  "searchField": "name",
                   "filter": "filter=[{\"skip\":0,\"take\":10000}]",
                   "input": true,
                   "disableLimit": false,
@@ -398,12 +396,11 @@
                   },
                   "idPath": "uuid",
                   "template": "<span>{{ item.name }}</span>",
-                  "customDefaultValue": "console.log(\"rolein user \",data.role);",
-                  "validate": { "required": true, "select": false },
+                  "validate": { "required": true },
                   "key": "role",
                   "properties": { "absoluteUrl": "true" },
                   "type": "select",
-                  "searchField": "name",
+                  "filter": "filter=[{\"skip\":0,\"take\":10000}]",
                   "input": true,
                   "lazyLoad": false,
                   "disableLimit": false
@@ -503,6 +500,6 @@
   "path": "adminuser",
   "project": "5dc1489e4f668513e9535090",
   "created": "2021-12-01T10:01:16.951Z",
-  "modified": "2022-01-04T11:54:39.607Z",
+  "modified": "2022-01-04T12:35:54.062Z",
   "machineName": "eoxproductsupport:adminUser"
 }
