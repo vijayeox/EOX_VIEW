@@ -264,6 +264,7 @@
                           "placeholder": "Enter Last Name",
                           "tableView": true,
                           "calculateValue": "value=data.contact.lastname;",
+                          "validate": { "required": true },
                           "key": "lastname",
                           "type": "textfield",
                           "input": true
@@ -291,8 +292,8 @@
                           "label": "Enter User Name",
                           "placeholder": "Enter User Name",
                           "tableView": true,
-                          "calculateValue": "value= data.contact.firstname + data.contact.lastname;",
                           "allowCalculateOverride": true,
+                          "validate": { "required": true },
                           "key": "username",
                           "type": "textfield",
                           "input": true
@@ -312,6 +313,7 @@
                           "placeholder": "Enter Email ID",
                           "tableView": true,
                           "calculateValue": "value = data.contact.email;",
+                          "validate": { "required": true },
                           "key": "email",
                           "type": "email",
                           "input": true
@@ -842,6 +844,6 @@
   "path": "adminaccountcreation",
   "project": "5dc1489e4f668513e9535090",
   "created": "2021-11-30T10:51:39.579Z",
-  "modified": "2022-01-03T08:10:41.712Z",
+  "modified": "2022-01-04T07:45:57.353Z",
   "machineName": "eoxproductsupport:adminAccountCreation"
 }
