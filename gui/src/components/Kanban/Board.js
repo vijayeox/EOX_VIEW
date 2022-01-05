@@ -110,10 +110,10 @@ export default function Board(props) {
               }}
             >
               <option value="All"> ALL</option>
-              <option value="Completed">Completed</option>
-              <option value="Delayed">Delayed</option>
-              <option value="In Progress">In Progress</option>
-              <option value="Open">Open</option>
+              {/* Dynamic values */}
+              {fields.map((e) => {
+                return <option key={e.value} value={e.value}>{e.label}</option>;
+              })}
             </select>
           </Badge>
         </Button>
@@ -197,20 +197,20 @@ export default function Board(props) {
         </Button> */}
 
       </div>
-        <ListGroup horizontal>
-          {fields.map((dataItem, index) => {
-            return (
-              <StatusCard
-                statusInfo={dataItem}
-                filter={filterMaker(dataItem.value)}
-                key={index}
-                index={index}
-                core={props.core}
-                appId={props.appId}
-              />
-            );
-          })}
-        </ListGroup>
+      <ListGroup horizontal>
+        {fields.map((dataItem, index) => {
+          return (
+            <StatusCard
+              statusInfo={dataItem}
+              filter={filterMaker(dataItem.value)}
+              key={index}
+              index={index}
+              core={props.core}
+              appId={props.appId}
+            />
+          );
+        })}
+      </ListGroup>
 
       <br />
       <DragDropContext
