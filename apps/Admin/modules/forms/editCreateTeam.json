@@ -74,11 +74,11 @@
                   "idPath": "uuid",
                   "valueProperty": "uuid",
                   "template": "<span>{{item.name}}</span>",
-                  "validate": { "required": true, "select": false },
+                  "validate": { "required": true },
                   "key": "managerId",
                   "properties": { "absoluteUrl": "true" },
                   "type": "select",
-                  "searchField": "name",
+                  "filter": "filter=[{\"skip\":0,\"take\":10000}]",
                   "input": true,
                   "lazyLoad": false,
                   "disableLimit": false
@@ -107,11 +107,10 @@
                   "template": "<span>{{ item.name }}</span>",
                   "calculateValue": "// console.log(\"Check for null or empty\", data);\n\n// if(data.parent_id === null || data.parent_id === \"\" ){\n// value = null;\n// console.log(\"Data\",value);\n// }",
                   "allowCalculateOverride": true,
-                  "validate": { "select": false },
                   "key": "parent_id",
                   "properties": { "absoluteUrl": "true" },
                   "type": "select",
-                  "searchField": "name",
+                  "filter": "filter=[{\"skip\":0,\"take\":10000}]",
                   "input": true,
                   "lazyLoad": false,
                   "disableLimit": false
@@ -211,6 +210,6 @@
   "path": "adminteam",
   "project": "5dc1489e4f668513e9535090",
   "created": "2021-12-01T10:14:34.756Z",
-  "modified": "2022-01-03T07:59:58.246Z",
+  "modified": "2022-01-04T11:50:46.632Z",
   "machineName": "eoxproductsupport:adminTeam"
 }

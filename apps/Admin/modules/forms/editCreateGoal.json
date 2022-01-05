@@ -66,14 +66,13 @@
                   "idPath": "uuid",
                   "valueProperty": "uuid",
                   "template": "<span>{{ item.name }}</span>",
-                  "calculateValue": "console.log(\"Dropdown Data\", data)",
-                  "validate": { "select": false },
                   "key": "userId",
                   "properties": { "absoluteUrl": "true" },
                   "type": "select",
-                  "searchField": "name",
+                  "filter": "filter=[{\"skip\":0,\"take\":10000}]",
                   "input": true,
-                  "disableLimit": false
+                  "disableLimit": false,
+                  "lazyLoad": false
                 }
               ],
               "width": 6,
@@ -97,13 +96,13 @@
                   "idPath": "uuid",
                   "valueProperty": "uuid",
                   "template": "<span>{{ item.name }}</span>",
-                  "validate": { "select": false },
                   "key": "teamId",
                   "properties": { "absoluteUrl": "true" },
                   "type": "select",
-                  "searchField": "name",
+                  "filter": "filter=[{\"skip\":0,\"take\":10000}]",
                   "input": true,
-                  "disableLimit": false
+                  "disableLimit": false,
+                  "lazyLoad": false
                 }
               ],
               "width": 6,
@@ -135,15 +134,15 @@
                   },
                   "idPath": "uuid",
                   "valueProperty": "uuid",
-                  "template": " <span>{{ item.name}}</span>",
-                  "calculateValue": "console.log(\"query Data\" ,data)",
-                  "validate": { "required": true, "select": false },
+                  "template": "<span>{{ item.name }}</span>",
+                  "validate": { "required": true },
                   "key": "queryId",
                   "properties": { "absoluteUrl": "true" },
                   "type": "select",
-                  "searchField": "name",
+                  "filter": "filter=[{\"skip\":0,\"take\":10000}]",
                   "input": true,
-                  "disableLimit": false
+                  "disableLimit": false,
+                  "lazyLoad": false
                 }
               ],
               "width": 6,
@@ -275,6 +274,6 @@
   "path": "admingoals",
   "project": "5dc1489e4f668513e9535090",
   "created": "2021-12-01T10:21:04.437Z",
-  "modified": "2021-12-13T05:20:59.487Z",
+  "modified": "2022-01-04T11:53:37.261Z",
   "machineName": "eoxproductsupport:adminGoal"
 }

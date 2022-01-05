@@ -380,7 +380,7 @@ export default class GridActions extends React.Component {
                           icon: "question",
                           imageWidth: 75,
                           imageHeight: 75,
-                          confirmButtonText: "Delete",
+                          confirmButtonText: "Reset",
                           confirmButtonColor: "#d33",
                           showCancelButton: true,
                           cancelButtonColor: "#3085d6",
