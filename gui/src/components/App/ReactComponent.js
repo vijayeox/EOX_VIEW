@@ -1,7 +1,7 @@
 import React, { createRef, useEffect, useMemo} from 'react'
 import ReactDOM from 'react-dom'
 
-export default function ReactComponent({appId, fileId, core, data, rowData, parentPageData}) {
+export default function ReactComponent({appId, fileId, core, data, rowData, parentPageData, componentProps}) {
     const ref = createRef();
     useEffect(() => {
         document.getElementById(`left-navigation-${appId}`).dispatchEvent(
@@ -9,7 +9,7 @@ export default function ReactComponent({appId, fileId, core, data, rowData, pare
                 detail: {
                     type : data['reactId'],
                     cb : component => {
-                        component && ReactDOM.render(component({appId, fileId, core, data, rowData, parentPageData}), ref?.current)
+                        component && ReactDOM.render(component({appId, fileId, core, data, rowData, parentPageData, componentProps}), ref?.current)
                     }
                 }
               })
