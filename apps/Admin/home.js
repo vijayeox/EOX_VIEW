@@ -81,7 +81,7 @@ export default class Home extends React.Component {
         );
         break;
       case "Account":
-        if (this.userProfile.privileges["MANAGE_ACCOUNT_WRITE"]) {
+        if (this.userProfile.privileges["MANAGE_ACCOUNT_READ"]) {
           sectionContent = (
             <Organization
               args={this.core}
@@ -94,7 +94,7 @@ export default class Home extends React.Component {
         }
         break;
       case "User":
-        if (this.userProfile.privileges["MANAGE_USER_WRITE"]) {
+        if (this.userProfile.privileges["MANAGE_USER_READ"]) {
           sectionContent = (
             <User
               args={this.core}
@@ -107,7 +107,7 @@ export default class Home extends React.Component {
         }
         break;
       case "Role":
-        if (this.userProfile.privileges["MANAGE_ROLE_WRITE"]) {
+        if (this.userProfile.privileges["MANAGE_ROLE_READ"]) {
           sectionContent = (
             <Role
               args={this.core}
@@ -120,7 +120,7 @@ export default class Home extends React.Component {
         }
         break;
       case "Team":
-        if (this.userProfile.privileges["MANAGE_TEAM_WRITE"]) {
+        if (this.userProfile.privileges["MANAGE_TEAM_READ"]) {
           sectionContent = (
             <Team
               args={this.core}
@@ -146,7 +146,7 @@ export default class Home extends React.Component {
       //   }
       //   break;
       case "Project":
-        if (this.userProfile.privileges["MANAGE_PROJECT_WRITE"]) {
+        if (this.userProfile.privileges["MANAGE_PROJECT_READ"]) {
           sectionContent = (
             <Project
               args={this.core}
@@ -159,7 +159,7 @@ export default class Home extends React.Component {
         }
         break;
       case "Announcement":
-        if (this.userProfile.privileges["MANAGE_ANNOUNCEMENT_WRITE"]) {
+        if (this.userProfile.privileges["MANAGE_ANNOUNCEMENT_READ"]) {
           sectionContent = (
             <Announcement
               args={this.core}
