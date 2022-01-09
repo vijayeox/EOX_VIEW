@@ -33,7 +33,7 @@ const onDragEnd = (result, setRefresh, setReload, props) => {
 export default function Board(props) {
   const [fields, setFields] = useState([]);
   const [fieldset, setFieldset] = useState([]);
-  const [Refresh, setRefresh] = useState(false);
+  const [Refresh, setRefresh] = useState(true);
   const [Reload, setReload] = useState(false);
   const [priority, setPriority] = useState("All");
   const [minDate, setMinDate] = useState(null);
@@ -41,34 +41,46 @@ export default function Board(props) {
   const [Filter, setFilter] = useState([]);
 
   useEffect(() => {
-    let url = "/app/" + props.appId + "/field/b0fd5ad1-607b-11eb-a441-06a328860aa2"
-    Requests.doRestRequest(
-      props.core,
-      url,
-      {},
-      'get',
-      function (response) {
-        var tempField;
-        tempField = JSON.parse(response.options);
-        setFieldset([]);
-        setFields(tempField.values);
-        setFieldset(tempField.values);
-      },
-      function (error) {
-        console.log("error " + error)
-      });
+    if (Refresh) {
+      let url = "/app/" + props.appId + "/field/b0fd5ad1-607b-11eb-a441-06a328860aa2"
+      Requests.doRestRequest(
+        props.core,
+        url,
+        {},
+        'get',
+        function (response) {
+          var tempField;
+          tempField = JSON.parse(response.options);
+          setFieldset([]);
+          console.log("tempField", { tempField, priority });
+          setFields(tempField.values);
+          // setFieldset(tempField.values);
+          if (priority === "All") {
+            console.log("Inside IF");
+            setFieldset(tempField.values);
+          } else {
+            console.log("Inside ELSE");
+            const filteredStatus = tempField.values.find((data) => data.value === priority);
+            const statusArray = [];
+            statusArray.push(filteredStatus);
+            console.log("FilteredStatus", filteredStatus);
+            setFieldset(statusArray)
+          }
+          setRefresh(false);
+        },
+        function (error) {
+          console.log("error " + error)
+        });
+    }
 
   }, [Refresh]);
 
   const filterMaker = (status) => {
     var tempArray = [];
-
-    tempArray.push({ field: "status", operator: "eq", value: status });
-
+    tempArray.push({ field: "status", operator: "eq", value: status }); // if status = all, call 4 api
     if (Filter.length > 0) {
       tempArray = tempArray.concat(Filter);
     }
-
     return tempArray;
   };
 
@@ -78,6 +90,7 @@ export default function Board(props) {
     setFilter(filter);
   };
 
+  console.log("Refresh", Refresh);
   return (
     <Container fluid>
       <div className="expense-item k_expense-item">
@@ -105,6 +118,7 @@ export default function Board(props) {
               name="Status"
               onChange={(e) => {
                 setPriority(e.target.value);
+                setRefresh(true);
               }}
             >
               <option value="All"> ALL</option>
@@ -115,7 +129,6 @@ export default function Board(props) {
             </select>
           </Badge>
         </Button>
-
         {/* <Button variant="link" style={{ color: "black" }}>
           <Badge>
             <div>
