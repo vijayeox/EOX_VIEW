@@ -52,20 +52,19 @@ export default function Board(props) {
           var tempField;
           tempField = JSON.parse(response.options);
           setFieldset([]);
-          console.log("tempField", { tempField, priority });
           setFields(tempField.values);
+          setFieldset(tempField.values);
+          
           // setFieldset(tempField.values);
-          if (priority === "All") {
-            console.log("Inside IF");
-            setFieldset(tempField.values);
-          } else {
-            console.log("Inside ELSE");
-            const filteredStatus = tempField.values.find((data) => data.value === priority);
-            const statusArray = [];
-            statusArray.push(filteredStatus);
-            console.log("FilteredStatus", filteredStatus);
-            setFieldset(statusArray)
-          }
+          // if (priority === "All") {
+          //   setFieldset(tempField.values);
+          // } else {
+          //   const filteredStatus = tempField.values.find((data) => data.value === priority);
+          //   const statusArray = [];
+          //   statusArray.push(filteredStatus);
+          //   setFieldset(statusArray)
+          // }
+          
           setRefresh(false);
         },
         function (error) {
@@ -90,7 +89,6 @@ export default function Board(props) {
     setFilter(filter);
   };
 
-  console.log("Refresh", Refresh);
   return (
     <Container fluid>
       <div className="expense-item k_expense-item">
@@ -237,6 +235,7 @@ export default function Board(props) {
                 filter={filterMaker(dataItem.value)}
                 index={index}
                 key={index}
+                priority={priority}
               />
             );
           })}
