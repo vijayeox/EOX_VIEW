@@ -9,6 +9,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import CalenderDropDown from "./CalendarDropdown";
 import Requests from "../../Requests";
 
+import DateRangePickerCustom from "./DateRangePickerCustom";
+
 const onDragEnd = (result, setRefresh, setReload, props) => {
   if (!result.destination) return;
   const { draggableId, destination } = result;
@@ -58,16 +60,6 @@ export default function Board(props) {
 
   }, [Refresh]);
 
-  const dateRangeHandler = (mindatevalue, maxdatevalue) => {
-    if (mindatevalue === null || mindatevalue === 0) return;
-    if (maxdatevalue === null || maxdatevalue === 0) return;
-
-    setFilter([
-      { field: "start_date", operator: "gte", value: mindatevalue },
-      { field: "end_date", operator: "lte", value: maxdatevalue },
-    ]);
-  };
-
   const filterMaker = (status) => {
     var tempArray = [];
 
@@ -80,11 +72,17 @@ export default function Board(props) {
     return tempArray;
   };
 
+  // DateRangePickerCustom - onDateRange
+  const setFilterFromProps = (filter) => {
+    if (filter === null || filter === 0) return;
+    setFilter(filter);
+  };
+
   return (
     <Container fluid>
       <div className="expense-item k_expense-item">
         <Badge>
-          <CalenderDropDown onDateRange={dateRangeHandler} />
+          <DateRangePickerCustom onDateRange={setFilterFromProps} />
         </Badge>
 
         <Button variant="link"
