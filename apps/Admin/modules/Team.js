@@ -34,7 +34,7 @@ class Team extends React.Component {
         title: "Create New",
       },
     }),
-    (this.noCreateAction = false),
+    (this.noCreateAction = true),
     (this.config = {
       height: "100%",
       width: "100%",
@@ -179,6 +179,7 @@ class Team extends React.Component {
           });
         }}
         noCreateAction={this.noCreateAction}
+        dataStateChanged={this.dataStateChanged.bind(this)}
         // key={Math.random()}
       />
     );
