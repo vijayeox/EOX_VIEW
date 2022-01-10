@@ -565,13 +565,77 @@ class BaseFormRenderer extends React.Component {
     // We can add few other fields along with props as needed.
     // JS Objects must be unset here
   }
-
+  uploadStorageAttachments(formData) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const storageFileComponents = [];
+        this.state.currentForm.everyComponent(function (comp) {
+          if (
+            comp.component.type === "file" 
+            &&
+            comp.component.storage === "url"
+             && comp.dataValue?.length > 0
+          )
+            storageFileComponents.push(comp);
+        });
+        for (let i = 0; i < storageFileComponents.length; i++) {
+          const component = storageFileComponents[i];
+          const files = component.dataValue;
+          const responses = await Promise.all(
+            files.map((file) => {
+              return this.helper.request(
+                "v1",
+                component?.properties?.["absoluteUrl"]
+                  ? url
+                  : "/app/" + this.state.appId + component.component.url,
+                file.uploadFile,
+                "fileupload"
+              );
+            })
+          );
+          const idx = responses?.findIndex((response) => response.status !== "success")
+          if (idx > -1) {
+            this.loader.destroy()
+            Swal.fire({
+              title: `Failed to upload attachment : ${files[idx].name}`,
+              // text: "Do you really want to cancel the submission? This action cannot be undone!",
+              icon: "warning",
+              confirmButtonColor: "#d33",
+              cancelButtonColor: "#3085d6",
+              confirmButtonText: "ok",
+              target: ".AppBuilderPage",
+            });
+            this.state.currentForm.triggerChange();
+            return resolve(false);
+          }
+          const data = responses.map(({data}, index) => {
+              return {...data, originalName : files[index].name, name : files[index].name}
+          });
+          component.dataValue = [...data]
+        }
+        resolve(true)
+      } catch (e) {
+        Swal.fire({
+          title: "Failed to upload attachment(s)",
+          icon: "warning",
+          confirmButtonColor: "#d33",
+          cancelButtonColor: "#3085d6",
+          confirmButtonText: "ok",
+          target: ".AppBuilderPage",
+        })
+        this.state.currentForm.triggerChange();
+        this.loader.destroy()
+        resolve(false);
+      }
+    });
+  }
   async saveForm(form, data) {
     var that = this;
     if (that.props.updateFormData) {
       that.props.postSubmitCallback(data);
       return;
     }
+    if(!(await this.uploadStorageAttachments(data)))return
     if (
       that.props.customSaveForm &&
       typeof that.props.customSaveForm == "function"
