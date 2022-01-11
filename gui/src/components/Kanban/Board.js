@@ -11,25 +11,6 @@ import Requests from "../../Requests";
 
 import DateRangePickerCustom from "./DateRangePickerCustom";
 
-const onDragEnd = (result, setRefresh, setReload, props) => {
-  if (!result.destination) return;
-  const { draggableId, destination } = result;
-
-  let url = "/app/" + props.appId + "/file/crud"
-  Requests.doRestRequest(
-    props.core,
-    url,
-    {},
-    'put',
-    function () {
-      setReload(true);
-      setRefresh(true);
-    },
-    function (e) {
-      console.log("Error Couldn't update the File " + e);
-    });
-};
-
 export default function Board(props) {
   const [fields, setFields] = useState([]);
   const [fieldset, setFieldset] = useState([]);
@@ -39,6 +20,24 @@ export default function Board(props) {
   const [minDate, setMinDate] = useState(null);
   const [maxDate, setMaxDate] = useState(null);
   const [Filter, setFilter] = useState([]);
+
+  const onDragEnd = (result, setRefresh, setReload, props) => {
+    console.log({props, result, Refresh});
+    if (!result.destination) return;
+    const { draggableId, destination } = result;
+    let url = "/app/" + props.appId + "/file/crud/" + draggableId // also add entity_ID
+    Requests.doRestRequest(
+      props.core,
+      url,
+      {uuid: draggableId, status: destination.droppableId, entity_id:2}, //set particular status for this particular UUID
+      'put',
+      function () {},
+      function (e) {
+        console.log("Error Couldn't update the File " + e);
+      });
+      setReload(true);
+      setRefresh(true);
+  };
 
   useEffect(() => {
     if (Refresh) {
@@ -223,7 +222,7 @@ export default function Board(props) {
 
       <br />
       <DragDropContext
-        onDragEnd={(result) => onDragEnd(result, setRefresh, setReload)}
+        onDragEnd={(result) => onDragEnd(result, setRefresh, setReload, props)}
       >
         <ListGroup horizontal >
           {fieldset.map((dataItem, index) => {

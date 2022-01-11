@@ -40,6 +40,22 @@ const DateRangePickerCustom = (props) => {
 
   const toggle = () => setDropdownOpen((prevState) => !prevState);
 
+  // Convert selected date to get MTD and YTD values
+  const convertDate = (date, valueSelected) => {
+    if (valueSelected === "mtd") {
+      const day = 1;
+      const month = date.getMonth();
+      const year = date.getFullYear();
+      return (Moment(new Date(year, month, day)).format("YYYY-MM-DD"));
+    } else {
+      const day = 1;
+      const month = 0;
+      const year = date.getFullYear();
+      return (Moment(new Date(year, month, day)).format("YYYY-MM-DD"));
+    }
+  }
+
+  
   const buttonClick = () => {
     let filter = null;
     let mindatevalue = Moment(startDate).format("YYYY-MM-DD")
@@ -47,43 +63,55 @@ const DateRangePickerCustom = (props) => {
 
     switch (selectedValue) {
       case "between":
+        dateDisabled = false;
         filter = [
           { field: "start_date", operator: "gte", value: mindatevalue },
           { field: "end_date", operator: "lte", value: maxdatevalue },
         ]
         break;
 
-        case "lte":
-          filter = [
-            { field: "end_date", operator: "lte", value: maxdatevalue },
-          ]
+      case "lte":
+        dateDisabled = false;
+        filter = [
+          { field: "end_date", operator: "lte", value: maxdatevalue },
+        ]
 
-        case "gte":
-          filter = [
-            { field: "end_date", operator: "gte", value: maxdatevalue },
-          ]
+      case "gte":
+        dateDisabled = false;
+        filter = [
+          { field: "end_date", operator: "gte", value: maxdatevalue },
+        ]
 
-        case "mtd":
-          console.log(maxdatevalue);
-          // jan 1st to current date (Jan 1st - Jan 7th)
-          filter = [
-            { field: "end_date", operator: "gte", value: maxdatevalue },
-          ]
+      case "mtd":
+        dateDisabled = true;
+        let mtdmindatevalue = convertDate(endDate, "mtd");
+        setStartDate(mtdmindatevalue);
+        setEndDate(new Date());
+        filter = [
+          { field: "start_date", operator: "gte", value: mtdmindatevalue },
+          { field: "end_date", operator: "lte", value: maxdatevalue },
+        ]
 
-        case "ytd":
-          // this year upto current date
-          filter = [
-            { field: "end_date", operator: "gte", value: maxdatevalue },
-          ]
+      case "ytd":
+        dateDisabled = true;
+        let ytdmindatevalue = convertDate(endDate, "ytd");
+        setStartDate(ytdmindatevalue);
+        setEndDate(new Date());
+        filter = [
+          { field: "start_date", operator: "gte", value: ytdmindatevalue },
+          { field: "end_date", operator: "lte", value: maxdatevalue },
+        ]
 
-        case "today":
-          // today's date
-          filter = [
-            { field: "end_date", operator: "eq", value: maxdatevalue },
-          ]
-        
-        default:
-        }
+      case "today":
+        dateDisabled = true;
+        // today's date
+        setEndDate(new Date());
+        filter = [
+          { field: "end_date", operator: "eq", value: maxdatevalue },
+        ]
+
+      default:
+    }
     props.onDateRange(filter);
   };
 
@@ -94,6 +122,7 @@ const DateRangePickerCustom = (props) => {
   useEffect(() => {
     buttonClick();
   }, []);
+
   return (
     <Dropdown
       isOpen={dropdownOpen}
@@ -150,18 +179,6 @@ const DateRangePickerCustom = (props) => {
                   showMonthDropdown
                   showYearDropdown
                   dropdownMode="select"
-                  popperPlacement="bottom"
-                  popperModifiers={{
-                    flip: {
-                      behavior: ["bottom"] // don't allow it to flip to be above
-                    },
-                    preventOverflow: {
-                      enabled: false // tell it not to try to stay within the view (this prevents the popper from covering the element you clicked)
-                    },
-                    hide: {
-                      enabled: false // turn off since needs preventOverflow to be enabled
-                    }
-                  }}
                   dateFormat="yyyy-MM-dd" selected={endDate} onChange={(date) => setEndDate(date)} disabled={dateDisabled}/>
               </Form.Group>
             </div>
@@ -175,19 +192,7 @@ const DateRangePickerCustom = (props) => {
                     showMonthDropdown
                     showYearDropdown
                     dropdownMode="select"
-                    popperPlacement="bottom"
-                    popperModifiers={{
-                      flip: {
-                        behavior: ["bottom"] // don't allow it to flip to be above
-                      },
-                      preventOverflow: {
-                        enabled: false // tell it not to try to stay within the view (this prevents the popper from covering the element you clicked)
-                      },
-                      hide: {
-                        enabled: false // turn off since needs preventOverflow to be enabled
-                      }
-                    }}
-                    dateFormat="yyyy-MM-dd" selected={startDate} onChange={(date) => setStartDate(date)} />
+                    dateFormat="yyyy-MM-dd" selected={startDate} onChange={(date) => setStartDate(date)} disabled={dateDisabled} />
                 </Form.Group>
               </div>
               <div className="dashboard-filter-field" id="" style={{ minWidth: "auto" }}>
@@ -196,19 +201,7 @@ const DateRangePickerCustom = (props) => {
                     showMonthDropdown
                     showYearDropdown
                     dropdownMode="select"
-                    popperPlacement="bottom"
-                    popperModifiers={{
-                      flip: {
-                        behavior: ["bottom"] // don't allow it to flip to be above
-                      },
-                      preventOverflow: {
-                        enabled: false // tell it not to try to stay within the view (this prevents the popper from covering the element you clicked)
-                      },
-                      hide: {
-                        enabled: false // turn off since needs preventOverflow to be enabled
-                      }
-                    }}
-                    dateFormat="yyyy-MM-dd" selected={endDate} onChange={(date) => setEndDate(date)} />
+                    dateFormat="yyyy-MM-dd" selected={endDate} onChange={(date) => setEndDate(date)} disabled={dateDisabled} />
                 </Form.Group>
               </div>
             </div>
