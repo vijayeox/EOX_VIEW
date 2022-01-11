@@ -75,7 +75,7 @@ export default class GridActions extends React.Component {
           }))
         : Swal.fire({
             icon: "error",
-            title: response.status + "(" + response.message +")",
+            title: response.status + "(" + response.message + ")",
             showConfirmButton: true,
           });
     });
@@ -109,10 +109,11 @@ export default class GridActions extends React.Component {
   }
 
   edit = (data, form, api, index) => {
+    let gridsId= document.getElementsByClassName("eox-grids")[0].parentNode.id;
     if (data) {
-      document.getElementById(this.gridId).classList.add("display-none");
+      document.getElementById(gridsId).classList.add("display-none");
     } else {
-      document.getElementById(this.gridId).classList.remove("display-none");
+      document.getElementById(gridsId).classList.remove("display-none");
     }
     ReactDOM.render(
       data ? (
