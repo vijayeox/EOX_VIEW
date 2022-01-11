@@ -26,7 +26,7 @@ class EntityViewer extends React.Component {
       entityConfig: null,
       filePanelUuid: this.uuidv4(),
       tabPanel: 'tabpanel-',
-      isTabSegment :["af6056c1-be46-4266-b83c-4b2177bcc7ca"].includes( this.props.appId)
+      isTabSegment :false//["af6056c1-be46-4266-b83c-4b2177bcc7ca"].includes( this.props.appId)
     };
   }
 
