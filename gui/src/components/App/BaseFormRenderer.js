@@ -581,40 +581,48 @@ class BaseFormRenderer extends React.Component {
         for (let i = 0; i < storageFileComponents.length; i++) {
           const component = storageFileComponents[i];
           const files = component.dataValue;
-          const responses = await Promise.all(
-            files.map((file) => {
-              return this.helper.request(
-                "v1",
-                component?.properties?.["absoluteUrl"]
-                  ? url
-                  : "/app/" + this.state.appId + component.component.url,
-                file.uploadFile,
-                "fileupload"
-              );
-            })
-          );
-          const idx = responses?.findIndex((response) => response.status !== "success")
-          if (idx > -1) {
-            this.loader.destroy()
-            Swal.fire({
-              title: `Failed to upload attachment : ${files[idx].name}`,
-              // text: "Do you really want to cancel the submission? This action cannot be undone!",
-              icon: "warning",
-              confirmButtonColor: "#d33",
-              cancelButtonColor: "#3085d6",
-              confirmButtonText: "ok",
-              target: ".AppBuilderPage",
+          const uploadedFiles = [...files.filter(f => f.uuid)];
+          const newFiles = [...files.filter(f => !f.uuid)];
+          component.dataValue = [];
+          if(newFiles.length > 0){
+            const responses = await Promise.all(
+              newFiles.map((file) => {
+                return this.helper.request(
+                  "v1",
+                  component?.properties?.["absoluteUrl"]
+                    ? url
+                    : "/app/" + this.state.appId + component.component.url,
+                  file.uploadFile,
+                  "fileupload"
+                );
+              })
+            );
+            // if(files.length === 0) continue;
+            const idx = responses?.findIndex((response) => response.status !== "success")
+            if (idx > -1) {
+              this.loader.destroy()
+              Swal.fire({
+                title: `Failed to upload attachment : ${files[idx].name}`,
+                // text: "Do you really want to cancel the submission? This action cannot be undone!",
+                icon: "warning",
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "ok",
+                target: ".AppBuilderPage",
+              });
+              this.state.currentForm.triggerChange();
+              return resolve(false);
+            }
+            const data = responses.map(({data}, index) => {
+                return {...data, originalName : newFiles[index].name, name : newFiles[index].name}
             });
-            this.state.currentForm.triggerChange();
-            return resolve(false);
-          }
-          const data = responses.map(({data}, index) => {
-              return {...data, originalName : files[index].name, name : files[index].name}
-          });
-          component.dataValue = [...data]
+          component.dataValue = [ ...data]
+        }
+          component.dataValue = [...component.dataValue, ...uploadedFiles]
         }
         resolve(true)
       } catch (e) {
+        console.log(e)
         Swal.fire({
           title: "Failed to upload attachment(s)",
           icon: "warning",
