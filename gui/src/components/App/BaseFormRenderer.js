@@ -643,7 +643,7 @@ class BaseFormRenderer extends React.Component {
       that.props.postSubmitCallback(data);
       return;
     }
-    if(!(await this.uploadStorageAttachments(data)))return
+    // if(!(await this.uploadStorageAttachments(data)))return
     if (
       that.props.customSaveForm &&
       typeof that.props.customSaveForm == "function"
