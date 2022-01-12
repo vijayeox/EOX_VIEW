@@ -52,7 +52,7 @@ export default class PanelServiceProvider {
       profile:ProfilePanelItem,
       logout: LogoutPanelItem
     }, args.registry || {});
-    console.log(this.registry);
+    // console.log(this.registry);
   }
 
   destroy() {

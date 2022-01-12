@@ -287,15 +287,13 @@ updateGraph =  async(filterParams) => {
         if (response.status == "success") {
           that.setState({ widgetCounter: that.state.widgetCounter + 1 });
           if ('error' === response.status) {
-            console.error('Could not load widget.');
-            console.error(response);
+            console.error('Could not load widget.', response);
             errorFound = true;
           } else {
             //dispose if widget exists
             let hasDashboardFilters = that.state.preparedDashboardFilter ? true : false;
             let renderproperties = { "element": widget, "widget": response.data.widget, "hasDashboardFilters": hasDashboardFilters, "dashboardEditMode": false }
             let widgetObject = WidgetRenderer.render(renderproperties);
-            console.log(widgetObject);
             if (widgetObject) {
               that.renderedWidgets[widgetUUId] = widgetObject;
             }

@@ -64,16 +64,6 @@ class TabSegment extends React.Component {
       this.state.dataReady = true;
     }
   }
-  componentDidMount(){
-    //HACK for CRM
-    if(this.props.appId === 'ff1ecbb7-3a45-4966-b38c-bf203f171423'){
-      let ev = new CustomEvent("addcustomActions", {
-        detail: { customActions: [GetCrmHeader(this.props.currentRow, this.appId, this.core.make("oxzion/splash"), this.core.make("oxzion/restClient"),true)] },
-        bubbles: true
-      });
-      document.getElementById(this.appId + "_breadcrumbParent").dispatchEvent(ev);
-    }
-  }
   componentDidUpdate(prevProps) {
     if (prevProps.tabs !== this.props.tabs) {
       this.setState({ tabs: this.props.tabs });

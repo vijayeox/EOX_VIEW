@@ -46,7 +46,7 @@ const register = (core, args, options, metadata) => {
     // Listen for messages from iframe
     win.on('iframe:get', msg => {
       // We should get "Ping" here
-      console.warn('Message from Iframe', msg);
+      // console.warn('Message from Iframe', msg);
 
       // In this case we just send "Pong" back
       win.emit('iframe:post', 'Pong');

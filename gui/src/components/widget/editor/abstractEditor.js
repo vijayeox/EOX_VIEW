@@ -52,7 +52,7 @@ class AbstractEditor extends React.Component {
                 { "name": "Stacked Horizontal Bar", "value": "stacked_horizontal_bar_chart" }
             ],
             "table": [
-                { "name": "Area", "value": "area_chart" }
+                { "name": "Table", "value": "table" }
             ],
             "Aggregate value": [],
             "Profile": []

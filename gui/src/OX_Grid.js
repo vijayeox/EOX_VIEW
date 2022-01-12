@@ -416,8 +416,8 @@ export default class OX_Grid extends React.Component {
         };
         showButton
           ? actionButtons.push(
-            <MenuItem text={action[key].name} render={itemRender} />
-          )
+              <MenuItem text={action[key].name} key={index} render={itemRender} />
+            )
           : null;
       }, this);
       this.setState({
@@ -431,7 +431,7 @@ export default class OX_Grid extends React.Component {
     let gridToolbarContent = [];
     if (typeof this.props.gridToolbar == "string") {
       gridToolbarContent.push(
-        <div style={{ display: "inline-block" }}>
+        <div style={{ display: "inline-block" }} key={Math.random()}>
           <JsxParser
             bindings={{
               item: this.props.parentData,
@@ -463,6 +463,7 @@ export default class OX_Grid extends React.Component {
         <Button
           primary={true}
           onClick={this.exportPDF}
+          key={Math.random()}
           className={"toolBarButton btn btn-primary"}
           title="Export to PDF"
         >
@@ -475,6 +476,7 @@ export default class OX_Grid extends React.Component {
         <Button
           primary={true}
           className={"toolBarButton btn btn-primary"}
+          key={Math.random()}
           onClick={() => this.exportExcel(this.props.exportToExcel)}
         >
           <i className="fa fa-file-excel-o"></i>
@@ -483,7 +485,7 @@ export default class OX_Grid extends React.Component {
     }
     if (this.props.gridOperations) {
       gridToolbarContent.length == 0
-        ? gridToolbarContent.push(<div></div>)
+        ? gridToolbarContent.push(<div key={Math.random()}></div>)
         : null;
       gridToolbarContent.push(
         this.renderListOperations(this.props.gridOperations)
@@ -606,7 +608,7 @@ export default class OX_Grid extends React.Component {
     if (operationsList.length > 1) {
       const itemRender = (props) => {
         return (
-          <div style={{ padding: "5px" }} text={props.item.name}>
+          <div style={{ padding: "5px" }} text={props.item.name} key={Math.random()}>
             <i
               style={{ marginRight: "5px" }}
               className={props.item.icon + " manageIcons"}
@@ -629,6 +631,7 @@ export default class OX_Grid extends React.Component {
           items={operationsList}
           primary={true}
           className={"toolBarButton"}
+          key={Math.random()}
         />
       );
     } else if (operationsList.length == 1) {
@@ -639,6 +642,7 @@ export default class OX_Grid extends React.Component {
           primary={true}
           title={"Create New"}
           onClick={(e) => this.updatePageContent(operationsList[0])}
+          key={Math.random()}
         >
           {operationsList[0].icon ? (
             <i
@@ -654,6 +658,7 @@ export default class OX_Grid extends React.Component {
           className={"toolBarButton"}
           primary={true}
           onClick={(e) => this.updatePageContent(operationsList[0])}
+          key={Math.random()}
         >
           <i className={operationsList[0].icon}></i>
         </Button>
@@ -725,7 +730,7 @@ export default class OX_Grid extends React.Component {
       ? { ...this.props.currentRow, ...rowData }
       : rowData;
     if (action.page_id) {
-      PageNavigation.loadPage(this.appId, this.pageId, action.page_id);
+      PageNavigation.loadPage(this.appId, this.pageId, action.page_id, null, null, null, null, null, null, null, rowData);
     } else if (action.details) {
       var pageDetails = this.state.pageContent;
       var that = this;
@@ -804,7 +809,6 @@ export default class OX_Grid extends React.Component {
                 if (result.value) {
                   this.DeleteFile("app/" + this.appId + "/" + url, item).then(
                     (response) => {
-                      console.log(response);
                       this.refreshHandler(response);
                       if (response.status == "success") {
                         this.state.notif.current.notify(
@@ -882,7 +886,6 @@ export default class OX_Grid extends React.Component {
               if (result.value) {
                 this.DeleteFile("app/" + this.appId + "/" + url, item, urlPostParams).then(
                   (response) => {
-                    console.log(response);
                     this.refreshHandler(response);
                     if (response.status == "success") {
                       this.state.notif.current.notify(
@@ -954,7 +957,8 @@ export default class OX_Grid extends React.Component {
             mergeRowData,
             copyPageContent,
             undefined,
-            action.popupConfig
+            action.popupConfig, 
+            mergeRowData
           );
       }
     }
@@ -1106,6 +1110,7 @@ export default class OX_Grid extends React.Component {
       : this.state.actions[key].details
         ? this.buttonAction(this.state.actions[key], this.dataItem)
         : null;
+        this.state.actions[key].callback?.(dataItem)
   }
   handleOnSelect = (e) => {
     var dataItem = this.dataItem;
@@ -1259,7 +1264,6 @@ export default class OX_Grid extends React.Component {
           editField={this.props.inlineEdit ? "inEdit" : undefined}
           onItemChange={this.itemChange}
         >
-          {console.log(this.state.gridData.total)}
           {this.state.gridData.total === 0 ? (
             <GridNoRecords>
               <div />
@@ -1399,6 +1403,7 @@ class CustomCell extends React.Component {
             profile: this.props.userProfile,
             baseUrl: this.props.baseUrl,
           }}
+          renderInWrapper={false}
           jsx={
             this.props.cellTemplate
               ? this.props.cellTemplate

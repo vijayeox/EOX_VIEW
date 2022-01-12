@@ -61,7 +61,7 @@ $primary-color: #275362;
     width: 100%;
   }
   .task-header {
-    padding: 5px 0 5px 17px;
+    padding: 5px 0 5px 0px;
     display: flex;
     align-items: center;
     .go-back {
@@ -424,4 +424,7 @@ div[class="k-actions k-hstack k-justify-content-end"]
 // Extra Space above the custombar
 div#customActions > div[class="display-flex task-header-pos-abs"] {
   margin-top: 10px;
+}
+#customActions>button[title="View"]{
+  display: none;
 }

@@ -146,6 +146,22 @@
                         "type": "text"
                     },
                     "occurence": "single"
+                },
+                "Use Participants": {
+                    "label": "Use Participants",
+                    "control": {
+                        "name": "use_participants",
+                        "type": "text"
+                    },
+                    "occurence": "single"
+                },
+                "Debug": {
+                    "label": "Debug",
+                    "control": {
+                        "name": "debug",
+                        "type": "text"
+                    },
+                    "occurence": "single"
                 }
             }
         }

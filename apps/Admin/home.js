@@ -3,10 +3,10 @@ import Organization from "./modules/Organization";
 import Project from "./modules/Project";
 import User from "./modules/User";
 import Team from "./modules/Team";
-import Goal from "./modules/Goal";
+// import Goal from "./modules/Goal";
 import Role from "./modules/Roles";
 import Announcement from "./modules/Announcement";
-import Errorlog from "./modules/Errorlog";
+// import Errorlog from "./modules/Errorlog";
 import SideNav, {
   Toggle,
   Nav,
@@ -132,19 +132,19 @@ export default class Home extends React.Component {
           );
         }
         break;
-      case "Goal":
-        if (this.userProfile.privileges["MANAGE_KRA_WRITE"]) {
-          sectionContent = (
-            <Goal
-              args={this.core}
-              setTitle={this.setTitle}
-              userProfile={this.userProfile}
-              name="Kras"
-              key="Kras"
-            />
-          );
-        }
-        break;
+      // case "Goal":
+      //   if (this.userProfile.privileges["MANAGE_KRA_WRITE"]) {
+      //     sectionContent = (
+      //       <Goal
+      //         args={this.core}
+      //         setTitle={this.setTitle}
+      //         userProfile={this.userProfile}
+      //         name="Kras"
+      //         key="Kras"
+      //       />
+      //     );
+      //   }
+      //   break;
       case "Project":
         if (this.userProfile.privileges["MANAGE_PROJECT_WRITE"]) {
           sectionContent = (
@@ -171,19 +171,19 @@ export default class Home extends React.Component {
           );
         }
         break;
-      case "Errorlog":
-        if (this.userProfile.privileges["MANAGE_ERROR_WRITE"]) {
-          sectionContent = (
-            <Errorlog
-              args={this.core}
-              setTitle={this.setTitle}
-              userProfile={this.userProfile}
-              name="Errorlog"
-              key="Errorlog"
-            />
-          );
-        }
-        break;
+      // case "Errorlog":
+      //   if (this.userProfile.privileges["MANAGE_ERROR_WRITE"]) {
+      //     sectionContent = (
+      //       <Errorlog
+      //         args={this.core}
+      //         setTitle={this.setTitle}
+      //         userProfile={this.userProfile}
+      //         name="Errorlog"
+      //         key="Errorlog"
+      //       />
+      //     );
+      //   }
+      //   break;
     }
 
     return (
@@ -248,7 +248,7 @@ export default class Home extends React.Component {
             ) : (
               ""
             )}
-            {this.userProfile.privileges.MANAGE_KRA_WRITE || this.userProfile.privileges.MANAGE_KRA_READ ? (
+            {/* {this.userProfile.privileges.MANAGE_KRA_WRITE || this.userProfile.privileges.MANAGE_KRA_READ ? (
               <NavItem eventKey="Goal" key="Goal" title="Goals">
                 <NavIcon>
                   <i className="fad fa-bullseye-arrow" aria-hidden="true"></i>
@@ -270,7 +270,7 @@ export default class Home extends React.Component {
               </NavItem>
             ) : (
               ""
-            )}
+            )} */}
             {this.userProfile.privileges.MANAGE_PROJECT_WRITE|| this.userProfile.privileges.MANAGE_PROJECT_READ ? (
               <NavItem eventKey="Project" key="Project" title="Projects">
                 <NavIcon>

@@ -21,9 +21,10 @@ import EntityViewer from "./EntityViewer";
 import Dashboard from "../../Dashboard";
 import DashboardManager from "../../DashboardManager";
 import ActivityLog from "./ActivityLog";
+import DynamicTemplateViewer from "./DynamicTemplateViewer";
 import KanbanView from "../Kanban/KanbanRoutes";
 import CustomGoogleMapComponent from "../googlemapfinal/App";
-
+import ReactComponent from "./ReactComponent";
 
 class PageContent extends React.Component {
   constructor(props) {
@@ -39,6 +40,7 @@ class PageContent extends React.Component {
     this.isTab = this.props.isTab;
     this.parentPage = this.props.parentPage ? this.props.parentPage : null;
     this.loader = this.core.make("oxzion/splash");
+    this.parentPageData = props.parentRowData
     this.fetchExternalComponents().then((response) => {
       this.extGUICompoents = response.guiComponent
         ? response.guiComponent
@@ -537,7 +539,6 @@ class PageContent extends React.Component {
         if (item.fileId) {
           fileId = item.fileId;
         }
-        console.log(item);
         content.push(
           <CommentsView
             appId={this.appId}
@@ -683,13 +684,28 @@ class PageContent extends React.Component {
             disableControls={item?.disableControls}
           />
         );
+      } else if (item.type === 'CustomPage') {
+        var fileId = this.props.fileId ? this.props.fileId : this.state.currentRow.uuid;
+        return content.push(
+          <DynamicTemplateViewer
+            appId={this.appId}
+            fileId={fileId}
+            core={this.core}
+            data={item.content}
+            rowData={this.state.currentRow}
+          />);
       } else if (item.type == "KanbanViewer") {
         content.push(
-          <KanbanView core={this.core} appId={this.appId}/>
+          <KanbanView core={this.core} appId={this.appId} />
         );
       } else if (item.type == "GoogleMapViewer") {
         content.push(
-          <CustomGoogleMapComponent core={this.core} appId={this.appId}/>
+          <CustomGoogleMapComponent core={this.core} appId={this.appId} />
+        );
+      } else if(item.type == "ReactComponent"){
+        var fileId = this.props.fileId ? this.props.fileId : this.state.currentRow.uuid;
+        content.push(
+          <ReactComponent fileId={fileId} parentPageData={this.parentPageData} core={this.core} appId={this.appId} data={item.content} componentProps={this}/>
         );
       } else {
         if (this.extGUICompoents && this.extGUICompoents[item.type]) {

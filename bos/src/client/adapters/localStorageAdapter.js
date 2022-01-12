@@ -70,7 +70,6 @@ export default class LocalStorageAdapter {
 			return true;
 		}
 		else {
-			console.log('cookies disabled');
 			return false;
 		}
 	}
@@ -83,21 +82,18 @@ export default class LocalStorageAdapter {
 				const value = window.localStorage.getItem(key) || null;
 				var obj = { key: data, timestamp: new Date().getTime() }
 				this.secureStorage.setItem(key,obj);
-
-				console.log('local storage set');
 				return true;
 			}
 			catch (e) {
 				console.log(e)
 			}
 		} else if(this.useCookies) {
-			console.log('cookie used');
 			var now = new Date();
 			now.setTime(now.getTime() + 3 * 3600 * 1000);
 			document.cookie += key + ':' + data + 'expires='+ now.toUTCString() + ';';
 			return true;
 		}
-		console.log('storage adapter failed.')
+		console.warn('storage adapter failed.')
 		return false;
 	}
 
@@ -176,11 +172,9 @@ export default class LocalStorageAdapter {
 			try {
 				if(key != null) {
 					this.secureStorage.removeItem(key);
-
-					console.log('token removed');
 				}
 				else {
-					console.log('invalid operation');
+					console.warn('invalid operation');
 				}
 			}
 			catch (e) {}
@@ -192,7 +186,7 @@ export default class LocalStorageAdapter {
 			catch (e) {}
 		}
 		else {
-			console.log('invalid operation');
+			console.warn('invalid operation');
 		}
 	}
 }
