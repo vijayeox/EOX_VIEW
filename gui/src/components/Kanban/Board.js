@@ -4,9 +4,6 @@ import { ListGroup, Button, Badge, Container } from "react-bootstrap";
 import { DragDropContext } from "react-beautiful-dnd";
 import StatusCard from "./ColumnCounts";
 import "./WorkGroup.scss";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-//import {faUserAlt, faEye,} from "@fortawesome/fontawesome-free-solid";
-import CalenderDropDown from "./CalendarDropdown";
 import Requests from "../../Requests";
 
 import DateRangePickerCustom from "./DateRangePickerCustom";
@@ -17,12 +14,9 @@ export default function Board(props) {
   const [Refresh, setRefresh] = useState(true);
   const [Reload, setReload] = useState(false);
   const [priority, setPriority] = useState("All");
-  const [minDate, setMinDate] = useState(null);
-  const [maxDate, setMaxDate] = useState(null);
   const [Filter, setFilter] = useState([]);
 
   const onDragEnd = (result, setRefresh, setReload, props) => {
-    console.log({props, result, Refresh});
     if (!result.destination) return;
     const { draggableId, destination } = result;
     let url = "/app/" + props.appId + "/file/crud/" + draggableId // also add entity_ID
@@ -53,17 +47,6 @@ export default function Board(props) {
           setFieldset([]);
           setFields(tempField.values);
           setFieldset(tempField.values);
-          
-          // setFieldset(tempField.values);
-          // if (priority === "All") {
-          //   setFieldset(tempField.values);
-          // } else {
-          //   const filteredStatus = tempField.values.find((data) => data.value === priority);
-          //   const statusArray = [];
-          //   statusArray.push(filteredStatus);
-          //   setFieldset(statusArray)
-          // }
-          
           setRefresh(false);
         },
         function (error) {
