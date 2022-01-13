@@ -5,6 +5,7 @@
     "singleton":true,
     "hidden":true,
     "defaultAppforOrgs" : true,
+    "fontIcon":"fad fa-comments-alt",
     "icon":"icon.svg",
     "icon_white":"icon_white.svg",
     "category": "collaboration",
