@@ -128,7 +128,7 @@
           const win = proc
             .createWindow({
               id: "MailApplicationWindow",
-              icon: proc.resource(proc.metadata.icon_white),
+              icon: proc.resource(proc.metadata.fontIcon),
               title: metadata.title.en_EN,
               position:  finalposition ? finalposition : { left: 150, top: 50},
               dimension: finalDimension ? finalDimension : {width: 900, height: 600},

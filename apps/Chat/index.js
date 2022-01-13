@@ -188,7 +188,7 @@
       const createProcWindow = () => {
         let win = proc.createWindow({
           id: 'ChatWindow',
-          icon: proc.resource(proc.metadata.icon_white),
+          icon: proc.resource(proc.metadata.fontIcon),
           title: metadata.title.en_EN,
           dimension: finalDimension ? finalDimension : {width: 400, height: 500},
           position: finalposition ? finalposition : {left: 200, top: 400},
