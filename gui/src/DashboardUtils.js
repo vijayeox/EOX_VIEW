@@ -15,7 +15,7 @@ export function preparefilter(filter1, filter2) {
 
 export function prepareMultiFilter(filter1) {
   let subFilter = []
-  if (Array.isArray(filter1['2']) && filter1['2']['value'] != null) {
+  if (Array.isArray(filter1['2']) && filter1['2'][0]['value'] != null) {
     let filterValue = filter1['2']
     filterValue.map((filterArr, i) => {
       let multiFilter = []
