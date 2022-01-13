@@ -33,7 +33,7 @@
         flex: 0 0 25%;padding: 1px;
         margin: 0px;
         background-color: white;
-        max-width: 300px;
+        // max-width: 300px;
         height: auto;
         border: none;
         border: 0;
@@ -84,8 +84,10 @@
     }
     
     .k_listDiv{
-        max-height:40vh;
-        overflow: hidden;
+        height: auto;
+        max-height:60vh;
+        overflow-y: auto;
+        word-break: break-word;
     }
     .k_listDiv:hover{
         overflow-y:auto;
@@ -175,13 +177,13 @@
         font-size: small;
     }
     .k_taskcard-label{
-       color: #FF6347;
+       color: #969696;
        font-size: smaller;
        text-align: center;
        margin-left: 30px;
     }
     .k_taskcard-sublabel{
-        color:#B3B3B3;
+        color:#6e6e6e;
         font-weight: 600;
     }
     .k_taskcard-p{
@@ -190,7 +192,7 @@
         margin: 0;
         padding-top: 5px;
         font-weight: 600;
-        color:#6c6c6c;
+        color:#242424;
     }
     .k_label-calendar{
         background-color: #fff;

@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Work from "./WorkGroup";
-import { ListGroup, Button, Badge, Container } from "react-bootstrap";
+import { ListGroup, Button, Badge, Container, Form, InputGroup } from "react-bootstrap";
 import { DragDropContext } from "react-beautiful-dnd";
 import StatusCard from "./ColumnCounts";
 import "./WorkGroup.scss";
 import Requests from "../../Requests";
 
 import DateRangePickerCustom from "./DateRangePickerCustom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function Board(props) {
   const [fields, setFields] = useState([]);
@@ -23,14 +24,14 @@ export default function Board(props) {
     Requests.doRestRequest(
       props.core,
       url,
-      {uuid: draggableId, status: destination.droppableId, entity_id:2}, //set particular status for this particular UUID
+      { uuid: draggableId, status: destination.droppableId, entity_id: 2 }, //set particular status for this particular UUID
       'put',
-      function () {},
+      function () { },
       function (e) {
         console.log("Error Couldn't update the File " + e);
       });
-      setReload(true);
-      setRefresh(true);
+    setReload(true);
+    setRefresh(true);
   };
 
   useEffect(() => {
@@ -74,41 +75,72 @@ export default function Board(props) {
   return (
     <Container fluid>
       <div className="expense-item k_expense-item">
-        <Badge>
-          <DateRangePickerCustom onDateRange={setFilterFromProps} />
-        </Badge>
+        <div style={{display: "flex", alignItems: "center" }} className="ml-4">
+          <Badge>
+            <Form.Row 
+            className="mt-2" 
+            style={{
+              marginRight: "5px", 
+              fontSize: "small",
+              paddingTop: "10px",
+              fontWeight: "bold"
+              }}>
+              <Form.Group>
+                <InputGroup>
+                  <InputGroup.Prepend>
+                    <InputGroup.Text>
+                      <FontAwesomeIcon icon="search" />
+                    </InputGroup.Text>
+                  </InputGroup.Prepend>
+                  <Form.Control
+                    type="text"
+                    placeholder="Search here.."
+                  />
+                </InputGroup>
+              </Form.Group>
+            </Form.Row>
+          </Badge>
 
-        <Button variant="link"
-          style={{
-            color: "black",
-            fontWeight: 400
-          }}>
           <Badge>
-            <div>Status</div>
+            <DateRangePickerCustom onDateRange={setFilterFromProps} />
           </Badge>
-          <Badge>
-            <select
-              className="form-control"
-              style={{
-                fontSize: "small",
-                borderColor: "transparent",
-                outlineColor: "transparent",
-                background: "transparent",
-              }}
-              name="Status"
-              onChange={(e) => {
-                setPriority(e.target.value);
-                setRefresh(true);
-              }}
+
+          <Button variant="link"
+            style={{
+              color: "black",
+              fontWeight: 400
+            }} 
+            className="mt-2" 
             >
-              <option value="All"> ALL</option>
-              {/* Dynamic values */}
-              {fields.map((e) => {
-                return <option key={e.value} value={e.value}>{e.label}</option>;
-              })}
-            </select>
-          </Badge>
-        </Button>
+            <Badge>
+              <div>Status</div>
+            </Badge>
+            <Badge>
+              <select
+                className="form-control"
+                style={{
+                  fontSize: "small",
+                  borderColor: "transparent",
+                  outlineColor: "transparent",
+                  background: "transparent",
+                }}
+                name="Status"
+                onChange={(e) => {
+                  setPriority(e.target.value);
+                  setRefresh(true);
+                }}
+              >
+                <option value="All"> ALL</option>
+                {/* Dynamic values */}
+                {fields.map((e) => {
+                  return <option key={e.value} value={e.value}>{e.label}</option>;
+                })}
+              </select>
+            </Badge>
+          </Button>
+
+        </div>
+
         {/* <Button variant="link" style={{ color: "black" }}>
           <Badge>
             <div>
@@ -188,7 +220,7 @@ export default function Board(props) {
         </Button> */}
 
       </div>
-      <ListGroup horizontal>
+      {/* <ListGroup horizontal>
         {fields.map((dataItem, index) => {
           return (
             <StatusCard
@@ -201,13 +233,13 @@ export default function Board(props) {
             />
           );
         })}
-      </ListGroup>
+      </ListGroup> */}
 
       <br />
       <DragDropContext
         onDragEnd={(result) => onDragEnd(result, setRefresh, setReload, props)}
       >
-        <ListGroup horizontal >
+        <ListGroup horizontal  className="mt-1 mb-1">
           {fieldset.map((dataItem, index) => {
             return (
               <Work

@@ -45,9 +45,9 @@ function ColumnCard(props) {
             <Card style={{
                 border: '0',
                 boxShadow: '0px 3px 2px lightgrey',
-                width: "18vw",
-                marginRight: "15px",
-                marginLeft: "15px",
+                width: "25%",
+                marginRight: "5px",
+                marginLeft: "5px",
             }}>
 
                 <Card.Body>

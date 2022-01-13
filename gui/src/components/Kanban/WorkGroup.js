@@ -100,14 +100,14 @@ export default function Work(props) {
     <>
       <ListGroup.Item
         style={{
-          width: "18vw",
-          marginRight: "15px",
-          marginLeft: "15px",
+          width: "25%",
+          margin: "0 5px 0 5px",
+          padding: "0 5px 0 5px",
         }}>
         <Droppable
           droppableId={props.info.value}
           key={props.index}
-          style={{ width: "98vw !important" }}>
+          style={{ width: "100% !important" }}>
           {(provided, snapshot) => {
             return (
               <ListGroup
@@ -117,6 +117,7 @@ export default function Work(props) {
                   background: snapshot.isDraggingOver ? "lightblue" : "white",
                   padding: 0,
                   width: "100%",
+                  // height: "100%",
                   minHeight: "30vh",
                   top: "50%"
                 }}
@@ -129,11 +130,9 @@ export default function Work(props) {
                     width: "100%"
                   }}
                 >
-                  <p>
-                    <b>
-                      {props.info.label} ({Count})
-                    </b>
-                  </p>
+                    <h3>
+                      <b>{props.info.label}</b><small> ({Count})</small>
+                    </h3>
                 </ListGroup.Item>
 
                 { (props.priority === "All") || (props.priority === props.info.value) ?
