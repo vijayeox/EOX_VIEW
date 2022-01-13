@@ -5,6 +5,7 @@
   "singleton":true,
   "hidden" : true,
   "autostart":true,
+  "fontIcon":"fas fa-envelope",
   "defaultAppforOrgs" : true,
   "icon": "icon.svg",
   "icon_white": "icon_white.svg",
