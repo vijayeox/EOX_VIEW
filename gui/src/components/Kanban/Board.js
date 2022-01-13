@@ -88,8 +88,8 @@ export default function Board(props) {
               <Form.Group>
                 <InputGroup>
                   <InputGroup.Prepend>
-                    <InputGroup.Text>
-                      <FontAwesomeIcon icon="search" />
+                    <InputGroup.Text>                    
+                      <FontAwesomeIcon icon={['fal', 'search']} size="1x" />
                     </InputGroup.Text>
                   </InputGroup.Prepend>
                   <Form.Control
