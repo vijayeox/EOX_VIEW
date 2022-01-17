@@ -23,13 +23,21 @@ export default class Menu extends React.Component {
     let name = document.getElementsByClassName("Window_Admin");
   };
 
-  onIconClickHandler = (e, component, type) => {
+  onIconClickHandler = (e, component, type,link) => {
     if (type == "external") {
       this.launchExternalApp(component);
-    } else {
+    } 
+    else if (type == "internal") {
       this.props.onIconClick(component);
     }
+    else if (type == "externalLink"){
+      this.externalLink(link);
+    }
   };
+
+  externalLink = (linkName) => {
+		window.open(linkName, "_blank");
+	};
 
   list = () => {
     let iconTitleList = [
@@ -125,6 +133,14 @@ export default class Menu extends React.Component {
         type: "external",
         privileges:"OIBUILDER"
       },
+      {
+        name: "EOX Logs",
+        icon: <i class="fad fa-info-circle" aria-hidden="true"></i>,
+        component: "EOXLogs",
+        type: "externalLink",
+        privileges:"USER",
+        link:"http://13.58.246.62:3000/",
+      },
     ];
     return iconTitleList;
   };
@@ -134,7 +150,7 @@ export default class Menu extends React.Component {
     let table = [];
     var readPermission ="";
     var writePermission ="";
-  iconsList.map((currentValue) => {
+    iconsList.map((currentValue) => {
       readPermission ="MANAGE_" + currentValue.privileges+ "_READ";
       writePermission ="MANAGE_" + currentValue.privileges + "_WRITE";
 
@@ -147,7 +163,8 @@ export default class Menu extends React.Component {
               this.onIconClickHandler(
                 e,
                 currentValue.component,
-                currentValue.type
+                currentValue.type,
+                currentValue.link,
               )
             }
             key={currentValue.name}
