@@ -123,6 +123,7 @@ class DashboardManager extends React.Component {
   async fetchDashboards(isRefreshed) {
     let that = this
     let helper = this.restClient;
+    let filterOptions = []
     let inputs = this.state.inputs !== undefined ? this.state.inputs : undefined;
     let dashboardStack = JSON.parse(JSON.stringify(this.state.dashboardStack)) //Contains everything that is part of a dashboard (Including the data and filter)
     let response = await helper.request('v1', '/analytics/dashboard?filter=[{"sort":[{"field":"name","dir":"asc"}],"skip":0,"take":0}]', {}, 'get');
@@ -139,7 +140,6 @@ class DashboardManager extends React.Component {
               dashboardStack.push({ data: dash, drilldownDashboardFilter: drilldownDashboardFilter, filterConfiguration: filterConfig })
             } else {
               if (dashboardStack.length > 0) {
-                let filterOptions = []
                 let appliedFilters = []
                 filterConfig && filterConfig.map((filter, index) => {
                   if (!filter.isDefault) {

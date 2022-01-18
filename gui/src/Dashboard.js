@@ -113,8 +113,7 @@ class Dashboard extends Component {
 						this.setState({ htmlData: `<p>No Data</p>`, });
 					}
 				}).catch(function (response) {
-					console.error("Could not load widget.");
-					console.error(response);
+					console.error("Could not load widget.",response);
 					Swal.fire({
 						type: "error",
 						title: "Oops ...",
@@ -274,8 +273,7 @@ class Dashboard extends Component {
 							widgetCounter: that.state.widgetCounter + 1,
 						});
 						if ("error" === response.status) {
-							console.error("Could not load widget.");
-							console.error(response);
+							console.error("Could not load widget.", response);
 							errorFound = true;
 						} else {
 							//dispose if widget exists

@@ -47,7 +47,7 @@ const register = (core, args, options, metadata) => {
 
     // Listen for messages from iframe
     win.on('iframe:get', msg => {
-      console.warn('Message from Iframe', msg);
+      // console.warn('Message from Iframe', msg);
       win.emit('iframe:post', 'Pong');
     });
 

@@ -63,7 +63,6 @@ export default function GridActions(
     }
 
     triggerPasswordReset = (dataItem) => {
-      console.log(dataItem);
       this.passwordReset(dataItem.username).then((response) => {
         response.status == "success"
           ? fullConfig.notification.current.notify(

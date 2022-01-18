@@ -119,7 +119,7 @@ export default class Packages {
    * Initializes package manager
    */
   init() {
-    console.debug('Packages::init()');
+    //console.debug('Packages::init()');
 
     if (!this.inited) {
       this.core.on('osjs/core:started', () => this._autostart());
@@ -153,7 +153,7 @@ export default class Packages {
    * @return {Promise<Application, Error>}
    */
   launch(name, args = {}, options = {}) {
-    console.debug('Packages::launch()', name, args, options);
+    //console.debug('Packages::launch()', name, args, options);
 
     const _ = this.core.make('osjs/locale').translate;
     const metadata = this.metadata.find(pkg => pkg.name === name);
@@ -285,7 +285,7 @@ export default class Packages {
       let app;
 
       try {
-        console.group('Packages::_launch()');
+        //console.group('Packages::_launch()');
         app = found.callback(this.core, args, options, found.metadata);
 
         if (app instanceof Application) {
@@ -296,16 +296,16 @@ export default class Packages {
             }
           });
         } else {
-          console.warn('The application', name, 'did not return an Application instance from registration');
+          //console.warn('The application', name, 'did not return an Application instance from registration');
         }
       } catch (e) {
         dialog(e);
 
-        console.warn('Exception when launching', name, e);
+        //console.warn('Exception when launching', name, e);
       } finally {
         this.core.emit('osjs/application:launched', name, app);
         this.core.emit(`osjs/application:${name}:launched`, app);
-        console.groupEnd();
+        //console.groupEnd();
       }
 
       return app;
@@ -362,7 +362,7 @@ export default class Packages {
    * @throws {Error}
    */
   register(name, callback) {
-    console.info('Packages::register()', name);
+    //console.info('Packages::register()', name);
 
     const _ = this.core.make('osjs/locale').translate;
     const metadata = this.metadata.find(pkg => pkg.name === name);
@@ -459,7 +459,7 @@ export default class Packages {
             const re = new RegExp(mime);
             return re.test(mimeType);
           } catch (e) {
-            console.warn('Compability check failed', e);
+            //console.warn('Compability check failed', e);
           }
 
           return mime === mimeType;

@@ -194,7 +194,7 @@ class Login extends React.Component {
                 Privacy Policy
               </a>
               <div className="coppyRight">
-                Copyright © 2004-2021 EOX Vantage. All rights reserved.
+                Copyright © 2004-{new Date().getFullYear()} EOX Vantage. All rights reserved.
               </div>
             </footer>
           </div>

@@ -12,7 +12,7 @@ const register = (core, args, options, metadata) => {
   // Create  a new Window instance
   proc.createWindow({
     id: 'TimesheetWindow',
-    // icon: metadata.icon,
+    icon: metadata.fontIcon,
     title: metadata.title.en_EN,
     position: {left: 700, top: 200},
     dimension: {width: 400, height: 400}
@@ -46,7 +46,7 @@ const register = (core, args, options, metadata) => {
     // Listen for messages from iframe
     win.on('iframe:get', msg => {
       // We should get "Ping" here
-      console.warn('Message from Iframe', msg);
+      // console.warn('Message from Iframe', msg);
 
       // In this case we just send "Pong" back
       win.emit('iframe:post', 'Pong');

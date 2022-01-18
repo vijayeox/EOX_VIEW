@@ -23,7 +23,7 @@ const customStyles = {
 };
 
 const FilterFields = function (props) {
-    const { filters, multiFilters, filterIndex, index, fieldType, dataType, onUpdate, removeField, field, filterName, filterMode, dateFormat, dataSourceOptions, isDefault, disableDateField, onSelect, onRemove } = props;
+    const { filters, multiFilters, filterIndex, index, fieldType, dataType, onUpdate, removeField, field, filterName, filterQuery, filterMode, dateFormat, dataSourceOptions, isDefault, disableDateField, onSelect, onRemove } = props;
     const [isFilterIndexLoading, setIsFilterIndexLoading] = useState(false);
     const [isFilterNameLoading, setIsFilterNameLoading] = useState(false);
     const [isFilterValueLoading, setIsFilterValueLoading] = useState(false);
@@ -31,6 +31,7 @@ const FilterFields = function (props) {
     const [filterIndexOption, setFilterIndexOption] = useState([]);
     const [filterNameOption, setFilterNameOption] = useState([]);
     const [filterValueOption, setFilterValueOption] = useState([]);
+    const [filterQueryValue, setfilterQueryValue] = useState([]);
 
     const filtersOptions = {
         "dateoperator": [{ "Between": "gte&&lte" }, { "Less Than": "<" }, { "Greater Than": ">" }, { "This Month": "monthly" }, { "This Year": "yearly" }, { "MTD": "mtd" }, { "YTD": "ytd" }, { "Today": "today" }],
@@ -83,7 +84,8 @@ const FilterFields = function (props) {
         setFilterValueOption([])
         let datasource_id = filters[index]["filterDataSource"]
         let filter_index = filters[index]["filterIndex"]
-        const response = await props.restClient.request("v1", `analytics/datasource/${datasource_id}/getdetails?type=values&index=${filter_index}&field=${filter_field}`, {}, 'get');
+        let filterQuery = filters[index]["filterQuery"]
+        const response = await props.restClient.request("v1", `analytics/datasource/${datasource_id}/getdetails?type=values&index=${filter_index}&field=${filter_field}&filter=${filterQuery}`, {}, 'get');
         if (response.status === "success") {
             //preparing options for react-select component
             if (response.data && typeof (response.data) == "object" && response.data.length > 0) {
@@ -95,6 +97,13 @@ const FilterFields = function (props) {
             }
         }
         setIsFilterValueLoading(false)
+    }
+
+    async function setFilterQueryList(filterQuery) {
+        setfilterQueryValue([])
+        let preparedFilterOption = []
+        preparedFilterOption.push({ value: filterQuery, label: filterQuery })
+        setfilterQueryValue(preparedFilterOption)
     }
 
     const changeIndex = async (e, Index, type) => {
@@ -110,8 +119,14 @@ const FilterFields = function (props) {
         setFilterValueList(filter_name)
     }
 
+    const changeFilterQuery = async (e, Index, type) => {
+        onUpdate(e, Index, type)
+        let filter_query = e.target.value;
+        setFilterQueryList(filter_query)
+    }
+
     async function setFilterIndexList(datasource_id) {
-        setIsFilterIndexLoading(true)
+        setIsFilterIndexLoading(true) 
         const response = await props.restClient.request("v1", 'analytics/datasource/' + datasource_id + '/getdetails', {}, 'get');
         if (response.status === "success") {
             //preparing options for react-select component
@@ -234,6 +249,14 @@ const FilterFields = function (props) {
                     <Form.Group className="dashboard-filter-field">
                         <Form.Label>Field Description</Form.Label>
                         <Form.Control className="dashboardTextField" style={{width:"100%"}} type="text" name="filterName" title={disabledFields ? "*The entered description will bdisplayed in dashboard viewer as filter name" : null} value={filterName} disabled={disabledFields} onChange={(e) => onUpdate(e, index)} />
+                    </Form.Group>
+                </div>
+            }
+            {visibility &&
+                <div className="dashboard-filter-field" id="" style={{ minWidth: "auto" }}>
+                    <Form.Group className="dashboard-filter-field">
+                        <Form.Label>Filter Query</Form.Label>
+                        <Form.Control className="dashboardTextField" style={{width:"100%"}} type="text" name="filterQuery" title={disabledFields ? "*The entered description will bdisplayed in dashboard viewer as filter name" : null} value={filters[index]["filterQuery"]} disabled={disabledFields} onChange={(e) => changeFilterQuery(e, index)} />
                     </Form.Group>
                 </div>
             }
