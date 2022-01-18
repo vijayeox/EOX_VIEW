@@ -116,7 +116,6 @@
                   "idPath": "uuid",
                   "valueProperty": "uuid",
                   "template": "<span>{{ item.name }}</span>",
-                  "validate": { "required": true },
                   "key": "managerId",
                   "properties": { "absoluteUrl": "true" },
                   "type": "select",
@@ -360,12 +359,14 @@
                   "tableView": true,
                   "multiple": true,
                   "dataSrc": "url",
+                  "defaultValue": [{}],
                   "data": {
                     "url": "/project",
                     "headers": [{ "key": "", "value": "" }]
                   },
                   "idPath": "uuid",
                   "template": "<span>{{ item.name }}</span>",
+                  "calculateValue": "// console.log(\"accountId\",data.userprofile.accountId);\n// console.log(\"dataaaa------project\",data);\n// console.log(\"accountId\",data.userprofile.accountId);\n// console.log(\"data.uuid\",data.uuid);\n// if(data.uuid){\n// console.log(\"api\",'account/' +data.userprofile.accountId +\"/user/\"+data.uuid);\n// let api = 'account/'+data.userprofile.accountId +\"/user/\"+data.uuid +\"/pr\";\n// fetch(api, {method: \"GET\",}).then(function (response){\n// console.log(\"=============apidata response\",response);\n// }); \n\t\t\t\n// }",
                   "key": "project",
                   "properties": { "absoluteUrl": "true" },
                   "type": "select",
@@ -396,6 +397,7 @@
                   },
                   "idPath": "uuid",
                   "template": "<span>{{ item.name }}</span>",
+                  "calculateValue": "// // // console.log(\"accountId\",data.userprofile.accountId);\n// console.log(\"dataaaauserrrrrr-roleeee\",data);\n// // console.log(\"accountId\",data.userprofile.accountId);\n// // console.log(\"data.uuid\",data.uuid);\n// // if(data.uuid){\n// console.log(\"apiroleeeee\",'account/'+ data.userprofile.accountId +\"/user/\"+data.uuid);\n// let api = 'account/'+data.userprofile.accountId +\"/user/\"+data.uuid+\"/profile\";\n// fetch(api, {method: \"GET\",}).then(function (response){\n//   console.log(\"=============api\",api);\n// }); \n// // }",
                   "validate": { "required": true },
                   "key": "role",
                   "properties": { "absoluteUrl": "true" },
@@ -493,13 +495,13 @@
     }
   ],
   "submissionAccess": [],
-  "controller": "",
+  "controller": "console.log(\"data====controller========================\");\n// console.log(\"data.uuid----controllerrrr\",data);\n// console.log(\"windowwwww\",window);\n// // if(data.uuid){\n// // let api = \"account/b0923de7-0387-48ea-8f29-5d3704d96a46/user/a7850119-d583-4b83-adee-4e684e817691/pr\"\n// let api = \"http://localhost:8080/account/b0923de7-0387-48ea-8f29-5d3704d96a46/user/a7850119-d583-4b83-adee-4e684e817691/pr\"\n// fetch(api, {method: \"GET\"},{headers:{ },).then(function (response){\n//   console.log(\"=============api ---response ---profile\",response);\n// }); ",
   "properties": {},
   "settings": {},
   "name": "adminUser",
   "path": "adminuser",
   "project": "5dc1489e4f668513e9535090",
   "created": "2021-12-01T10:01:16.951Z",
-  "modified": "2022-01-04T12:35:54.062Z",
+  "modified": "2022-01-12T06:43:23.396Z",
   "machineName": "eoxproductsupport:adminUser"
 }

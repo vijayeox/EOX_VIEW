@@ -75,7 +75,7 @@ export default class GridActions extends React.Component {
           }))
         : Swal.fire({
             icon: "error",
-            title: response.status,
+            title: response.status + "(" + response.message + ")",
             showConfirmButton: true,
           });
     });
@@ -101,7 +101,6 @@ export default class GridActions extends React.Component {
               showConfirmButton: true,
             });
           }
-          
         }
       );
     } else {
@@ -110,10 +109,11 @@ export default class GridActions extends React.Component {
   }
 
   edit = (data, form, api, index) => {
+    let gridsId= document.getElementsByClassName("eox-grids")[0].parentNode.id;
     if (data) {
-      document.getElementById(this.gridId).classList.add("display-none");
+      document.getElementById(gridsId).classList.add("display-none");
     } else {
-      document.getElementById(this.gridId).classList.remove("display-none");
+      document.getElementById(gridsId).classList.remove("display-none");
     }
     ReactDOM.render(
       data ? (
@@ -271,7 +271,12 @@ export default class GridActions extends React.Component {
       temp2.push(uid);
     }
     if (this.addConfig.addAnnouncementFlag) {
-      Requests.pushAnnouncementTeams(this.core,this.createApi,dataItem, temp2).then((response) => {
+      Requests.pushAnnouncementTeams(
+        this.core,
+        this.createApi,
+        dataItem,
+        temp2
+      ).then((response) => {
         if (response.status == "success") {
           Swal.fire({
             icon: "success",
@@ -290,39 +295,40 @@ export default class GridActions extends React.Component {
           document.getElementById("eox-grid-form")
         );
       });
-    }
-    else{
+    } else {
       Requests.pushOrgUsers(
-      this.core,
-      dataItem,
-      temp2,
-      this.addConfig.subList
-    ).then((response) => {
-      // this.child.current.refreshHandler(response);
-      if (response.status == "success") {
-        Swal.fire({
-          icon: "success",
-          title: response.status,
-          showConfirmButton: true,
-        });
-        // this.onUpdate({
-        //   crudType: "ADD",
-        //   // index: index,
-        //   // addTemplate: multiselectElement,
-        //   visible: this.state.visible,
-        // });
-        // `$("#eox-grid").data("kendoGrid").dataSource.read();`
-      } else {
-        // this.add(null);
-        Swal.fire({
-          icon: "error",
-          title: response.status,
-          showConfirmButton: true,
-        });
-      }
-      ReactDOM.unmountComponentAtNode(document.getElementById("eox-grid-form"));
-    });
-  }
+        this.core,
+        dataItem,
+        temp2,
+        this.addConfig.subList
+      ).then((response) => {
+        // this.child.current.refreshHandler(response);
+        if (response.status == "success") {
+          Swal.fire({
+            icon: "success",
+            title: response.status,
+            showConfirmButton: true,
+          });
+          // this.onUpdate({
+          //   crudType: "ADD",
+          //   // index: index,
+          //   // addTemplate: multiselectElement,
+          //   visible: this.state.visible,
+          // });
+          // `$("#eox-grid").data("kendoGrid").dataSource.read();`
+        } else {
+          // this.add(null);
+          Swal.fire({
+            icon: "error",
+            title: response.status,
+            showConfirmButton: true,
+          });
+        }
+        ReactDOM.unmountComponentAtNode(
+          document.getElementById("eox-grid-form")
+        );
+      });
+    }
     this.toggleDialog();
   };
 
@@ -343,8 +349,7 @@ export default class GridActions extends React.Component {
                   // console.log(this.dataItems.data[index]);
                   {
                     actions.text === "DELETE" && this.permission.canDelete
-                      ? 
-                        Swal.fire({
+                      ? Swal.fire({
                           title: "Are you sure?",
                           text: "Do you really want to delete the record? This cannot be undone.",
                           // imageUrl:
@@ -362,13 +367,12 @@ export default class GridActions extends React.Component {
                             this.delete(this.dataItems.data[index], index);
                           }
                         })
-                      : " "
-                        
+                      : " ";
                   }
                   {
                     actions.text === "RETRY"
                       ? this.retry(this.dataItems.data[index], index)
-                      : " "
+                      : " ";
                   }
                   {
                     actions.text === "RESET"
@@ -393,24 +397,23 @@ export default class GridActions extends React.Component {
                             );
                           }
                         })
-                      : " "
+                      : " ";
                   }
 
                   {
                     actions.text === "ADD" && this.permission.canAdd
                       ? (this.add(this.dataItems.data[index], this.addConfig),
                         this.state.visible)
-                      : " "
+                      : " ";
                   }
                   {
                     actions.text === "EDIT" && this.permission.canEdit
-                      ? 
-                        this.edit(
+                      ? this.edit(
                           this.dataItems.data[index],
                           this.editForm,
                           index
                         )
-                      : " "
+                      : " ";
                   }
                 }}
               >
@@ -425,6 +428,3 @@ export default class GridActions extends React.Component {
     );
   }
 }
-
-
-
