@@ -8,7 +8,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const dateConvert = date => {
   const myDate = new Date(date * 1000);
-
   return myDate.toLocaleDateString("en-Us", {
     month: "long",
     day: "2-digit",
@@ -49,32 +48,32 @@ export default function WorkItem(props) {
                   border: "0",
                 }}
               >
+                {console.log(CardInfo)}
                 <div className="k_taskcardDisplay">
                   <CardImg
                     style={{
-                      margin: "5px",
+                      margin: "5px 5px 0 5px",
                       padding: "auto",
                       borderRadius: "50%",
+                      backgroundColor: "#eee"
                     }}
                     className="img k_img"
-                    src="https://source.unsplash.com/user/c_v_r/100x100"
                   />
-
-                  <p className="k_taskcard-p">{CardInfo.name}</p>
+                  <a href="" className="k_taskcard-p" target="_blank">{CardInfo.name}</a>
                 </div>
-                <div className="mt-2 float-left">
-                  <label className="k_taskcard-label">
+                <div className="mt-0 mb-0">
+                  <label className="k_taskcard-label mt-0 mb-0">
                     <label className="k_taskcard-sublabel">
-                      <small>Created By:</small>
-                    </label>{" "}
-                    <small>{CardInfo.created_by}</small>
-                  </label>
-                  <br />
-                  <label className="k_taskcard-label mt-0">
-                    <label className="k_taskcard-sublabel">
-                      <small>Due:</small>
-                    </label>{" "}
-                    <small>{CardInfo.date_created.substring(0, 10)}</small>
+                      <small><strong>Created By:</strong> {CardInfo.created_by + " "}</small>
+                      |
+                      <small><strong> Assigned To:</strong> {CardInfo.assignedToName}</small>
+                      <br />
+                      {CardInfo.status === "Completed" ?
+                        <small><strong> Due:</strong> - </small>
+                        :
+                        <small><strong> Due:</strong> {CardInfo.date_created.substring(0, 10)}</small>
+                      }
+                    </label>
                   </label>
                   {/* <FontAwesomeIcon
                     style={{

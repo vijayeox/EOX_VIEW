@@ -39,19 +39,28 @@
         border: 0;
     }
     
-    .k_taskcards:hover .img {
-        border-color: rgb(99, 204, 131);
-    }
+    // .k_taskcards:hover .img {
+    //     border-color: rgb(99, 204, 131);
+    // }
     
     .k_img{
-        border: solid 2px transparent;
+        border: solid 1px #3a3a3a;
         border-radius: 50%;
-        width: 20px!important;
-        height: 20px !important;
+        width: 15px !important;
+        height: 15px !important;
+    }
+    .k_status{
+        height: 10px;
+        width: 10px;
+        margin-right: 5px;
+        // background-color: #bbb;
+        border: 1px solid black;
+        border-radius: 50%;
+        display: inline-block;
     }
     
     .k_taskcardDisplay{
-        margin-top: 1rem;
+        margin-top: 0.5rem;
         padding: 0;
         display: flex;
         flex-direction: row;
@@ -88,6 +97,7 @@
         max-height:70vh;
         overflow-y: auto;
         word-break: break-word;
+        scrollbar-width: thin;
     }
     .k_listDiv:hover{
         overflow-y:auto;
@@ -144,7 +154,7 @@
         padding: 0;
     }
     
-    pk_{
+    .k_p{
         margin: 0;
     }
     
@@ -179,8 +189,9 @@
     .k_taskcard-label{
        color: #969696;
        font-size: smaller;
-       text-align: center;
+       text-align: left;
        margin-left: 30px;
+       margin-bottom: 0;
     }
     .k_taskcard-sublabel{
         color:#6e6e6e;
@@ -189,10 +200,11 @@
     .k_taskcard-p{
         padding: 0px;
         font-size: smaller;
-        margin: 0;
+        margin: 0 0 0 10px;
         padding-top: 5px;
-        font-weight: 600;
+        font-weight: bold;
         color:#242424;
+        margin-bottom: 0.2rem;
     }
     .k_label-calendar{
         background-color: #fff;
@@ -211,3 +223,4 @@
         width: 150px;
         margin-left: 1rem;
     }
+    

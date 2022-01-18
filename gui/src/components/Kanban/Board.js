@@ -76,7 +76,7 @@ export default function Board(props) {
     <Container fluid>
       <div className="expense-item k_expense-item">
         <div style={{display: "flex", alignItems: "center" }} className="ml-4">
-          <Badge>
+          {/* <Badge>
             <Form.Row 
             className="mt-2" 
             style={{
@@ -99,8 +99,9 @@ export default function Board(props) {
                 </InputGroup>
               </Form.Group>
             </Form.Row>
-          </Badge>
+          </Badge> */}
 
+          {/* Date Filter hidden because it should get populated from Apppbuilder */}
           <Badge>
             <DateRangePickerCustom onDateRange={setFilterFromProps} />
           </Badge>
@@ -220,6 +221,7 @@ export default function Board(props) {
         </Button> */}
 
       </div>
+      
       {/* <ListGroup horizontal>
         {fields.map((dataItem, index) => {
           return (
