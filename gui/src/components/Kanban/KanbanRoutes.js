@@ -5,7 +5,8 @@ import { Container } from "react-bootstrap";
 const KanbanView = (props) => {
   const BoardData = { tasks: 6 };
   return (
-    <Container style={{ backgroundColor: "#f7f9fd", padding:"10px 15px 15px 15px"}} fluid>
+    <Container style={{ backgroundColor: "#f7f9fd", padding:"5px"}} fluid>
+      {/* height:"auto" */}
       <Board
         dataset={BoardData}
         key="dummy-boardId-237"

@@ -28,7 +28,8 @@
     * @licence Simplified BSD License
     */
     import {
-      name as applicationName
+      name as applicationName,
+      fontIcon
     } from "./metadata.json";
 
     const baseUrl = process.env.SERVER;
@@ -128,7 +129,7 @@
           const win = proc
             .createWindow({
               id: "MailApplicationWindow",
-              icon: proc.resource(proc.metadata.icon_white),
+              icon: fontIcon,
               title: metadata.title.en_EN,
               position:  finalposition ? finalposition : { left: 150, top: 50},
               dimension: finalDimension ? finalDimension : {width: 900, height: 600},

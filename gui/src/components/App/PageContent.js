@@ -705,7 +705,7 @@ class PageContent extends React.Component {
       } else if(item.type == "ReactComponent"){
         var fileId = this.props.fileId ? this.props.fileId : this.state.currentRow.uuid;
         content.push(
-          <ReactComponent parentPageData={this.parentPageData} core={this.core} appId={this.appId} data={item.content} fileId={fileId}/>
+          <ReactComponent fileId={fileId} parentPageData={this.parentPageData} core={this.core} appId={this.appId} data={item.content} componentProps={this}/>
         );
       } else {
         if (this.extGUICompoents && this.extGUICompoents[item.type]) {

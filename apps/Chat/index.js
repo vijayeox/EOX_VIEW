@@ -27,7 +27,7 @@
   * @author  Anders Evenrud <andersevenrud@gmail.com>
   * @licence Simplified BSD License
   */
-  import {name as applicationName} from './metadata.json';
+  import {name as applicationName, fontIcon} from './metadata.json';
   const baseUrl = process.env.SERVER;
 
   const trayOptions = {};
@@ -188,7 +188,7 @@
       const createProcWindow = () => {
         let win = proc.createWindow({
           id: 'ChatWindow',
-          icon: proc.resource(proc.metadata.icon_white),
+          icon: fontIcon,
           title: metadata.title.en_EN,
           dimension: finalDimension ? finalDimension : {width: 400, height: 500},
           position: finalposition ? finalposition : {left: 200, top: 400},

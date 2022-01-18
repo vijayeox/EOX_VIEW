@@ -242,7 +242,7 @@ export default class DocumentViewer extends Component {
                 <Accordion.Collapse eventKey={docType}>
                   <Card.Body>
                     {this.state.documentsList[docType].map((doc, i) => {
-                      const fileName = doc.name?.trim()?.length > 0 && doc.name || doc.originalName;
+                      const fileName = doc.name?.trim()?.length > 0 && doc.name.replace(`-${doc.uuid}`,'') || doc.originalName;
                       return (
                         <Card
                           className="docItems"
