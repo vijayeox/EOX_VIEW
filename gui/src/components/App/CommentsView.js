@@ -186,10 +186,6 @@ class CommentsView extends React.Component {
 			icon: "fa fa-eye",
 			fileId: this.state.fileId
 		};
-		// if(this.appId === 'ff1ecbb7-3a45-4966-b38c-bf203f171423'){
-        //     gridToolbarContent.push(GetCrmHeader(this.props.currentRow, this.appId,this.loader, this.core.make("oxzion/restClient"), false, this.state, fileData, this.core, this.profile?.key?.preferences?.dateformat ))
-        // }
-		// else{
 		gridToolbarContent.push(
 			<Button
 				title={"View"}
@@ -697,117 +693,6 @@ class CommentsView extends React.Component {
 			return <div></div>;
 		}
 	}
-}
-
-export function GetCrmHeader(crmData, appId, loader, helper, dontAllowConversion, state, fileData, core, dateFormat = 'DD-MM-YYYY'){
-    let {name,created_by, owner,date_modified, status} = crmData;
-    const regexExp = /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/gi;
-    created_by = regexExp.test(created_by) ? owner : created_by;
-    name = crmData.opportunityName ? crmData.opportunityName : name;
-    // const [_status, setStatus] = useState(status)
-	const defaulPalette={
-		red : '#EE4424',
-		green : '#A3C53A',
-		blue : '#3FB5E1',
-		orange : '#F3BA1D'
-	}
-	const colorPalette = {
-		Active : defaulPalette.green,
-		Inactive : defaulPalette.red,
-		New : defaulPalette.blue,
-		Disqualified : defaulPalette.red,
-		Open : defaulPalette.blue,
-		'In Progress' : defaulPalette.orange,
-		Closed : defaulPalette.green,
-		Forecast : defaulPalette.orange,
-		Won : defaulPalette.green,
-		Lost : defaulPalette.red,
-		Cold : defaulPalette.red,
-		Chasing : defaulPalette.orange,
-		Prospecting : defaulPalette.orange,
-		Qualified : defaulPalette.green
-	}
-    const breadCrumb = document.getElementById(
-      appId + "_breadcrumbParent"
-    );
-	let imageOwner = null;//core?.config?.("wrapper.url") + "user/profile/" + fileData?.data?.ownerId;
-	const breadCrumbClassList = breadCrumb?.children[0]?.classList;
-    breadCrumbClassList?.add("display-flex");
-    breadCrumbClassList?.add("width-100");
-    const goBack = () => {
-        const activeBreadcrumbs = document.getElementsByClassName('activeBreadcrumb');
-        if(activeBreadcrumbs && activeBreadcrumbs?.length > 0){
-          activeBreadcrumbs?.[activeBreadcrumbs.length-1]?.children?.[0]?.click()
-        }
-    }
-	try{
-		const owner = fileData?.data?.data?.ownerObj;
-		if(owner){
-			let objSplit,quoteIdx;
-			if(typeof owner === "string"){
-				objSplit = owner?.split('uuid":"')?.[1];
-				quoteIdx = objSplit?.indexOf('"');
-			}
-			imageOwner = `${core?.config?.("wrapper.url")}user/profile/${typeof owner === 'object' ? owner?.uuid : objSplit?.substr(0, quoteIdx)}`
-		}
-	}catch(e){}
-    const convertLeadsToOpportunity = async () => {
-        try{
-            const value = await Swal.fire({
-                text: "Are you sure you want to convert this Lead into an Opportunity?",
-                showCancelButton: true,
-            })
-            if(value?.isConfirmed){
-                loader.show()
-                await helper.request("v1", `/app/${appId}/command/delegate/ConvertToOpportunity`, crmData, "post");
-                loader.destroy()
-				document.querySelector('div[title="Opportunities"]')?.click()
-            }
-        }catch(e){
-            loader.destroy()
-        }
-    }
-    return (
-        <div className="task-header width-100">
-            <i className="fa fa-arrow-from-left go-back" onClick={goBack}></i>
-            <div className="task-header_taskname">
-            {name?.trim()?.split(" ")?.slice(0, 2)?.map((v) => v?.[0]?.toUpperCase())?.join("")}
-            </div>
-            <div className="task-header_info width-100">
-            <div className="task-header_name" title={name}>
-                {name}
-            </div>
-            <div className="task-header_details">
-                {status && <div>
-                <p>Status</p> <span className="task-status" style={{backgroundColor :colorPalette[status] || defaulPalette.orange}}></span>{" "}
-                <p style={{margin : 'auto'}}>{status}</p>
-                </div>}
-                <div>
-                {created_by && 
-					<><p>Created By</p> <p>{moment(created_by).format(dateFormat)}</p></>
-				}
-                </div>
-                <div>
-                {date_modified && <><p>Last Updated On</p> <p>{moment(date_modified).format(dateFormat)}</p></>}
-                </div>   
-				{
-					imageOwner && <div className="owner-assignee">
-						Owner {(imageOwner != null) ? <div className='msg-img' style={{ backgroundImage: `url(${imageOwner})`, backgroundSize: "contain", height: "20px", width: "20px", borderRadius: "50%"  }}></div> : <i className="fad fa-user owner-assignee-dp"></i>}
-					</div>
-				} 
-            </div>
-            </div>
-            {status !== 'Converted to Opportunity' && !dontAllowConversion &&
-			!["bc413bea-1510-11ec-82a8-0242ac130003","5a96821e-f720-433d-a057-1bebf11e8a44", "6a3330bf-5aa3-4a09-9252-bf107ca0df81","bc413e1a-1510-11ec-82a8-0242ac130003","d681e961-9d62-4f43-9e57-c1d94709490b"].includes(state?.entityConfig?.form_uuid) &&
-            <button
-                style={{background: '#007bff',
-                color: '#FFF',
-                fontWeight: 'bold',
-                padding: '8px',
-                border: 'none',
-                borderRadius: '5px'}} onClick={convertLeadsToOpportunity}>Convert</button>}
-        </div>
-        );
 }
 
 export default CommentsView;
