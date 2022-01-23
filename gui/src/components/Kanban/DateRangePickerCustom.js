@@ -12,7 +12,7 @@ import Moment from "moment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const DateRangePickerCustom = (props) => {
-
+  const dateFilter = props.dateFilter;
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -107,10 +107,6 @@ const DateRangePickerCustom = (props) => {
     props.onDateRange(filter);
   };
 
-  const filtersOptions = {
-    "dateoperator": [{ "Between": "between" }, { "Less Than": "lte" }, { "Greater Than": "gte" }, { "MTD": "mtd" }, { "YTD": "ytd" }, { "Today": "today" }]
-  };
-
   useEffect(() => {
     buttonClick();
   }, []);
@@ -153,10 +149,12 @@ const DateRangePickerCustom = (props) => {
             <Form.Group className="dashboard-filter-field">
               <Form.Label>Date</Form.Label>
               <Form.Control className="dashboardTextField field-width-150" as="select" name="date" onChange={(e) => { setSelectedValue(e.target.value); onValueChange(); }} required>
-                {filtersOptions['dateoperator'].map((item, mapindex) => {
-                  return (<option key={mapindex} value={Object.values(item)[0]}>{Object.keys(item)[0]}</option>)
-                })}
-
+                {
+                  Object.keys(dateFilter).map((item,index) => {
+                    let itemName = item.charAt(0).toUpperCase() + item.slice(1);
+                    return (<option key={index} value={item}>{itemName}</option>)
+                  })                  
+                }
               </Form.Control>
             </Form.Group>
           </div>
