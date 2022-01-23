@@ -65,7 +65,6 @@ export default function Board(props) {
 
   const filterMaker = (status) => {
     tempArray = [];
-    console.log("Filtermaker", tempArray)
     tempArray.push({ field: "status", operator: "eq", value: status }); // if status = all, call 4 api
     if (Filter.length > 0) {
       tempArray = tempArray.concat(Filter);
@@ -78,11 +77,6 @@ export default function Board(props) {
     if (filter === null || filter === 0) return;
     setFilter(filter);
   };
-
-  // Searchbar - getSearchFilter
-  const getSearchFilter = (searchFilter) => {
-    console.log("getSearchFilter", searchFilter);
-  }
 
   return (
     <Container fluid>
