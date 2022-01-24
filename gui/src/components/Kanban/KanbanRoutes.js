@@ -12,6 +12,7 @@ const KanbanView = (props) => {
         key="dummy-boardId-237"
         core={props.core}
         appId={props.appId}
+        filters = {props.filters}
       />
     </Container>
   );

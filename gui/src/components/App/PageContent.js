@@ -696,7 +696,7 @@ class PageContent extends React.Component {
           />);
       } else if (item.type == "KanbanViewer") {
         content.push(
-          <KanbanView core={this.core} appId={this.appId} />
+          <KanbanView core={this.core} appId={this.appId} filters={item.content.filters}/>
         );
       } else if (item.type == "GoogleMapViewer") {
         content.push(
