@@ -1,30 +1,37 @@
 import React, { useEffect, useState } from "react";
 import Work from "./WorkGroup";
-import { ListGroup, Button, Badge, Container, Form, InputGroup } from "react-bootstrap";
+import { ListGroup, Button, Badge, Container } from "react-bootstrap";
 import { DragDropContext } from "react-beautiful-dnd";
 import StatusCard from "./ColumnCounts";
 import "./WorkGroup.scss";
 import Requests from "../../Requests";
-
 import DateRangePickerCustom from "./DateRangePickerCustom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Searchbar from './Searchbar';
 
 export default function Board(props) {
+  const dateFilter = props.filters.dateFilter;
   const [fields, setFields] = useState([]);
   const [fieldset, setFieldset] = useState([]);
   const [Refresh, setRefresh] = useState(true);
   const [Reload, setReload] = useState(false);
   const [priority, setPriority] = useState("All");
   const [Filter, setFilter] = useState([]);
+  var tempArray = [];
 
   const onDragEnd = (result, setRefresh, setReload, props) => {
     if (!result.destination) return;
     const { draggableId, destination } = result;
     let url = "/app/" + props.appId + "/file/crud/" + draggableId // also add entity_ID
+    let rygColor;
+    if (destination.droppableId === "Delayed") rygColor = "Red";
+    else if (destination.droppableId === "In Progress") rygColor = "Yellow";
+    else if (destination.droppableId === "Completed" || destination.droppableId === "Open") rygColor = "Green";
+
     Requests.doRestRequest(
       props.core,
       url,
-      { uuid: draggableId, status: destination.droppableId, entity_id: 2 }, //set particular status for this particular UUID
+      { uuid: draggableId, status: destination.droppableId, rygStatus: rygColor }, //set particular status for this particular UUID
       'put',
       function () { },
       function (e) {
@@ -54,11 +61,10 @@ export default function Board(props) {
           console.log("error " + error)
         });
     }
-
   }, [Refresh]);
 
   const filterMaker = (status) => {
-    var tempArray = [];
+    tempArray = [];
     tempArray.push({ field: "status", operator: "eq", value: status }); // if status = all, call 4 api
     if (Filter.length > 0) {
       tempArray = tempArray.concat(Filter);
@@ -66,7 +72,7 @@ export default function Board(props) {
     return tempArray;
   };
 
-  // DateRangePickerCustom - onDateRange
+  // DateRangePickerCustom - onDateRange, Search
   const setFilterFromProps = (filter) => {
     if (filter === null || filter === 0) return;
     setFilter(filter);
@@ -75,44 +81,19 @@ export default function Board(props) {
   return (
     <Container fluid>
       <div className="expense-item k_expense-item">
-        <div style={{display: "flex", alignItems: "center" }} className="ml-4">
-          {/* <Badge>
-            <Form.Row 
-            className="mt-2" 
-            style={{
-              marginRight: "5px", 
-              fontSize: "small",
-              paddingTop: "10px",
-              fontWeight: "bold"
-              }}>
-              <Form.Group>
-                <InputGroup>
-                  <InputGroup.Prepend>
-                    <InputGroup.Text>                    
-                      <FontAwesomeIcon icon={['fal', 'search']} size="1x" />
-                    </InputGroup.Text>
-                  </InputGroup.Prepend>
-                  <Form.Control
-                    type="text"
-                    placeholder="Search here.."
-                  />
-                </InputGroup>
-              </Form.Group>
-            </Form.Row>
-          </Badge> */}
-
+        <div style={{ display: "flex", alignItems: "center" }}>
           {/* Date Filter hidden because it should get populated from Apppbuilder */}
           <Badge>
-            <DateRangePickerCustom onDateRange={setFilterFromProps} />
+            <DateRangePickerCustom dateFilter={dateFilter} onDateRange={setFilterFromProps} />
           </Badge>
 
           <Button variant="link"
             style={{
               color: "black",
               fontWeight: 400
-            }} 
-            className="mt-2" 
-            >
+            }}
+            className="mt-2"
+          >
             <Badge>
               <div>Status</div>
             </Badge>
@@ -139,8 +120,13 @@ export default function Board(props) {
               </select>
             </Badge>
           </Button>
-
         </div>
+        <div style={{ display: "flex", alignItems: "center", marginLeft: "auto" }}>
+          <Badge>
+            <Searchbar getSearchFilter={setFilterFromProps} />
+          </Badge>
+        </div>
+
 
         {/* <Button variant="link" style={{ color: "black" }}>
           <Badge>
@@ -219,29 +205,12 @@ export default function Board(props) {
             </select>
           </Badge>
         </Button> */}
-
       </div>
-      
-      {/* <ListGroup horizontal>
-        {fields.map((dataItem, index) => {
-          return (
-            <StatusCard
-              statusInfo={dataItem}
-              filter={filterMaker(dataItem.value)}
-              key={index}
-              index={index}
-              core={props.core}
-              appId={props.appId}
-            />
-          );
-        })}
-      </ListGroup> */}
 
-      <br />
       <DragDropContext
         onDragEnd={(result) => onDragEnd(result, setRefresh, setReload, props)}
       >
-        <ListGroup horizontal  className="mt-1 mb-1">
+        <ListGroup horizontal className="mt-1 mb-1">
           {fieldset.map((dataItem, index) => {
             return (
               <Work

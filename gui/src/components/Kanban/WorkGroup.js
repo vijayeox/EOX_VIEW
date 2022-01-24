@@ -5,7 +5,6 @@ import "./WorkGroup.scss";
 import Item from "./WorkItem";
 
 export default function Work(props) {
-  
   const [Query, setQuery] = useState('');
   const [pageNumber, setPageNumber] = useState(1);
   const [Loading, setLoading] = useState(true);
