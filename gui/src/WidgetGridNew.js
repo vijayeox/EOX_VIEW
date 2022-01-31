@@ -5,6 +5,8 @@ import { filterBy, orderBy, process } from '@progress/kendo-data-query';
 import { IntlService } from '@progress/kendo-react-intl'
 import { ExcelExport } from '@progress/kendo-react-excel-export';
 import WidgetDrillDownHelper from './WidgetDrillDownHelper';
+import { Menu, MenuItem } from "@progress/kendo-react-layout";
+import { Popup } from "@progress/kendo-react-popup";
 import { WidgetGridLoader } from './WidgetGridLoader.js';
 import "@progress/kendo-theme-bootstrap/dist/all.css";
 import Moment from 'moment';
@@ -34,6 +36,7 @@ export default class WidgetGridNew extends React.Component {
         this.height = configuration ? (configuration.height ? configuration.height : '100%') : '100%';
         this.width = configuration ? (configuration.width ? configuration.width : '100%') : '100%';
         this.columnConfig = configuration ? (configuration.column ? configuration.column : []) : [];
+        this.rightClickPopup = configuration ? (configuration.rightClickPopup ? configuration.rightClickPopup : false) : false
         this.sortable = configuration ? (configuration.sort ? true : false) : false;
         this.pagerConfig = configuration ? (configuration.pageable ? { pageable: configuration.pageable } : {}) : {};
         this.pageSize = configuration ? (configuration.pageSize ? configuration.pageSize : 10) : 10;
@@ -51,6 +54,7 @@ export default class WidgetGridNew extends React.Component {
                 skip: 0,
                 take: this.pageSize
             },
+            showContextPopup: false,
             sort: (configuration ? (configuration.sort ? configuration.sort : null) : null),
             group: null,
             exportFilterData: []
@@ -68,6 +72,21 @@ export default class WidgetGridNew extends React.Component {
             this.state.filter = beginWith.filter ? beginWith.filter : null;
         }
     }
+
+    handleContextMenu = (e) => {
+        e.preventDefault();
+        offSet.current = {
+          left: e.clientX,
+          top: e.clientY,
+        };
+        if(this.rightClickPopup == false){
+            this.setState({showContextPopup: false});
+        }
+        else{
+            this.setState({showContextPopup: true});
+        }
+       
+      };
 
     dataStateChange = (e) => {
         // console.log(e);
@@ -95,7 +114,7 @@ export default class WidgetGridNew extends React.Component {
     parseData = () => {
         let fieldDataTypeMap = new Map();
         for (const config of this.columnConfig) {
-            if (config['dataType'] === "date" || config['type'] === "date") {
+            if (config['dataType'] == "date" || config['type'] == "date") {
                 fieldDataTypeMap.set(config['field'], (config['dataType'] || config['type']));
             }
         }
@@ -158,6 +177,10 @@ export default class WidgetGridNew extends React.Component {
     }
 
     cellRender(tdElement, cellProps, thiz) {
+        onContextMenu: (e) => {
+            e.preventDefault();
+            this.handleContextMenuOpen(e, dataItem.dataItem);
+          }
         if (cellProps.rowType === 'groupFooter') {
             let element = null
             if (thiz.props.configuration["groupable"] && thiz.props.configuration["groupable"] != false && thiz.props.configuration["groupable"]["aggregate"]) {
@@ -208,6 +231,111 @@ export default class WidgetGridNew extends React.Component {
         }
         return <td>{props.dataItem[props.field]}</td>
     }
+
+    rowRender = (trElement, dataItem) => {
+        const trProps = {
+          ...trElement.props,
+          onContextMenu: (e) => {
+            e.preventDefault();
+            this.handleContextMenuOpen(e, dataItem.dataItem);
+          },
+        };
+        return React.cloneElement(
+          trElement,
+          { ...trProps },
+          trElement.props.children
+        );
+      };
+
+    handleOnSelect = (e) => {
+        // var dataItem = this.dataItem;
+        // if (this.state.actions) {
+        //   Object.keys(this.state.actions).map(function (key, index) {
+        //     if (this.state.actions[key].name == e.item.text) {
+        //       this.handleAction(key, dataItem);
+        //     }
+        //   }, this);
+        // }
+        switch (e.item.text) {
+          case "Menu Item 1":
+            console.log("Menu Item 1 called");
+            //this.handleMoveUp();
+            break;
+          case "Menu Item 2":
+            console.log("Menu Item 2"); 
+            //this.handleMoveDown();
+            break;
+          case "Menu Item 3":
+            console.log("Menu Item 3s");  
+          //this.handleDelete();
+            break;
+          default:
+        }
+        this.setState({
+            showContextPopup: false,
+        });
+      };
+    
+      onFocusHandler = () => {
+        clearTimeout(this.blurTimeoutRef);
+        this.blurTimeoutRef = undefined;
+      };
+    
+      onBlurTimeout = () => {
+        this.setState({
+            showContextPopup: false,
+        });
+    
+        this.blurTimeoutRef = undefined;
+      };
+    
+      onBlurHandler = (event) => {
+        clearTimeout(this.blurTimeoutRef);
+        this.blurTimeoutRef = setTimeout(this.onBlurTimeout);
+      };
+    
+      onPopupOpen = () => {
+        this.menuWrapperRef.querySelector("[tabindex]").focus();
+      };
+      handleContextMenuOpen = (e, dataItem) => {
+        this.dataItem = dataItem;
+        // this.dataItemIndex = this.state.gridData.findIndex(
+        //   (p) => p.ProductID === this.dataItem.ProductID
+        // );
+        this.offset = { left: e.clientX, top: e.clientY };
+        if(this.rightClickPopup == false){
+            this.setState({showContextPopup: false});
+        }
+        else{
+            this.setState({showContextPopup: true});
+        }
+      };
+    
+      handleMoveUp = () => {
+        let data = [...this.state.gridData];
+        if (this.dataItemIndex !== 0) {
+          data.splice(this.dataItemIndex, 1);
+          data.splice(this.dataItemIndex - 1, 0, this.dataItem);
+          this.setState({ gridData: data });
+        }
+      };
+    
+      handleMoveDown = () => {
+        let data = [...this.state.gridData];
+        if (this.dataItemIndex < this.state.gridData.length) {
+          data.splice(this.dataItemIndex, 1);
+          data.splice(this.dataItemIndex + 1, 0, this.dataItem);
+          this.setState({ gridData: data });
+        }
+      };
+    
+      handleDelete = () => {
+        let data = [...this.state.gridData];
+        data.splice(this.dataItemIndex, 1);
+        this.setState({
+          gridData: data,
+        });
+      };
 
     render() {
         let thiz = this;
@@ -267,6 +395,9 @@ export default class WidgetGridNew extends React.Component {
             sortable={this.sortable}
             sort={this.state.sort}
             groupable={this.groupable}
+            rowRender={this.rightClickPopup
+                ? this.rowRender
+                : this.rowRender}
             group={this.state.group}
             // onFilterChange={this.gridFilterChanged}
             reorderable={this.reorderable}
@@ -315,6 +446,30 @@ export default class WidgetGridNew extends React.Component {
                             ref={exporter => this.excelExporter = exporter}
                             filterable
                         >
+                            {
+        <Popup
+          offset={this.offset}
+          show={this.state.showContextPopup}
+          open={this.onPopupOpen}
+          popupClass={"popup-content"}
+        >
+          <div
+            onFocus={this.onFocusHandler}
+            onBlur={this.onBlurHandler}
+            tabIndex={-1}
+            ref={(el) => (this.menuWrapperRef = el)}
+          >
+            <Menu
+              vertical={true}
+              style={{ display: "inline-block" }}
+              onSelect={this.handleOnSelect}
+            >
+              <MenuItem text="Menu Item 1" />
+              <MenuItem text="Menu Item 2" />
+              <MenuItem text="Menu Item 3" />
+            </Menu>
+          </div>
+        </Popup>}
                             {gridTag}
                             {gridLoader}
                         </ExcelExport>
@@ -322,6 +477,30 @@ export default class WidgetGridNew extends React.Component {
                 }
                 {!this.exportToExcel && 
                 <>
+                {
+        <Popup
+          offset={this.offset}
+          show={this.state.showContextPopup}
+          open={this.onPopupOpen}
+          popupClass={"popup-content"}
+        >
+          <div
+            onFocus={this.onFocusHandler}
+            onBlur={this.onBlurHandler}
+            tabIndex={-1}
+            ref={(el) => (this.menuWrapperRef = el)}
+          >
+            <Menu
+              vertical={true}
+              style={{ display: "inline-block" }}
+              onSelect={this.handleOnSelect}
+            >
+              <MenuItem text="Menu Item 1" />
+              <MenuItem text="Menu Item 2" />
+              <MenuItem text="Menu Item 3" />
+            </Menu>
+          </div>
+        </Popup>}
                     {gridTag}
                     {gridLoader}
                 </>
