@@ -22,7 +22,7 @@ const DateRangePickerCustom = (props) => {
 
   // Convert selected date to get MTD and YTD values
   const convertDate = (date, valueSelected) => {
-    if (valueSelected === "mtd") {
+    if (valueSelected === "MTD") {
       const day = 1;
       const month = date.getMonth();
       const year = date.getFullYear();
@@ -39,19 +39,19 @@ const DateRangePickerCustom = (props) => {
   const onValueChange = () => {
 
     switch (selectedValue) {
-      case "mtd":
-        let mtdmindatevalue = convertDate(endDate, "mtd");
+      case "MTD":
+        let mtdmindatevalue = convertDate(endDate, "MTD");
         setStartDate(mtdmindatevalue);
         setEndDate(new Date());
         break;
 
-      case "ytd":
-        let ytdmindatevalue = convertDate(endDate, "ytd");
+      case "YTD":
+        let ytdmindatevalue = convertDate(endDate, "YTD");
         setStartDate(ytdmindatevalue);
         setEndDate(new Date());
         break;
 
-      case "today":
+      case "Today":
         setEndDate(new Date());
         break;
     }
@@ -64,40 +64,40 @@ const DateRangePickerCustom = (props) => {
     let maxdatevalue = Moment(endDate).format("YYYY-MM-DD")
 
     switch (selectedValue) {
-      case "between":
+      case "Between":
         filter = [
           { field: "start_date", operator: "gte", value: mindatevalue },
           { field: "end_date", operator: "lte", value: maxdatevalue },
         ]
         break;
 
-      case "lte":
+      case "LTE":
         filter = [
           { field: "end_date", operator: "lte", value: maxdatevalue },
         ]
         break;
 
-      case "gte":
+      case "GTE":
         filter = [
           { field: "end_date", operator: "gte", value: maxdatevalue },
         ]
         break;
 
-      case "mtd":
+      case "MTD":
         filter = [
           { field: "start_date", operator: "gte", value: mindatevalue },
           { field: "end_date", operator: "lte", value: maxdatevalue },
         ]
         break;
 
-      case "ytd":
+      case "YTD":
         filter = [
           { field: "start_date", operator: "gte", value: mindatevalue },
           { field: "end_date", operator: "lte", value: maxdatevalue },
         ]
         break;
 
-      case "today":
+      case "Today":
         filter = [
           { field: "end_date", operator: "eq", value: maxdatevalue },
         ]
@@ -151,15 +151,14 @@ const DateRangePickerCustom = (props) => {
               <Form.Control className="dashboardTextField field-width-150" as="select" name="date" onChange={(e) => { setSelectedValue(e.target.value); onValueChange(); }} required>
                 {
                   Object.keys(dateFilter).map((item,index) => {
-                    let itemName = item.charAt(0).toUpperCase() + item.slice(1);
-                    return (<option key={index} value={item}>{itemName}</option>)
+                    return (<option key={index} value={item}>{item}</option>)
                   })                  
                 }
               </Form.Control>
             </Form.Group>
           </div>
 
-          {selectedValue !== "between" && selectedValue !== "mtd" && selectedValue !== "ytd" ?
+          {selectedValue !== "Between" && selectedValue !== "MTD" && selectedValue !== "YTD" ?
 
             <div className="dashboard-filter-field" id="" style={{ minWidth: "auto" }}>
               <Form.Group className="dashboard-filter-field">
@@ -167,7 +166,7 @@ const DateRangePickerCustom = (props) => {
                   showMonthDropdown
                   showYearDropdown
                   dropdownMode="select"
-                  dateFormat="yyyy-MM-dd" selected={endDate} onChange={(date) => setEndDate(date)} disabled={selectedValue === "today" ? true : false} />
+                  dateFormat="yyyy-MM-dd" selected={endDate} onChange={(date) => setEndDate(date)} disabled={selectedValue === "Today" ? true : false} />
               </Form.Group>
             </div>
 
@@ -180,7 +179,7 @@ const DateRangePickerCustom = (props) => {
                     showMonthDropdown
                     showYearDropdown
                     dropdownMode="select"
-                    dateFormat="yyyy-MM-dd" selected={startDate} onChange={(date) => setStartDate(date)} disabled={((selectedValue === "mtd") || (selectedValue === "ytd")) ? true : false} />
+                    dateFormat="yyyy-MM-dd" selected={startDate} onChange={(date) => setStartDate(date)} disabled={((selectedValue === "MTD") || (selectedValue === "YTD")) ? true : false} />
                 </Form.Group>
               </div>
               <div className="dashboard-filter-field" id="" style={{ minWidth: "auto" }}>
@@ -189,7 +188,7 @@ const DateRangePickerCustom = (props) => {
                     showMonthDropdown
                     showYearDropdown
                     dropdownMode="select"
-                    dateFormat="yyyy-MM-dd" selected={endDate} onChange={(date) => setEndDate(date)} disabled={((selectedValue === "mtd") || (selectedValue === "ytd")) ? true : false} />
+                    dateFormat="yyyy-MM-dd" selected={endDate} onChange={(date) => setEndDate(date)} disabled={((selectedValue === "MTD") || (selectedValue === "YTD")) ? true : false} />
                 </Form.Group>
               </div>
             </div>

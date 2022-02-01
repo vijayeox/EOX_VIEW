@@ -7,19 +7,23 @@ function Searchbar(props) {
     const [key, setKey] = useState("");
 
     const searchKeyword = () => {
+
         let filter = null;
-        filter = [
-            // { field: "name", operator: "contains", value: key },
-            {
-                "logic": "or",
-                "filters": [
-                    { field: "name", operator: "contains", value: key },
-                    { field: "created_by", operator: "contains", value: key },
-                    { field: "date_created", operator: "contains", value: key },
-                    { field: "assignedToName", operator: "contains", value: key }]
-            }
-        ];
-        props.getSearchFilter(filter);
+        let callTimeout = null;
+        callTimeout ? clearTimeout(callTimeout) : null;
+        callTimeout = setTimeout(() => {
+            filter = [
+                {
+                    "logic": "or",
+                    "filters": [
+                        { field: "name", operator: "contains", value: key },
+                        { field: "created_by", operator: "contains", value: key },
+                        { field: "date_created", operator: "contains", value: key },
+                        { field: "assignedToName", operator: "contains", value: key }]
+                }
+            ];
+            props.getSearchFilter(filter);
+        }, 2000);
     }
 
     useEffect(() => {
@@ -40,9 +44,10 @@ function Searchbar(props) {
                         type="text"
                         value={key}
                         placeholder="Search here.."
-                        onChange={e => setKey(e.target.value)}
+                        onChange={e => { setKey(e.target.value) }}
                     />
-                    <Button onClick={() => { searchKeyword() }} variant="primary" size="sm">
+                    
+                    <Button variant="primary" size="sm" onClick={searchKeyword}>
                         <FontAwesomeIcon icon={['fal', 'search']} />
                     </Button>
                 </InputGroup>
