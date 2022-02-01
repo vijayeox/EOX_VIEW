@@ -257,15 +257,15 @@ export default class WidgetGridNew extends React.Component {
         //   }, this);
         // }
         switch (e.item.text) {
-          case "Menu Item 1":
+          case "View":
             console.log("Menu Item 1 called");
             //this.handleMoveUp();
             break;
-          case "Menu Item 2":
+          case "Edit":
             console.log("Menu Item 2"); 
             //this.handleMoveDown();
             break;
-          case "Menu Item 3":
+          case "Delete":
             console.log("Menu Item 3s");  
           //this.handleDelete();
             break;
@@ -464,10 +464,23 @@ export default class WidgetGridNew extends React.Component {
               style={{ display: "inline-block" }}
               onSelect={this.handleOnSelect}
             >
-              <MenuItem text="Menu Item 1" />
-              <MenuItem text="Menu Item 2" />
-              <MenuItem text="Menu Item 3" />
+              <MenuItem text="View" />
+              <MenuItem text="Edit" />
+              <MenuItem text="Delete" />
             </Menu>
+            <i
+              style={{
+                color: "#212529b3",
+                cursor: "pointer",
+                position: "absolute",
+                top: "1px",
+                right: "-2px",
+              }}
+              className={"fad fa-times"}
+              onClick={() => {
+                this.setState({showContextPopup: false});
+              }}
+            ></i>
           </div>
         </Popup>}
                             {gridTag}
@@ -495,10 +508,23 @@ export default class WidgetGridNew extends React.Component {
               style={{ display: "inline-block" }}
               onSelect={this.handleOnSelect}
             >
-              <MenuItem text="Menu Item 1" />
-              <MenuItem text="Menu Item 2" />
-              <MenuItem text="Menu Item 3" />
+              <MenuItem text="View" />
+              <MenuItem text="Edit" />
+              <MenuItem text="Delete" />
             </Menu>
+            <i
+              style={{
+                color: "#212529b3",
+                cursor: "pointer",
+                position: "absolute",
+                top: "1px",
+                right: "-2px",
+              }}
+              className={"fad fa-times"}
+              onClick={() => {
+                this.setState({showContextPopup: false});
+              }}
+            ></i>
           </div>
         </Popup>}
                     {gridTag}
