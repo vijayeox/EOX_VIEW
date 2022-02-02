@@ -18,6 +18,7 @@ export default function Board(props) {
   const [Reload, setReload] = useState(false);
   const [priority, setPriority] = useState("All");
   const [Filter, setFilter] = useState([]);
+  const [childFilter, setChildFilter] = useState({})
   var tempArray = [];
 
   const onDragEnd = (result, setRefresh, setReload, props) => {
@@ -74,11 +75,16 @@ export default function Board(props) {
     return tempArray;
   };
 
+  const onFilterUpdate = (type, filter) => {
+    setChildFilter({...childFilter, [type] : filter})
+  }
+
   // DateRangePickerCustom - onDateRange, Search
   const setFilterFromProps = (filterFromProps) => {
-    console.log("filterFromProps",filterFromProps);
-    if (filterFromProps === null || filterFromProps === 0) return;
-    setFilter(filterFromProps);
+    // console.log("filterFromProps",filterFromProps);
+    // if (filterFromProps === null || filterFromProps === 0) return;
+    const newFilter = [...(childFilter.dateFilter || []), ...(childFilter.searchFilter || [])]
+    setFilter(newFilter);
   };
 
   return (
@@ -87,13 +93,14 @@ export default function Board(props) {
         <div style={{ display: "flex", alignItems: "center" }}>
           {/* Date Filter hidden because it should get populated from Apppbuilder */}
           <Badge>
-            <DateRangePickerCustom dateFilter={dateFilter} onDateRange={setFilterFromProps} />
+            <DateRangePickerCustom dateFilter={dateFilter} setFilterFromProps={setFilterFromProps} onChildFilter={onFilterUpdate} />
           </Badge>
+          
           {/* <Badge>
             <AssignedTo getAssignedToFilter={setFilterFromProps} core={props.core}/>
           </Badge> */}
 
-          <Button variant="link"
+          {/* <Button variant="link"
             style={{
               color: "black",
               fontWeight: 400
@@ -124,11 +131,11 @@ export default function Board(props) {
                 })}
               </select>
             </Badge>
-          </Button>
+          </Button> */}
         </div>
         <div style={{ display: "flex", alignItems: "center", marginLeft: "auto" }}>
           <Badge>
-            <Searchbar getSearchFilter={setFilterFromProps} core={props.core} />
+            <Searchbar setFilterFromProps={setFilterFromProps} core={props.core} onChildFilter={onFilterUpdate}/>
           </Badge>
         </div>
       </div>

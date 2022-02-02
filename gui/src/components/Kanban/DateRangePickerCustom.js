@@ -17,7 +17,8 @@ const DateRangePickerCustom = (props) => {
   const [endDate, setEndDate] = useState(new Date());
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [selectedValue, setSelectedValue] = useState("lte"); //get *all* items (i.e. that have dates less than or equal to current date)
-
+  const [ready, setReady] = useState(0);
+  
   const toggle = () => setDropdownOpen((prevState) => !prevState);
 
   // Convert selected date to get MTD and YTD values
@@ -107,9 +108,62 @@ const DateRangePickerCustom = (props) => {
     props.onDateRange(filter);
   };
 
+  const updateFilter = () => {
+    let filter = null;
+    let mindatevalue = Moment(startDate).format("YYYY-MM-DD")
+    let maxdatevalue = Moment(endDate).format("YYYY-MM-DD")
+
+    switch (selectedValue) {
+      case "Between":
+        filter = [
+          { field: "start_date", operator: "gte", value: mindatevalue },
+          { field: "end_date", operator: "lte", value: maxdatevalue },
+        ]
+        break;
+
+      case "LTE":
+        filter = [
+          { field: "end_date", operator: "lte", value: maxdatevalue },
+        ]
+        break;
+
+      case "GTE":
+        filter = [
+          { field: "end_date", operator: "gte", value: maxdatevalue },
+        ]
+        break;
+
+      case "MTD":
+        filter = [
+          { field: "start_date", operator: "gte", value: mindatevalue },
+          { field: "end_date", operator: "lte", value: maxdatevalue },
+        ]
+        break;
+
+      case "YTD":
+        filter = [
+          { field: "start_date", operator: "gte", value: mindatevalue },
+          { field: "end_date", operator: "lte", value: maxdatevalue },
+        ]
+        break;
+
+      case "Today":
+        filter = [
+          { field: "end_date", operator: "eq", value: maxdatevalue },
+        ]
+        break;
+
+    }
+    props.onChildFilter("dateFilter", filter)
+  }
+
   useEffect(() => {
-    buttonClick();
-  }, []);
+    if(!ready){
+      setReady(1);
+      return;
+    }
+    updateFilter()
+  }, [startDate, endDate]);
 
   return (
     <Dropdown
@@ -150,9 +204,9 @@ const DateRangePickerCustom = (props) => {
               <Form.Label>Date</Form.Label>
               <Form.Control className="dashboardTextField field-width-150" as="select" name="date" onChange={(e) => { setSelectedValue(e.target.value); onValueChange(); }} required>
                 {
-                  Object.keys(dateFilter).map((item,index) => {
+                  Object.keys(dateFilter).map((item, index) => {
                     return (<option key={index} value={item}>{item}</option>)
-                  })                  
+                  })
                 }
               </Form.Control>
             </Form.Group>
@@ -194,7 +248,7 @@ const DateRangePickerCustom = (props) => {
             </div>
 
           }
-          <div><Button id="k_button" onClick={() => { buttonClick() }}> Submit </Button></div>
+          <div><Button id="k_button" onClick={props.setFilterFromProps}> Submit </Button></div>
         </div>
       </DropdownMenu>
     </Dropdown>

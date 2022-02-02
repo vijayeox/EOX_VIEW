@@ -26,9 +26,23 @@ function Searchbar(props) {
         }, 2000);
     }
 
-    useEffect(() => {
-        searchKeyword();
-    }, []);
+    const filter = (value) => {
+        setKey(value);
+        if(value.trim().length>0){
+            props.onChildFilter("searchFilter",[
+                {
+                    "logic": "or",
+                    "filters": [
+                        { field: "name", operator: "contains", value },
+                        { field: "created_by", operator: "contains", value },
+                        { field: "date_created", operator: "contains", value },
+                        { field: "assignedToName", operator: "contains", value }]
+                }
+            ])
+        } else {
+            props.onChildFilter("searchFilter",[]) // if search is empty
+        }
+    }
 
     return (
         <Form.Row
@@ -44,10 +58,10 @@ function Searchbar(props) {
                         type="text"
                         value={key}
                         placeholder="Search here.."
-                        onChange={e => { setKey(e.target.value) }}
+                        onChange={e => { filter(e.target.value) }}
                     />
                     
-                    <Button variant="primary" size="sm" onClick={searchKeyword}>
+                    <Button variant="primary" size="sm" onClick={props.setFilterFromProps}>
                         <FontAwesomeIcon icon={['fal', 'search']} />
                     </Button>
                 </InputGroup>
