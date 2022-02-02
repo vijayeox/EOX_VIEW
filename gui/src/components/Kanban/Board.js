@@ -68,7 +68,6 @@ export default function Board(props) {
   const filterMaker = (status) => {
     tempArray = [];
     tempArray.push({ field: "status", operator: "eq", value: status }); // if status = all, call 4 api
-    console.log("In filtermaker",tempArray,Filter,Filter.length,);
     if (Filter.length > 0) {
       tempArray = tempArray.concat(Filter);
     }
@@ -81,8 +80,6 @@ export default function Board(props) {
 
   // DateRangePickerCustom - onDateRange, Search
   const setFilterFromProps = (filterFromProps) => {
-    // console.log("filterFromProps",filterFromProps);
-    // if (filterFromProps === null || filterFromProps === 0) return;
     const newFilter = [...(childFilter.dateFilter || []), ...(childFilter.searchFilter || [])]
     setFilter(newFilter);
   };
@@ -95,7 +92,7 @@ export default function Board(props) {
           <Badge>
             <DateRangePickerCustom dateFilter={dateFilter} setFilterFromProps={setFilterFromProps} onChildFilter={onFilterUpdate} />
           </Badge>
-          
+
           {/* <Badge>
             <AssignedTo getAssignedToFilter={setFilterFromProps} core={props.core}/>
           </Badge> */}

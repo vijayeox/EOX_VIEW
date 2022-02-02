@@ -6,26 +6,6 @@ function Searchbar(props) {
 
     const [key, setKey] = useState("");
 
-    const searchKeyword = () => {
-
-        let filter = null;
-        let callTimeout = null;
-        callTimeout ? clearTimeout(callTimeout) : null;
-        callTimeout = setTimeout(() => {
-            filter = [
-                {
-                    "logic": "or",
-                    "filters": [
-                        { field: "name", operator: "contains", value: key },
-                        { field: "created_by", operator: "contains", value: key },
-                        { field: "date_created", operator: "contains", value: key },
-                        { field: "assignedToName", operator: "contains", value: key }]
-                }
-            ];
-            props.getSearchFilter(filter);
-        }, 2000);
-    }
-
     const filter = (value) => {
         setKey(value);
         if(value.trim().length>0){
