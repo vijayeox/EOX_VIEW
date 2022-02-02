@@ -48,18 +48,17 @@ export default function WorkItem(props) {
                   border: "0",
                 }}
               >
-                {console.log(CardInfo)}
                 <div className="k_taskcardDisplay">
                   <CardImg
                     style={{
                       margin: "5px 5px 0 5px",
                       padding: "auto",
                       borderRadius: "50%",
-                      backgroundColor: "#eee"
+                      backgroundColor: CardInfo.rygStatus
                     }}
                     className="img k_img"
                   />
-                  <a href="" className="k_taskcard-p" target="_blank">{CardInfo.name}</a>
+                   <a eoxapplication="TaskApp1" file-id={CardInfo.uuid} className="k_taskcard-p">{CardInfo.name}</a>
                 </div>
                 <div className="mt-0 mb-0">
                   <label className="k_taskcard-label mt-0 mb-0">

@@ -12,17 +12,18 @@ import Moment from "moment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const DateRangePickerCustom = (props) => {
-
+  const dateFilter = props.dateFilter;
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [selectedValue, setSelectedValue] = useState("lte"); //get *all* items (i.e. that have dates less than or equal to current date)
-
+  const [ready, setReady] = useState(0);
+  
   const toggle = () => setDropdownOpen((prevState) => !prevState);
 
   // Convert selected date to get MTD and YTD values
   const convertDate = (date, valueSelected) => {
-    if (valueSelected === "mtd") {
+    if (valueSelected === "MTD") {
       const day = 1;
       const month = date.getMonth();
       const year = date.getFullYear();
@@ -39,19 +40,19 @@ const DateRangePickerCustom = (props) => {
   const onValueChange = () => {
 
     switch (selectedValue) {
-      case "mtd":
-        let mtdmindatevalue = convertDate(endDate, "mtd");
+      case "MTD":
+        let mtdmindatevalue = convertDate(endDate, "MTD");
         setStartDate(mtdmindatevalue);
         setEndDate(new Date());
         break;
 
-      case "ytd":
-        let ytdmindatevalue = convertDate(endDate, "ytd");
+      case "YTD":
+        let ytdmindatevalue = convertDate(endDate, "YTD");
         setStartDate(ytdmindatevalue);
         setEndDate(new Date());
         break;
 
-      case "today":
+      case "Today":
         setEndDate(new Date());
         break;
     }
@@ -64,40 +65,40 @@ const DateRangePickerCustom = (props) => {
     let maxdatevalue = Moment(endDate).format("YYYY-MM-DD")
 
     switch (selectedValue) {
-      case "between":
+      case "Between":
         filter = [
           { field: "start_date", operator: "gte", value: mindatevalue },
           { field: "end_date", operator: "lte", value: maxdatevalue },
         ]
         break;
 
-      case "lte":
+      case "LTE":
         filter = [
           { field: "end_date", operator: "lte", value: maxdatevalue },
         ]
         break;
 
-      case "gte":
+      case "GTE":
         filter = [
           { field: "end_date", operator: "gte", value: maxdatevalue },
         ]
         break;
 
-      case "mtd":
+      case "MTD":
         filter = [
           { field: "start_date", operator: "gte", value: mindatevalue },
           { field: "end_date", operator: "lte", value: maxdatevalue },
         ]
         break;
 
-      case "ytd":
+      case "YTD":
         filter = [
           { field: "start_date", operator: "gte", value: mindatevalue },
           { field: "end_date", operator: "lte", value: maxdatevalue },
         ]
         break;
 
-      case "today":
+      case "Today":
         filter = [
           { field: "end_date", operator: "eq", value: maxdatevalue },
         ]
@@ -107,13 +108,62 @@ const DateRangePickerCustom = (props) => {
     props.onDateRange(filter);
   };
 
-  const filtersOptions = {
-    "dateoperator": [{ "Between": "between" }, { "Less Than": "lte" }, { "Greater Than": "gte" }, { "MTD": "mtd" }, { "YTD": "ytd" }, { "Today": "today" }]
-  };
+  const updateFilter = () => {
+    let filter = null;
+    let mindatevalue = Moment(startDate).format("YYYY-MM-DD")
+    let maxdatevalue = Moment(endDate).format("YYYY-MM-DD")
+
+    switch (selectedValue) {
+      case "Between":
+        filter = [
+          { field: "start_date", operator: "gte", value: mindatevalue },
+          { field: "end_date", operator: "lte", value: maxdatevalue },
+        ]
+        break;
+
+      case "LTE":
+        filter = [
+          { field: "end_date", operator: "lte", value: maxdatevalue },
+        ]
+        break;
+
+      case "GTE":
+        filter = [
+          { field: "end_date", operator: "gte", value: maxdatevalue },
+        ]
+        break;
+
+      case "MTD":
+        filter = [
+          { field: "start_date", operator: "gte", value: mindatevalue },
+          { field: "end_date", operator: "lte", value: maxdatevalue },
+        ]
+        break;
+
+      case "YTD":
+        filter = [
+          { field: "start_date", operator: "gte", value: mindatevalue },
+          { field: "end_date", operator: "lte", value: maxdatevalue },
+        ]
+        break;
+
+      case "Today":
+        filter = [
+          { field: "end_date", operator: "eq", value: maxdatevalue },
+        ]
+        break;
+
+    }
+    props.onChildFilter("dateFilter", filter)
+  }
 
   useEffect(() => {
-    buttonClick();
-  }, []);
+    if(!ready){
+      setReady(1);
+      return;
+    }
+    updateFilter()
+  }, [startDate, endDate]);
 
   return (
     <Dropdown
@@ -153,15 +203,16 @@ const DateRangePickerCustom = (props) => {
             <Form.Group className="dashboard-filter-field">
               <Form.Label>Date</Form.Label>
               <Form.Control className="dashboardTextField field-width-150" as="select" name="date" onChange={(e) => { setSelectedValue(e.target.value); onValueChange(); }} required>
-                {filtersOptions['dateoperator'].map((item, mapindex) => {
-                  return (<option key={mapindex} value={Object.values(item)[0]}>{Object.keys(item)[0]}</option>)
-                })}
-
+                {
+                  Object.keys(dateFilter).map((item, index) => {
+                    return (<option key={index} value={item}>{item}</option>)
+                  })
+                }
               </Form.Control>
             </Form.Group>
           </div>
 
-          {selectedValue !== "between" && selectedValue !== "mtd" && selectedValue !== "ytd" ?
+          {selectedValue !== "Between" && selectedValue !== "MTD" && selectedValue !== "YTD" ?
 
             <div className="dashboard-filter-field" id="" style={{ minWidth: "auto" }}>
               <Form.Group className="dashboard-filter-field">
@@ -169,7 +220,7 @@ const DateRangePickerCustom = (props) => {
                   showMonthDropdown
                   showYearDropdown
                   dropdownMode="select"
-                  dateFormat="yyyy-MM-dd" selected={endDate} onChange={(date) => setEndDate(date)} disabled={selectedValue === "today" ? true : false} />
+                  dateFormat="yyyy-MM-dd" selected={endDate} onChange={(date) => setEndDate(date)} disabled={selectedValue === "Today" ? true : false} />
               </Form.Group>
             </div>
 
@@ -182,7 +233,7 @@ const DateRangePickerCustom = (props) => {
                     showMonthDropdown
                     showYearDropdown
                     dropdownMode="select"
-                    dateFormat="yyyy-MM-dd" selected={startDate} onChange={(date) => setStartDate(date)} disabled={((selectedValue === "mtd") || (selectedValue === "ytd")) ? true : false} />
+                    dateFormat="yyyy-MM-dd" selected={startDate} onChange={(date) => setStartDate(date)} disabled={((selectedValue === "MTD") || (selectedValue === "YTD")) ? true : false} />
                 </Form.Group>
               </div>
               <div className="dashboard-filter-field" id="" style={{ minWidth: "auto" }}>
@@ -191,13 +242,13 @@ const DateRangePickerCustom = (props) => {
                     showMonthDropdown
                     showYearDropdown
                     dropdownMode="select"
-                    dateFormat="yyyy-MM-dd" selected={endDate} onChange={(date) => setEndDate(date)} disabled={((selectedValue === "mtd") || (selectedValue === "ytd")) ? true : false} />
+                    dateFormat="yyyy-MM-dd" selected={endDate} onChange={(date) => setEndDate(date)} disabled={((selectedValue === "MTD") || (selectedValue === "YTD")) ? true : false} />
                 </Form.Group>
               </div>
             </div>
 
           }
-          <div><Button id="k_button" onClick={() => { buttonClick() }}> Submit </Button></div>
+          <div><Button id="k_button" onClick={props.setFilterFromProps}> Submit </Button></div>
         </div>
       </DropdownMenu>
     </Dropdown>
