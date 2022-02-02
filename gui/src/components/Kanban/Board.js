@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import Work from "./WorkGroup";
 import { ListGroup, Button, Badge, Container } from "react-bootstrap";
 import { DragDropContext } from "react-beautiful-dnd";
-import StatusCard from "./ColumnCounts";
 import "./WorkGroup.scss";
 import Requests from "../../Requests";
 import DateRangePickerCustom from "./DateRangePickerCustom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Searchbar from './Searchbar';
+import AssignedTo from "./AssignedTo";
+// import StatusCard from "./ColumnCounts";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function Board(props) {
   const dateFilter = props.filters.dateFilter;
@@ -17,6 +18,7 @@ export default function Board(props) {
   const [Reload, setReload] = useState(false);
   const [priority, setPriority] = useState("All");
   const [Filter, setFilter] = useState([]);
+  const [childFilter, setChildFilter] = useState({})
   var tempArray = [];
 
   const onDragEnd = (result, setRefresh, setReload, props) => {
@@ -72,10 +74,14 @@ export default function Board(props) {
     return tempArray;
   };
 
+  const onFilterUpdate = (type, filter) => {
+    setChildFilter({...childFilter, [type] : filter})
+  }
+
   // DateRangePickerCustom - onDateRange, Search
-  const setFilterFromProps = (filter) => {
-    if (filter === null || filter === 0) return;
-    setFilter(filter);
+  const setFilterFromProps = (filterFromProps) => {
+    const newFilter = [...(childFilter.dateFilter || []), ...(childFilter.searchFilter || [])]
+    setFilter(newFilter);
   };
 
   return (
@@ -84,10 +90,14 @@ export default function Board(props) {
         <div style={{ display: "flex", alignItems: "center" }}>
           {/* Date Filter hidden because it should get populated from Apppbuilder */}
           <Badge>
-            <DateRangePickerCustom dateFilter={dateFilter} onDateRange={setFilterFromProps} />
+            <DateRangePickerCustom dateFilter={dateFilter} setFilterFromProps={setFilterFromProps} onChildFilter={onFilterUpdate} />
           </Badge>
 
-          <Button variant="link"
+          {/* <Badge>
+            <AssignedTo getAssignedToFilter={setFilterFromProps} core={props.core}/>
+          </Badge> */}
+
+          {/* <Button variant="link"
             style={{
               color: "black",
               fontWeight: 400
@@ -113,98 +123,18 @@ export default function Board(props) {
                 }}
               >
                 <option value="All"> ALL</option>
-                {/* Dynamic values */}
                 {fields.map((e) => {
                   return <option key={e.value} value={e.value}>{e.label}</option>;
                 })}
               </select>
             </Badge>
-          </Button>
+          </Button> */}
         </div>
         <div style={{ display: "flex", alignItems: "center", marginLeft: "auto" }}>
           <Badge>
-            <Searchbar getSearchFilter={setFilterFromProps} />
+            <Searchbar setFilterFromProps={setFilterFromProps} core={props.core} onChildFilter={onFilterUpdate}/>
           </Badge>
         </div>
-
-
-        {/* <Button variant="link" style={{ color: "black" }}>
-          <Badge>
-            <div>
-              <FontAwesomeIcon size='sm' icon={['fal', 'user-friends']} /> Users
-            </div>
-          </Badge>
-
-          <Badge>
-            <select
-              className="form-control"
-              style={{
-                fontSize: "small",
-                borderColor: "transparent",
-                outlineColor: "transparent",
-                background: "transparent",
-              }}
-              name="priority"
-              onChange={(e) => {
-                setPriority(e.target.value);
-              }}
-            >
-              <option value="All"> ALL</option>
-              <option value="High">High</option>
-              <option value="Medium">Medium</option>
-              <option value="Low">Low</option>
-            </select>
-          </Badge>
-        </Button>
-        <Button variant="link" style={{ color: "black", fontWeight: 400 }}>
-          <Badge>
-            <div>Priority</div>
-          </Badge>
-
-          <Badge>
-            <select
-              className="form-control"
-              style={{
-                fontSize: "small",
-                borderColor: "transparent",
-                outlineColor: "transparent",
-                background: "transparent",
-              }}
-              name="priority"
-              onChange={(e) => {
-                setPriority(e.target.value);
-              }}
-            >
-              <option value="All"> ALL</option>
-              <option value="High">High</option>
-              <option value="Medium">Medium</option>
-              <option value="Low">Low</option>
-            </select>
-          </Badge>
-        </Button>
-                
-        <Button variant="link" style={{ color: "black", fontWeight: 400 }}>
-          <Badge>
-            <div>
-              <FontAwesomeIcon size='sm' icon={['fal', 'eye']} /> Views
-                  </div>
-          </Badge>
-
-          <Badge>
-            <select
-              className="form-control"
-              style={{
-                fontSize: "small",
-                borderColor: "transparent",
-                background: "transparent",
-                outlineColor: "transparent",
-              }}
-              name="priority"
-            >
-              <option value="All"> </option>
-            </select>
-          </Badge>
-        </Button> */}
       </div>
 
       <DragDropContext

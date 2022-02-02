@@ -6,25 +6,23 @@ function Searchbar(props) {
 
     const [key, setKey] = useState("");
 
-    const searchKeyword = () => {
-        let filter = null;
-        filter = [
-            // { field: "name", operator: "contains", value: key },
-            {
-                "logic": "or",
-                "filters": [
-                    { field: "name", operator: "contains", value: key },
-                    { field: "created_by", operator: "contains", value: key },
-                    { field: "date_created", operator: "contains", value: key },
-                    { field: "assignedToName", operator: "contains", value: key }]
-            }
-        ];
-        props.getSearchFilter(filter);
+    const filter = (value) => {
+        setKey(value);
+        if(value.trim().length>0){
+            props.onChildFilter("searchFilter",[
+                {
+                    "logic": "or",
+                    "filters": [
+                        { field: "name", operator: "contains", value },
+                        { field: "created_by", operator: "contains", value },
+                        { field: "date_created", operator: "contains", value },
+                        { field: "assignedToName", operator: "contains", value }]
+                }
+            ])
+        } else {
+            props.onChildFilter("searchFilter",[]) // if search is empty
+        }
     }
-
-    useEffect(() => {
-        searchKeyword();
-    }, []);
 
     return (
         <Form.Row
@@ -40,9 +38,10 @@ function Searchbar(props) {
                         type="text"
                         value={key}
                         placeholder="Search here.."
-                        onChange={e => setKey(e.target.value)}
+                        onChange={e => { filter(e.target.value) }}
                     />
-                    <Button onClick={() => { searchKeyword() }} variant="primary" size="sm">
+                    
+                    <Button variant="primary" size="sm" onClick={props.setFilterFromProps}>
                         <FontAwesomeIcon icon={['fal', 'search']} />
                     </Button>
                 </InputGroup>
