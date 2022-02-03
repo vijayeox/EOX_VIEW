@@ -6,7 +6,7 @@ import "./WorkGroup.scss";
 import Requests from "../../Requests";
 import DateRangePickerCustom from "./DateRangePickerCustom";
 import Searchbar from './Searchbar';
-import AssignedTo from "./AssignedTo";
+// import AssignedTo from "./AssignedTo";
 // import StatusCard from "./ColumnCounts";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
