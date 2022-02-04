@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useMemo, useReducer, useRef, useState } from "react";
 import "./Styles/commentsView.scss";
 import defaultStyle from "./Styles/defaultMentionsStyle.js";
 import { MentionsInput, Mention } from "react-mentions";
@@ -13,6 +13,7 @@ import { Picker } from "emoji-mart";
 import "emoji-mart/css/emoji-mart.css";
 import ActivityLog from "./ActivityLog";
 class CommentsView extends React.Component {
+  static emojiToggleCallback;
   constructor(props) {
     super(props);
     this.core = this.props.core;
@@ -76,11 +77,12 @@ class CommentsView extends React.Component {
   togglePicker(e) {
     try {
       if (e?.path?.find((p) => p?.id === "toggleEmojiButton")) return;
-      if (this.state.showEmojiPicker) {
-        this.setState({
-          showEmojiPicker: e?.path?.find((p) => p?.id === "emoji-list"),
-        });
-      }
+      CommentsView.emojiToggleCallback?.(e?.path?.find((p) => p?.id === "emoji-list"))
+      // if (this.state.showEmojiPicker) {
+      //   this.setState({
+      //     showEmojiPicker: e?.path?.find((p) => p?.id === "emoji-list"),
+      //   });
+      // }
     } catch (err) {
       console.error(`togglePicker ${e}`);
     }
@@ -97,7 +99,7 @@ class CommentsView extends React.Component {
     let helper = this.core.make("oxzion/restClient");
     let fileContent = await helper.request(
       "v1",
-      "file/" + this.state.fileId + "/comment",
+      "file/" + this.state.fileId + "/getParentCommentslist",
       {},
       "get"
     );
@@ -180,6 +182,11 @@ class CommentsView extends React.Component {
       if (response.status == "success") {
         this.setState({
           commentsList: response.data ? this.processResponse(response) : {},
+          dataReady: true,
+        });
+      }else{
+        this.setState({
+          commentsList: {},
           dataReady: true,
         });
       }
@@ -414,9 +421,9 @@ class CommentsView extends React.Component {
     return parsedData;
   }
 
-  saveComment(stepBack) {
+  saveComment(stepBack, comment) {
     this.loader.show();
-    this.saveComments({ text: this.state.value }).then(() => {
+    this.saveComments({ text: comment || this.state.value }).then(() => {
       this.setState({ mentionData: {}, value: "" });
       this.fetchCommentData();
     });
@@ -519,161 +526,17 @@ class CommentsView extends React.Component {
                 onHide={() => this.setModalShow(false, null)}
                 imageDetails={this.state.imageDetails}
               />
+              {this.state.commentsList?.length > 0 &&
               <div id="chat-container">
-                <ul id="emoji-list">
-                  {this.state.showEmojiPicker ? (
-                    <Picker onSelect={this.addEmoji} />
-                  ) : null}
-                </ul>
                 <div id="chat-message-list" key={this.state.fileId}>
                   <CommentList
                     comments={this.state.commentsList}
                     core={this.core}
+                    fileId={this.state.fileId}
                   />
-                  {/* {this.state.commentsList &&
-                    this.state.commentsList.length > 0 &&
-                    this.state.commentsList.reverse().map((commentItem) => {
-                      commentItem.text = this.bubbleEmoticonCheck(
-                        commentItem.text
-                      );
-                      var image =
-                        this.core.config("wrapper.url") +
-                        "user/profile/" +
-                        commentItem.user_id;
-                      return (
-                        <div className="msg right-msg">
-                          <div className="msg-bubble">
-                            <div
-                              className="msg-img"
-                              style={{
-                                backgroundImage: `url(${image})`,
-                                backgroundSize: "contain",
-                              }}
-                            ></div>
-                            <div className="msg-info">
-                              <div className="msg-info-extra">
-                                <div className="msg-info-name">
-                                  {commentItem.name}
-                                </div>
-                                <div
-                                  className="msg-text"
-                                  dangerouslySetInnerHTML={{
-                                    __html: commentItem.text,
-                                  }}
-                                ></div>
-                                <div className="msg-info-time">
-                                  {moment
-                                    .utc(
-                                      commentItem.time,
-                                      "YYYY-MM-DD HH:mm:ss"
-                                    )
-                                    .clone()
-                                    .tz(this.userTimezone)
-                                    .format(
-                                      this.userDateFormat + " - HH:mm:ss"
-                                    )}
-                                </div>
-                              </div>
-                            </div>
-                            {commentItem.fileName &&
-                              commentItem.fileName.map((fileName, index) => {
-                                return (
-                                  <CommentsAttachments
-                                    config={this.core.configuration}
-                                    restClient={this.core.make(
-                                      "oxzion/restClient"
-                                    )}
-                                    commentData={commentItem}
-                                    fileName={fileName}
-                                    index={index}
-                                  />
-                                );
-                              })}
-                          </div>
-                        </div>
-                      );
-                    })} */}
                 </div>
-              </div>
-              <div className="msger-inputarea">
-                <h4>Add a new comment</h4>
-                <div className="flexCol commentBox">
-                  <MentionsInput
-                    value={this.state.value}
-                    onChange={this.handleChange}
-                    markup="@{{__type__||__id__||__display__}}"
-                    placeholder="Type a comment here..."
-                    className="mentions"
-                    style={defaultStyle}
-                    allowSpaceInQuery={true}
-                    rows={10}
-                  >
-                    <Mention
-                      trigger={RegExp("(?:^|\\s)(@*([^@]*))$")}
-                      markup="@[__display__](user:__name__)"
-                      displayTransform={(id, username) => `@${username}` + " "}
-                      renderSuggestion={(
-                        suggestion,
-                        search,
-                        highlightedDisplay,
-                        index,
-                        focused
-                      ) => (
-                        <div className={`user ${focused ? "focused" : ""}`}>
-                          @{suggestion.display} - ({suggestion.name})
-                        </div>
-                      )}
-                      data={this.getUserData}
-                      className="mentions__mention"
-                      style={{ backgroundColor: "#cee4e5" }}
-                    />
-                    <Mention
-                      trigger=":"
-                      renderSuggestion={(
-                        suggestion,
-                        search,
-                        highlightedDisplay,
-                        index,
-                        focused
-                      ) => (
-                        <div className={`user ${focused ? "focused" : ""}`}>
-                          {suggestion.id} {suggestion.name}
-                        </div>
-                      )}
-                      data={this.queryEmojis}
-                      className="mentions__mention"
-                      style={{ backgroundColor: "#cee4e5" }}
-                    />
-                  </MentionsInput>
-                </div>
-                <div className="dash-manager-buttons">
-                  <div className="submissions">
-                    <button
-                      primary={true}
-                      disabled={this.state.value.length == 0 ? true : false}
-                      onClick={() => {
-                        this.emojiCheck();
-                        this.saveComment();
-                      }}
-                      className="post-comment"
-                    >
-                      Post Comment
-                    </button>
-                    <button
-                      className="k-button k-primary btn btn-primary"
-                      type="button"
-                      onClick={this.toggleEmojiPicker}
-                      id="toggleEmojiButton"
-                    >
-                      {/* <Smile /> */}
-                      <i class="fad fa-grin"></i>
-                    </button>
-                  </div>
-                  <div style={{ padding: "5px", fontSize: "12px" }}>
-                    {this.state.value.length + "/1000"}
-                  </div>
-                </div>
-              </div>
+              </div>}
+             <ReplyTextArea saveComment={this.saveComment.bind(this)} core={this.core} />
             </div>
           )}
         </div>
@@ -686,7 +549,225 @@ class CommentsView extends React.Component {
 
 export default CommentsView;
 
-function CommentList({ comments, core }) {
+function ReplyTextArea({header, saveComment, core}){
+  const emojiId = useMemo(() => `${Math.random()}`,[])
+  function stateReducer(toggle, data){
+    return {...toggle, ...data} 
+  }
+  const [state, setState] = useReducer(stateReducer,{
+    showEmojiPicker: null,
+    entityConfig: null,
+    commentsList: {},
+    entityId: null,
+    mentionData: [],
+    value: "",
+    userList: [],
+    emojis: [],
+    showModal: false,
+    imageDetails: {},
+    showAuditLog: false, 
+  })
+  useEffect(() => {
+    CommentsView.emojiToggleCallback = (showEmojiPicker) => setState({showEmojiPicker})
+  },[])
+  const getUserData = (query, callback) => {
+    query &&
+      getData("users/list", query).then((response) => {
+        var tempUsers = response.data.map((user) => ({
+          display: user.username,
+          id: user.uuid,
+          name: user.name,
+        }));
+        setState({ userList: tempUsers }, callback(tempUsers));
+      });
+  };
+  async function getData(api, term) {
+    if (term) {
+      var query = {
+        filter: {
+          logic: "and",
+          filters: [{ field: "username", operator: "contains", value: term }],
+        },
+        skip: 0,
+        take: 10,
+      };
+    } else {
+      var query = { skip: 0, take: 20 };
+    }
+    let helper = core.make("oxzion/restClient");
+    let response = await helper.request(
+      "v1",
+      "/" + api + "?" + "filter=[" + JSON.stringify(query) + "]",
+      {},
+      "get"
+    );
+    return response;
+  }
+  function handleChange (event, newValue, newPlainTextValue, mentions) {
+    if (newValue.length < 1000) {
+      setState({
+        value: newPlainTextValue,
+        mentionData: { newValue, newPlainTextValue, mentions },
+      });
+    }
+  };
+  function emojiUnicode(emoji) {
+    if (emoji.length >= 1) {
+      const pairs = [];
+      for (var i = 0; i < emoji.length; i++) {
+        if (emoji.charCodeAt(i) >= 0xd800 && emoji.charCodeAt(i) <= 0xdbff) {
+          if (
+            emoji.charCodeAt(i + 1) >= 0xdc00 &&
+            emoji.charCodeAt(i + 1) <= 0xdfff
+          ) {
+            pairs.push(
+              (emoji.charCodeAt(i) - 0xd800) * 0x400 +
+                (emoji.charCodeAt(i + 1) - 0xdc00) +
+                0x10000
+            );
+          }
+        } else if (
+          emoji.charCodeAt(i) < 0xd800 ||
+          emoji.charCodeAt(i) > 0xdfff
+        ) {
+          pairs.push(emoji.charCodeAt(i));
+        }
+      }
+      emoji = "";
+      for (var i = 0; i < pairs.length; i++) {
+        if (pairs[i] == "8205") {
+          emoji += "&zwj;";
+        } else {
+          emoji += "&#" + pairs[i] + ";";
+        }
+      }
+      return emoji;
+    }
+  }
+  function emojiCheck() {
+    var regex =
+      /(?:[\u2700-\u27bf]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff]|[\u0023-\u0039]\ufe0f?\u20e3|\u3299|\u3297|\u303d|\u3030|\u24c2|\ud83c[\udd70-\udd71]|\ud83c[\udd7e-\udd7f]|\ud83c\udd8e|\ud83c[\udd91-\udd9a]|\ud83c[\udde6-\uddff]|\ud83c[\ude01-\ude02]|\ud83c\ude1a|\ud83c\ude2f|\ud83c[\ude32-\ude3a]|\ud83c[\ude50-\ude51]|\u203c|\u2049|[\u25aa-\u25ab]|\u25b6|\u25c0|[\u25fb-\u25fe]|\u00a9|\u00ae|\u2122|\u2139|\ud83c\udc04|[\u2600-\u26FF]|\u2b05|\u2b06|\u2b07|\u2b1b|\u2b1c|\u2b50|\u2b55|\u231a|\u231b|\u2328|\u23cf|[\u23e9-\u23f3]|[\u23f8-\u23fa]|\ud83c\udccf|\u2934|\u2935|[\u2190-\u21ff]|[\u200D])/g;
+    var input = state.value;
+    var matched = String(input).match(regex);
+    if (matched) {
+      for (var i = 0; i < matched.length; i++) {
+        var j = emojiUnicode(matched[i]);
+        input = input.replace(matched[i], j);
+      }
+      state.value = input;
+    }
+  }
+  function toggleEmojiPicker() {
+    setState({ showEmojiPicker: !state.showEmojiPicker });
+  }
+  function queryEmojis (query, callback) {
+    if (query.length < 2) return;
+
+    const emojiObject = state.emojis;
+    const matches = emojiObject.emojis.filter((emoji) => {
+      return emoji.shortname.toLowerCase().indexOf(query.toLowerCase()) > -1;
+    });
+    return matches.map((emoji) => ({
+      id: emoji.emoji,
+      name: emoji.shortname,
+    }));
+  }
+  function addEmoji (emoji) {
+    const { newMessage } = state;
+    const text = `${newMessage}${emoji.native}`;
+    state.value = state.value + emoji.native;
+    setState({
+      newMessage: text,
+      showEmojiPicker: false,
+    });
+  }
+  return <> <div className="msger-inputarea">
+    <h4>{header || 'Add a new comment'}</h4>
+    <div className="flexCol commentBox">
+      <MentionsInput
+        value={state.value}
+        onChange={handleChange}
+        markup="@{{__type__||__id__||__display__}}"
+        placeholder="Type a comment here..."
+        className="mentions"
+        style={defaultStyle}
+        allowSpaceInQuery={true}
+        rows={10}
+      >
+        <Mention
+          trigger={RegExp("(?:^|\\s)(@*([^@]*))$")}
+          markup="@[__display__](user:__name__)"
+          displayTransform={(id, username) => `@${username}` + " "}
+          renderSuggestion={(
+            suggestion,
+            search,
+            highlightedDisplay,
+            index,
+            focused
+          ) => (
+            <div className={`user ${focused ? "focused" : ""}`}>
+              @{suggestion.display} - ({suggestion.name})
+            </div>
+          )}
+          data={getUserData}
+          className="mentions__mention"
+          style={{ backgroundColor: "#cee4e5" }}
+        />
+        <Mention
+          trigger=":"
+          renderSuggestion={(
+            suggestion,
+            search,
+            highlightedDisplay,
+            index,
+            focused
+          ) => (
+            <div className={`user ${focused ? "focused" : ""}`}>
+              {suggestion.id} {suggestion.name}
+            </div>
+          )}
+          data={queryEmojis}
+          className="mentions__mention"
+          style={{ backgroundColor: "#cee4e5" }}
+        />
+      </MentionsInput>
+    </div>
+    <div className="dash-manager-buttons">
+      <div className="submissions">
+        <button
+          primary={true}
+          disabled={state.value.length == 0 ? true : false}
+          onClick={() => {
+            emojiCheck();
+            saveComment(false, state.value);
+            setState({value : ''})
+          }}
+          className="post-comment"
+        >
+          Post Comment
+        </button>
+        <button
+          className="k-button k-primary btn btn-primary"
+          type="button"
+          onClick={toggleEmojiPicker}
+          id="toggleEmojiButton"
+        >
+          {/* <Smile /> */}
+          <i class="fad fa-grin"></i>
+        </button>
+      </div>
+      <div style={{ padding: "5px", fontSize: "12px" }}>
+        {state.value.length + "/1000"}
+      </div>
+    </div>
+  </div>
+  {state.showEmojiPicker && <ul id="emoji-list"><Picker onSelect={addEmoji} /></ul>}</>
+}
+
+function CommentList({ comments, core, fileId, parentId}) {
+  const [viewReply, setViewReply] = useState([]);
+  const [repliesText, setRepliesText] = useState({})
+  const [childComments,setChildComments] = useState(Array(comments.length).fill([]));
   const profileAdapter = core.make("oxzion/profile");
   const profile = profileAdapter.get().key;
   const loader = core.make("oxzion/splash");
@@ -717,12 +798,125 @@ function CommentList({ comments, core }) {
     }
     return input;
   };
-  return (comments || []).reverse().map((commentItem) => {
+  const toggleReplies = (id) => {
+    const viewReplies = viewReply.slice()
+    const idx = viewReply.findIndex(v => v === id);
+    if(idx > -1){
+      viewReplies.splice(idx,1);
+    }else{
+      viewReplies.push(id)
+    }
+    setViewReply(viewReplies)
+  }
+  const toggleReplyText = (id) => {
+    if(!repliesText[id]?.toggle){
+      setRepliesText({[id] :{ toggle : true, value : ''}})
+      return;
+    }
+    setRepliesText({})
+  }
+  /*
+  1
+  1.1 
+  add comment in 1.1 -> 1.1.1
+  reply to 1 -> 1.2
+  refresh 1 children
+  1.2 -> 1.1.1
+  1.1 -> []
+  */
+  useEffect(() => {
+    let helper = core.make("oxzion/restClient");
+     Promise.all(comments.map(async ({comment_id}) => {
+      const response = await helper.request("v1",`file/${fileId}/comment/${comment_id}/getchildlist`, {}, "get");
+      return Promise.resolve(processResponse(response))
+     })).then((childCommentsResponse) => {
+      setChildComments(childCommentsResponse)
+     })   
+  },[])
+  function formatFormData(data) {
+    var parsedData = [];
+    for (var i = 0; i < data.length; i++) {
+      try {
+        parsedData[i] = data[i];
+        parsedData[i]["text"] =
+          typeof data[i]["text"] === "string"
+            ? JSON.parse(data[i]["text"])
+            : data[i]["text"] == undefined || data[i]["text"] == null
+            ? ""
+            : data[i]["text"];
+        if (
+          parsedData[i]["text"] == "" &&
+          data[i]["text"] &&
+          parsedData[key]["text"] != data[i]["text"]
+        ) {
+          parsedData[i]["text"] = data[i]["text"];
+        }
+        if (parsedData[key] == "[]" && data[i]["text"]) {
+          parsedData[i]["text"] = [];
+        }
+      } catch (error) {
+        if (data[i]["text"] != undefined) {
+          parsedData[i]["text"] = data[i]["text"];
+        }
+      }
+    }
+    return parsedData;
+  }
+  function processResponse(response) {
+    let res = {};
+    let data = [],
+      fileName = [];
+    if (response.data.length > 0) {
+      response.data.map((i, index) => {
+        data.push({
+          id: `${Math.random()}`,
+          text: i.text,
+          name: i.name,
+          time: i.time,
+          user_id: i.userId,
+          comment_id: i.commentId,
+        });
+        res["data"] = data;
+        i.attachments &&
+          i.attachments.map((j) => {
+            fileName.push(j.name);
+            res["data"][index]["fileName"] = fileName;
+          });
+        fileName = [];
+      });
+      return formatFormData(res["data"]);
+    } else {
+      return [];
+    }
+  }
+  async function replyToComment(comment, item){
+    const loader = core.make("oxzion/splash")
+    try{
+      loader.show()
+      const cloneChildComments = [...childComments];
+      let helper = core.make("oxzion/restClient");
+      let {comment_id} = item
+      const index = comments.findIndex(v => v.comment_id === comment_id);
+      if(index > -1){
+        await helper.request("v1",`file/${fileId}/comment`, { text : comment, parent: comments[index].comment_id }, "post")
+        const response = await helper.request("v1",`file/${fileId}/comment/${comments[index].comment_id}/getchildlist`, {}, "get");
+        cloneChildComments[index] = processResponse(response);
+        setChildComments(cloneChildComments)
+      }
+      // setRepliesText({})
+      loader.destroy()
+    }catch(e){
+      loader.destroy()
+    }
+  }
+  return (comments || []).slice(0).map((commentItem, commentIdx) => {
+    const uniqueId = commentItem.comment_id;
+    const isRepliesExpanded = viewReply.includes(uniqueId);
     commentItem.text = bubbleEmoticonCheck(commentItem.text);
-    var image =
-      core.config("wrapper.url") + "user/profile/" + commentItem.user_id;
+    const isReplyText = repliesText[uniqueId]?.toggle;
+    var image = core.config("wrapper.url") + "user/profile/" + commentItem.user_id;
     return (
-      <div className="msg right-msg">
+      <div className="msg right-msg" key={uniqueId}>
         <div className="msg-bubble">
           <div
             className="msg-img"
@@ -740,27 +934,47 @@ function CommentList({ comments, core }) {
                   __html: commentItem.text,
                 }}
               ></div>
-              <div className="msg-info-time">
-                {moment
-                  .utc(commentItem.time, "YYYY-MM-DD HH:mm:ss")
-                  .clone()
-                  .tz(userTimezone)
-                  .format(userDateFormat + " - HH:mm:ss")}
+              <div className="display-flex flex-col gap-5">
+                <div className="msg-info-time display-flex gap-5">
+                  <div onClick={() => toggleReplyText(uniqueId)}>Reply</div>
+                  {moment
+                    .utc(commentItem.time, "YYYY-MM-DD HH:mm:ss")
+                    .clone()
+                    .tz(userTimezone)
+                    .format(`LLL`)}
+                </div>
+                {
+                  isReplyText && <div className="reply-comment">
+                    <ReplyTextArea saveComment={(_, comment) => replyToComment(comment, commentItem)} core={core} />
+                  </div>
+                }
+                {commentItem.fileName &&
+                  commentItem.fileName.map((fileName, index) => {
+                    return (
+                      <CommentsAttachments
+                        config={core.configuration}
+                        restClient={core.make("oxzion/restClient")}
+                        commentData={commentItem}
+                        fileName={fileName}
+                        index={index}
+                      />
+                    );
+                  })}
               </div>
+              {
+                childComments[commentIdx]?.length > 0 && 
+                <div className="comment-replies display-flex flex-col">
+                <div className="reply-toggle gap-5" onClick={() => toggleReplies(uniqueId)}>
+                  <div className="display-flex gap-5" >
+                    <i class={"fas fa-arrow-circle-"+(isRepliesExpanded && 'down' || 'right')}></i> 
+                    <div>{isRepliesExpanded && 'Hide' || 'View'} {!isRepliesExpanded && childComments[commentIdx].length} Replies</div>
+                  </div>
+                </div>
+                    { isRepliesExpanded &&  <CommentList comments={childComments[commentIdx]} core={core} fileId={fileId} parentId={uniqueId}/> }
+                </div>
+              }
             </div>
           </div>
-          {commentItem.fileName &&
-            commentItem.fileName.map((fileName, index) => {
-              return (
-                <CommentsAttachments
-                  config={core.configuration}
-                  restClient={core.make("oxzion/restClient")}
-                  commentData={commentItem}
-                  fileName={fileName}
-                  index={index}
-                />
-              );
-            })}
         </div>
       </div>
     );
