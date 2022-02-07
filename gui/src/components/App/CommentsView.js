@@ -1,17 +1,16 @@
-import React, { useEffect, useMemo, useReducer, useRef, useState } from "react";
-import "./Styles/commentsView.scss";
-import defaultStyle from "./Styles/defaultMentionsStyle.js";
-import { MentionsInput, Mention } from "react-mentions";
-import Swal from "sweetalert2";
 import { Button } from "@progress/kendo-react-buttons";
-import moment from "moment";
-import emojisData from "./Emoji.json";
-import FileAttachment from "./FileAttachment";
-import CommentsAttachments from "./CommentsAttachments";
-import { Smile } from "react-feather";
 import { Picker } from "emoji-mart";
 import "emoji-mart/css/emoji-mart.css";
+import moment from "moment";
+import React, { useEffect, useMemo, useReducer, useState } from "react";
+import { Mention, MentionsInput } from "react-mentions";
+import Swal from "sweetalert2";
 import ActivityLog from "./ActivityLog";
+import CommentsAttachments from "./CommentsAttachments";
+import emojisData from "./Emoji.json";
+import FileAttachment from "./FileAttachment";
+import "./Styles/commentsView.scss";
+import defaultStyle from "./Styles/defaultMentionsStyle.js";
 class CommentsView extends React.Component {
   static emojiToggleCallback;
   constructor(props) {
