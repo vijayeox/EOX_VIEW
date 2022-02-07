@@ -67,11 +67,16 @@ export default function WorkItem(props) {
                       |
                       <small><strong> Assigned To:</strong> {CardInfo.assignedToName}</small>
                       <br />
-                      {CardInfo.status === "Completed" ?
+                      <small><strong> Start:</strong> {CardInfo.start_date}</small> | 
+                      <small><strong> End:</strong> {CardInfo.end_date}</small> |
+                      <small><strong> Due:</strong> {CardInfo.next_action_date}</small>
+                      {/* {CardInfo.status === "Completed" ?
                         <small><strong> Due:</strong> - </small>
                         :
-                        <small><strong> Due:</strong> {CardInfo.date_created.substring(0, 10)}</small>
-                      }
+                        <small><strong> Due:</strong> {CardInfo.date_created.substring(0, 10)}</small> | 
+                        <small><strong> Start:</strong> {CardInfo.start_date}</small> | 
+                        <small><strong> End:</strong> {CardInfo.end_date}</small>
+                      } */}
                     </label>
                   </label>
                   {/* <FontAwesomeIcon

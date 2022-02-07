@@ -19,7 +19,6 @@ export default function Board(props) {
   const [priority, setPriority] = useState("All");
   const [Filter, setFilter] = useState([]);
   const [childFilter, setChildFilter] = useState({})
-  var tempArray = [];
 
   const onDragEnd = (result, setRefresh, setReload, props) => {
     if (!result.destination) return;
@@ -66,7 +65,7 @@ export default function Board(props) {
   }, [Refresh]);
 
   const filterMaker = (status) => {
-    tempArray = [];
+    let tempArray = [];
     tempArray.push({ field: "status", operator: "eq", value: status }); // if status = all, call 4 api
     if (Filter.length > 0) {
       tempArray = tempArray.concat(Filter);
@@ -80,6 +79,7 @@ export default function Board(props) {
 
   // DateRangePickerCustom - onDateRange, Search
   const setFilterFromProps = (filterFromProps) => {
+    // , ...(childFilter.assignedToFilter || []) <- add this for AssignedTO
     const newFilter = [...(childFilter.dateFilter || []), ...(childFilter.searchFilter || [])]
     setFilter(newFilter);
   };
@@ -94,7 +94,7 @@ export default function Board(props) {
           </Badge>
 
           {/* <Badge>
-            <AssignedTo getAssignedToFilter={setFilterFromProps} core={props.core}/>
+            <AssignedTo core={props.core} setFilterFromProps={setFilterFromProps} onChildFilter={onFilterUpdate} />
           </Badge> */}
 
           {/* <Button variant="link"
@@ -132,7 +132,7 @@ export default function Board(props) {
         </div>
         <div style={{ display: "flex", alignItems: "center", marginLeft: "auto" }}>
           <Badge>
-            <Searchbar setFilterFromProps={setFilterFromProps} core={props.core} onChildFilter={onFilterUpdate}/>
+            <Searchbar setFilterFromProps={setFilterFromProps} onChildFilter={onFilterUpdate}/>
           </Badge>
         </div>
       </div>

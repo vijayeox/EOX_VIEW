@@ -28,7 +28,7 @@ const DateRangePickerCustom = (props) => {
       const month = date.getMonth();
       const year = date.getFullYear();
       return (new Date(year, month, day));
-    } else {
+    } else if (valueSelected === "YTD") {
       const day = 1;
       const month = 0;
       const year = date.getFullYear();
@@ -57,56 +57,6 @@ const DateRangePickerCustom = (props) => {
         break;
     }
   }
-
-  // When Submit is clicked
-  const buttonClick = () => {
-    let filter = null;
-    let mindatevalue = Moment(startDate).format("YYYY-MM-DD")
-    let maxdatevalue = Moment(endDate).format("YYYY-MM-DD")
-
-    switch (selectedValue) {
-      case "Between":
-        filter = [
-          { field: "start_date", operator: "gte", value: mindatevalue },
-          { field: "end_date", operator: "lte", value: maxdatevalue },
-        ]
-        break;
-
-      case "LTE":
-        filter = [
-          { field: "end_date", operator: "lte", value: maxdatevalue },
-        ]
-        break;
-
-      case "GTE":
-        filter = [
-          { field: "end_date", operator: "gte", value: maxdatevalue },
-        ]
-        break;
-
-      case "MTD":
-        filter = [
-          { field: "start_date", operator: "gte", value: mindatevalue },
-          { field: "end_date", operator: "lte", value: maxdatevalue },
-        ]
-        break;
-
-      case "YTD":
-        filter = [
-          { field: "start_date", operator: "gte", value: mindatevalue },
-          { field: "end_date", operator: "lte", value: maxdatevalue },
-        ]
-        break;
-
-      case "Today":
-        filter = [
-          { field: "end_date", operator: "eq", value: maxdatevalue },
-        ]
-        break;
-
-    }
-    props.onDateRange(filter);
-  };
 
   const updateFilter = () => {
     let filter = null;
@@ -162,8 +112,12 @@ const DateRangePickerCustom = (props) => {
       setReady(1);
       return;
     }
-    updateFilter()
+    updateFilter();
   }, [startDate, endDate]);
+
+  useEffect(() => {
+    onValueChange();
+  }, [selectedValue]);
 
   return (
     <Dropdown
@@ -202,7 +156,7 @@ const DateRangePickerCustom = (props) => {
           <div className="dashboard-filter-field" id="" style={{ minWidth: "auto" }}>
             <Form.Group className="dashboard-filter-field">
               <Form.Label>Date</Form.Label>
-              <Form.Control className="dashboardTextField field-width-150" as="select" name="date" onChange={(e) => { setSelectedValue(e.target.value); onValueChange(); }} required>
+              <Form.Control className="dashboardTextField field-width-150" as="select" name="date" onChange={(e) => setSelectedValue(e.target.value)} required>
                 {
                   Object.keys(dateFilter).map((item, index) => {
                     return (<option key={index} value={item}>{item}</option>)
@@ -216,6 +170,7 @@ const DateRangePickerCustom = (props) => {
 
             <div className="dashboard-filter-field" id="" style={{ minWidth: "auto" }}>
               <Form.Group className="dashboard-filter-field">
+              <Form.Label><small>Date</small> </Form.Label>
                 <DatePicker className="dashboardTextField"
                   showMonthDropdown
                   showYearDropdown
@@ -229,6 +184,7 @@ const DateRangePickerCustom = (props) => {
             <div className="dates-container">
               <div className="dashboard-filter-field" id="" style={{ minWidth: "auto" }}>
                 <Form.Group className="dashboard-filter-field">
+                  <Form.Label><small>Start Date </small></Form.Label>
                   <DatePicker className="dashboardTextField"
                     showMonthDropdown
                     showYearDropdown
@@ -238,6 +194,7 @@ const DateRangePickerCustom = (props) => {
               </div>
               <div className="dashboard-filter-field" id="" style={{ minWidth: "auto" }}>
                 <Form.Group className="dashboard-filter-field">
+                <Form.Label><small>End Date</small> </Form.Label>
                   <DatePicker className="dashboardTextField"
                     showMonthDropdown
                     showYearDropdown

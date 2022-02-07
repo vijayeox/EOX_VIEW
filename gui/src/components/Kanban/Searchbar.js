@@ -16,7 +16,8 @@ function Searchbar(props) {
                         { field: "name", operator: "contains", value },
                         { field: "created_by", operator: "contains", value },
                         { field: "date_created", operator: "contains", value },
-                        { field: "assignedToName", operator: "contains", value }]
+                        { field: "assignedToName", operator: "contains", value } // comment this when AssignedTo filter is functional
+                    ]
                 }
             ])
         } else {
