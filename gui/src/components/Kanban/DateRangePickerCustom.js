@@ -170,7 +170,7 @@ const DateRangePickerCustom = (props) => {
 
             <div className="dashboard-filter-field" id="" style={{ minWidth: "auto" }}>
               <Form.Group className="dashboard-filter-field">
-              <Form.Label><small>Date</small> </Form.Label>
+              <Form.Label class="mr-1"><small>Date</small></Form.Label>
                 <DatePicker className="dashboardTextField"
                   showMonthDropdown
                   showYearDropdown
@@ -184,7 +184,7 @@ const DateRangePickerCustom = (props) => {
             <div className="dates-container">
               <div className="dashboard-filter-field" id="" style={{ minWidth: "auto" }}>
                 <Form.Group className="dashboard-filter-field">
-                  <Form.Label><small>Start Date </small></Form.Label>
+                  <Form.Label class="mr-1"><small>Start Date</small></Form.Label>
                   <DatePicker className="dashboardTextField"
                     showMonthDropdown
                     showYearDropdown
@@ -194,7 +194,7 @@ const DateRangePickerCustom = (props) => {
               </div>
               <div className="dashboard-filter-field" id="" style={{ minWidth: "auto" }}>
                 <Form.Group className="dashboard-filter-field">
-                <Form.Label><small>End Date</small> </Form.Label>
+                <Form.Label class="mr-1"><small>End Date</small></Form.Label>
                   <DatePicker className="dashboardTextField"
                     showMonthDropdown
                     showYearDropdown
