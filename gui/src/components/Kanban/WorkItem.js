@@ -17,10 +17,11 @@ const dateConvert = date => {
 
 export default function WorkItem(props) {
   const CardInfo = props.cardInfo;
+  const cardParameters = JSON.parse(props.ymlData.cardParameters);
   return (
     <Draggable
-      key={CardInfo.myId}
-      draggableId={CardInfo.uuid}
+      key={CardInfo[cardParameters.myId]}
+      draggableId={CardInfo[cardParameters.uuid]}
       index={props.index}
     >
       {(provided, snapshot) => {
@@ -58,16 +59,16 @@ export default function WorkItem(props) {
                     }}
                     className="img k_img"
                   />
-                   <a eoxapplication="TaskApp1" file-id={CardInfo.uuid} className="k_taskcard-p">{CardInfo.name}</a>
+                   <a eoxapplication="TaskApp1" file-id={CardInfo[cardParameters.uuid]} className="k_taskcard-p">{CardInfo[cardParameters.title]}</a>
                 </div>
                 <div className="mt-0 mb-0">
                   <label className="k_taskcard-label mt-0 mb-0">
                     <label className="k_taskcard-sublabel">
-                      <small><strong>Created By:</strong> {CardInfo.created_by + " "}</small> |
-                      <small><strong> Assigned To:</strong> {CardInfo.assignedToName}</small>
+                      <small><strong>{cardParameters.user1} :</strong>{CardInfo[cardParameters.user1] + " "}</small> |
+                      <small><strong> {cardParameters.user2} :</strong> {CardInfo[cardParameters.user2]}</small>
                       <br />
-                      <small><strong> Start:</strong> {CardInfo.start_date}</small> | 
-                      <small><strong> End:</strong> {CardInfo.end_date}</small>
+                      <small><strong> {cardParameters.start} :</strong> {CardInfo[cardParameters.start]}</small> | 
+                      <small><strong> {cardParameters.end}:</strong> {CardInfo[cardParameters.end]}</small>
                     </label>
                   </label>
                   {/* <FontAwesomeIcon

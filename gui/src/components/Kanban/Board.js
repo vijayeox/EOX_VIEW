@@ -6,7 +6,7 @@ import "./WorkGroup.scss";
 import Requests from "../../Requests";
 import DateRangePickerCustom from "./DateRangePickerCustom";
 import Searchbar from './Searchbar';
-// import AssignedTo from "./AssignedTo";
+import AssignedTo from "./AssignedTo";
 // import StatusCard from "./ColumnCounts";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -44,23 +44,12 @@ export default function Board(props) {
 
   useEffect(() => {
     if (Refresh) {
-      let url = "/app/" + props.appId + "/field/b0fd5ad1-607b-11eb-a441-06a328860aa2"
-      Requests.doRestRequest(
-        props.core,
-        url,
-        {},
-        'get',
-        function (response) {
-          var tempField;
-          tempField = JSON.parse(response.options);
-          setFieldset([]);
-          setFields(tempField.values);
-          setFieldset(tempField.values);
-          setRefresh(false);
-        },
-        function (error) {
-          console.log("error " + error)
-        });
+      var tempField;
+      tempField = JSON.parse(props.options);
+      setFieldset([]);
+      setFields(tempField.values);
+      setFieldset(tempField.values);
+      setRefresh(false);
     }
   }, [Refresh]);
 
@@ -74,7 +63,7 @@ export default function Board(props) {
   };
 
   const onFilterUpdate = (type, filter) => {
-    setChildFilter({...childFilter, [type] : filter})
+    setChildFilter({ ...childFilter, [type]: filter })
   }
 
   // DateRangePickerCustom - onDateRange, Search
@@ -87,7 +76,7 @@ export default function Board(props) {
   return (
     <Container fluid>
       <div className="expense-item k_expense-item">
-        <div style={{ display: "flex", alignItems: "center" }}>
+        <div style={{ display: "flex" }}>
           {/* Date Filter hidden because it should get populated from Apppbuilder */}
           <Badge>
             <DateRangePickerCustom dateFilter={dateFilter} setFilterFromProps={setFilterFromProps} onChildFilter={onFilterUpdate} />
@@ -132,7 +121,7 @@ export default function Board(props) {
         </div>
         <div style={{ display: "flex", alignItems: "center", marginLeft: "auto" }}>
           <Badge>
-            <Searchbar setFilterFromProps={setFilterFromProps} onChildFilter={onFilterUpdate}/>
+            <Searchbar setFilterFromProps={setFilterFromProps} onChildFilter={onFilterUpdate} />
           </Badge>
         </div>
       </div>
@@ -140,7 +129,7 @@ export default function Board(props) {
       <DragDropContext
         onDragEnd={(result) => onDragEnd(result, setRefresh, setReload, props)}
       >
-        <ListGroup horizontal className="mt-1 mb-1">
+        <ListGroup horizontal className="mt-1 mb-1" style={{overflowY:"auto"}}>
           {fieldset.map((dataItem, index) => {
             return (
               <Work
@@ -148,9 +137,12 @@ export default function Board(props) {
                 appId={props.appId}
                 info={dataItem}
                 filter={filterMaker(dataItem.value)}
+                url={props.url}
                 index={index}
                 key={index}
                 priority={priority}
+                options={props.options}
+                ymlData={props.ymlData}
               />
             );
           })}

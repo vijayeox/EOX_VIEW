@@ -18,7 +18,7 @@ const DateRangePickerCustom = (props) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [selectedValue, setSelectedValue] = useState("lte"); //get *all* items (i.e. that have dates less than or equal to current date)
   const [ready, setReady] = useState(0);
-  
+
   const toggle = () => setDropdownOpen((prevState) => !prevState);
 
   // Convert selected date to get MTD and YTD values
@@ -108,7 +108,7 @@ const DateRangePickerCustom = (props) => {
   }
 
   useEffect(() => {
-    if(!ready){
+    if (!ready) {
       setReady(1);
       return;
     }
@@ -170,7 +170,7 @@ const DateRangePickerCustom = (props) => {
 
             <div className="dashboard-filter-field" id="" style={{ minWidth: "auto" }}>
               <Form.Group className="dashboard-filter-field">
-              <Form.Label class="mr-1"><small>Date</small></Form.Label>
+                <Form.Label className="mr-1"><small>Date</small></Form.Label>
                 <DatePicker className="dashboardTextField"
                   showMonthDropdown
                   showYearDropdown
@@ -184,7 +184,7 @@ const DateRangePickerCustom = (props) => {
             <div className="dates-container">
               <div className="dashboard-filter-field" id="" style={{ minWidth: "auto" }}>
                 <Form.Group className="dashboard-filter-field">
-                  <Form.Label class="mr-1"><small>Start Date</small></Form.Label>
+                  <Form.Label className="mr-1"><small>From</small></Form.Label>
                   <DatePicker className="dashboardTextField"
                     showMonthDropdown
                     showYearDropdown
@@ -194,7 +194,7 @@ const DateRangePickerCustom = (props) => {
               </div>
               <div className="dashboard-filter-field" id="" style={{ minWidth: "auto" }}>
                 <Form.Group className="dashboard-filter-field">
-                <Form.Label class="mr-1"><small>End Date</small></Form.Label>
+                  <Form.Label className="mr-1"><small>To</small></Form.Label>
                   <DatePicker className="dashboardTextField"
                     showMonthDropdown
                     showYearDropdown
@@ -203,9 +203,8 @@ const DateRangePickerCustom = (props) => {
                 </Form.Group>
               </div>
             </div>
-
           }
-          <div><Button id="k_button" onClick={props.setFilterFromProps}> Submit </Button></div>
+          <div><Button id="k_button" onClick={props.setFilterFromProps} disabled={(startDate > endDate) ? true : false}> Submit </Button></div>
         </div>
       </DropdownMenu>
     </Dropdown>
