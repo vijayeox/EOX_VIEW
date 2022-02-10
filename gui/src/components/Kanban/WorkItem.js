@@ -20,8 +20,8 @@ export default function WorkItem(props) {
   const cardParameters = JSON.parse(props.ymlData.cardParameters);
   return (
     <Draggable
-      key={CardInfo[cardParameters.myId]}
-      draggableId={CardInfo[cardParameters.uuid]}
+      key={CardInfo[cardParameters.myId.name]}
+      draggableId={CardInfo[cardParameters.uuid.name]}
       index={props.index}
     >
       {(provided, snapshot) => {
@@ -59,16 +59,16 @@ export default function WorkItem(props) {
                     }}
                     className="img k_img"
                   />
-                   <a eoxapplication="TaskApp1" file-id={CardInfo[cardParameters.uuid]} className="k_taskcard-p">{CardInfo[cardParameters.title]}</a>
+                   <a eoxapplication="TaskApp1" file-id={CardInfo[cardParameters.uuid.name]} className="k_taskcard-p">{CardInfo[cardParameters.title.name]}</a>
                 </div>
                 <div className="mt-0 mb-0">
                   <label className="k_taskcard-label mt-0 mb-0">
                     <label className="k_taskcard-sublabel">
-                      <small><strong>{cardParameters.user1} :</strong>{CardInfo[cardParameters.user1] + " "}</small> |
-                      <small><strong> {cardParameters.user2} :</strong> {CardInfo[cardParameters.user2]}</small>
+                      <small><strong>{cardParameters.user1.label} :</strong>{CardInfo[cardParameters.user1.name] + " "}</small> |
+                      <small><strong> {cardParameters.user2.label} :</strong> {CardInfo[cardParameters.user2.name]}</small>
                       <br />
-                      <small><strong> {cardParameters.start} :</strong> {CardInfo[cardParameters.start]}</small> | 
-                      <small><strong> {cardParameters.end}:</strong> {CardInfo[cardParameters.end]}</small>
+                      <small><strong> {cardParameters.start.label} :</strong> {CardInfo[cardParameters.start.name]}</small> | 
+                      <small><strong> {cardParameters.end.label}:</strong> {CardInfo[cardParameters.end.name]}</small>
                     </label>
                   </label>
                   {/* <FontAwesomeIcon
