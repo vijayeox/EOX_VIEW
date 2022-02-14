@@ -59,7 +59,9 @@ export default function WorkItem(props) {
                     }}
                     className="img k_img"
                   />
-                   <a eoxapplication="TaskApp1" file-id={CardInfo[cardParameters.uuid.name]} className="k_taskcard-p">{CardInfo[cardParameters.title.name]}</a>
+                  <a eoxapplication={props.ymlData.drilldownAppName} file-id={CardInfo[cardParameters.uuid.name]} className="k_taskcard-p">
+                    {CardInfo[cardParameters.title.name]}
+                  </a>
                 </div>
                 <div className="mt-0 mb-0">
                   <label className="k_taskcard-label mt-0 mb-0">
@@ -67,7 +69,7 @@ export default function WorkItem(props) {
                       <small><strong>{cardParameters.user1.label} :</strong>{CardInfo[cardParameters.user1.name] + " "}</small> |
                       <small><strong> {cardParameters.user2.label} :</strong> {CardInfo[cardParameters.user2.name]}</small>
                       <br />
-                      <small><strong> {cardParameters.start.label} :</strong> {CardInfo[cardParameters.start.name]}</small> | 
+                      <small><strong> {cardParameters.start.label} :</strong> {CardInfo[cardParameters.start.name]}</small> |
                       <small><strong> {cardParameters.end.label}:</strong> {CardInfo[cardParameters.end.name]}</small>
                     </label>
                   </label>

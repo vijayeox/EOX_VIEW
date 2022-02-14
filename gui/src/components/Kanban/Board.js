@@ -79,11 +79,19 @@ export default function Board(props) {
         <div style={{ display: "flex" }}>
           {/* Date Filter hidden because it should get populated from Apppbuilder */}
           <Badge>
-            <DateRangePickerCustom dateFilter={dateFilter} setFilterFromProps={setFilterFromProps} onChildFilter={onFilterUpdate} />
+            <DateRangePickerCustom
+              dateFilter={dateFilter}
+              setFilterFromProps={setFilterFromProps}
+              onChildFilter={onFilterUpdate}
+              ymlData={props.ymlData} />
           </Badge>
 
           {/* <Badge>
-            <AssignedTo core={props.core} setFilterFromProps={setFilterFromProps} onChildFilter={onFilterUpdate} />
+            <AssignedTo 
+            core={props.core} 
+            setFilterFromProps={setFilterFromProps} 
+            onChildFilter={onFilterUpdate} 
+            ymlData={props.ymlData} />
           </Badge> */}
 
           {/* <Button variant="link"
@@ -119,9 +127,16 @@ export default function Board(props) {
             </Badge>
           </Button> */}
         </div>
-        <div style={{ display: "flex", alignItems: "center", marginLeft: "auto" }}>
+        <div style={{
+          display: "flex",
+          alignItems: "center",
+          marginLeft: "auto"
+        }}>
           <Badge>
-            <Searchbar setFilterFromProps={setFilterFromProps} onChildFilter={onFilterUpdate} />
+            <Searchbar
+              setFilterFromProps={setFilterFromProps}
+              onChildFilter={onFilterUpdate}
+              ymlData={props.ymlData} />
           </Badge>
         </div>
       </div>
@@ -129,7 +144,9 @@ export default function Board(props) {
       <DragDropContext
         onDragEnd={(result) => onDragEnd(result, setRefresh, setReload, props)}
       >
-        <ListGroup horizontal className="mt-1 mb-1" style={{overflowY:"auto"}}>
+        <ListGroup
+          horizontal className="mt-1 mb-1"
+          style={{ overflowY: "auto" }}>
           {fieldset.map((dataItem, index) => {
             return (
               <Work

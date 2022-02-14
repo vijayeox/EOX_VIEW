@@ -12,6 +12,7 @@ import Moment from "moment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const DateRangePickerCustom = (props) => {
+  const cardParameters = JSON.parse(props.ymlData.cardParameters); //start_date, end_date => cardParameters.start.name; cardParameters.end.name
   const dateFilter = props.dateFilter;
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
@@ -66,40 +67,40 @@ const DateRangePickerCustom = (props) => {
     switch (selectedValue) {
       case "Between":
         filter = [
-          { field: "start_date", operator: "gte", value: mindatevalue },
-          { field: "end_date", operator: "lte", value: maxdatevalue },
+          { field: cardParameters.start.name, operator: "gte", value: mindatevalue },
+          { field: cardParameters.end.name, operator: "lte", value: maxdatevalue },
         ]
         break;
 
       case "LTE":
         filter = [
-          { field: "end_date", operator: "lte", value: maxdatevalue },
+          { field: cardParameters.end.name, operator: "lte", value: maxdatevalue },
         ]
         break;
 
       case "GTE":
         filter = [
-          { field: "end_date", operator: "gte", value: maxdatevalue },
+          { field: cardParameters.end.name, operator: "gte", value: maxdatevalue },
         ]
         break;
 
       case "MTD":
         filter = [
-          { field: "start_date", operator: "gte", value: mindatevalue },
-          { field: "end_date", operator: "lte", value: maxdatevalue },
+          { field: cardParameters.start.name, operator: "gte", value: mindatevalue },
+          { field: cardParameters.end.name, operator: "lte", value: maxdatevalue },
         ]
         break;
 
       case "YTD":
         filter = [
-          { field: "start_date", operator: "gte", value: mindatevalue },
-          { field: "end_date", operator: "lte", value: maxdatevalue },
+          { field: cardParameters.start.name, operator: "gte", value: mindatevalue },
+          { field: cardParameters.end.name, operator: "lte", value: maxdatevalue },
         ]
         break;
 
       case "Today":
         filter = [
-          { field: "end_date", operator: "eq", value: maxdatevalue },
+          { field: cardParameters.end.name, operator: "eq", value: maxdatevalue },
         ]
         break;
 
