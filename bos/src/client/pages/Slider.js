@@ -1,7 +1,7 @@
 import React from "react";
 import screenfull from "screenfull";
 import SlidingPanel from "react-sliding-panel";
-import wallpaper from '../assets/images/wallpaper.png'
+import wallpaper from "../assets/images/wallpaper.png";
 
 class Slider extends React.Component {
   constructor(props) {
@@ -15,7 +15,7 @@ class Slider extends React.Component {
       isPanelOpen: false,
       loading: true,
       focusData: [],
-      screen: "true"
+      screen: "true",
     };
     this.refreshAnc = this.refreshAnc.bind(this);
     this.refreshTimer = this.refreshTimer.bind(this);
@@ -23,13 +23,18 @@ class Slider extends React.Component {
     this.goToNextSlide = this.goToNextSlide.bind(this);
   }
 
-render () {
-  return(<div className="col-8">hello</div>);
-}
+  render() {
+    return <div className="col-8">hello</div>;
+  }
   async getAnnouncements() {
     let helper = this.core.make("oxzion/restClient");
     let subdomine = window.location.host;
-    let announ = await helper.request("v1", "/homescreen/announcement/"+subdomine, {}, "get");
+    let announ = await helper.request(
+      "v1",
+      "/homescreen/announcement/" + subdomine,
+      {},
+      "get"
+    );
     return announ;
   }
 
@@ -41,25 +46,26 @@ render () {
       indexCount: 0,
       isPanelOpen: false,
       loading: true,
-      focusData: []
+      focusData: [],
     });
     this.getAnnouncements().then((response) => {
       let data = response.data;
       let baseUrl = this.core.config("wrapper.url");
-
-      for (let i = 0; i < data.length; i++) {
-        if (data[i].media != null) {
-          data[i].media = baseUrl + "resource/" + data[i].media;
+      if (data && data.length > 0) {
+        for (let i = 0; i < data.length; i++) {
+          if (data[i].media != null) {
+            data[i].media = baseUrl + "resource/" + data[i].media;
+          }
         }
+        this.setState(
+          {
+            announcements: data,
+            indexCount: data.length - 1,
+            loading: false,
+          },
+          () => this.refreshTimer()
+        );
       }
-      this.setState(
-        {
-          announcements: data,
-          indexCount: data.length - 1,
-          loading: false
-        },
-        () => this.refreshTimer()
-      );
     });
   }
 
@@ -84,12 +90,12 @@ render () {
       return this.setState((prevState) => ({
         currentIndex: prevState.indexCount,
         translateValue:
-          prevState.translateValue + -this.slideWidth() * prevState.indexCount
+          prevState.translateValue + -this.slideWidth() * prevState.indexCount,
       }));
     }
     this.setState((prevState) => ({
       currentIndex: prevState.currentIndex - 1,
-      translateValue: prevState.translateValue + this.slideWidth()
+      translateValue: prevState.translateValue + this.slideWidth(),
     }));
   }
 
@@ -97,12 +103,12 @@ render () {
     if (this.state.currentIndex === this.state.announcements.length - 1) {
       return this.setState({
         currentIndex: 0,
-        translateValue: 0
+        translateValue: 0,
       });
     }
     this.setState((prevState) => ({
       currentIndex: prevState.currentIndex + 1,
-      translateValue: prevState.translateValue + -this.slideWidth()
+      translateValue: prevState.translateValue + -this.slideWidth(),
     }));
   }
 
@@ -126,8 +132,7 @@ render () {
                 e.deltaY > 0 ? this.goToNextSlide() : this.goToPrevSlide();
                 this.refreshTimer();
               }
-            }}
-          >
+            }}>
             {isImage ? <Img data={data} /> : <Video data={data} />}
           </div>
           <div className="Announcement-content col">
@@ -137,8 +142,7 @@ render () {
                 style={{ margin: "3.8vh" }}
                 onClick={() => {
                   this.setState({ isPanelOpen: true, focusData: data });
-                }}
-              >
+                }}>
                 READ MORE
               </button>
             ) : null}
@@ -150,8 +154,7 @@ render () {
                 if (screenfull.isEnabled) {
                   screenfull.request(focusElement);
                 }
-              }}
-            >
+              }}>
               FULL SCREEN
             </button>
           </div>
@@ -162,8 +165,7 @@ render () {
         <div className="slide" style={{ margin: 0 }} key={data.uuid}>
           <div
             className="Announcement-visuals col s12"
-            style={{ flexDirection: "column" }}
-          >
+            style={{ flexDirection: "column" }}>
             <div className="fallbackImage">
               <Img data={data} />
             </div>
@@ -181,26 +183,30 @@ render () {
     if (this.state.loading == false) {
       return (
         <>
-          <img src={wallpaper} alt="EOX Vantage" style={{position : 'absolute', width : '100vw', height : '135vh'}}/>
+          <img
+            src={wallpaper}
+            alt="EOX Vantage"
+            style={{ position: "absolute", width: "100vw", height: "135vh" }}
+          />
           <div className="announcement-slider" ref={(ref) => (this.el = ref)}>
             <div
               className="slider-wrapper"
               style={{
                 transform: `translateX(${this.state.translateValue}px)`,
-                transition: "transform ease-out 0.45s"
-              }}
-            >
+                transition: "transform ease-out 0.45s",
+              }}>
               {this.state.announcements.length >= 1
                 ? this.state.announcements.map((announcement, i) =>
                     this.renderCard(announcement, true)
                   )
                 : null}
             </div>
-            {this.state.announcements.length == 0 ? this.state.screen = "false" : this.state.announcements.length > 1 ? (
+            {this.state.announcements.length == 0 ? (
+              (this.state.screen = "false")
+            ) : this.state.announcements.length > 1 ? (
               <div
                 className="arrowWrap"
-                style={{ display: this.state.isPanelOpen ? "none" : "flex" }}
-              >
+                style={{ display: this.state.isPanelOpen ? "none" : "flex" }}>
                 <LeftArrow
                   goToPrevSlide={() => {
                     this.refreshTimer();
@@ -218,8 +224,7 @@ render () {
             <SlidingPanel
               type={"bottom"}
               isOpen={this.state.isPanelOpen}
-              closeFunc={() => this.setState({ isPanelOpen: false })}
-            >
+              closeFunc={() => this.setState({ isPanelOpen: false })}>
               <div className="popup-content">
                 <h6>{this.state.focusData.name}</h6>
                 <p className="mainText">{this.state.focusData.description}</p>
@@ -229,19 +234,17 @@ render () {
                       onClick={() =>
                         window.open(this.state.focusData.link, "_blank")
                       }
-                      className="actionButton popupButtons"
-                    >
+                      className="actionButton popupButtons">
                       VISIT LINK
                     </button>
                   ) : null}
                   <button
                     onClick={() => {
                       this.setState({
-                        isPanelOpen: false
+                        isPanelOpen: false,
                       });
                     }}
-                    className="actionButton popupButtons"
-                  >
+                    className="actionButton popupButtons">
                     CLOSE
                   </button>
                 </div>
@@ -281,8 +284,7 @@ const Video = ({ data }) => {
       preload="none"
       autoPlay={true}
       muted
-      loop
-    >
+      loop>
       <source id="mp4" src={data.media} type="video/mp4" />
       Video goes here
     </video>
