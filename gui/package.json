@@ -74,6 +74,7 @@
         "react-dropdown": "^1.9.2",
         "react-feather": "^2.0.9",
         "react-flippy": "^1.1.0",
+        "react-geocode": "^0.2.3",
         "react-iframe": "^1.8.0",
         "react-jsx-parser": "1.28.4",
         "react-loader-spinner": "^4.0.0",
