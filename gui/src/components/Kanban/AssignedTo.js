@@ -27,7 +27,7 @@ function AssignedTo(props) {
             {},
             'get',
             function (response) {
-                let userObj = Object.values(response).map(({name}) => name);
+                let userObj = Object.values(response).map(({ name }) => name);
                 setusers(userObj);
             },
             function (error) {
@@ -47,7 +47,7 @@ function AssignedTo(props) {
             <Badge>
                 <div>Assigned To</div>
             </Badge>
-            <Badge>
+            <Badge className="inline">
                 <select
                     className="form-control"
                     style={{
@@ -66,6 +66,9 @@ function AssignedTo(props) {
                         return <option key={name} value={name}>{name}</option>;
                     })}
                 </select>
+                <Button variant="primary" size="sm" onClick={props.setFilterFromProps}>
+                    Submit
+                </Button>
             </Badge>
         </Button>
     )

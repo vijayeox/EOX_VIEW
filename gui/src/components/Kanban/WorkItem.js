@@ -17,10 +17,11 @@ const dateConvert = date => {
 
 export default function WorkItem(props) {
   const CardInfo = props.cardInfo;
+  const cardParameters = JSON.parse(props.ymlData.cardParameters);
   return (
     <Draggable
-      key={CardInfo.myId}
-      draggableId={CardInfo.uuid}
+      key={CardInfo[cardParameters.myId.name]}
+      draggableId={CardInfo[cardParameters.uuid.name]}
       index={props.index}
     >
       {(provided, snapshot) => {
@@ -58,20 +59,18 @@ export default function WorkItem(props) {
                     }}
                     className="img k_img"
                   />
-                   <a eoxapplication="TaskApp1" file-id={CardInfo.uuid} className="k_taskcard-p">{CardInfo.name}</a>
+                  <a eoxapplication={props.ymlData.drilldownAppName} file-id={CardInfo[cardParameters.uuid.name]} className="k_taskcard-p">
+                    {CardInfo[cardParameters.title.name]}
+                  </a>
                 </div>
                 <div className="mt-0 mb-0">
                   <label className="k_taskcard-label mt-0 mb-0">
                     <label className="k_taskcard-sublabel">
-                      <small><strong>Created By:</strong> {CardInfo.created_by + " "}</small>
-                      |
-                      <small><strong> Assigned To:</strong> {CardInfo.assignedToName}</small>
+                      <small><strong>{cardParameters.user1.label} :</strong>{CardInfo[cardParameters.user1.name] + " "}</small> |
+                      <small><strong> {cardParameters.user2.label} :</strong> {CardInfo[cardParameters.user2.name]}</small>
                       <br />
-                      {CardInfo.status === "Completed" ?
-                        <small><strong> Due:</strong> - </small>
-                        :
-                        <small><strong> Due:</strong> {CardInfo.date_created.substring(0, 10)}</small>
-                      }
+                      <small><strong> {cardParameters.start.label} :</strong> {CardInfo[cardParameters.start.name]}</small> |
+                      <small><strong> {cardParameters.end.label}:</strong> {CardInfo[cardParameters.end.name]}</small>
                     </label>
                   </label>
                   {/* <FontAwesomeIcon
