@@ -52,6 +52,15 @@ $primary-color: #275362;
   .display-flex {
     display: flex;
   }
+  .flex-col{
+    flex-direction: column;
+  }
+  .gap-5{
+    gap: 5px;
+  }
+  .gap-10{
+    gap: 10px;
+  }
   .task-header-pos-abs {
     position: absolute;
     top: 0;
