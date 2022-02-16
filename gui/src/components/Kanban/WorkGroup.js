@@ -45,7 +45,7 @@ export default function Work(props) {
         setLoading(true)
         setError(false)
 
-        let url = "/app/" + props.appId + "/file/search?filter=" + JSON.stringify(params)
+        let url = props.url + JSON.stringify(params)
         doRestRequestCall(url)
           .then((res) => {
             setList(List => {
@@ -82,7 +82,7 @@ export default function Work(props) {
     setLoading(true)
     setError(false)
 
-    let url = "/app/" + props.appId + "/file/search?filter=" + JSON.stringify(params)
+    let url = props.url + JSON.stringify(params)
     doRestRequestCall(url)
       .then((res) => {
         setList(res.data)
@@ -99,7 +99,8 @@ export default function Work(props) {
     <>
       <ListGroup.Item
         style={{
-          width: "25%",
+          minWidth: "22vw",
+          minHeight: "75vh",
           margin: "0 5px 0 5px",
           padding: "0 5px 0 5px",
         }}>
@@ -143,6 +144,7 @@ export default function Work(props) {
                             <div ref={lastItem}>
                               <Item
                                 cardInfo={listItem}
+                                ymlData={props.ymlData}
                                 index={index}
                                 key={index}
                               />
@@ -152,6 +154,7 @@ export default function Work(props) {
                           return (
                             <Item
                               cardInfo={listItem}
+                              ymlData={props.ymlData}
                               index={index}
                               key={index}
                             />
