@@ -1,10 +1,4 @@
-import {
-  React,
-  FileUploader,
-  Notification,
-  KendoReactWindow,
-  KendoReactInput,
-} from "oxziongui";
+import { React, FileUploader, Notification, KendoReactWindow, KendoReactInput } from "oxziongui";
 // import TextareaAutosize from "react-textarea-autosize";
 import { GetSingleEntityData, PushData } from "../components/apiCalls";
 import { SaveCancel, DropDown } from "../components/index";
@@ -18,20 +12,14 @@ export default class DialogContainer extends React.Component {
       prjInEdit: this.props.dataItem || null,
       managerName: undefined,
       parentProject: this.props.dataItem.parentId,
-      projectFlag: false
+      projectFlag: false,
     };
     this.notif = React.createRef();
   }
 
   UNSAFE_componentWillMount() {
     if (this.props.formAction == "put") {
-      GetSingleEntityData(
-        "account/" +
-          this.props.selectedOrg +
-          "/user/" +
-          this.props.dataItem.managerId +
-          "/profile"
-      ).then((response) => {
+      GetSingleEntityData("account/" + this.props.selectedOrg + "/user/" + this.props.dataItem.managerId + "/profile").then((response) => {
         this.setState({
           managerName: {
             id: "111",
@@ -52,16 +40,16 @@ export default class DialogContainer extends React.Component {
       confirmButtonColor: "#d33",
       showCancelButton: true,
       cancelButtonColor: "#66bb6a",
-      target: ".Window_Admin"
+      target: ".Window_Admin",
     }).then((result) => {
       if (result.value) {
         tempData.reactivate = "1";
-        PushData("project",this.props.formAction,this.state.prjInEdit.uuid,tempData).then((response) => {
+        PushData("project", this.props.formAction, this.state.prjInEdit.uuid, tempData).then((response) => {
           if (response.status == "success") {
             this.props.action(response);
             this.props.cancel();
           } else {
-            this.notif.current.notify("Error",response.message ? response.message : null,"danger");
+            this.notif.current.notify("Error", response.message ? response.message : null, "danger");
           }
         });
       }
@@ -101,34 +89,24 @@ export default class DialogContainer extends React.Component {
 
   sendData = (e) => {
     e.preventDefault();
-    this.notif.current.notify(
-      "Uploading Data",
-      "Please wait for a few seconds.",
-      "default"
-    );
+    this.notif.current.notify("Uploading Data", "Please wait for a few seconds.", "default");
     let tempData = {
       name: this.state.prjInEdit.name,
       description: this.state.prjInEdit.description,
       managerId: this.state.prjInEdit.managerId,
-      parentId: this.state.projectFlag ? null : this.state.prjInEdit.parentId
+      parentId: this.state.projectFlag ? null : this.state.prjInEdit.parentId,
     };
-    PushData(
-      "project",
-      this.props.formAction,
-      this.props.dataItem.uuid,
-      tempData,
-      this.props.selectedOrg
-    ).then((response) => {
+    PushData("project", this.props.formAction, this.props.dataItem.uuid, tempData, this.props.selectedOrg).then((response) => {
       if (response.status == "success") {
         this.props.action(response);
-        this.props.cancel('save');
-      } else if (response.status == 'error' && response.errorCode == 406) {
+        this.props.cancel("save");
+      } else if (response.status == "error" && response.errorCode == 406) {
         this.activateProject(tempData);
       } else {
-        this.notif.current.notify("Error",response.message ? response.message : null,"danger");
+        this.notif.current.notify("Error", response.message ? response.message : null, "danger");
       }
     });
-    this.setState({projectFlag:false});
+    this.setState({ projectFlag: false });
   };
 
   render() {
@@ -136,85 +114,39 @@ export default class DialogContainer extends React.Component {
       <KendoReactWindow.Window onClose={this.props.cancel}>
         <Notification ref={this.notif} />
         <div>
-          <form id="prjForm" onSubmit={this.sendData}>
+          <form id='prjForm' onSubmit={this.sendData}>
             {this.props.diableField ? (
-              <div className="read-only-mode">
+              <div className='read-only-mode'>
                 <h5>(READ ONLY MODE)</h5>
-                <i class="fa fa-lock"></i>
+                <i className='fa fa-lock'></i>
               </div>
             ) : null}
-            <div className="form-group">
-              <label className="required-label">Project Name</label>
-              <KendoReactInput.Input
-                type="text"
-                className="form-control"
-                name="name"
-                maxLength="50"
-                value={this.state.prjInEdit.name || ""}
-                onChange={this.onDialogInputChange}
-                placeholder="Enter Project Name"
-                readOnly={this.props.diableField ? true : false}
-                required={true}
-              />
+            <div className='form-group'>
+              <label className='required-label'>Project Name</label>
+              <KendoReactInput.Input type='text' className='form-control' name='name' maxLength='50' value={this.state.prjInEdit.name || ""} onChange={this.onDialogInputChange} placeholder='Enter Project Name' readOnly={this.props.diableField ? true : false} required={true} />
             </div>
-            <div className="form-group text-area-custom">
-              <label className="required-label">Project Description</label>
-              <textarea
-                type="text"
-                className="form-control"
-                name="description"
-                maxLength="200"
-                value={this.state.prjInEdit.description || ""}
-                onChange={this.onDialogInputChange}
-                placeholder="Enter Project Description"
-                style={{ marginTop: "5px" }}
-                readOnly={this.props.diableField ? true : false}
-                required={true}
-              />
+            <div className='form-group text-area-custom'>
+              <label className='required-label'>Project Description</label>
+              <textarea type='text' className='form-control' name='description' maxLength='200' value={this.state.prjInEdit.description || ""} onChange={this.onDialogInputChange} placeholder='Enter Project Description' style={{ marginTop: "5px" }} readOnly={this.props.diableField ? true : false} required={true} />
             </div>
-            <div className="form-group">
-              <div className="form-row">
-                <div className="col-4">
-                  <label className="required-label">Project Manager</label>
+            <div className='form-group'>
+              <div className='form-row'>
+                <div className='col-4'>
+                  <label className='required-label'>Project Manager</label>
                   <div>
-                    <DropDown
-                      args={this.core}
-                      mainList={
-                        "account/" + this.props.selectedOrg + "/users"
-                      }
-                      selectedItem={this.state.managerName}
-                      preFetch={true}
-                      onDataChange={(event) =>
-                        this.listOnChange(event, "managerId")
-                      }
-                      required={true}
-                      disableItem={this.props.diableField}
-                      validationMessage={"Please select a Project Manager."}
-                    />
+                    <DropDown args={this.core} mainList={"account/" + this.props.selectedOrg + "/users"} selectedItem={this.state.managerName} preFetch={true} onDataChange={(event) => this.listOnChange(event, "managerId")} required={true} disableItem={this.props.diableField} validationMessage={"Please select a Project Manager."} />
                   </div>
                 </div>
-                <div className="col-4">
+                <div className='col-4'>
                   <label>Parent Project</label>
-                  <div className="parentProjectDropdown">
-                    <DropDown
-                      args={this.core}
-                      mainList={
-                        "account/" + this.props.selectedOrg + "/projects"
-                      }
-                      selectedItem={this.state.parentProject}
-                      preFetch={true}
-                      onDataChange={(event) =>
-                        this.listOnChange(event, "parentId")
-                      }
-                      excludeItem = {this.state.prjInEdit}
-                      disableItem={this.props.diableField}
-                      validationMessage={"Please select the Parent project."}
-                    />
-                    <button onClick={(e)=>{
-                      e.preventDefault();
-                      this.setState({parentProject:null, projectFlag: true});
-                    }} >
-                      <i class="fa fa-times-circle" aria-hidden="true"></i>
+                  <div className='parentProjectDropdown'>
+                    <DropDown args={this.core} mainList={"account/" + this.props.selectedOrg + "/projects"} selectedItem={this.state.parentProject} preFetch={true} onDataChange={(event) => this.listOnChange(event, "parentId")} excludeItem={this.state.prjInEdit} disableItem={this.props.diableField} validationMessage={"Please select the Parent project."} />
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        this.setState({ parentProject: null, projectFlag: true });
+                      }}>
+                      <i className='fa fa-times-circle' aria-hidden='true'></i>
                     </button>
                   </div>
                 </div>
@@ -222,11 +154,7 @@ export default class DialogContainer extends React.Component {
             </div>
           </form>
         </div>
-        <SaveCancel
-          save="prjForm"
-          cancel={this.props.cancel}
-          hideSave={this.props.diableField}
-        />
+        <SaveCancel save='prjForm' cancel={this.props.cancel} hideSave={this.props.diableField} />
       </KendoReactWindow.Window>
     );
   }
