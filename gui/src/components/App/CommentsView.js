@@ -44,7 +44,12 @@ class CommentsView extends React.Component {
       showModal: false,
       imageDetails: {},
       showAuditLog: false,
+      replyCommentToggle: null
     };
+  }
+
+  setReplyCommentToggle = (id) => {
+    this.setState({ replyCommentToggle : id === this.state.replyCommentToggle ? null : id })
   }
 
   componentWillUnmount() {
@@ -532,9 +537,11 @@ class CommentsView extends React.Component {
                     comments={this.state.commentsList}
                     core={this.core}
                     fileId={this.state.fileId}
+                    setReplyCommentToggle={this.setReplyCommentToggle}
+                    replyCommentToggle={this.state.replyCommentToggle}
                   />
                 </div>
-              </div>}
+              </div> || <div className="no-comments-found">No Comments Found</div>}
              <ReplyTextArea saveComment={this.saveComment.bind(this)} core={this.core} />
             </div>
           )}
@@ -570,7 +577,9 @@ function ReplyTextArea({header, saveComment, core}){
     CommentsView.emojiToggleCallback = (showEmojiPicker) => setState({showEmojiPicker})
   },[])
   const getUserData = (query, callback) => {
-    query &&
+    const splits = state.value.split(' ').filter(String);
+    let isValid = splits.length > 1 || splits.length === 1 && splits[0].startsWith('@')
+    isValid && query &&
       getData("users/list", query).then((response) => {
         var tempUsers = response.data.map((user) => ({
           display: user.username,
@@ -585,7 +594,7 @@ function ReplyTextArea({header, saveComment, core}){
       var query = {
         filter: {
           logic: "and",
-          filters: [{ field: "username", operator: "contains", value: term }],
+          filters: [{ field: "username", operator: "startswith", value: term }],
         },
         skip: 0,
         take: 10,
@@ -763,7 +772,7 @@ function ReplyTextArea({header, saveComment, core}){
   {state.showEmojiPicker && <ul id="emoji-list"><Picker onSelect={addEmoji} /></ul>}</>
 }
 
-function CommentList({ comments, core, fileId, parentId}) {
+function CommentList({ comments, core, fileId, parentId, setReplyCommentToggle, replyCommentToggle}) {
   const [viewReply, setViewReply] = useState([]);
   const [repliesText, setRepliesText] = useState({})
   const [childComments,setChildComments] = useState(Array(comments.length).fill([]));
@@ -903,6 +912,7 @@ function CommentList({ comments, core, fileId, parentId}) {
         setChildComments(cloneChildComments)
       }
       // setRepliesText({})
+      setReplyCommentToggle(null)
       loader.destroy()
     }catch(e){
       loader.destroy()
@@ -935,7 +945,7 @@ function CommentList({ comments, core, fileId, parentId}) {
               ></div>
               <div className="display-flex flex-col gap-5">
                 <div className="msg-info-time display-flex gap-5">
-                  <div onClick={() => toggleReplyText(uniqueId)}>Reply</div>
+                  <div onClick={() => setReplyCommentToggle(uniqueId)}>Reply</div>
                   {moment
                     .utc(commentItem.time, "YYYY-MM-DD HH:mm:ss")
                     .clone()
@@ -943,7 +953,7 @@ function CommentList({ comments, core, fileId, parentId}) {
                     .format(`LLL`)}
                 </div>
                 {
-                  isReplyText && <div className="reply-comment">
+                  replyCommentToggle === uniqueId && <div className="reply-comment">
                     <ReplyTextArea saveComment={(_, comment) => replyToComment(comment, commentItem)} core={core} />
                   </div>
                 }
@@ -969,7 +979,15 @@ function CommentList({ comments, core, fileId, parentId}) {
                     <div>{isRepliesExpanded && 'Hide' || 'View'} {!isRepliesExpanded && childComments[commentIdx].length} Replies</div>
                   </div>
                 </div>
-                    { isRepliesExpanded &&  <CommentList comments={childComments[commentIdx]} core={core} fileId={fileId} parentId={uniqueId}/> }
+                    { isRepliesExpanded && 
+                    <CommentList 
+                      comments={childComments[commentIdx]} 
+                      core={core} 
+                      fileId={fileId} 
+                      parentId={uniqueId}
+                      setReplyCommentToggle={setReplyCommentToggle}
+                      replyCommentToggle={replyCommentToggle}  
+                    /> }
                 </div>
               }
             </div>
