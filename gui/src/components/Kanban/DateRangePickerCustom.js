@@ -12,13 +12,14 @@ import Moment from "moment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const DateRangePickerCustom = (props) => {
+  const cardParameters = JSON.parse(props.ymlData.cardParameters); //start_date, end_date => cardParameters.start.name; cardParameters.end.name
   const dateFilter = props.dateFilter;
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [selectedValue, setSelectedValue] = useState("lte"); //get *all* items (i.e. that have dates less than or equal to current date)
   const [ready, setReady] = useState(0);
-  
+
   const toggle = () => setDropdownOpen((prevState) => !prevState);
 
   // Convert selected date to get MTD and YTD values
@@ -28,7 +29,7 @@ const DateRangePickerCustom = (props) => {
       const month = date.getMonth();
       const year = date.getFullYear();
       return (new Date(year, month, day));
-    } else {
+    } else if (valueSelected === "YTD") {
       const day = 1;
       const month = 0;
       const year = date.getFullYear();
@@ -58,56 +59,6 @@ const DateRangePickerCustom = (props) => {
     }
   }
 
-  // When Submit is clicked
-  const buttonClick = () => {
-    let filter = null;
-    let mindatevalue = Moment(startDate).format("YYYY-MM-DD")
-    let maxdatevalue = Moment(endDate).format("YYYY-MM-DD")
-
-    switch (selectedValue) {
-      case "Between":
-        filter = [
-          { field: "start_date", operator: "gte", value: mindatevalue },
-          { field: "end_date", operator: "lte", value: maxdatevalue },
-        ]
-        break;
-
-      case "LTE":
-        filter = [
-          { field: "end_date", operator: "lte", value: maxdatevalue },
-        ]
-        break;
-
-      case "GTE":
-        filter = [
-          { field: "end_date", operator: "gte", value: maxdatevalue },
-        ]
-        break;
-
-      case "MTD":
-        filter = [
-          { field: "start_date", operator: "gte", value: mindatevalue },
-          { field: "end_date", operator: "lte", value: maxdatevalue },
-        ]
-        break;
-
-      case "YTD":
-        filter = [
-          { field: "start_date", operator: "gte", value: mindatevalue },
-          { field: "end_date", operator: "lte", value: maxdatevalue },
-        ]
-        break;
-
-      case "Today":
-        filter = [
-          { field: "end_date", operator: "eq", value: maxdatevalue },
-        ]
-        break;
-
-    }
-    props.onDateRange(filter);
-  };
-
   const updateFilter = () => {
     let filter = null;
     let mindatevalue = Moment(startDate).format("YYYY-MM-DD")
@@ -116,40 +67,40 @@ const DateRangePickerCustom = (props) => {
     switch (selectedValue) {
       case "Between":
         filter = [
-          { field: "start_date", operator: "gte", value: mindatevalue },
-          { field: "end_date", operator: "lte", value: maxdatevalue },
+          { field: cardParameters.start.name, operator: "gte", value: mindatevalue },
+          { field: cardParameters.end.name, operator: "lte", value: maxdatevalue },
         ]
         break;
 
       case "LTE":
         filter = [
-          { field: "end_date", operator: "lte", value: maxdatevalue },
+          { field: cardParameters.end.name, operator: "lte", value: maxdatevalue },
         ]
         break;
 
       case "GTE":
         filter = [
-          { field: "end_date", operator: "gte", value: maxdatevalue },
+          { field: cardParameters.end.name, operator: "gte", value: maxdatevalue },
         ]
         break;
 
       case "MTD":
         filter = [
-          { field: "start_date", operator: "gte", value: mindatevalue },
-          { field: "end_date", operator: "lte", value: maxdatevalue },
+          { field: cardParameters.start.name, operator: "gte", value: mindatevalue },
+          { field: cardParameters.end.name, operator: "lte", value: maxdatevalue },
         ]
         break;
 
       case "YTD":
         filter = [
-          { field: "start_date", operator: "gte", value: mindatevalue },
-          { field: "end_date", operator: "lte", value: maxdatevalue },
+          { field: cardParameters.start.name, operator: "gte", value: mindatevalue },
+          { field: cardParameters.end.name, operator: "lte", value: maxdatevalue },
         ]
         break;
 
       case "Today":
         filter = [
-          { field: "end_date", operator: "eq", value: maxdatevalue },
+          { field: cardParameters.end.name, operator: "eq", value: maxdatevalue },
         ]
         break;
 
@@ -158,12 +109,16 @@ const DateRangePickerCustom = (props) => {
   }
 
   useEffect(() => {
-    if(!ready){
+    if (!ready) {
       setReady(1);
       return;
     }
-    updateFilter()
+    updateFilter();
   }, [startDate, endDate]);
+
+  useEffect(() => {
+    onValueChange();
+  }, [selectedValue]);
 
   return (
     <Dropdown
@@ -202,7 +157,7 @@ const DateRangePickerCustom = (props) => {
           <div className="dashboard-filter-field" id="" style={{ minWidth: "auto" }}>
             <Form.Group className="dashboard-filter-field">
               <Form.Label>Date</Form.Label>
-              <Form.Control className="dashboardTextField field-width-150" as="select" name="date" onChange={(e) => { setSelectedValue(e.target.value); onValueChange(); }} required>
+              <Form.Control className="dashboardTextField field-width-150" as="select" name="date" onChange={(e) => setSelectedValue(e.target.value)} required>
                 {
                   Object.keys(dateFilter).map((item, index) => {
                     return (<option key={index} value={item}>{item}</option>)
@@ -216,6 +171,7 @@ const DateRangePickerCustom = (props) => {
 
             <div className="dashboard-filter-field" id="" style={{ minWidth: "auto" }}>
               <Form.Group className="dashboard-filter-field">
+                <Form.Label className="mr-1"><small>Date</small></Form.Label>
                 <DatePicker className="dashboardTextField"
                   showMonthDropdown
                   showYearDropdown
@@ -229,6 +185,7 @@ const DateRangePickerCustom = (props) => {
             <div className="dates-container">
               <div className="dashboard-filter-field" id="" style={{ minWidth: "auto" }}>
                 <Form.Group className="dashboard-filter-field">
+                  <Form.Label className="mr-1"><small>From</small></Form.Label>
                   <DatePicker className="dashboardTextField"
                     showMonthDropdown
                     showYearDropdown
@@ -238,6 +195,7 @@ const DateRangePickerCustom = (props) => {
               </div>
               <div className="dashboard-filter-field" id="" style={{ minWidth: "auto" }}>
                 <Form.Group className="dashboard-filter-field">
+                  <Form.Label className="mr-1"><small>To</small></Form.Label>
                   <DatePicker className="dashboardTextField"
                     showMonthDropdown
                     showYearDropdown
@@ -246,9 +204,8 @@ const DateRangePickerCustom = (props) => {
                 </Form.Group>
               </div>
             </div>
-
           }
-          <div><Button id="k_button" onClick={props.setFilterFromProps}> Submit </Button></div>
+          <div><Button id="k_button" onClick={props.setFilterFromProps} disabled={(startDate > endDate) ? true : false}> Submit </Button></div>
         </div>
       </DropdownMenu>
     </Dropdown>
