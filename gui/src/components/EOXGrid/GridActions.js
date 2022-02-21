@@ -109,6 +109,7 @@ export default class GridActions extends React.Component {
   }
 
   edit = (data, form, api, index) => {
+    this.props.fetchAttachments?.(data);
     let gridsId= document.getElementsByClassName("eox-grids")[0].parentNode.id;
     if (data) {
       document.getElementById(gridsId).classList.add("display-none");
