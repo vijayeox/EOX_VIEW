@@ -362,13 +362,13 @@ export default class Home extends React.Component {
 								eventKey={this.userProfile.privileges.MANAGE_APPBUILDER_READ}
 								key={this.userProfile.privileges.MANAGE_APPBUILDER_READ}
 								onClick={() => this.launchExternalApp("EOXAppBuilder")}
-								title="App Builder"
+								title="App Studio"
 								key="AppBuilder"
 							>
 								<NavIcon>
 									<i className="fad fa-desktop-alt" aria-hidden="true"></i>
 								</NavIcon>
-								<NavText>App Builder</NavText>
+								<NavText>App Studio</NavText>
 							</NavItem>
 						) : (
 							""

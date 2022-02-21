@@ -119,7 +119,7 @@ export default class Menu extends React.Component {
         privileges:"TASKADMIN",
       },
       {
-        name: "App Builder",
+        name: "App Studio",
         icon: <i className="fad fa-desktop-alt" aria-hidden="true"></i>,
         component: "EOXAppBuilder",
         type: "external",
