@@ -50,32 +50,6 @@ const loginAdapter = (core, config) => ({
         username: req.username,
       };
       core.setUser(user);
-
-      let userSession = await helper.request("v1", "/user/me", {}, "GET");
-
-      //If a request is made for the user's cache to be cleared, then this function will be triggered and cache will be cleared from the browser
-      if (userSession["data"]["cleared_browser_cache"] == 1) {
-        // clearCacheData();
-        caches.keys().then((names) => {
-          names.forEach((name) => {
-            caches.delete(name);
-          });
-        });
-        // localStorage.clear();
-        // localStorage.setItem("version", packageJson.version);
-        // window.location.reload(true);
-
-        //Update the user cache value to 0
-        await helper.request(
-          "v1",
-          "/user/" + userSession["data"]["id"],
-          JSON.stringify({
-            cleared_browser_cache: 0,
-          }),
-          "PUT"
-        );
-      }
-
       return Promise.resolve(user);
     } else {
       console.log("login failed.");
