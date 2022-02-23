@@ -3,7 +3,7 @@ import { TitleBar } from "./components/titlebar";
 import { GetData } from "./components/apiCalls";
 import form from "../modules/forms/editCreateAnnouncement.json";
 class Announcement extends React.Component {
-  
+
   constructor(props) {
     super(props);
     this.core = this.props.args;
@@ -94,20 +94,20 @@ class Announcement extends React.Component {
       addAnnouncementFlag: true,
     };
   }
-  
+
   appendAttachments = (formData) => {
-    if(formData._attachments.length > 0){
+    if (formData._attachments.length > 0) {
       const attachmentFilename = formData._attachments[0][0].filename[0];
       formData.media = attachmentFilename;
     }
   }
 
-  fetchAttachments = async (data) => {
-    console.log(data)
-    // const api = "attachment/" + data.media;
-    // const response = await GetData(api);
-    // data.upload = response.data[0].path;
-  }
+  // fetchAttachments = async (data) => {
+  //   console.log(data)
+  //   const api = "attachment/" + data.media;
+  //   const response = await GetData(api);
+  //   data.upload = response.data[0].path;
+  // }
 
   orgChange = (event) => {
     this.setState({ selectedOrg: event.target.value, isLoading: true }, () => {
@@ -143,9 +143,8 @@ class Announcement extends React.Component {
     this.setState({ isLoading: true });
     GetData(
       this.api +
-        `?filter=[{"skip":${skip},"take":${
-          this.config.pageSize
-        }, "filter" : ${JSON.stringify(filter)}}]`
+      `?filter=[{"skip":${skip},"take":${this.config.pageSize
+      }, "filter" : ${JSON.stringify(filter)}}]`
     )
       .then((data) => {
         this.setState({
@@ -195,9 +194,9 @@ class Announcement extends React.Component {
               skip={this.state.skip}
               dataStateChanged={this.dataStateChanged.bind(this)}
               isLoading={this.state.isLoading}
-              appendAttachments={this.appendAttachments}
-              fetchAttachments={this.fetchAttachments}
               // key={Math.random()}
+              appendAttachments={this.appendAttachments}
+            // fetchAttachments={this.fetchAttachments}
             />
           </div>
         </React.Suspense>

@@ -541,6 +541,7 @@
               "currentWidth": 6
             }
           ],
+          "customClass": "pb-3",
           "key": "columns6",
           "type": "columns",
           "input": false,
@@ -571,6 +572,6 @@
   "path": "adminuser",
   "project": "5dc1489e4f668513e9535090",
   "created": "2021-12-01T10:01:16.951Z",
-  "modified": "2022-02-18T13:10:17.494Z",
+  "modified": "2022-02-22T09:33:00.240Z",
   "machineName": "eoxproductsupport:adminUser"
 }

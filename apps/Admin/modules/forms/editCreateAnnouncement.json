@@ -267,7 +267,6 @@
         },
         {
           "label": "media",
-          "calculateValue": "console.log(\"Data\", data);\n// if(data.upload.length > 0){\n// console.log(\"data.upload[0].filename\", data.upload[0].filename);\n// // value= data.upload[0].filename;\n// }",
           "key": "media",
           "type": "hidden",
           "input": true,
@@ -275,7 +274,7 @@
         },
         {
           "label": "media_type",
-          "calculateValue": "if(data.upload.length > 0){\nlet mediaType = data.upload[0].type;\nconst type = mediaType.split(\"/\");\nvalue = type[0];\n}\n \n ",
+          "calculateValue": "if(data.upload.length > 0){\nlet mediaType = data.upload[0].type;\nconst type = mediaType.split(\"/\");\nvalue = type[0];\n}",
           "key": "media_type",
           "type": "hidden",
           "input": true,
@@ -332,6 +331,7 @@
               "currentWidth": 6
             }
           ],
+          "customClass": "pb-3",
           "key": "columns4",
           "type": "columns",
           "input": false,
@@ -362,6 +362,6 @@
   "path": "adminannouncement",
   "project": "5dc1489e4f668513e9535090",
   "created": "2021-12-01T10:23:25.474Z",
-  "modified": "2022-02-18T11:10:24.727Z",
+  "modified": "2022-02-22T09:34:15.264Z",
   "machineName": "eoxproductsupport:adminAnnouncement"
 }

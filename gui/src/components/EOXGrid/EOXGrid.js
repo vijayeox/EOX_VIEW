@@ -178,10 +178,10 @@ export default class EOXGrid extends React.Component {
           style={{
             position: "absolute",
             left: "0",
-            top: "0",
+            top: "-37px",
             width: "100%",
             height: "100%",
-            zIndex: "10",
+            zIndex: "100",
           }}
         >
           <FormRender
@@ -430,7 +430,7 @@ export default class EOXGrid extends React.Component {
                   deleteApi={this.deleteApi}
                   gridId={this.gridId}
                   addConfig={this.addConfig}
-                  fetchAttachments = {this.props.fetchAttachments}
+                  // fetchAttachments = {this.props.fetchAttachments}
                 />
               )}
             ></GridColumn>
