@@ -583,8 +583,15 @@ class BaseFormRenderer extends React.Component {
         for (let i = 0; i < storageFileComponents.length; i++) {
           const component = storageFileComponents[i];
           const files = component.dataValue;
-          const uploadedFiles = [...files.filter(f => f.uuid)];
-          const newFiles = [...files.filter(f => !f.uuid)];
+          const uploadedFiles = [];
+          const newFiles = [];
+          files.forEach((file) => {
+            if( this.state.filesToUpload?.[file?.id]){
+              newFiles.push(file)
+            }else{
+              uploadedFiles.push(file);
+            }
+          })
           component.dataValue = [];
           if (newFiles.length > 0) {
             const responses = await Promise.all(
@@ -593,7 +600,7 @@ class BaseFormRenderer extends React.Component {
                   "v1",
                   component?.properties?.["absoluteUrl"] ||
                     component?.component?.properties?.["absoluteUrl"]
-                    ? component.component.url
+                    ? component.interpolate(component.component.url)
                     : "/app/" + this.state.appId + component.component.url,
                   this.state.filesToUpload?.[file.id]?.uploadFile,
                   "fileupload"
