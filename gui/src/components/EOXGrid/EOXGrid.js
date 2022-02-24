@@ -137,6 +137,7 @@ export default class EOXGrid extends React.Component {
 
   async handleCreateSubmit(formData, createFlag) {
     if (formData) {
+      this.props.appendAttachments?.(formData)
       Requests.createFormPushData(this.core, this.createApi, formData).then(
         (response) => {
           if (response.status === "success") {
@@ -188,6 +189,7 @@ export default class EOXGrid extends React.Component {
             core={this.core}
             // data={data}
             updateFormData={true}
+            getAttachment={true}
             postSubmitCallback={(formData) =>
               this.handleCreateSubmit(formData, true)
             }
@@ -428,6 +430,7 @@ export default class EOXGrid extends React.Component {
                   deleteApi={this.deleteApi}
                   gridId={this.gridId}
                   addConfig={this.addConfig}
+                  fetchAttachments = {this.props.fetchAttachments}
                 />
               )}
             ></GridColumn>
