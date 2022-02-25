@@ -749,7 +749,7 @@ export default class OX_Grid extends React.Component {
         action.details.every(async (item, index) => {
           if (item.type == "Update") {
             var PageRenderDiv = document.getElementById(this.props.parentDiv);
-            this.loader.show(PageRenderDiv ? PageRenderDiv : null);
+            this.loader.show(PageRenderDiv ? PageRenderDiv : null, item.loaderMessage);
             checkForTypeUpdate = true;
             const response = await that.updateActionHandler(item, mergeRowData);
             if (response.status == "success") {
