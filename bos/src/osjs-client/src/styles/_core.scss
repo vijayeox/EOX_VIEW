@@ -81,6 +81,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction:column;
 }
 .osjs-boot-splash-fullscreen{
   position: absolute;
@@ -94,7 +95,13 @@
   text-align: center;
   display: flex;
   align-items: center;
+  flex-direction:column;
   justify-content: center;
+}
+.osjs-boot-splash_message{
+  font-size: 18px;
+  margin-bottom: 1rem;
+  opacity: .8;
 }
 .osjs-mask-application{
   position: absolute;
