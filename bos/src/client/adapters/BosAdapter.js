@@ -18,7 +18,7 @@ export class BosAdapter extends ServiceProvider {
       if (queryString) {
         var queryObj = queryString
           .split("&")
-          .reduce(function(prev, curr, i, arr) {
+          .reduce(function (prev, curr, i, arr) {
             var p = curr.split("=");
             prev[decodeURIComponent(p[0])] = decodeURIComponent(p[1]);
             return prev;
@@ -28,11 +28,11 @@ export class BosAdapter extends ServiceProvider {
         if (!(appName in userDetails.key.blackListedApps)) {
           this.core
             .request(this.core.config("packages.manifest"), {}, "json")
-            .then(metadata => {
+            .then((metadata) => {
               this.addPackages(metadata);
               this.launch(queryObj);
             })
-            .catch(error => console.error(error));
+            .catch((error) => console.error(error));
         }
       }
     });
@@ -46,19 +46,18 @@ export class BosAdapter extends ServiceProvider {
       else if (hrs >= 12 && hrs <= 17) greet = "Good Afternoon";
       else if (hrs >= 17 && hrs <= 24) greet = "Good Evening";
       //console.log(this.core.make('oxzion/profile').get().UserInfo();
-      if (userDetails["key"]["preferences"]["Greetingmessage"] == "true")
-      {
-      this.core.make("osjs/notification", {
-        timeout: 10000,
-        icon: userDetails["key"]["icon"],
-        title: "Welcome to EOS!",
-        message:
-          "Hello and " + greet + " " + userDetails["key"]["firstname"] + "!"
-      });
-     }
+      if (userDetails["key"]["preferences"]["Greetingmessage"] == "true") {
+        this.core.make("osjs/notification", {
+          timeout: 10000,
+          icon: userDetails["key"]["icon"],
+          title: "Welcome to EOS!",
+          message:
+            "Hello and " + greet + " " + userDetails["key"]["firstname"] + "!",
+        });
+      }
     });
 
-    this.core.on("oxzion/application:launch", params => {
+    this.core.on("oxzion/application:launch", (params) => {
       if (params.app) {
         this.core
           .make("osjs/packages")
@@ -73,10 +72,10 @@ export class BosAdapter extends ServiceProvider {
 
   addPackages(list) {
     if (list instanceof Array) {
-      const append = list.map(iter =>
+      const append = list.map((iter) =>
         Object.assign(
           {
-            type: "application"
+            type: "application",
           },
           iter
         )
@@ -86,7 +85,7 @@ export class BosAdapter extends ServiceProvider {
   }
 
   launch(app) {
-    var found = this.metadata.find(pkg => pkg.name === app.app);
+    var found = this.metadata.find((pkg) => pkg.name === app.app);
     if (found != "undefined" && found != undefined) {
       var appName = app.app;
       var params = app;

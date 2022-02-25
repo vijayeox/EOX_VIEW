@@ -21,7 +21,9 @@
                 {
                   "label": "Announcement Title",
                   "tableView": true,
-                  "validate": { "required": true },
+                  "validate": {
+                    "required": true
+                  },
                   "key": "name",
                   "type": "textfield",
                   "input": true
@@ -109,9 +111,13 @@
                   },
                   "enableMaxDateInput": false,
                   "enableTime": false,
-                  "timePicker": { "showMeridian": false },
+                  "timePicker": {
+                    "showMeridian": false
+                  },
                   "calculateValue": "if(data.start_date){\n  value=moment(data.date_of_birth).format(\"YYYY-MM-DD\");\n}",
-                  "validate": { "required": true },
+                  "validate": {
+                    "required": true
+                  },
                   "key": "start_date",
                   "type": "datetime",
                   "input": true,
@@ -156,10 +162,14 @@
                   },
                   "enableMaxDateInput": false,
                   "enableTime": false,
-                  "timePicker": { "showMeridian": false },
+                  "timePicker": {
+                    "showMeridian": false
+                  },
                   "customDefaultValue": "// if(!data.end_date){\n//   value=moment().format(\"YYYY-MM-DD\");\n// }\n// value = data.end_date;",
                   "calculateValue": "if(data.end_date){\n  value=moment(data.end_date).format(\"YYYY-MM-DD\");\n}",
-                  "validate": { "required": true },
+                  "validate": {
+                    "required": true
+                  },
                   "key": "end_date",
                   "type": "datetime",
                   "input": true,
@@ -210,7 +220,9 @@
                     }
                   ],
                   "calculateValue": "value = data.type;",
-                  "validate": { "required": true },
+                  "validate": {
+                    "required": true
+                  },
                   "key": "type",
                   "type": "radio",
                   "input": true
@@ -234,19 +246,28 @@
           "tableView": false,
           "storage": "url",
           "webcam": false,
-          "fileTypes": [{ "label": "", "value": "" }],
+          "fileTypes": [
+            {
+              "label": "",
+              "value": ""
+            }
+          ],
           "filePattern": ".media,video/*,.png,.jpeg,.jpg,.gif",
-          "calculateValue": "console.log(data);",
-          "validate": { "required": true },
+          "clearOnHide": false,
+          "validate": {
+            "required": true
+          },
           "key": "upload",
-          "properties": { "absoluteUrl": "true" },
+          "properties": {
+            "absoluteUrl": "true"
+          },
           "type": "file",
-          "url": "/attachment",
-          "input": true
+          "input": true,
+          "url": "/attachment"
         },
         {
           "label": "media",
-          "calculateValue": "value = data.upload[0].filename[0];\n",
+          "calculateValue": "console.log(\"Data\", data);\n// if(data.upload.length > 0){\n// console.log(\"data.upload[0].filename\", data.upload[0].filename);\n// // value= data.upload[0].filename;\n// }",
           "key": "media",
           "type": "hidden",
           "input": true,
@@ -254,7 +275,7 @@
         },
         {
           "label": "media_type",
-          "defaultValue": "image",
+          "calculateValue": "if(data.upload.length > 0){\nlet mediaType = data.upload[0].type;\nconst type = mediaType.split(\"/\");\nvalue = type[0];\n}\n \n ",
           "key": "media_type",
           "type": "hidden",
           "input": true,
@@ -341,6 +362,6 @@
   "path": "adminannouncement",
   "project": "5dc1489e4f668513e9535090",
   "created": "2021-12-01T10:23:25.474Z",
-  "modified": "2022-01-03T07:50:54.752Z",
+  "modified": "2022-02-18T11:10:24.727Z",
   "machineName": "eoxproductsupport:adminAnnouncement"
 }

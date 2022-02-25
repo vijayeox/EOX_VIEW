@@ -15,7 +15,7 @@ export class SplashServiceProvider extends ServiceProvider {
 	}
 	init() {
 		this.core.instance('oxzion/splash', () => ({
-			show: (ele) => this.show(ele),
+			show: (ele, message) => this.show(ele, message),
 			destroy: (ele) => this.destroy(ele),
 			showGrid: () => this.showGrid(),
 			renderHtml: () => this.renderHtml(),
@@ -65,15 +65,15 @@ export class SplashServiceProvider extends ServiceProvider {
 		return '<div class="spinner"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div>'
 	}
 
-	show(ele) {
-
+	show(ele, message) {
+		const messageDiv = message ? `<div class="osjs-boot-splash_message">${message}</div>` : '';
 		if (!this.$loading.parentNode) {
 			if (ele) {
 				//replacing this.$loading with loader as there may be multiple instance of loader running at the same time
 				let loader = document.createElement('div');
 				loader.className = 'osjs-boot-splash';
 				// loader.innerHTML = '<img src="./load.svg" height="150" width="150" align="center">';
-				loader.innerHTML= '<div class="spinner"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div>'
+				loader.innerHTML= messageDiv+'<div class="spinner"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div>'
 				ele.appendChild(loader);
 			}
 			else {
@@ -84,7 +84,7 @@ export class SplashServiceProvider extends ServiceProvider {
 					this.$loading.className = 'osjs-boot-splash-fullscreen';
 				}
 			
-				this.$loading.innerHTML = '<div class="spinner"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div>'
+				this.$loading.innerHTML = messageDiv+'<div class="spinner"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div>'
 				ele = this.core.$root;
 				ele.appendChild(this.$loading);
 				

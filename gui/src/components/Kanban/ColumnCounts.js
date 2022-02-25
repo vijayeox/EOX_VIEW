@@ -45,9 +45,9 @@ function ColumnCard(props) {
             <Card style={{
                 border: '0',
                 boxShadow: '0px 3px 2px lightgrey',
-                width: "18vw",
-                marginRight: "15px",
-                marginLeft: "15px",
+                width: "25%",
+                marginRight: "5px",
+                marginLeft: "5px",
             }}>
 
                 <Card.Body>
@@ -56,7 +56,7 @@ function ColumnCard(props) {
                             <FontAwesomeIcon
                                 className="cardIcon k_cardIcon"
                                 style={{ color: colorHandler(props.statusCardId) }}
-                                size='small'
+                                size='sm'
                                 icon={['fal', 'history']} />
                         </Col>
                         <Col lg="auto" sm="auto" md="auto" style={{ float: 'left' }}>

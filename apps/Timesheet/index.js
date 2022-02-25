@@ -12,7 +12,7 @@ const register = (core, args, options, metadata) => {
   // Create  a new Window instance
   proc.createWindow({
     id: 'TimesheetWindow',
-    // icon: metadata.icon,
+    icon: metadata.fontIcon,
     title: metadata.title.en_EN,
     position: {left: 700, top: 200},
     dimension: {width: 400, height: 400}

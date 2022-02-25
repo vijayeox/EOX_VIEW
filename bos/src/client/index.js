@@ -38,7 +38,7 @@
 // https://manual.os-js.org/v3/resource/official/
 //
 
-import '@fortawesome/fontawesome-pro/css/fontawesome.min.css';
+import "@fortawesome/fontawesome-pro/css/fontawesome.min.css";
 
 import {
   Core,
@@ -47,30 +47,29 @@ import {
   VFSServiceProvider,
   NotificationServiceProvider,
   SettingsServiceProvider,
-  AuthServiceProvider
-} from '../osjs-client/index.js';
+  AuthServiceProvider,
+} from "../osjs-client/index.js";
 
-
-import {PanelServiceProvider} from './packages/panels';
-import GlobalLinkHandler from './packages/EOXApplication/GlobalLinkHandler.js';
-import {GUIServiceProvider} from '../osjs-gui';
-import {DialogServiceProvider} from '@osjs/dialogs';
-import {WidgetServiceProvider} from '@osjs/widgets';
-import * as config from './config.js';
-import localConfig from './local.js';
-import loginAdapter from './adapters/AuthAdapter.js';
-import Login from './pages/Login.js';
-import merge from 'deepmerge';
-import { RestClientServiceProvider } from './adapters/RestClient.js'
-import { ProfileServiceProvider } from './adapters/ProfileAdapter.js';
-import { WebSocketAdapter } from './adapters/WebSocketAdapter.js';
-import { SplashServiceProvider } from './adapters/SplashAdapter.js';
-import {UserSessionServiceProvider} from './adapters/UserSessionAdapter.js';
-import { BosAdapter } from './adapters/BosAdapter.js';
+import { PanelServiceProvider } from "./packages/panels";
+import GlobalLinkHandler from "./packages/EOXApplication/GlobalLinkHandler.js";
+import { GUIServiceProvider } from "../osjs-gui";
+import { DialogServiceProvider } from "@osjs/dialogs";
+import { WidgetServiceProvider } from "@osjs/widgets";
+import * as config from "./config.js";
+import localConfig from "./local.js";
+import loginAdapter from "./adapters/AuthAdapter.js";
+import Login from "./pages/Login.js";
+import merge from "deepmerge";
+import { RestClientServiceProvider } from "./adapters/RestClient.js";
+import { ProfileServiceProvider } from "./adapters/ProfileAdapter.js";
+import { WebSocketAdapter } from "./adapters/WebSocketAdapter.js";
+import { SplashServiceProvider } from "./adapters/SplashAdapter.js";
+import { UserSessionServiceProvider } from "./adapters/UserSessionAdapter.js";
+import { BosAdapter } from "./adapters/BosAdapter.js";
 import { GlobalLinkAdapter } from "./adapters/GlobalLinkAdapter.js";
-import {ScriptLoaderServiceProvider} from './adapters/ScriptLoader.js';
+import { ScriptLoaderServiceProvider } from "./adapters/ScriptLoader.js";
 import { MessageServiceProvider } from "./adapters/MessageAdapter.js";
-import { LoggerServiceProvider } from './adapters/Logger.js'
+import { LoggerServiceProvider } from "./adapters/Logger.js";
 /*import {MyApiServiceProvider} from './testProvider.js';
 import announcementWidget from './customWidget.js';
 import customPanelItem from './customPanel.js'*/
@@ -84,38 +83,46 @@ const init = () => {
   osjs.register(DesktopServiceProvider);
   osjs.register(VFSServiceProvider);
   osjs.register(NotificationServiceProvider);
-  osjs.register(SettingsServiceProvider, {before: true});
+  osjs.register(SettingsServiceProvider, { before: true });
   osjs.register(BosAdapter);
   osjs.register(GlobalLinkAdapter);
   osjs.register(AuthServiceProvider, {
     before: true,
-    args:
-      {
-        adapter:  loginAdapter,
-        login: (core,options) => new Login(core,options)
-      }
+    args: {
+      adapter: loginAdapter,
+      login: (core, options) => new Login(core, options),
+    },
   });
   osjs.register(PanelServiceProvider);
   osjs.register(DialogServiceProvider);
   osjs.register(GUIServiceProvider);
-  osjs.register(RestClientServiceProvider,{before: true});
-  osjs.register(ProfileServiceProvider,{before: true});
-  osjs.register(SplashServiceProvider, {before: true});
-  osjs.register(UserSessionServiceProvider, {before: true});
+  osjs.register(RestClientServiceProvider, { before: true });
+  osjs.register(ProfileServiceProvider, { before: true });
+  osjs.register(SplashServiceProvider, { before: true });
+  osjs.register(UserSessionServiceProvider, { before: true });
   osjs.register(WebSocketAdapter);
-  osjs.register(ScriptLoaderServiceProvider,{before: true});
+  osjs.register(ScriptLoaderServiceProvider, { before: true });
   osjs.register(MessageServiceProvider, { before: true });
-  osjs.register(GlobalLinkHandler,{before: true});
-  osjs.register(LoggerServiceProvider,{before: true});
+  osjs.register(GlobalLinkHandler, { before: true });
+  osjs.register(LoggerServiceProvider, { before: true });
   osjs.boot();
 };
 
-if(localConfig && localConfig.cloudflare && localConfig.cloudflare.enabled == true) {
+if (
+  localConfig &&
+  localConfig.cloudflare &&
+  localConfig.cloudflare.enabled == true
+) {
   let cloudflareScript = document.createElement("script");
   let token = localConfig.cloudflare.token;
-  cloudflareScript.setAttribute("src", "https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{\"token\":\""+token+"\"}'");
+  cloudflareScript.setAttribute(
+    "src",
+    'https://static.cloudflareinsights.com/beacon.min.js\' data-cf-beacon=\'{"token":"' +
+      token +
+      "\"}'"
+  );
   cloudflareScript.setAttribute("async", "false");
   document.body.appendChild(cloudflareScript);
 }
 
-window.addEventListener('DOMContentLoaded', () => init());
+window.addEventListener("DOMContentLoaded", () => init());

@@ -48,6 +48,7 @@ class BaseFormRenderer extends React.Component {
       currentForm: null,
       formErrorMessage:
         "Form seems to have an error while loading ,Please Try Again.",
+      filesToUpload: {}
     };
     //set the base url from config file
     axios.defaults.baseURL = "http://localhost:8080";
@@ -205,7 +206,7 @@ class BaseFormRenderer extends React.Component {
                     ]);
                   }
                 });
-            } catch (e) {}
+            } catch (e) { }
           }
         } else {
           that.state.currentForm.triggerChange();
@@ -311,8 +312,8 @@ class BaseFormRenderer extends React.Component {
           typeof data[key] === "string"
             ? JSON.parse(data[key])
             : data[key] == undefined || data[key] == null
-            ? ""
-            : data[key];
+              ? ""
+              : data[key];
         if (
           parsedData[key] === "" &&
           data[key] &&
@@ -384,8 +385,8 @@ class BaseFormRenderer extends React.Component {
   showFormError(state = true, errorMessage) {
     errorMessage
       ? this.setState({
-          formErrorMessage: errorMessage,
-        })
+        formErrorMessage: errorMessage,
+      })
       : null;
     if (state) {
       if (document.getElementById(this.formErrorDivId)) {
@@ -568,31 +569,40 @@ class BaseFormRenderer extends React.Component {
   uploadStorageAttachments(formData) {
     return new Promise(async (resolve, reject) => {
       try {
+        const attachmentsResponse = [];
         const storageFileComponents = [];
         this.state.currentForm.everyComponent(function (comp) {
           if (
-            comp.component.type === "file" 
+            comp.component.type === "file"
             &&
             comp.component.storage === "url"
-             && comp.dataValue?.length > 0
+            && comp.dataValue?.length > 0
           )
             storageFileComponents.push(comp);
         });
         for (let i = 0; i < storageFileComponents.length; i++) {
           const component = storageFileComponents[i];
           const files = component.dataValue;
-          const uploadedFiles = [...files.filter(f => f.uuid)];
-          const newFiles = [...files.filter(f => !f.uuid)];
+          const uploadedFiles = [];
+          const newFiles = [];
+          files.forEach((file) => {
+            if( this.state.filesToUpload?.[file?.id]){
+              newFiles.push(file)
+            }else{
+              uploadedFiles.push(file);
+            }
+          })
           component.dataValue = [];
-          if(newFiles.length > 0){
+          if (newFiles.length > 0) {
             const responses = await Promise.all(
               newFiles.map((file) => {
                 return this.helper.request(
                   "v1",
-                  component?.properties?.["absoluteUrl"]
-                    ? url
+                  component?.properties?.["absoluteUrl"] ||
+                    component?.component?.properties?.["absoluteUrl"]
+                    ? component.interpolate(component.component.url)
                     : "/app/" + this.state.appId + component.component.url,
-                  file.uploadFile,
+                  this.state.filesToUpload?.[file.id]?.uploadFile,
                   "fileupload"
                 );
               })
@@ -602,7 +612,8 @@ class BaseFormRenderer extends React.Component {
             if (idx > -1) {
               this.loader.destroy()
               Swal.fire({
-                title: `Failed to upload attachment : ${files[idx].name}`,
+                title: `Failed to upload attachment`,
+                text: `Attachment ${files[idx].name} : ${responses[idx]?.message}`,
                 // text: "Do you really want to cancel the submission? This action cannot be undone!",
                 icon: "warning",
                 confirmButtonColor: "#d33",
@@ -611,16 +622,19 @@ class BaseFormRenderer extends React.Component {
                 target: ".AppBuilderPage",
               });
               this.state.currentForm.triggerChange();
+              this.loader.destroy()
               return resolve(false);
             }
-            const data = responses.map(({data}, index) => {
-                return {...data, originalName : newFiles[index].name, name : newFiles[index].name}
+            const data = responses.map(({ data }, index) => {
+              return { ...data, originalName: newFiles[index].name, name: newFiles[index].name }
             });
-          component.dataValue = [ ...data]
-        }
+            component.dataValue = [...data]
+          }
           component.dataValue = [...component.dataValue, ...uploadedFiles]
+          attachmentsResponse.push(component.dataValue);
         }
-        resolve(true)
+        // resolve(true)
+        resolve(attachmentsResponse)
       } catch (e) {
         console.log(e)
         Swal.fire({
@@ -639,11 +653,15 @@ class BaseFormRenderer extends React.Component {
   }
   async saveForm(form, data) {
     var that = this;
+    const uploadedAttachmentResponse = await this.uploadStorageAttachments(data);
+    if(!uploadedAttachmentResponse) return;
+    // if (!(await this.uploadStorageAttachments(data))) return
     if (that.props.updateFormData) {
-      that.props.postSubmitCallback(data);
+      // that.props.postSubmitCallback(data);
+      const attachmentObj = that.props.getAttachment ? {_attachments : uploadedAttachmentResponse } : {}
+      that.props.postSubmitCallback({...data, ...attachmentObj})
       return;
     }
-    // if(!(await this.uploadStorageAttachments(data)))return
     if (
       that.props.customSaveForm &&
       typeof that.props.customSaveForm == "function"
@@ -1601,6 +1619,11 @@ class BaseFormRenderer extends React.Component {
     });
   }
 
+  onFileUpload(file) {
+    const filesToUpload = { ...this.state.filesToUpload };
+    filesToUpload[file.id] = file;
+    this.setState({ filesToUpload })
+  }
   async importCSS(theme) {
     try {
       this.setState({ stylePath: theme });
@@ -1640,6 +1663,7 @@ class BaseFormRenderer extends React.Component {
       options.wrapperUrl = this.core.config("wrapper.url");
       options.formDivID = this.formDivID;
       options.appId = this.state.appId;
+      options.fileUploadCallback = this.onFileUpload.bind(this)
       Formio.registerPlugin(
         {
           options: {
@@ -1868,7 +1892,7 @@ class BaseFormRenderer extends React.Component {
                                     // if(changed[properties["destinationDataKey"]] && Object.getOwnPropertyNames(changed[properties["destinationDataKey"]][0]).length === 0){
                                     if (
                                       changed[
-                                        properties["destinationDataKey"]
+                                      properties["destinationDataKey"]
                                       ] &&
                                       changed[
                                         properties["destinationDataKey"]

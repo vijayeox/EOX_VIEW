@@ -97,6 +97,7 @@ export default class EOXGrid extends React.Component {
     this.noCreateAction=this.props.noCreateAction ? this.props.noCreateAction :false;
     this.baseUrl = this.core.config("wrapper.url");
     this.gridId = Date.now();
+    this.detailGrid= Date.now()+1;
     this.state = {
       filter: null,
       props: this.props,
@@ -136,6 +137,7 @@ export default class EOXGrid extends React.Component {
 
   async handleCreateSubmit(formData, createFlag) {
     if (formData) {
+      this.props.appendAttachments?.(formData)
       Requests.createFormPushData(this.core, this.createApi, formData).then(
         (response) => {
           if (response.status === "success") {
@@ -163,10 +165,11 @@ export default class EOXGrid extends React.Component {
   }
 
   create = (form, createFlag) => {
+    let gridsId= document.getElementsByClassName("eox-grids")[0].parentNode.id;
     if (createFlag) {
-      document.getElementById(this.gridId).classList.add("display-none");
+      document.getElementById(gridsId).classList.add("display-none");
     } else {
-      document.getElementById(this.gridId).classList.remove("display-none");
+      document.getElementById(gridsId).classList.remove("display-none");
     }
 
     ReactDOM.render(
@@ -186,6 +189,7 @@ export default class EOXGrid extends React.Component {
             core={this.core}
             // data={data}
             updateFormData={true}
+            getAttachment={true}
             postSubmitCallback={(formData) =>
               this.handleCreateSubmit(formData, true)
             }
@@ -341,7 +345,7 @@ export default class EOXGrid extends React.Component {
             )
           )}
         </div>
-        <div id={this.gridId}>
+        <div id={this.noCreateAction?this.detailGrid:this.gridId}>
           <Grid
             style={{ height: this.height, width: this.width }}
             className={ "eox-grids"}
@@ -426,6 +430,7 @@ export default class EOXGrid extends React.Component {
                   deleteApi={this.deleteApi}
                   gridId={this.gridId}
                   addConfig={this.addConfig}
+                  fetchAttachments = {this.props.fetchAttachments}
                 />
               )}
             ></GridColumn>

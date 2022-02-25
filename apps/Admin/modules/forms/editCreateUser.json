@@ -28,7 +28,9 @@
                 {
                   "label": "Email",
                   "tableView": true,
-                  "validate": { "required": true },
+                  "validate": {
+                    "required": true
+                  },
                   "key": "email",
                   "type": "email",
                   "input": true
@@ -53,7 +55,9 @@
                 {
                   "label": "Username",
                   "tableView": true,
-                  "validate": { "required": true },
+                  "validate": {
+                    "required": true
+                  },
                   "key": "username",
                   "type": "textfield",
                   "input": true
@@ -111,14 +115,20 @@
                   "dataSrc": "url",
                   "data": {
                     "url": "/user",
-                    "headers": [{ "key": "", "value": "" }]
+                    "headers": [
+                      {
+                        "key": "",
+                        "value": ""
+                      }
+                    ]
                   },
                   "idPath": "uuid",
                   "valueProperty": "uuid",
                   "template": "<span>{{ item.name }}</span>",
-                  "validate": { "required": true },
                   "key": "managerId",
-                  "properties": { "absoluteUrl": "true" },
+                  "properties": {
+                    "absoluteUrl": "true"
+                  },
                   "type": "select",
                   "filter": "filter=[{\"skip\":0,\"take\":10000}]",
                   "input": true,
@@ -138,7 +148,9 @@
                 {
                   "label": "Designation",
                   "tableView": true,
-                  "validate": { "required": true },
+                  "validate": {
+                    "required": true
+                  },
                   "key": "designation",
                   "type": "textfield",
                   "input": true
@@ -167,10 +179,14 @@
                   "widget": "choicesjs",
                   "tableView": true,
                   "dataSrc": "custom",
-                  "data": { "custom": "values = data[\"countryList\"];" },
+                  "data": {
+                    "custom": "values = data[\"countryList\"];"
+                  },
                   "valueProperty": "country",
                   "template": "<span>{{ item.country }}</span>",
-                  "validate": { "required": true },
+                  "validate": {
+                    "required": true
+                  },
                   "key": "country",
                   "type": "select",
                   "input": true
@@ -192,13 +208,17 @@
                   "tableView": true,
                   "dataSrc": "custom",
                   "data": {
-                    "custom": "values = {};\nvar selectedCountry = data.country;\nvar countryList = data.countryList;\nvar country = countryList.find((filteredCountryList)=>filteredCountryList.country === selectedCountry);\nvalues = country.states;"
+                    "custom": "values = {};\nif(data.country !== \"\"){\n  var selectedCountry = data.country;\n  var countryList = data.countryList;\n  var country = countryList.find((filteredCountryList)=>filteredCountryList.country === selectedCountry);\n  values = country.states;\n}"
                   },
                   "template": "<span>{{ item.name }}</span>",
                   "clearOnHide": false,
-                  "validate": { "required": true },
+                  "validate": {
+                    "required": true
+                  },
                   "key": "state",
-                  "attributes": { "style": "max-height:150px;" },
+                  "attributes": {
+                    "style": "max-height:150px;"
+                  },
                   "type": "select",
                   "input": true,
                   "lockKey": true,
@@ -231,10 +251,20 @@
                   "inline": true,
                   "tableView": false,
                   "values": [
-                    { "label": "Male", "value": "Male", "shortcut": "" },
-                    { "label": "Female", "value": "Female", "shortcut": "" }
+                    {
+                      "label": "Male",
+                      "value": "Male",
+                      "shortcut": ""
+                    },
+                    {
+                      "label": "Female",
+                      "value": "Female",
+                      "shortcut": ""
+                    }
                   ],
-                  "validate": { "required": true },
+                  "validate": {
+                    "required": true
+                  },
                   "key": "gender",
                   "type": "radio",
                   "input": true
@@ -261,9 +291,13 @@
                   },
                   "enableMaxDateInput": true,
                   "enableTime": false,
-                  "timePicker": { "showMeridian": false },
+                  "timePicker": {
+                    "showMeridian": false
+                  },
                   "calculateValue": "if(data.date_of_birth){\n  value=moment(data.date_of_birth).format(\"YYYY-MM-DD\");\n// console.log(\"Valuee\",value);\n}",
-                  "validate": { "required": true },
+                  "validate": {
+                    "required": true
+                  },
                   "key": "date_of_birth",
                   "type": "datetime",
                   "input": true,
@@ -307,7 +341,9 @@
                   },
                   "enableMaxDateInput": false,
                   "enableTime": false,
-                  "timePicker": { "showMeridian": false },
+                  "timePicker": {
+                    "showMeridian": false
+                  },
                   "calculateValue": "if(data.date_of_join){\n  value=moment(data.date_of_join).format(\"YYYY-MM-DD\");\n}",
                   "validate": {
                     "required": true,
@@ -355,19 +391,38 @@
             {
               "components": [
                 {
+                  "label": "accountId",
+                  "key": "accountId",
+                  "type": "hidden",
+                  "input": true,
+                  "tableView": false
+                },
+                {
                   "label": "Select Projects",
                   "widget": "choicesjs",
                   "tableView": true,
                   "multiple": true,
                   "dataSrc": "url",
+                  "defaultValue": [
+                    {}
+                  ],
                   "data": {
                     "url": "/project",
-                    "headers": [{ "key": "", "value": "" }]
+                    "headers": [
+                      {
+                        "key": "",
+                        "value": ""
+                      }
+                    ]
                   },
                   "idPath": "uuid",
                   "template": "<span>{{ item.name }}</span>",
+                  "clearOnHide": false,
+                  "customDefaultValue": "console.log(data);\n\n",
                   "key": "project",
-                  "properties": { "absoluteUrl": "true" },
+                  "properties": {
+                    "absoluteUrl": "true"
+                  },
                   "type": "select",
                   "filter": "filter=[{\"skip\":0,\"take\":10000}]",
                   "input": true,
@@ -392,18 +447,34 @@
                   "dataSrc": "url",
                   "data": {
                     "url": "/role",
-                    "headers": [{ "key": "", "value": "" }]
+                    "headers": [
+                      {
+                        "key": "",
+                        "value": ""
+                      }
+                    ]
                   },
                   "idPath": "uuid",
                   "template": "<span>{{ item.name }}</span>",
-                  "validate": { "required": true },
+                  "validate": {
+                    "required": true
+                  },
                   "key": "role",
-                  "properties": { "absoluteUrl": "true" },
+                  "properties": {
+                    "absoluteUrl": "true"
+                  },
                   "type": "select",
                   "filter": "filter=[{\"skip\":0,\"take\":10000}]",
                   "input": true,
                   "lazyLoad": false,
                   "disableLimit": false
+                },
+                {
+                  "label": "uuid",
+                  "key": "uuid",
+                  "type": "hidden",
+                  "input": true,
+                  "tableView": false
                 }
               ],
               "width": 6,
@@ -500,6 +571,6 @@
   "path": "adminuser",
   "project": "5dc1489e4f668513e9535090",
   "created": "2021-12-01T10:01:16.951Z",
-  "modified": "2022-01-04T12:35:54.062Z",
+  "modified": "2022-02-18T13:10:17.494Z",
   "machineName": "eoxproductsupport:adminUser"
 }

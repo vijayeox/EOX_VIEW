@@ -2,221 +2,151 @@ import React, { useEffect, useState } from "react";
 import Work from "./WorkGroup";
 import { ListGroup, Button, Badge, Container } from "react-bootstrap";
 import { DragDropContext } from "react-beautiful-dnd";
-import StatusCard from "./ColumnCounts";
 import "./WorkGroup.scss";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-//import {faUserAlt, faEye,} from "@fortawesome/fontawesome-free-solid";
-import CalenderDropDown from "./CalendarDropdown";
 import Requests from "../../Requests";
-
-const onDragEnd = (result, setRefresh, setReload, props) => {
-  if (!result.destination) return;
-  const { draggableId, destination } = result;
-
-  let url = "/app/" + props.appId + "/file/crud"
-  Requests.doRestRequest(
-    props.core,
-    url,
-    {},
-    'put',
-    function () {
-      setReload(true);
-      setRefresh(true);
-    },
-    function (e) {
-      console.log("Error Couldn't update the File " + e);
-    });
-};
+import DateRangePickerCustom from "./DateRangePickerCustom";
+import Searchbar from './Searchbar';
+import AssignedTo from "./AssignedTo";
+// import StatusCard from "./ColumnCounts";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function Board(props) {
+  const dateFilter = props.filters.dateFilter;
   const [fields, setFields] = useState([]);
   const [fieldset, setFieldset] = useState([]);
-  const [Refresh, setRefresh] = useState(false);
+  const [Refresh, setRefresh] = useState(true);
   const [Reload, setReload] = useState(false);
   const [priority, setPriority] = useState("All");
-  const [minDate, setMinDate] = useState(null);
-  const [maxDate, setMaxDate] = useState(null);
   const [Filter, setFilter] = useState([]);
+  const [childFilter, setChildFilter] = useState({})
 
-  useEffect(() => {
-    let url = "/app/" + props.appId + "/field/b0fd5ad1-607b-11eb-a441-06a328860aa2"
+  const onDragEnd = (result, setRefresh, setReload, props) => {
+    if (!result.destination) return;
+    const { draggableId, destination } = result;
+    let url = "/app/" + props.appId + "/file/crud/" + draggableId // also add entity_ID
+    let rygColor;
+    if (destination.droppableId === "Delayed") rygColor = "Red";
+    else if (destination.droppableId === "In Progress") rygColor = "Yellow";
+    else if (destination.droppableId === "Completed" || destination.droppableId === "Open") rygColor = "Green";
+
     Requests.doRestRequest(
       props.core,
       url,
-      {},
-      'get',
-      function (response) {
-        var tempField;
-        tempField = JSON.parse(response.options);
-        setFieldset([]);
-        setFields(tempField.values);
-        setFieldset(tempField.values);
-      },
-      function (error) {
-        console.log("error " + error)
+      { uuid: draggableId, status: destination.droppableId, rygStatus: rygColor }, //set particular status for this particular UUID
+      'put',
+      function () { },
+      function (e) {
+        console.log("Error Couldn't update the File " + e);
       });
-
-  }, [Refresh]);
-
-  const dateRangeHandler = (mindatevalue, maxdatevalue) => {
-    if (mindatevalue === null || mindatevalue === 0) return;
-    if (maxdatevalue === null || maxdatevalue === 0) return;
-
-    setFilter([
-      { field: "start_date", operator: "gte", value: mindatevalue },
-      { field: "end_date", operator: "lte", value: maxdatevalue },
-    ]);
+    setReload(true);
+    setRefresh(true);
   };
 
+  useEffect(() => {
+    if (Refresh) {
+      var tempField;
+      tempField = JSON.parse(props.options);
+      setFieldset([]);
+      setFields(tempField.values);
+      setFieldset(tempField.values);
+      setRefresh(false);
+    }
+  }, [Refresh]);
+
   const filterMaker = (status) => {
-    var tempArray = [];
-
-    tempArray.push({ field: "status", operator: "eq", value: status });
-
+    let tempArray = [];
+    tempArray.push({ field: "status", operator: "eq", value: status }); // if status = all, call 4 api
     if (Filter.length > 0) {
       tempArray = tempArray.concat(Filter);
     }
-
     return tempArray;
+  };
+
+  const onFilterUpdate = (type, filter) => {
+    setChildFilter({ ...childFilter, [type]: filter })
+  }
+
+  // DateRangePickerCustom - onDateRange, Search
+  const setFilterFromProps = (filterFromProps) => {
+    // , ...(childFilter.assignedToFilter || []) <- add this for AssignedTO
+    const newFilter = [...(childFilter.dateFilter || []), ...(childFilter.searchFilter || [])]
+    setFilter(newFilter);
   };
 
   return (
     <Container fluid>
       <div className="expense-item k_expense-item">
-        <Badge>
-          <CalenderDropDown onDateRange={dateRangeHandler} />
-        </Badge>
-
-        <Button variant="link"
-          style={{
-            color: "black",
-            fontWeight: 400
-          }}>
+        <div style={{ display: "flex" }}>
+          {/* Date Filter hidden because it should get populated from Apppbuilder */}
           <Badge>
-            <div>Status</div>
-          </Badge>
-          <Badge>
-            <select
-              className="form-control"
-              style={{
-                fontSize: "small",
-                borderColor: "transparent",
-                outlineColor: "transparent",
-                background: "transparent",
-              }}
-              name="Status"
-              onChange={(e) => {
-                setPriority(e.target.value);
-              }}
-            >
-              <option value="All"> ALL</option>
-              <option value="Completed">Completed</option>
-              <option value="Delayed">Delayed</option>
-              <option value="In Progress">In Progress</option>
-              <option value="Open">Open</option>
-            </select>
-          </Badge>
-        </Button>
-
-        {/* <Button variant="link" style={{ color: "black" }}>
-          <Badge>
-            <div>
-              <FontAwesomeIcon size='sm' icon={['fal', 'user-friends']} /> Users
-            </div>
+            <DateRangePickerCustom
+              dateFilter={dateFilter}
+              setFilterFromProps={setFilterFromProps}
+              onChildFilter={onFilterUpdate}
+              ymlData={props.ymlData} />
           </Badge>
 
-          <Badge>
-            <select
-              className="form-control"
-              style={{
-                fontSize: "small",
-                borderColor: "transparent",
-                outlineColor: "transparent",
-                background: "transparent",
-              }}
-              name="priority"
-              onChange={(e) => {
-                setPriority(e.target.value);
-              }}
-            >
-              <option value="All"> ALL</option>
-              <option value="High">High</option>
-              <option value="Medium">Medium</option>
-              <option value="Low">Low</option>
-            </select>
-          </Badge>
-        </Button>
-        <Button variant="link" style={{ color: "black", fontWeight: 400 }}>
-          <Badge>
-            <div>Priority</div>
-          </Badge>
+          {/* <Badge>
+            <AssignedTo 
+            core={props.core} 
+            setFilterFromProps={setFilterFromProps} 
+            onChildFilter={onFilterUpdate} 
+            ymlData={props.ymlData} />
+          </Badge> */}
 
+          {/* <Button variant="link"
+            style={{
+              color: "black",
+              fontWeight: 400
+            }}
+            className="mt-2"
+          >
+            <Badge>
+              <div>Status</div>
+            </Badge>
+            <Badge>
+              <select
+                className="form-control"
+                style={{
+                  fontSize: "small",
+                  borderColor: "transparent",
+                  outlineColor: "transparent",
+                  background: "transparent",
+                }}
+                name="Status"
+                onChange={(e) => {
+                  setPriority(e.target.value);
+                  setRefresh(true);
+                }}
+              >
+                <option value="All"> ALL</option>
+                {fields.map((e) => {
+                  return <option key={e.value} value={e.value}>{e.label}</option>;
+                })}
+              </select>
+            </Badge>
+          </Button> */}
+        </div>
+        <div style={{
+          display: "flex",
+          alignItems: "center",
+          marginLeft: "auto"
+        }}>
           <Badge>
-            <select
-              className="form-control"
-              style={{
-                fontSize: "small",
-                borderColor: "transparent",
-                outlineColor: "transparent",
-                background: "transparent",
-              }}
-              name="priority"
-              onChange={(e) => {
-                setPriority(e.target.value);
-              }}
-            >
-              <option value="All"> ALL</option>
-              <option value="High">High</option>
-              <option value="Medium">Medium</option>
-              <option value="Low">Low</option>
-            </select>
+            <Searchbar
+              setFilterFromProps={setFilterFromProps}
+              onChildFilter={onFilterUpdate}
+              ymlData={props.ymlData} />
           </Badge>
-        </Button>
-                
-        <Button variant="link" style={{ color: "black", fontWeight: 400 }}>
-          <Badge>
-            <div>
-              <FontAwesomeIcon size='sm' icon={['fal', 'eye']} /> Views
-                  </div>
-          </Badge>
-
-          <Badge>
-            <select
-              className="form-control"
-              style={{
-                fontSize: "small",
-                borderColor: "transparent",
-                background: "transparent",
-                outlineColor: "transparent",
-              }}
-              name="priority"
-            >
-              <option value="All"> </option>
-            </select>
-          </Badge>
-        </Button> */}
-
+        </div>
       </div>
-        <ListGroup horizontal>
-          {fields.map((dataItem, index) => {
-            return (
-              <StatusCard
-                statusInfo={dataItem}
-                filter={filterMaker(dataItem.value)}
-                key={index}
-                index={index}
-                core={props.core}
-                appId={props.appId}
-              />
-            );
-          })}
-        </ListGroup>
 
-      <br />
       <DragDropContext
-        onDragEnd={(result) => onDragEnd(result, setRefresh, setReload)}
+        onDragEnd={(result) => onDragEnd(result, setRefresh, setReload, props)}
       >
-        <ListGroup horizontal >
+        <ListGroup
+          horizontal className="mt-1 mb-1"
+          style={{ overflowY: "auto" }}>
           {fieldset.map((dataItem, index) => {
             return (
               <Work
@@ -224,8 +154,12 @@ export default function Board(props) {
                 appId={props.appId}
                 info={dataItem}
                 filter={filterMaker(dataItem.value)}
+                url={props.url}
                 index={index}
                 key={index}
+                priority={priority}
+                options={props.options}
+                ymlData={props.ymlData}
               />
             );
           })}

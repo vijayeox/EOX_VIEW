@@ -4,8 +4,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "eslint": "eslint *.js",
-    "build": "webpack",
-    "watch": "webpack --watch",
+    "build": "NODE_ENV=production webpack",
+    "watch": "NODE_ENV=production webpack --watch",
+    "build:dev": "webpack",
+    "watch:dev": "webpack --watch",
     "stylelint": "stylelint index.scss src/**/*.scss",
     "prepublishOnly": "npm run eslint && npm run stylelint && rm ./dist/* && npm run build"
   },
@@ -46,7 +48,7 @@
     "css-loader": "^3.6.0",
     "dotenv-webpack": "^7.0.3",
     "eslint": "^5.15.3",
-    "mini-css-extract-plugin": "^2.1.0",
+    "mini-css-extract-plugin": "2.4.5",
     "node-sass": "^6.0.1",
     "prop-types": "^15.6.1",
     "react-dom": "17.0.2",

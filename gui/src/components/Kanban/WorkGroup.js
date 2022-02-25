@@ -5,7 +5,6 @@ import "./WorkGroup.scss";
 import Item from "./WorkItem";
 
 export default function Work(props) {
-
   const [Query, setQuery] = useState('');
   const [pageNumber, setPageNumber] = useState(1);
   const [Loading, setLoading] = useState(true);
@@ -46,7 +45,7 @@ export default function Work(props) {
         setLoading(true)
         setError(false)
 
-        let url = "/app/" + props.appId + "/file/search?filter=" + JSON.stringify(params)
+        let url = props.url + JSON.stringify(params)
         doRestRequestCall(url)
           .then((res) => {
             setList(List => {
@@ -83,7 +82,7 @@ export default function Work(props) {
     setLoading(true)
     setError(false)
 
-    let url = "/app/" + props.appId + "/file/search?filter=" + JSON.stringify(params)
+    let url = props.url + JSON.stringify(params)
     doRestRequestCall(url)
       .then((res) => {
         setList(res.data)
@@ -100,14 +99,15 @@ export default function Work(props) {
     <>
       <ListGroup.Item
         style={{
-          width: "18vw",
-          marginRight: "15px",
-          marginLeft: "15px",
+          minWidth: "22vw",
+          minHeight: "75vh",
+          margin: "0 5px 0 5px",
+          padding: "0 5px 0 5px",
         }}>
         <Droppable
           droppableId={props.info.value}
           key={props.index}
-          style={{ width: "98vw !important" }}>
+          style={{ width: "100% !important" }}>
           {(provided, snapshot) => {
             return (
               <ListGroup
@@ -117,6 +117,7 @@ export default function Work(props) {
                   background: snapshot.isDraggingOver ? "lightblue" : "white",
                   padding: 0,
                   width: "100%",
+                  // height: "100%",
                   minHeight: "30vh",
                   top: "50%"
                 }}
@@ -129,43 +130,47 @@ export default function Work(props) {
                     width: "100%"
                   }}
                 >
-                  <p>
-                    <b>
-                      {props.info.label} ({Count})
-                    </b>
-                  </p>
+                    <h3>
+                      <b>{props.info.label}</b><small> ({Count})</small>
+                    </h3>
                 </ListGroup.Item>
 
-                <div className="listDiv k_listDiv">
-                  {List != undefined ?
-                    List.map((listItem, index) => {
-                      if (List.length === index + 1) {
-                        return (
-                          <div ref={lastItem}>
+                { (props.priority === "All") || (props.priority === props.info.value) ?
+                  <div className="listDiv k_listDiv">
+                    {List != undefined ?
+                      List.map((listItem, index) => {
+                        if (List.length === index + 1) {
+                          return (
+                            <div ref={lastItem}>
+                              <Item
+                                cardInfo={listItem}
+                                ymlData={props.ymlData}
+                                index={index}
+                                key={index}
+                              />
+                            </div>
+                          );
+                        } else {
+                          return (
                             <Item
                               cardInfo={listItem}
+                              ymlData={props.ymlData}
                               index={index}
                               key={index}
                             />
-                          </div>
-                        );
-                      } else {
-                        return (
-                          <Item
-                            cardInfo={listItem}
-                            index={index}
-                            key={index}
-                          />
-                        );
-                      }
+                          );
+                        }
 
-                    })
+                      })
 
-                    : console.log("false")}
-                  <div>{Loading && 'Loading...'}</div>
-                  <div>{Error && 'Error'}</div>
+                      : console.log("false")}
+                    <div>{Loading && 'Loading...'}</div>
+                    <div>{Error && 'Error'}</div>
 
-                </div>
+                  </div>
+                  :
+                  <div></div>
+                }
               </ListGroup>
             );
           }}
