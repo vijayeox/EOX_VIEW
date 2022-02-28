@@ -41,12 +41,12 @@ class Announcement extends React.Component {
         reorderable: true,
         sortable: true,
         // sort:true,
-        pageSize: 10,
-        // pageable:true,
+        pageSizes: [10, 20, 50],
         pageable: {
           skip: 0,
-          // pageSize: 10,
           buttonCount: 3,
+          info: true,
+          pageSizes: [10, 20, 50]
         },
         groupable: true,
         resizable: true,
@@ -96,18 +96,11 @@ class Announcement extends React.Component {
   }
 
   appendAttachments = (formData) => {
-    if (formData._attachments.length > 0) {
-      const attachmentFilename = formData._attachments[0][0].filename[0];
-      formData.media = attachmentFilename;
-    }
+      if (formData._attachments.length > 0) {
+        const attachmentFilename = formData._attachments[0][0].filename[0];
+        formData.media = attachmentFilename;
+      }
   }
-
-  // fetchAttachments = async (data) => {
-  //   console.log(data)
-  //   const api = "attachment/" + data.media;
-  //   const response = await GetData(api);
-  //   data.upload = response.data[0].path;
-  // }
 
   orgChange = (event) => {
     this.setState({ selectedOrg: event.target.value, isLoading: true }, () => {
@@ -196,7 +189,6 @@ class Announcement extends React.Component {
               isLoading={this.state.isLoading}
               // key={Math.random()}
               appendAttachments={this.appendAttachments}
-            // fetchAttachments={this.fetchAttachments}
             />
           </div>
         </React.Suspense>

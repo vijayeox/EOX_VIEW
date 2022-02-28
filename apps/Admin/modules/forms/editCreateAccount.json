@@ -1438,46 +1438,16 @@
                 "absoluteUrl": "true"
               },
               "type": "file",
-              "url": "/attachment",
               "input": true
             },
             {
               "label": "logo",
-              "calculateValue": "// console.log(data);\n// if(data.fileaccount){\n//   value = data.fileaccount[0].url;\n// }\n",
               "key": "logo",
               "type": "hidden",
               "input": true,
               "tableView": false
             }
           ]
-        },
-        {
-          "label": "Upload",
-          "tableView": false,
-          "storage": "url",
-          "webcam": false,
-          "fileTypes": [
-            {
-              "label": "",
-              "value": ""
-            }
-          ],
-          "filePattern": ".media,video/*,.png,.jpeg,.jpg,.gif",
-          "clearOnHide": false,
-          "key": "upload",
-          "properties": {
-            "absoluteUrl": "true"
-          },
-          "type": "file",
-          "url": "/attachment",
-          "input": true
-        },
-        {
-          "label": "media",
-          "key": "media",
-          "type": "hidden",
-          "input": true,
-          "tableView": false
         },
         {
           "label": "Columns",
@@ -1561,6 +1531,6 @@
   "path": "adminaccountcreation",
   "project": "5dc1489e4f668513e9535090",
   "created": "2021-11-30T10:51:39.579Z",
-  "modified": "2022-02-23T05:30:21.636Z",
+  "modified": "2022-02-25T09:31:40.437Z",
   "machineName": "eoxproductsupport:adminAccountCreation"
 }
