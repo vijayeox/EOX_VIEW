@@ -204,65 +204,117 @@ export default class Home extends React.Component {
             ) : (
               ""
             )} */}
-            {this.userProfile.privileges.MANAGE_PROJECT_WRITE || this.userProfile.privileges.MANAGE_PROJECT_READ ? (
-              <NavItem eventKey='Project' key='Project' title='Projects'>
-                <NavIcon>
-                  <i className='fad fa-cogs' aria-hidden='true'></i>
-                </NavIcon>
-                <NavText>Projects</NavText>
-              </NavItem>
-            ) : (
-              ""
-            )}
-            {this.userProfile.privileges.MANAGE_ANNOUNCEMENT_WRITE || this.userProfile.privileges.MANAGE_ANNOUNCEMENT_READ ? (
-              <NavItem eventKey='Announcement' key='Announcement' title='Announcement'>
-                <NavIcon>
-                  <i className='fad fa-bullhorn' aria-hidden='true'></i>
-                </NavIcon>
-                <NavText>Announcement</NavText>
-              </NavItem>
-            ) : (
-              ""
-            )}
-            {this.userProfile.privileges.MANAGE_MAILADMIN_WRITE || this.userProfile.privileges.MANAGE_MAILADMIN_READ ? (
-              <NavItem eventKey={this.userProfile.privileges.MANAGE_MAILADMIN_WRITE} key={this.userProfile.privileges.MANAGE_MAILADMIN_WRITE} onClick={() => this.launchExternalApp("MailAdmin")} title='Mail Admin' key='MailAdmin'>
-                <NavIcon>
-                  <i className='fad fa-mail-bulk' aria-hidden='true'></i>
-                </NavIcon>
-                <NavText>Mail Admin</NavText>
-              </NavItem>
-            ) : (
-              ""
-            )}
-            {this.userProfile.privileges.MANAGE_CRMADMIN_WRITE || this.userProfile.privileges.MANAGE_CRMADMIN_READ ? (
-              <NavItem eventKey={this.userProfile.privileges.MANAGE_CRMADMIN_WRITE} key={this.userProfile.privileges.MANAGE_CRMADMIN_WRITE} onClick={() => this.launchExternalApp("CRMAdmin")} title='CRM Admin' key='CRMAdmin'>
-                <NavIcon>
-                  <i className='fad fa-user-tie' aria-hidden='true'></i>
-                </NavIcon>
-                <NavText>CRM Admin</NavText>
-              </NavItem>
-            ) : (
-              ""
-            )}
-            {this.userProfile.privileges.MANAGE_TASKADMIN_WRITE || this.userProfile.privileges.MANAGE_TASKADMIN_READ ? (
-              <NavItem eventKey={this.userProfile.privileges.MANAGE_TASKADMIN_WRITE} key={this.userProfile.privileges.MANAGE_TASKADMIN_WRITE} onClick={() => this.launchExternalApp("TaskAdmin")} title='PM Admin' key='PMAdmin'>
-                <NavIcon>
-                  <i className='fad fa-project-diagram' aria-hidden='true'></i>
-                </NavIcon>
-                <NavText>PM Admin</NavText>
-              </NavItem>
-            ) : (
-              ""
-            )}
-            {this.userProfile.privileges.MANAGE_APPBUILDER_READ || this.userProfile.privileges.MANAGE_APPBUILDER_WRITE ? (
-              <NavItem eventKey={this.userProfile.privileges.MANAGE_APPBUILDER_READ} key={this.userProfile.privileges.MANAGE_APPBUILDER_READ} onClick={() => this.launchExternalApp("EOXAppBuilder")} title='App Studio' key='AppBuilder'>
-                <NavIcon>
-                  <i className='fad fa-desktop-alt' aria-hidden='true'></i>
-                </NavIcon>
-                <NavText>App Studio</NavText>
-              </NavItem>
-            ) : (
-              ""
+						{this.userProfile.privileges.MANAGE_PROJECT_WRITE ||
+						this.userProfile.privileges.MANAGE_PROJECT_READ ? (
+							<NavItem eventKey="Project" key="Project" title="Projects">
+								<NavIcon>
+									<i className="fad fa-cogs" aria-hidden="true"></i>
+								</NavIcon>
+								<NavText>Projects</NavText>
+							</NavItem>
+						) : (
+							""
+						)}
+						{this.userProfile.privileges.MANAGE_ANNOUNCEMENT_WRITE ||
+						this.userProfile.privileges.MANAGE_ANNOUNCEMENT_READ ? (
+							<NavItem
+								eventKey="Announcement"
+								key="Announcement"
+								title="Announcement"
+							>
+								<NavIcon>
+									<i className="fad fa-bullhorn" aria-hidden="true"></i>
+								</NavIcon>
+								<NavText>Announcement</NavText>
+							</NavItem>
+						) : (
+							""
+						)}
+						{this.userProfile.privileges.MANAGE_MAILADMIN_WRITE ||
+						this.userProfile.privileges.MANAGE_MAILADMIN_READ ? (
+							<NavItem
+								eventKey={this.userProfile.privileges.MANAGE_MAILADMIN_WRITE}
+								key={this.userProfile.privileges.MANAGE_MAILADMIN_WRITE}
+								onClick={() => this.launchExternalApp("MailAdmin")}
+								title="Mail Admin"
+								key="MailAdmin"
+							>
+								<NavIcon>
+									<i className="fad fa-mail-bulk" aria-hidden="true"></i>
+								</NavIcon>
+								<NavText>Mail Admin</NavText>
+							</NavItem>
+						) : (
+							""
+						)}
+						{this.userProfile.privileges.MANAGE_CRMADMIN_WRITE ||
+						this.userProfile.privileges.MANAGE_CRMADMIN_READ ? (
+							<NavItem
+								eventKey={this.userProfile.privileges.MANAGE_CRMADMIN_WRITE}
+								key={this.userProfile.privileges.MANAGE_CRMADMIN_WRITE}
+								onClick={() => this.launchExternalApp("CRMAdmin")}
+								title="CRM Admin"
+								key="CRMAdmin"
+							>
+								<NavIcon>
+									<i className="fad fa-user-tie" aria-hidden="true"></i>
+								</NavIcon>
+								<NavText>CRM Admin</NavText>
+							</NavItem>
+						) : (
+							""
+						)}
+						{this.userProfile.privileges.MANAGE_TASKADMIN_WRITE ||
+						this.userProfile.privileges.MANAGE_TASKADMIN_READ ? (
+							<NavItem
+								eventKey={this.userProfile.privileges.MANAGE_TASKADMIN_WRITE}
+								key={this.userProfile.privileges.MANAGE_TASKADMIN_WRITE}
+								onClick={() => this.launchExternalApp("TaskAdmin")}
+								title="PM Admin"
+								key="PMAdmin"
+							>
+								<NavIcon>
+									<i className="fad fa-project-diagram" aria-hidden="true"></i>
+								</NavIcon>
+								<NavText>PM Admin</NavText>
+							</NavItem>
+						) : (
+							""
+						)}
+						{this.userProfile.privileges.MANAGE_APPBUILDER_READ ||
+						this.userProfile.privileges.MANAGE_APPBUILDER_WRITE ? (
+							<NavItem
+								eventKey={this.userProfile.privileges.MANAGE_APPBUILDER_READ}
+								key={this.userProfile.privileges.MANAGE_APPBUILDER_READ}
+								onClick={() => this.launchExternalApp("EOXAppBuilder")}
+								title="App Studio"
+								key="AppBuilder"
+							>
+								<NavIcon>
+									<i className="fad fa-desktop-alt" aria-hidden="true"></i>
+								</NavIcon>
+								<NavText>App Studio</NavText>
+							</NavItem>
+						) : (
+							""
+						)}
+
+						{this.userProfile.privileges.MANAGE_OIBUILDER_READ ||
+						this.userProfile.privileges.MANAGE_OIBUILDER_WRITE ? (
+							<NavItem
+								eventKey={this.userProfile.privileges.MANAGE_OIBUILDER_READ}
+								key={this.userProfile.privileges.MANAGE_OIBUILDER_READ}
+								onClick={() => this.launchExternalApp("Analytics")}
+								title="OI Studio"
+								key="OI"
+							>
+								<NavIcon>
+									<i className="fad fa-chart-bar" aria-hidden="true"></i>
+								</NavIcon>
+								<NavText>OI Studio</NavText>
+							</NavItem>
+						) : (
+							""
             )}
             {this.userProfile.privileges.MANAGE_OIBUILDER_READ || this.userProfile.privileges.MANAGE_OIBUILDER_WRITE ? (
               <NavItem eventKey={this.userProfile.privileges.MANAGE_OIBUILDER_READ} key={this.userProfile.privileges.MANAGE_OIBUILDER_READ} onClick={() => this.launchExternalApp("Analytics")} title='OI Studio' key='OI'>
