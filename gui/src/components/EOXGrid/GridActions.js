@@ -84,7 +84,7 @@ export default class GridActions extends React.Component {
   async handleSubmit(formData, index, createFlag) {
     if (formData) {
       this.props.appendAttachments?.(formData);
-      Requests.editFormPushData(this.core, this.editApi, formData).then(
+      Requests.editFormPushData(this.core, this.editApi, this.props.getCustomPayload?.(formData, 'put') || formData, formData, this.props.createCrudType).then(
         (response) => {
           if (response.status == "success") {
             this.onUpdate({ crudType: "EDIT", index, data: response.data });

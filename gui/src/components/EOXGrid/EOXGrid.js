@@ -138,7 +138,7 @@ export default class EOXGrid extends React.Component {
   async handleCreateSubmit(formData, createFlag) {
     if (formData) {
       this.props.appendAttachments?.(formData)
-      Requests.createFormPushData(this.core, this.createApi, formData).then(
+      Requests.createFormPushData(this.core, this.createApi, this.props.getCustomPayload?.(formData) || formData, this.props.createCrudType).then(
         (response) => {
           if (response.status === "success") {
             Swal.fire({
@@ -431,6 +431,9 @@ export default class EOXGrid extends React.Component {
                   gridId={this.gridId}
                   addConfig={this.addConfig}
                   appendAttachments={this.props.appendAttachments}
+                  fetchAttachments = {this.props.fetchAttachments}
+                  createCrudType = {this.props.createCrudType}
+                  getCustomPayload = {this.props.getCustomPayload}
                 />
               )}
             ></GridColumn>
