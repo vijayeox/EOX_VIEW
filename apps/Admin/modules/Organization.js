@@ -112,6 +112,39 @@ class Organization extends React.Component {
       });
   }
 
+  getCustomPayload = (formData, type) => {
+    /**
+     * name: accountname
+      address1: 696 West Fabien Court
+      Recusandae Necessit
+      city: In debitis debitis e
+      state: Dolorem non adipisic
+      country: Albania
+      zip: 94933
+      logo: (binary)
+      contact: {"firstname":"Jaden","lastname":"Dejesus","username":"sagarsp","email":"ryqa@mailinator.com"}
+      preferences: {"dateformat":"dd-MMM-yyyy","currency":"AFN","timezone":"Africa/Abidjan"}
+     */
+    const newPayload = {};
+    const logo = formData?._filesToUpload && Object.values(formData?._filesToUpload)?.[0]?.uploadFile?.file;
+    newPayload['name'] = formData.name;
+    newPayload['address1'] = formData.address1;
+    newPayload['city'] = formData.city;
+    newPayload['country'] = formData.country;
+    newPayload['state'] = formData.state;
+    newPayload['zip'] = formData.zip;
+    newPayload['preferences'] = JSON.stringify(formData.preferences);
+    if(logo){
+      newPayload['logo'] = logo;
+    }
+    if(type == "put"){
+      newPayload['contactid'] = formData.contactid;
+    }
+    newPayload['contact'] =JSON.stringify( formData.contact)
+    return newPayload;
+  }
+
+
   dataStateChanged({ dataState: { filter, group, skip, sort, take } }) {
     this.setState({ isLoading: true });
     GetData(
@@ -160,6 +193,9 @@ class Organization extends React.Component {
             skip={this.state.skip}
             dataStateChanged={this.dataStateChanged.bind(this)}
             isLoading={this.state.isLoading}
+            appendAttachments={this.appendAttachments}
+            getCustomPayload={this.getCustomPayload}
+            createCrudType="filepost"
             // key={Math.random()}
           />
         </React.Suspense>

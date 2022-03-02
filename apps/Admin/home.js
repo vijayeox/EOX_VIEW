@@ -315,7 +315,7 @@ export default class Home extends React.Component {
 							</NavItem>
 						) : (
 							""
-
+            )}
             {this.userProfile.privileges.MANAGE_OIBUILDER_READ || this.userProfile.privileges.MANAGE_OIBUILDER_WRITE ? (
               <NavItem eventKey={this.userProfile.privileges.MANAGE_OIBUILDER_READ} key={this.userProfile.privileges.MANAGE_OIBUILDER_READ} onClick={() => this.launchExternalApp("Analytics")} title='OI Studio' key='OI'>
                 <NavIcon>
