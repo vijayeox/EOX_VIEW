@@ -201,24 +201,24 @@ class Requests {
     return response;
   }
 
-  static async editFormPushData(core, editApi, dataItem) {
+  static async editFormPushData(core, editApi, dataItem, originalPayload, crudType) {
     let helper = core.make("oxzion/restClient");
     let response = await helper.request(
       "v1",
-      "/" + editApi + "/" + dataItem.uuid,
+      "/" + editApi + "/" + originalPayload.uuid,
       dataItem,
-      "put"
+      crudType || "put"
     );
     return response;
   }
 
-  static async createFormPushData(core, createApi, dataItem) {
+  static async createFormPushData(core, createApi, dataItem, crudType) {
     let helper = core.make("oxzion/restClient");
     let response = await helper.request(
       "v1",
       "/" + createApi,
       dataItem,
-      "post"
+      crudType || "post"
     );
     return response;
   }
