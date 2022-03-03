@@ -9,24 +9,24 @@ class Role extends React.Component {
     this.core = this.props.args;
     this.drillDownRequired = false;
     (this.actionItems = {
-      // edit: {
-      //   type: "button",
-      //   icon: "fad fa-pencil",
-      //   text: "EDIT",
-      //   title: "Edit Role",
-      // },
+      edit: {
+        type: "button",
+        icon: "fad fa-pencil",
+        text: "EDIT",
+        title: "Edit Role",
+      },
       delete: {
         type: "button",
         icon: "fad fa-trash",
         text: "DELETE",
         title: "Delete Role",
       },
-      // create: {
-      //   type: "button",
-      //   icon: " fad fa-plus",
-      //   text: "CREATE",
-      //   title: "Create New",
-      // },
+      create: {
+        type: "button",
+        icon: " fad fa-plus",
+        text: "CREATE",
+        title: "Create New",
+      },
     }),
       (this.config = {
         height: "100%",
@@ -36,11 +36,11 @@ class Role extends React.Component {
         sortable: true,
         // sort:true,
         pageSize: 10,
-        // pageable:true,
         pageable: {
           skip: 0,
-          // pageSize: 10,
           buttonCount: 3,
+          info: true,
+          pageSizes: [10, 20, 50]
         },
         groupable: true,
         resizable: true,
@@ -112,6 +112,7 @@ class Role extends React.Component {
 
   dataStateChanged({ dataState: { filter, group, skip, sort, take } }) {
     this.setState({ isLoading: true });
+    this.config.pageSize = take;
     GetData(
       this.api +
         `?filter=[{"skip":${skip},"take":${
