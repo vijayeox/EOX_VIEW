@@ -41,7 +41,7 @@ class Announcement extends React.Component {
         reorderable: true,
         sortable: true,
         // sort:true,
-        pageSizes: [10, 20, 50],
+        pageSize: 10,
         pageable: {
           skip: 0,
           buttonCount: 3,
@@ -134,9 +134,10 @@ class Announcement extends React.Component {
 
   dataStateChanged({ dataState: { filter, group, skip, sort, take } }) {
     this.setState({ isLoading: true });
+    this.config.pageSize = take;
     GetData(
       this.api +
-      `?filter=[{"skip":${skip},"take":${this.config.pageSize
+      `?filter=[{"skip":${skip},"take":${(this.config.pageSize)
       }, "filter" : ${JSON.stringify(filter)}}]`
     )
       .then((data) => {
