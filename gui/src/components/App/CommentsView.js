@@ -168,11 +168,10 @@ class CommentsView extends React.Component {
           comment_id: i.commentId,
         });
         res["data"] = data;
-        i.attachments &&
-          i.attachments.map((j) => {
-            fileName.push(j.name);
-            res["data"][index]["fileName"] = fileName;
-          });
+        i?.attachments?.map((j) => {
+          fileName.push(j.name);
+          res["data"][index]["fileName"] = fileName;
+        });
         fileName = [];
       });
       return this.formatFormData(res["data"]);
@@ -885,11 +884,10 @@ function CommentList({ comments, core, fileId, parentId, setReplyCommentToggle, 
           comment_id: i.commentId,
         });
         res["data"] = data;
-        i.attachments &&
-          i.attachments.map((j) => {
-            fileName.push(j.name);
-            res["data"][index]["fileName"] = fileName;
-          });
+        i?.attachments?.map((j) => {
+          fileName.push(j.name);
+          res["data"][index]["fileName"] = fileName;
+        });
         fileName = [];
       });
       return formatFormData(res["data"]);
