@@ -512,12 +512,15 @@ class DashboardFilter extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    console.log("Inside the filter: ", this.state);
     let dashboardUuid = this.props.dashboardStack ? this.props.dashboardStack[this.props.dashboardStack.length - 1]["data"]["uuid"] : this.props.dashboardId;
     if (prevProps.filterConfiguration != this.props.filterConfiguration || prevProps.applyFilterOption != this.props.applyFilterOption) {
       this.props.filterMode != "CREATE" && this.props.dashboardStack.length == 1
         ? this.displayDefaultFilters()
         : this.setState({
+            filterConfiguration: this.props.filterConfiguration,
             filters: this.props.filterConfiguration,
+            multiFilters: this.props.filterConfiguration,
             applyFilterOption: this.props.applyFilterOption,
             uuid: dashboardUuid,
           });
@@ -531,6 +534,8 @@ class DashboardFilter extends React.Component {
     if (this.props.filterMode == "APPLY" && prevProps.filterConfiguration !== this.props.filterConfiguration) {
       this.setState({
         filters: this.props.filterConfiguration,
+        filterConfiguration: this.props.filterConfiguration,
+        multiFilters: this.props.filterConfiguration,
         uuid: dashboardUuid,
       });
     }
@@ -611,6 +616,7 @@ class DashboardFilter extends React.Component {
         value: "",
         key: length,
         filterIndex: "",
+        Filters,
       });
     } else if (fieldType === "numeric") {
       filters.push({
@@ -919,4 +925,4 @@ class DashboardFilter extends React.Component {
     );
   }
 }
-export default DashboardFilter;
+export default React.memo(DashboardFilter);
