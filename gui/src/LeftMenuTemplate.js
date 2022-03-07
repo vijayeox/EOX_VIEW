@@ -86,20 +86,20 @@ export default class LeftMenuTemplate extends React.Component {
             {this.state.menus && this.state.menus.length > 0 ? (
               this.state.menus.map((menuitem, index) => {
                 return (
-                  <NavItem eventKey={menuitem} key={index}>
+                  <NavItem eventKey={menuitem} key={index} title={menuitem.name}>
                     <NavIcon>
-                      <abbr title={menuitem.name} style={{ cursor: "pointer" }}>
+                      {/* <abbr title={menuitem.name} style={{ cursor: "pointer" }}> */}
                         <i
                           className={menuitem.icon}
                           name={menuitem.name}
                           style={{ fontSize: "1.5em", verticalAlign: "middle" }}
                         />
-                      </abbr>
+                      {/* </abbr> */}
                     </NavIcon>
                     <NavText
                       style={{ paddingRight: 32 }}
                       name={menuitem.name}
-                      title={menuitem.name}
+                      // title={menuitem.name}
                     >
                       {menuitem.name.length > 18
                         ? menuitem.name.substring(0, 18) + "..."
@@ -112,12 +112,13 @@ export default class LeftMenuTemplate extends React.Component {
                               eventKey={subMenu}
                               key={`${Math.random()}_${Math.random()}`}
                               expanded={true}
+                              title={subMenu.name}
                             >
                               <NavIcon>
-                                <abbr
+                                {/* <abbr
                                   title={subMenu.name}
                                   style={{ cursor: "pointer" }}
-                                >
+                                > */}
                                   <i
                                     className={subMenu.icon}
                                     name={subMenu.name}
@@ -126,12 +127,12 @@ export default class LeftMenuTemplate extends React.Component {
                                       verticalAlign: "middle",
                                     }}
                                   />
-                                </abbr>
+                                {/* </abbr> */}
                               </NavIcon>
                               <NavText
                                 style={{ paddingRight: 32 }}
                                 name={subMenu.name}
-                                title={subMenu.name}
+                                // title={subMenu.name}
                               >
                                 {subMenu.name.length > 18
                                   ? subMenu.name.substring(0, 18) + "..."

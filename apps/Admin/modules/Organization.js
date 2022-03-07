@@ -42,12 +42,11 @@ class Organization extends React.Component {
         sortable: true,
         // sort:true,
         pageSize: 20,
-        // pageable:true,
         pageable: {
           skip: 0,
-          pageSize: 20,
           buttonCount: 3,
-          // info: true
+          info: true,
+          pageSizes: [10, 20, 50]
         },
         groupable: true,
         resizable: true,
@@ -147,6 +146,7 @@ class Organization extends React.Component {
 
   dataStateChanged({ dataState: { filter, group, skip, sort, take } }) {
     this.setState({ isLoading: true });
+    this.config.pageSize = take;
     GetData(
       this.api +
         `?filter=[{"skip":${skip},"take":${
