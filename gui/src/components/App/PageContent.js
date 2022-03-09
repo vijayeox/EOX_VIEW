@@ -25,6 +25,7 @@ import DynamicTemplateViewer from "./DynamicTemplateViewer";
 import KanbanView from "../Kanban/KanbanRoutes";
 import CustomGoogleMapComponent from "../googlemapfinal/App";
 import ReactComponent from "./ReactComponent";
+import UploadArtifact from "../UploadArtifact";
 
 class PageContent extends React.Component {
   constructor(props) {
@@ -508,8 +509,23 @@ class PageContent extends React.Component {
         content.push(<CustomGoogleMapComponent core={this.core} appId={this.appId} />);
       } else if (item.type == "ReactComponent") {
         var fileId = this.props.fileId ? this.props.fileId : this.state.currentRow.uuid;
-        content.push(<ReactComponent fileId={fileId} parentPageData={this.parentPageData} core={this.core} appId={this.appId} data={item.content} componentProps={this} />);
-      } else {
+        content.push(
+          <ReactComponent fileId={fileId} parentPageData={this.parentPageData} core={this.core} appId={this.appId} data={item.content} componentProps={this}/>
+        );
+      } else if(item.type == "UploadArtifact"){
+          item.params = ParameterHandler.replaceParams(this.appId, item.params, this.state.currentRow);
+          content.push(
+          <UploadArtifact
+              {...item}
+              key={i}
+              components={OxzionGUIComponents}
+              appId={this.appId}
+              notif={this.notif}
+              core={this.core}
+              refresh={this.postSubmitCallback}
+            ></UploadArtifact>
+        )
+      }else {
         if (this.extGUICompoents && this.extGUICompoents[item.type]) {
           this.externalComponent = this.extGUICompoents[item.type];
           item.params = ParameterHandler.replaceParams(this.appId, item.params, this.state.currentRow);
