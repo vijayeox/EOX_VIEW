@@ -1,14 +1,14 @@
 import React from "react";
-import dashboardJson from "../metadata.json";
+import dashboardJson from "../../../metadata.json";
 // import { dashboard as section } from '../metadata.json';
-import Notification from "./Notification";
+import Notification from "../../Notification";
 import DashboardViewer from "./Dashboard";
 import DashboardFilter from "./DashboardFilter";
 import { preparefilter, replaceCommonFilters, showDashboard, extractFilterValues, prepareMultiFilter } from "./DashboardUtils";
 import { Button } from "react-bootstrap";
-import "../../gui/src/public/css/sweetalert.css";
+import "../../public/css/sweetalert.css";
 import Flippy, { FrontSide, BackSide } from "react-flippy";
-import DashboardEditorModal from "./components/Modals/DashboardEditorModal";
+import DashboardEditorModal from "../Modals/DashboardEditorModal";
 import DashboardEditor from "./dashboardEditor";
 import Select, { createFilter } from "react-select";
 import exportFromJSON from "export-from-json";
@@ -137,7 +137,7 @@ class DashboardManager extends React.Component {
     let helper = this.restClient;
     let filterOptions = [];
     let inputs = this.state.inputs !== undefined ? this.state.inputs : undefined;
-    let dashboardStack = JSON.parse(JSON.stringify(this.state.dashboardStack)); //Contains everything that is part of a dashboard (Including the data and filter)
+    let dashboardStack = !isRefreshed ? [] : JSON.parse(JSON.stringify(this.state.dashboardStack)); //Contains everything that is part of a dashboard (Including the data and filter)
     let response = await helper.request("v1", '/analytics/dashboard?filter=[{"sort":[{"field":"name","dir":"asc"}],"skip":0,"take":0}]', {}, "get");
     if (response.data.length > 0) {
       that.setState({ dashList: response.data, uuid: "" });
@@ -290,6 +290,10 @@ class DashboardManager extends React.Component {
       // element.classList.add("disappear");
       element.classList.add("blurOut");
     });
+  }
+
+  refreshDashboard() {
+    this.fetchDashboards(false);
   }
 
   hideFilter() {
@@ -624,11 +628,11 @@ class DashboardManager extends React.Component {
                             <i className='fa fa-filter' aria-hidden='true'></i>
                           </Button>
                         )}
-                        {/* {
-                          <Button onClick={() => this.refreshDashboard()} title="Refresh OI">
-                            <i className="fa fa-refresh" aria-hidden="true"></i>
+                        {
+                          <Button onClick={() => this.refreshDashboard()} title='Refresh OI'>
+                            <i className='fa fa-refresh' aria-hidden='true'></i>
                           </Button>
-                        } */}
+                        }
                         {/* <ReactToPrint
                           trigger={() => {
                             return <Button title="Print OI">

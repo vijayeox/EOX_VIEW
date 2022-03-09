@@ -35,7 +35,7 @@ class TemplateUploadFileModal extends React.Component {
       });
       console.log("filelist-->", fileList[0]);
     }
-    this.setState({ fileList: fileList[0]});
+    this.setState({ fileList: fileList[0] });
   };
 
   handleRemove = () => {
@@ -49,7 +49,7 @@ class TemplateUploadFileModal extends React.Component {
   render() {
     const props = {
       action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
-      accept: [".tpl",".html"],
+      accept: [".tpl", ".html"],
       beforeUpload: this.handleBefore,
       onChange: this.handleChange,
       onRemove: this.handleRemove,
@@ -70,36 +70,29 @@ class TemplateUploadFileModal extends React.Component {
     return (
       <div>
         <Modal
-          title="Upload Template"
+          title='Upload Template'
           visible={showUploadFileModal}
           onCancel={this.props.onUploadCancel}
           footer={[
-            <Button key="back" onClick={this.props.onUploadCancel}>
+            <Button key='back' onClick={this.props.onUploadCancel}>
               Cancel
             </Button>,
-            <Button
-              key="submit"
-              type="primary"
-              onClick={() => this.props.onUploadoK(fileName, fileContent)}
-            >
+            <Button key='submit' type='primary' onClick={() => this.props.onUploadoK(fileName, fileContent)}>
               Upload
             </Button>,
-          ]}
-        >
+          ]}>
           {!showUploadedFile ? (
             <Dragger {...props}>
-              <p className="ant-upload-drag-icon">
+              <p className='ant-upload-drag-icon'>
                 <InboxOutlined />
               </p>
-              <p className="ant-upload-text">
-                Click or drag file to this area to upload
-              </p>
+              <p className='ant-upload-text'>Click or drag file to this area to upload</p>
               <div style={{ textAlign: "center" }}>
                 <Button>Choose file</Button>
               </div>
             </Dragger>
           ) : (
-            <div className="template-selected-file">
+            <div className='template-selected-file'>
               <div>{fileList.name}</div>
               <div onClick={this.handleRemove}>
                 <DeleteOutlined style={{ color: "red", cursor: "pointer" }} />
