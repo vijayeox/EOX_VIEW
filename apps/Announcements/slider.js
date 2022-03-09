@@ -303,13 +303,14 @@ class Slider extends React.Component {
 
 const Img = ({ data }) => {
   return (
-    <abbr title={data.link && !screenfull.isFullscreen ? data.link : undefined}>
+    // <abbr title={data.link && !screenfull.isFullscreen ? data.link : undefined}>
+    <abbr title={data.link ?data.link : undefined}> 
       <img
         id={data.uuid}
         src={data.media}
         alt="Announcement Banner"
         onClick={() => {
-          data.link && !screenfull.isFullscreen
+          data.link
             ? window.open(data.link, "_blank")
             : null;
           screenfull.isFullscreen ? screenfull.toggle(event.target) : null;
