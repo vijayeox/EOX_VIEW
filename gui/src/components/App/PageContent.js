@@ -5,7 +5,7 @@ import Swal from "sweetalert2";
 import FormRender from "./FormRender";
 import HTMLViewer from "./HTMLViewer";
 import CommentsView from "./CommentsView";
-import OX_Grid from "../../OX_Grid";
+import OX_Grid from "../../components/OI/OX_Grid";
 import SearchPage from "./SearchPage";
 import RenderButtons from "./RenderButtons";
 import Notification from "../../Notification";
@@ -18,8 +18,8 @@ import * as OxzionGUIComponents from "../../../index";
 import ParameterHandler from "./ParameterHandler";
 import PageNavigation from "../PageNavigation";
 import EntityViewer from "./EntityViewer";
-import Dashboard from "../../Dashboard";
-import DashboardManager from "../../DashboardManager";
+import Dashboard from "../../components/OI/Dashboard";
+import DashboardManager from "../../components/OI/DashboardManager";
 import ActivityLog from "./ActivityLog";
 import DynamicTemplateViewer from "./DynamicTemplateViewer";
 import KanbanView from "../Kanban/KanbanRoutes";
@@ -41,17 +41,14 @@ class PageContent extends React.Component {
     this.isTab = this.props.isTab;
     this.parentPage = this.props.parentPage ? this.props.parentPage : null;
     this.loader = this.core.make("oxzion/splash");
-    this.parentPageData = props.parentRowData
+    this.parentPageData = props.parentRowData;
     this.fetchExternalComponents().then((response) => {
-      this.extGUICompoents = response.guiComponent
-        ? response.guiComponent
-        : undefined;
+      this.extGUICompoents = response.guiComponent ? response.guiComponent : undefined;
       this.setState({
-        showLoader: false
+        showLoader: false,
       });
     });
-    this.contentDivID = "content_" + this.appId + "_" +
-      (this.pageId ? this.pageId : this.generateUUID());
+    this.contentDivID = "content_" + this.appId + "_" + (this.pageId ? this.pageId : this.generateUUID());
     this.state = {
       pageContent: this.props.pageContent ? this.props.pageContent : [],
       pageId: this.props.pageId,
@@ -61,26 +58,29 @@ class PageContent extends React.Component {
       fileId: this.props.fileId ? this.props.fileId : null,
       isMenuOpen: false,
       currentRow: this.props.currentRow ? this.props.currentRow : {},
-      title: '',
+      title: "",
       notif: this.notif,
-      displaySection: 'DB',
+      displaySection: "DB",
       sectionData: null,
     };
   }
 
-  generateUUID() { // Public Domain/MIT
-    let d = new Date().getTime();//Timestamp
-    let d2 = (performance && performance.now && (performance.now() * 1000)) || 0;//Time in microseconds since page-load or 0 if unsupported
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-      let r = Math.random() * 16;//random number between 0 and 16
-      if (d > 0) {  //Use timestamp until depleted
+  generateUUID() {
+    // Public Domain/MIT
+    let d = new Date().getTime(); //Timestamp
+    let d2 = (performance && performance.now && performance.now() * 1000) || 0; //Time in microseconds since page-load or 0 if unsupported
+    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
+      let r = Math.random() * 16; //random number between 0 and 16
+      if (d > 0) {
+        //Use timestamp until depleted
         r = (d + r) % 16 | 0;
         d = Math.floor(d / 16);
-      } else {    //Use microseconds since page-load if supported
+      } else {
+        //Use microseconds since page-load if supported
         r = (d2 + r) % 16 | 0;
         d2 = Math.floor(d2 / 16);
       }
-      return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+      return (c === "x" ? r : (r & 0x3) | 0x8).toString(16);
     });
   }
 
@@ -93,24 +93,14 @@ class PageContent extends React.Component {
       var PageRenderDiv = document.querySelector(".PageRender");
       this.loader.show(PageRenderDiv);
       this.fetchExternalComponents().then((response) => {
-        this.extGUICompoents = response.guiComponent
-          ? response.guiComponent
-          : undefined;
+        this.extGUICompoents = response.guiComponent ? response.guiComponent : undefined;
       });
       this.setState({ pageContent: this.props.pageContent });
     }
   }
 
   componentDidMount() {
-    document.getElementById(this.contentDivID)
-      ? document
-        .getElementById(this.contentDivID)
-        .addEventListener(
-          "clickAction",
-          (e) => this.buttonAction(e.detail, {}),
-          false
-        )
-      : null;
+    document.getElementById(this.contentDivID) ? document.getElementById(this.contentDivID).addEventListener("clickAction", (e) => this.buttonAction(e.detail, {}), false) : null;
   }
 
   renderButtons(e, action) {
@@ -120,42 +110,46 @@ class PageContent extends React.Component {
       var string = ParameterHandler.replaceParams(this.appId, action[key].rule, e);
       var _moment = moment;
       var profile = this.userprofile;
-      string = string.replace(/moment/g, '_moment');
+      string = string.replace(/moment/g, "_moment");
       var showButton = eval(string);
       var buttonStyles = action[key].icon
         ? {
-          width: "auto"
-        }
+            width: "auto",
+          }
         : {
-          width: "auto",
-          // paddingTop: "5px",
-          color: "white",
-          fontWeight: "600"
-        };
-      showButton ? actionButtons.push(
-        <abbr title={action[key].name} key={index}>
-          <Button
-            primary={true}
-            className=" btn manage-btn k-grid-edit-command"
-            onClick={() => {
-              action[key].confirmationMessage
-                ? Swal.fire({
-                  title: action[key].confirmationMessage,
-                  confirmButtonText: "Agree",
-                  confirmButtonColor: "#275362",
-                  showCancelButton: true,
-                  cancelButtonColor: "#7b7878",
-                  target: ".PageRender"
-                }).then((result) => {
-                  result.value ? this.buttonAction(action[key], e) : null;
-                }) : action[key].details ? this.buttonAction(action[key], e) : null;
-            }}
-            style={buttonStyles}
-          >
-            {action[key].icon ? (<i className={action[key].icon + " manageIcons"}></i>) : (action[key].name)}
-          </Button>
-        </abbr>
-      ) : null;
+            width: "auto",
+            // paddingTop: "5px",
+            color: "white",
+            fontWeight: "600",
+          };
+      showButton
+        ? actionButtons.push(
+            <abbr title={action[key].name} key={index}>
+              <Button
+                primary={true}
+                className=' btn manage-btn k-grid-edit-command'
+                onClick={() => {
+                  action[key].confirmationMessage
+                    ? Swal.fire({
+                        title: action[key].confirmationMessage,
+                        confirmButtonText: "Agree",
+                        confirmButtonColor: "#275362",
+                        showCancelButton: true,
+                        cancelButtonColor: "#7b7878",
+                        target: ".PageRender",
+                      }).then((result) => {
+                        result.value ? this.buttonAction(action[key], e) : null;
+                      })
+                    : action[key].details
+                    ? this.buttonAction(action[key], e)
+                    : null;
+                }}
+                style={buttonStyles}>
+                {action[key].icon ? <i className={action[key].icon + " manageIcons"}></i> : action[key].name}
+              </Button>
+            </abbr>
+          )
+        : null;
     }, this);
     return actionButtons;
   }
@@ -164,16 +158,7 @@ class PageContent extends React.Component {
     var url = config[0].content.route;
     var dataString = this.prepareDataRoute(url, e);
 
-    return (
-      <OX_Grid
-        appId={this.appId}
-        osjsCore={this.core}
-        data={dataString}
-        pageId={this.pageId}
-        gridToolbar={config[0].content.toolbarTemplate}
-        columnConfig={config[0].content.columnConfig}
-      />
-    );
+    return <OX_Grid appId={this.appId} osjsCore={this.core} data={dataString} pageId={this.pageId} gridToolbar={config[0].content.toolbarTemplate} columnConfig={config[0].content.columnConfig} />;
   }
 
   async buttonAction(actionCopy, rowData) {
@@ -290,8 +275,7 @@ class PageContent extends React.Component {
 
   setTitle = (title) => {
     this.setState({ title: title });
-  }
-
+  };
 
   hideMenu = () => {
     this.setState({ isMenuOpen: false });
@@ -301,18 +285,17 @@ class PageContent extends React.Component {
     this.hideMenu();
     this.setState({
       displaySection: section,
-      sectionData: data
+      sectionData: data,
     });
-
-  }
+  };
   editDashboard = (data) => {
-    this.switchSection('EDB', data);
-  }
+    this.switchSection("EDB", data);
+  };
 
   postSubmitCallback() {
     let ev = new CustomEvent("handleGridRefresh", {
       detail: { hideLoader: true },
-      bubbles: true
+      bubbles: true,
     });
     if (document.getElementById("navigation_" + this.appId)) {
       document.getElementById("navigation_" + this.appId).dispatchEvent(ev);
@@ -325,32 +308,17 @@ class PageContent extends React.Component {
       if (item.type == "Form") {
         var dataString = this.prepareDataRoute(item.url, this.state.currentRow);
         // This workflow instance id corresponds to completed workflow instance
-        var workflowInstanceId = ParameterHandler.replaceParams(this.appId,
-          item.workflowInstanceId,
-          this.state.currentRow
-        );
-        var workflowId = ParameterHandler.replaceParams(this.appId,
-          item.workflowId,
-          this.state.currentRow
-        );
-        var activityInstanceId = ParameterHandler.replaceParams(this.appId,
-          item.activityInstanceId,
-          this.state.currentRow
-        );
-        var cacheId = ParameterHandler.replaceParams(this.appId,
-          item.cacheId,
-          this.state.currentRow
-        );
-        var urlPostParams = ParameterHandler.replaceParams(this.appId,
-          item.urlPostParams,
-          this.state.currentRow
-        );
+        var workflowInstanceId = ParameterHandler.replaceParams(this.appId, item.workflowInstanceId, this.state.currentRow);
+        var workflowId = ParameterHandler.replaceParams(this.appId, item.workflowId, this.state.currentRow);
+        var activityInstanceId = ParameterHandler.replaceParams(this.appId, item.activityInstanceId, this.state.currentRow);
+        var cacheId = ParameterHandler.replaceParams(this.appId, item.cacheId, this.state.currentRow);
+        var urlPostParams = ParameterHandler.replaceParams(this.appId, item.urlPostParams, this.state.currentRow);
         var fileId = ParameterHandler.replaceParams(this.appId, item.fileId, this.state.currentRow);
         content.push(
           <FormRender
             {...item}
             key={i}
-            url={item.url == '' ? undefined : dataString}
+            url={item.url == "" ? undefined : dataString}
             urlPostParams={urlPostParams}
             core={this.core}
             proc={this.proc}
@@ -384,15 +352,8 @@ class PageContent extends React.Component {
         //   }
         // }
         var mergeRowData = this.props.params ? { ...this.props.params, ...this.state.currentRow } : this.state.currentRow;
-        var dataString = this.prepareDataRoute(
-          itemContent.route,
-          mergeRowData,
-          itemContent.disableAppId
-        );
-        var urlPostParams = ParameterHandler.replaceParams(this.appId,
-          item.urlPostParams,
-          mergeRowData
-        );
+        var dataString = this.prepareDataRoute(itemContent.route, mergeRowData, itemContent.disableAppId);
+        var urlPostParams = ParameterHandler.replaceParams(this.appId, item.urlPostParams, mergeRowData);
         var listOptions = itemContent.listOptions;
         var reorderable = false;
         if (listOptions && listOptions.reorderable == "true") {
@@ -429,17 +390,10 @@ class PageContent extends React.Component {
             });
           }
         }
-        var operations = ParameterHandler.replaceParams(this.appId,
-          itemContent.operations,
-          mergeRowData
-        );
+        var operations = ParameterHandler.replaceParams(this.appId, itemContent.operations, mergeRowData);
         content.push(
           <OX_Grid
-            rowTemplate={
-              itemContent.expandable
-                ? (e) => this.renderRow(e, itemContent.rowConfig)
-                : null
-            }
+            rowTemplate={itemContent.expandable ? (e) => this.renderRow(e, itemContent.rowConfig) : null}
             appId={this.appId}
             key={i}
             parentDiv={this.contentDivID}
@@ -455,13 +409,7 @@ class PageContent extends React.Component {
             pageId={this.pageId}
             notif={this.notif}
             urlPostParams={urlPostParams}
-            gridDefaultFilters={
-              itemContent.defaultFilters
-                ? typeof itemContent.defaultFilters == "string"
-                  ? JSON.parse(ParameterHandler.replaceParams(this.appId, itemContent.defaultFilters, mergeRowData))
-                  : JSON.parse(ParameterHandler.replaceParams(this.appId, JSON.stringify(itemContent.defaultFilters), mergeRowData))
-                : undefined
-            }
+            gridDefaultFilters={itemContent.defaultFilters ? (typeof itemContent.defaultFilters == "string" ? JSON.parse(ParameterHandler.replaceParams(this.appId, itemContent.defaultFilters, mergeRowData)) : JSON.parse(ParameterHandler.replaceParams(this.appId, JSON.stringify(itemContent.defaultFilters), mergeRowData))) : undefined}
             gridOperations={operations}
             gridToolbar={itemContent.toolbarTemplate}
             columnConfig={columnConfig}
@@ -479,25 +427,12 @@ class PageContent extends React.Component {
               title: "Actions",
               cell: (e) => this.renderButtons(e, item.content.actions),
               filterCell: {
-                type: "empty"
-              }
+                type: "empty",
+              },
             });
           }
         }
-        content.push(
-          <SearchPage
-            key={i}
-            core={this.core}
-            notif={this.notif}
-            content={item.content}
-            filterColumns={item.content.filterColumns}
-            appId={this.appId}
-            entityId={item.content.entityId}
-            columnConfig={columnConfig}
-            placeholder={placeholder}
-            {...item.content}
-          />
-        );
+        content.push(<SearchPage key={i} core={this.core} notif={this.notif} content={item.content} filterColumns={item.content.filterColumns} appId={this.appId} entityId={item.content.entityId} columnConfig={columnConfig} placeholder={placeholder} {...item.content} />);
       } else if (item.type == "DocumentViewer") {
         var url;
         if (item.url) {
@@ -506,27 +441,9 @@ class PageContent extends React.Component {
         if (item.content) {
           url = ParameterHandler.replaceParams(this.appId, item.content, this.state.currentRow);
         }
-        content.push(
-          <DocumentViewer
-            appId={this.appId}
-            key={i}
-            core={this.core}
-            url={url}
-          />
-        );
+        content.push(<DocumentViewer appId={this.appId} key={i} core={this.core} url={url} />);
       } else if (item.type == "RenderButtons") {
-        content.push(
-          <RenderButtons
-            appId={this.appId}
-            key={i}
-            ref={this.contentRef}
-            core={this.core}
-            pageId={this.state.pageId}
-            notif={this.notif}
-            currentRow={this.state.currentRow}
-            {...item}
-          />
-        );
+        content.push(<RenderButtons appId={this.appId} key={i} ref={this.contentRef} core={this.core} pageId={this.state.pageId} notif={this.notif} currentRow={this.state.currentRow} {...item} />);
       } else if (item.type == "Comment") {
         var url;
         if (item.content) {
@@ -540,42 +457,11 @@ class PageContent extends React.Component {
         if (item.fileId) {
           fileId = item.fileId;
         }
-        content.push(
-          <CommentsView
-            appId={this.appId}
-            key={i}
-            core={this.core}
-            url={url}
-            notif={this.notif}
-            fileId={fileId}
-            currentRow={this.state.currentRow}
-          />
-        );
+        content.push(<CommentsView appId={this.appId} key={i} core={this.core} url={url} notif={this.notif} fileId={fileId} currentRow={this.state.currentRow} />);
       } else if (item.type == "TabSegment") {
-        content.push(
-          <TabSegment
-            appId={this.appId}
-            core={this.core}
-            appId={this.appId}
-            notif={this.notif}
-            proc={this.props.proc}
-            fileId={fileId}
-            tabs={item.content.tabs}
-            pageId={this.state.pageId}
-            currentRow={this.state.currentRow}
-          />
-        );
+        content.push(<TabSegment appId={this.appId} core={this.core} appId={this.appId} notif={this.notif} proc={this.props.proc} fileId={fileId} tabs={item.content.tabs} pageId={this.state.pageId} currentRow={this.state.currentRow} />);
       } else if (item.type == "Dashboard") {
-        content.push(
-          <Dashboard
-            appId={this.appId}
-            key={i}
-            core={this.core}
-            notif={this.notif}
-            content={item.content}
-            proc={this.proc}
-          />
-        );
+        content.push(<Dashboard appId={this.appId} key={i} core={this.core} notif={this.notif} content={item.content} proc={this.proc} />);
       } else if (item.type == "DashboardManager") {
         var itemContent = item.gridContent ? item.gridContent : item.content;
         if (itemContent.dashboardoperations) {
@@ -594,116 +480,34 @@ class PageContent extends React.Component {
             });
           }
         }
-        var dashboardoperations = ParameterHandler.replaceParams(this.appId,
-          itemContent.dashboardoperations
-        );
+        var dashboardoperations = ParameterHandler.replaceParams(this.appId, itemContent.dashboardoperations);
         var uuid = item.content ? (item.content.uuid ? item.content.uuid : null) : null;
-        content.push(
-          <DashboardManager
-            appId={this.appId}
-            uuid={uuid}
-            content={item.content}
-            notif={this.notif}
-            args={this.core}
-            key={i}
-            content={item.content}
-            setTitle={() => { }}
-            proc={this.proc}
-            editDashboard="EDB"
-            hideEdit={true}
-            dashboardoperations={dashboardoperations}
-            parentDiv={this.contentDivID}
-            customActions={this.props.customActions}
-          />
-        );
+        content.push(<DashboardManager appId={this.appId} uuid={uuid} content={item.content} notif={this.notif} args={this.core} key={i} content={item.content} setTitle={() => {}} proc={this.proc} editDashboard='EDB' hideEdit={true} dashboardoperations={dashboardoperations} parentDiv={this.contentDivID} customActions={this.props.customActions} />);
       } else if (item.type == "Page") {
         var mergeRowData = this.props.params ? { ...this.props.params, ...item.params } : item.params;
         var params = ParameterHandler.replaceParams(this.appId, mergeRowData, this.state.currentRow);
-        content.push(
-          <Page
-            key={item.page_id}
-            config={this.props.config}
-            proc={this.props.proc}
-            isTab={this.isTab}
-            parentPage={this.parentPage}
-            app={this.props.appId}
-            notif={this.notif}
-            currentRow={this.state.currentRow}
-            pageId={item.page_id}
-            core={this.core}
-            {...params}
-          />
-        );
+        content.push(<Page key={item.page_id} config={this.props.config} proc={this.props.proc} isTab={this.isTab} parentPage={this.parentPage} app={this.props.appId} notif={this.notif} currentRow={this.state.currentRow} pageId={item.page_id} core={this.core} {...params} />);
       } else if (item.type == "Document" || item.type == "HTMLViewer") {
         var fileData = this.state.fileData ? this.state.fileData : this.state.currentRow;
         var fileId = item.fileId ? item.fileId : item.uuid;
         if (item.useRowData) {
           item.content = ParameterHandler.replaceParams(this.appId, item.content, this.state.currentRow);
         }
-        content.push(
-          <HTMLViewer
-            key={i}
-            core={this.core}
-            key={i}
-            appId={this.appId}
-            url={
-              item.url
-                ? ParameterHandler.replaceParams(this.appId, item.url, this.state.currentRow)
-                : undefined
-            }
-            fileId={fileId}
-            content={item.content ? item.content : ""}
-            fileData={fileData}
-            notif={this.notif}
-            className={item.className}
-            item={item}
-            currentRow={this.state.currentRow}
-          />
-        );
+        content.push(<HTMLViewer key={i} core={this.core} key={i} appId={this.appId} url={item.url ? ParameterHandler.replaceParams(this.appId, item.url, this.state.currentRow) : undefined} fileId={fileId} content={item.content ? item.content : ""} fileData={fileData} notif={this.notif} className={item.className} item={item} currentRow={this.state.currentRow} />);
       } else if (item.type == "EntityViewer") {
         var fileId = this.props.fileId ? this.props.fileId : this.state.currentRow.uuid;
-        content.push(
-          <EntityViewer
-            key={i}
-            core={this.core}
-            key={i}
-            appId={this.appId}
-            proc={this.props.proc}
-            fileId={fileId}
-            notif={this.notif}
-            fileData={this.state.currentRow}
-            className={item.className}
-          />
-        );
+        content.push(<EntityViewer key={i} core={this.core} key={i} appId={this.appId} proc={this.props.proc} fileId={fileId} notif={this.notif} fileData={this.state.currentRow} className={item.className} />);
       } else if (item.type == "History") {
         var fileId = this.props.fileId ? this.props.fileId : this.state.currentRow.uuid;
-        content.push(
-          <ActivityLog
-            appId={this.appId}
-            fileId={fileId}
-            core={this.core}
-            disableControls={item?.disableControls}
-          />
-        );
-      } else if (item.type === 'CustomPage') {
+        content.push(<ActivityLog appId={this.appId} fileId={fileId} core={this.core} disableControls={item?.disableControls} />);
+      } else if (item.type === "CustomPage") {
         var fileId = this.props.fileId ? this.props.fileId : this.state.currentRow.uuid;
-        return content.push(
-          <DynamicTemplateViewer
-            appId={this.appId}
-            fileId={fileId}
-            core={this.core}
-            data={item.content}
-            rowData={this.state.currentRow}
-          />);
+        return content.push(<DynamicTemplateViewer appId={this.appId} fileId={fileId} core={this.core} data={item.content} rowData={this.state.currentRow} />);
       } else if (item.type == "KanbanViewer") {
-        content.push(
-          <KanbanView core={this.core} appId={this.appId} filters={item.content.filters} url={item.content.url} options={item.content.options} ymlData={item.content.ymlData}/>
-        );
+        content.push(<KanbanView core={this.core} appId={this.appId} filters={item.content.filters} url={item.content.url} options={item.content.options} ymlData={item.content.ymlData} />);
       } else if (item.type == "GoogleMapViewer") {
-        content.push(
-          <CustomGoogleMapComponent core={this.core} appId={this.appId} />
-        );
-      } else if(item.type == "ReactComponent"){
+        content.push(<CustomGoogleMapComponent core={this.core} appId={this.appId} />);
+      } else if (item.type == "ReactComponent") {
         var fileId = this.props.fileId ? this.props.fileId : this.state.currentRow.uuid;
         content.push(
           <ReactComponent fileId={fileId} parentPageData={this.parentPageData} core={this.core} appId={this.appId} data={item.content} componentProps={this}/>
@@ -725,19 +529,7 @@ class PageContent extends React.Component {
         if (this.extGUICompoents && this.extGUICompoents[item.type]) {
           this.externalComponent = this.extGUICompoents[item.type];
           item.params = ParameterHandler.replaceParams(this.appId, item.params, this.state.currentRow);
-          let guiComponent = this.extGUICompoents && this.extGUICompoents[item.type] ? (
-            <this.externalComponent
-              {...item}
-              key={i}
-              components={OxzionGUIComponents}
-              appId={this.appId}
-              notif={this.notif}
-              core={this.core}
-              refresh={this.postSubmitCallback}
-            ></this.externalComponent>
-          ) : (
-            <h3 key={i}>The component used is not available.</h3>
-          );
+          let guiComponent = this.extGUICompoents && this.extGUICompoents[item.type] ? <this.externalComponent {...item} key={i} components={OxzionGUIComponents} appId={this.appId} notif={this.notif} core={this.core} refresh={this.postSubmitCallback}></this.externalComponent> : <h3 key={i}>The component used is not available.</h3>;
           content.push(guiComponent);
         } else {
           content.push(<h3 key={i}>The component used is not available.</h3>);
@@ -754,15 +546,11 @@ class PageContent extends React.Component {
   }
 
   render() {
-    if (
-      this.state.pageContent &&
-      this.state.pageContent.length > 0 &&
-      !this.state.showLoader
-    ) {
+    if (this.state.pageContent && this.state.pageContent.length > 0 && !this.state.showLoader) {
       this.loader.destroy();
       var pageRender = this.renderContent(this.state.pageContent);
       return (
-        <div id={this.contentDivID} className="contentDiv">
+        <div id={this.contentDivID} className='contentDiv'>
           {pageRender}
         </div>
       );
