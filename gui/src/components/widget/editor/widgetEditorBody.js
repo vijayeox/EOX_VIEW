@@ -1,4 +1,4 @@
-import WidgetRenderer from "../../../WidgetRenderer";
+import WidgetRenderer from "../../OI/WidgetRenderer";
 import AbstractEditor from "./abstractEditor";
 import JSONHtmlForm from "./JSONtoHTMLForm";
 import React from "react";
