@@ -1,6 +1,7 @@
 import { React, ReactDOM } from "oxziongui";
 import screenfull from "screenfull";
 import SlidingPanel from "react-sliding-panel";
+import stayTunedIcon from "./images/stay_tuned.jpg";
 
 class Slider extends React.Component {
   constructor(props) {
@@ -200,7 +201,7 @@ class Slider extends React.Component {
             className="Announcement-visuals col s12"
             style={{ flexDirection: "column" }}
           >
-            <div className="fallbackImage">
+            <div className="fallbackImage"style={ this.state.announcements.length == 0 ? { height:'100%',width:'71%'} : {}}>
               <Img data={data} />
             </div>
           </div>
@@ -236,7 +237,8 @@ class Slider extends React.Component {
               name: "No Announcement have been posted for you right now.",
               description: "Stay Tuned for updates!",
               media_type: "image",
-              media: "https://svgshare.com/i/DqC.svg",
+              // media: "https://svgshare.com/i/DqC.svg",
+              media: stayTunedIcon,
               uuid: "abc-123-321",
               fallback: true
             })
@@ -303,12 +305,12 @@ class Slider extends React.Component {
 
 const Img = ({ data }) => {
   return (
-    // <abbr title={data.link && !screenfull.isFullscreen ? data.link : undefined}>
-    <abbr title={data.link ?data.link : undefined}> 
+    <abbr title={data.link && !screenfull.isFullscreen ? data.link : undefined}>
+    {/* // <abbr title={data.link ?data.link : undefined}>  */}
       <img
         id={data.uuid}
         src={data.media}
-        alt="Announcement Banner"
+        alt="Stay Tuned for New Announcements!!!"
         onClick={() => {
           data.link
             ? window.open(data.link, "_blank")
