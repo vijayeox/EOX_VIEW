@@ -19,7 +19,8 @@
     "preset-react": "^1.0.0",
     "react-sliding-panel": "0.0.4",
     "screenfull": "^5.0.2",
-    "styled-components": "^5.1.0"
+    "styled-components": "^5.1.0",
+    "url-loader": "^4.1.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
