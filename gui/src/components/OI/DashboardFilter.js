@@ -615,7 +615,6 @@ class DashboardFilter extends React.Component {
         value: "",
         key: length,
         filterIndex: "",
-        Filters,
       });
     } else if (fieldType === "numeric") {
       filters.push({
