@@ -37,7 +37,7 @@ class Announcement extends React.Component {
       (this.config = {
         height: "100%",
         width: "100%",
-        filterable: true,
+        // filterable: true,
         reorderable: true,
         sortable: true,
         // sort:true,
@@ -55,6 +55,7 @@ class Announcement extends React.Component {
           {
             title: "Banner",
             field: "media",
+            filterable: false,
           },
           {
             title: "Name",
