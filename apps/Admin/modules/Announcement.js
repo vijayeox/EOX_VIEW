@@ -31,13 +31,13 @@ class Announcement extends React.Component {
         type: "button",
         icon: " fad fa-plus",
         text: "CREATE",
-        title: "Create New",
+        title: "Create New Announcement",
       },
     }),
       (this.config = {
         height: "100%",
         width: "100%",
-        // filterable: true,
+        filterable: true,
         reorderable: true,
         sortable: true,
         // sort:true,
@@ -55,7 +55,7 @@ class Announcement extends React.Component {
           {
             title: "Banner",
             field: "media",
-            filterable: false,
+            //filterable: false,
           },
           {
             title: "Name",
