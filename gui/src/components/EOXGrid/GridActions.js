@@ -83,7 +83,6 @@ export default class GridActions extends React.Component {
 
   async handleSubmit(formData, index, createFlag) {
     if (formData) { 
-      console.log(formData,this.editApi)
       this.props.appendAttachments?.(formData);
       Requests.editFormPushData(this.core, this.editApi, this.props.getCustomPayload?.(formData, 'put') || formData, formData, this.props.createCrudType).then(
         (response) => {
@@ -117,9 +116,9 @@ export default class GridActions extends React.Component {
     } else {
       document.getElementById(gridsId).classList.remove("display-none");
     }
-
+    let formRenderProps = { data };
     if(this.props.prepareFormData){
-        await this.props.prepareFormData(data)
+      formRenderProps = await this.props.prepareFormData(data);   
       }
       ReactDOM.render(
         data ? (
@@ -136,7 +135,7 @@ export default class GridActions extends React.Component {
             <FormRender
               key={"abc"}
               core={this.core}
-              data={data}
+              {...formRenderProps}
               updateFormData={true}
               getAttachment={true}
               postSubmitCallback={(formData) =>

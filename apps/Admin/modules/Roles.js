@@ -143,8 +143,6 @@ class Role extends React.Component {
         "get"
       );
       masterPrivilege.then((response) => {
-        console.log("response", response);
-        // data.privilege = response.data.masterPrivilege;
         let privilegeList = response.data.masterPrivilege;
         const set = new Set()
         const privilegesSet = privilegeList.filter(v => {
@@ -152,7 +150,6 @@ class Role extends React.Component {
           set.add(v.name);
           return v;
         })
-        // data.privilege = privilegesSet;
         resolve({ data: { privilege: privilegesSet } })
       })
     })
@@ -166,12 +163,10 @@ class Role extends React.Component {
         {},
         "get"
       );
-      // this.editApi = "/account/" + data.accountId + "/masterprivilege/" + data.uuid;
       if (!data) {
-        return resolve();
+        return resolve({ data });
       }
       masterPrivilege.then((response) => {
-        console.log("Response",response)
         let privilegeList = (response.data.rolePrivilege.length > 0) ? response.data.rolePrivilege : response.data.masterPrivilege;
         const set = new Set()
         const privilegesSet = privilegeList.filter(v => {
@@ -179,8 +174,7 @@ class Role extends React.Component {
           set.add(v.name);
           return v;
         })
-        data.privilege = privilegesSet;
-        resolve()
+        resolve({ data: { privilege: privilegesSet, ...data } })
       })
     })
   }
@@ -190,7 +184,7 @@ class Role extends React.Component {
       let permissionValue = Object.entries(v.permission).filter(([k, v]) => v).slice(-1)?.[0]?.[0]
       return { ...v, permission: permissionValue ? permissionValue.toString() : "" }
     })
-    formData.privilege = privilege;
+    formData.privileges = privilege;
     return formData;
   }
 

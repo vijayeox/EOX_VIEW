@@ -91,6 +91,7 @@
             {
               "label": "App Name",
               "autofocus": true,
+              "disabled": true,
               "tableView": true,
               "case": "uppercase",
               "clearOnHide": false,
@@ -105,6 +106,7 @@
             },
             {
               "label": "Privilege Name",
+              "disabled": true,
               "tableView": true,
               "key": "privilege_name",
               "type": "textfield",
@@ -355,14 +357,6 @@
       ]
     },
     {
-      "label": "basePrivileges",
-      "customDefaultValue": "// basePrivileges coming from Roles.js",
-      "key": "basePrivileges",
-      "type": "hidden",
-      "input": true,
-      "tableView": false
-    },
-    {
       "label": "Columns",
       "columns": [
         {
@@ -442,6 +436,6 @@
   "path": "adminrolescopy",
   "project": "5dc1489e4f668513e9535090",
   "created": "2022-03-13T08:07:00.873Z",
-  "modified": "2022-03-16T09:46:16.220Z",
+  "modified": "2022-03-16T13:46:36.546Z",
   "machineName": "eoxproductsupport:adminRolesCopy"
 }
