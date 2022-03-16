@@ -31,7 +31,7 @@ class Announcement extends React.Component {
         type: "button",
         icon: " fad fa-plus",
         text: "CREATE",
-        title: "Create New",
+        title: "Create New Announcement",
       },
     }),
       (this.config = {
@@ -55,6 +55,7 @@ class Announcement extends React.Component {
           {
             title: "Banner",
             field: "media",
+            //filterable: false,
           },
           {
             title: "Name",
