@@ -29,10 +29,7 @@ const loginAdapter = (core, config) => ({
       "json"
     );
     var lsHelper = new LocalStorageAdapter();
-    if (
-      (lsHelper.supported() || lsHelper.cookieEnabled()) &&
-      response["jwt"] != null
-    ) {
+    if ((lsHelper.supported() || lsHelper.cookieEnabled()) && response["jwt"] != null) {
       lsHelper.purge("AUTH_token");
       lsHelper.purge("REFRESH_token");
       lsHelper.purge("User");
