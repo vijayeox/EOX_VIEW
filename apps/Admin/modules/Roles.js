@@ -2,6 +2,7 @@ import { React, EOXGrid } from "oxziongui";
 import { TitleBar } from "./components/titlebar";
 import { GetData } from "./components/apiCalls";
 import form from "../modules/forms/editCreateRole.json";
+import { data } from "jquery";
 
 class Role extends React.Component {
   constructor(props) {
@@ -44,7 +45,6 @@ class Role extends React.Component {
         },
         groupable: true,
         resizable: true,
-
         isDrillDownTable: true,
 
         column: [
@@ -75,7 +75,7 @@ class Role extends React.Component {
         },
       }),
       (this.api = "account/" + this.state.selectedOrg + "/roles");
-    this.editApi = "role";
+    this.editApi = "account/" + this.state.selectedOrg + "/role";
     this.createApi = "account/" + this.state.selectedOrg + "/role";
     this.deleteApi = "account/" + this.state.selectedOrg + "/role";
   }
@@ -115,9 +115,8 @@ class Role extends React.Component {
     this.config.pageSize = take;
     GetData(
       this.api +
-        `?filter=[{"skip":${skip},"take":${
-          this.config.pageSize
-        }, "filter" : ${JSON.stringify(filter)}}]`
+      `?filter=[{"skip":${skip},"take":${this.config.pageSize
+      }, "filter" : ${JSON.stringify(filter)}}]`
     )
       .then((data) => {
         this.setState({
@@ -134,6 +133,67 @@ class Role extends React.Component {
         });
       });
   }
+
+  fetchPrivilegesCreate = () => {
+    return new Promise(resolve => {
+      let masterPrivilege = this.core.make("oxzion/restClient").request(
+        "v1",
+        "/account/" + this.props.userProfile.accountId + "/masterprivilege",
+        {},
+        "get"
+      );
+      masterPrivilege.then((response) => {
+        console.log("response", response);
+        // data.privilege = response.data.masterPrivilege;
+        let privilegeList = response.data.masterPrivilege;
+        const set = new Set()
+        const privilegesSet = privilegeList.filter(v => {
+          if (set.has(v.name)) return;
+          set.add(v.name);
+          return v;
+        })
+        // data.privilege = privilegesSet;
+        resolve({ data: { privilege: privilegesSet } })
+      })
+    })
+  }
+
+  fetchPrivileges = (data) => {
+    return new Promise(resolve => {
+      let masterPrivilege = this.core.make("oxzion/restClient").request(
+        "v1",
+        "/account/" + this.props.userProfile.accountId + "/masterprivilege/" + data?.uuid,
+        {},
+        "get"
+      );
+      // this.editApi = "/account/" + data.accountId + "/masterprivilege/" + data.uuid;
+      if (!data) {
+        return resolve();
+      }
+      masterPrivilege.then((response) => {
+        console.log("Response",response)
+        let privilegeList = (response.data.rolePrivilege.length > 0) ? response.data.rolePrivilege : response.data.masterPrivilege;
+        const set = new Set()
+        const privilegesSet = privilegeList.filter(v => {
+          if (set.has(v.name)) return;
+          set.add(v.name);
+          return v;
+        })
+        data.privilege = privilegesSet;
+        resolve()
+      })
+    })
+  }
+
+  getCustomPayload = (formData, type) => {
+    const privilege = formData.privilege.map(v => {
+      let permissionValue = Object.entries(v.permission).filter(([k, v]) => v).slice(-1)?.[0]?.[0]
+      return { ...v, permission: permissionValue ? permissionValue.toString() : "" }
+    })
+    formData.privilege = privilege;
+    return formData;
+  }
+
   render() {
     return (
       <div style={{ height: "inherit" }}>
@@ -165,6 +225,9 @@ class Role extends React.Component {
             dataStateChanged={this.dataStateChanged.bind(this)}
             isLoading={this.state.isLoading}
             // key={Math.random()}
+            prepareFormData={this.fetchPrivileges}
+            prepareCreateFormData={this.fetchPrivilegesCreate}
+            getCustomPayload={this.getCustomPayload}
           />
         </React.Suspense>
       </div>

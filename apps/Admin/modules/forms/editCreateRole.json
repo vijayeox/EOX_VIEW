@@ -1,8 +1,8 @@
 {
-  "_id": "61add87be572529063783308",
+  "_id": "622da6244332a7787ec95d48",
   "type": "form",
   "tags": [],
-  "owner": "5df87f7ef5bff0ba0e620c87",
+  "owner": "61778ff79b6befc3f1b61d37",
   "components": [
     {
       "title": "Create Role",
@@ -14,135 +14,353 @@
       "tableView": false,
       "components": [
         {
-          "label": "Role Name",
+          "label": "Name of the role",
           "tableView": true,
-          "validate": { "required": true },
-          "key": "roleName",
+          "customDefaultValue": "console.log(\"Form OnLoad\", data)",
+          "validate": {
+            "required": true
+          },
+          "key": "name",
           "type": "textfield",
           "input": true
         },
         {
           "label": "Role Description",
           "tableView": true,
-          "validate": { "required": true },
-          "key": "roleDescription",
+          "validate": {
+            "required": true
+          },
+          "key": "description",
           "type": "textfield",
+          "input": true
+        }
+      ]
+    },
+    {
+      "title": "Privileges",
+      "collapsible": true,
+      "key": "privilegesGrid",
+      "type": "panel",
+      "label": "Panel",
+      "collapsed": false,
+      "input": false,
+      "tableView": false,
+      "components": [
+        {
+          "label": "Select All",
+          "tableView": false,
+          "defaultValue": false,
+          "key": "selectAll",
+          "type": "checkbox",
           "input": true
         },
         {
-          "label": "Table",
-          "cellAlignment": "left",
-          "key": "table",
-          "type": "table",
-          "numCols": 6,
-          "input": false,
+          "label": "Privileges",
+          "reorder": false,
+          "addAnother": "Add Privilege",
+          "addAnotherPosition": "bottom",
+          "layoutFixed": false,
+          "enableRowGroups": false,
+          "initEmpty": false,
           "tableView": false,
-          "rows": [
-            [
-              {
-                "components": [
-                  {
-                    "label": "HTML",
-                    "attrs": [{ "attr": "", "value": "" }],
-                    "content": "<b>APP Name</b>",
-                    "refreshOnChange": false,
-                    "key": "html",
-                    "type": "htmlelement",
-                    "input": false,
-                    "tableView": false
-                  }
-                ]
+          "defaultValue": [
+            {
+              "name": "",
+              "permission": "",
+              "privilege_name": "",
+              "permission_checkbox": {
+                "1": false,
+                "3": false,
+                "7": false,
+                "15": false
               },
-              {
-                "components": [
-                  {
-                    "label": "HTML",
-                    "attrs": [{ "attr": "", "value": "" }],
-                    "content": "<b>Privilege Name</b>",
-                    "refreshOnChange": false,
-                    "key": "html1",
-                    "type": "htmlelement",
-                    "input": false,
-                    "tableView": false
-                  }
-                ]
+              "permissionText": ""
+            }
+          ],
+          "clearOnHide": false,
+          "allowCalculateOverride": true,
+          "validate": {
+            "minLength": 1
+          },
+          "key": "privilege",
+          "type": "datagrid",
+          "defaultOpen": false,
+          "noFirstRow": false,
+          "input": true,
+          "components": [
+            {
+              "label": "App Name",
+              "autofocus": true,
+              "tableView": true,
+              "case": "uppercase",
+              "clearOnHide": false,
+              "validate": {
+                "unique": true
               },
-              {
-                "components": [
-                  {
-                    "label": "HTML",
-                    "attrs": [{ "attr": "", "value": "" }],
-                    "content": "<b>Read</b>",
-                    "refreshOnChange": false,
-                    "key": "html2",
-                    "type": "htmlelement",
-                    "input": false,
-                    "tableView": false
-                  }
-                ]
+              "unique": true,
+              "errorLabel": "Privilege Name",
+              "key": "name",
+              "type": "textfield",
+              "input": true
+            },
+            {
+              "label": "Privilege Name",
+              "tableView": true,
+              "key": "privilege_name",
+              "type": "textfield",
+              "input": true
+            },
+            {
+              "label": "Permission",
+              "optionsLabelPosition": "right",
+              "inline": true,
+              "tableView": false,
+              "defaultValue": {
+                "1": false,
+                "3": false,
+                "7": false,
+                "15": false
               },
-              {
-                "components": [
-                  {
-                    "label": "HTML",
-                    "attrs": [{ "attr": "", "value": "" }],
-                    "content": "<b>Write</b>",
-                    "refreshOnChange": false,
-                    "key": "html3",
-                    "type": "htmlelement",
-                    "input": false,
-                    "tableView": false
-                  }
-                ]
+              "values": [
+                {
+                  "label": "read",
+                  "value": "1",
+                  "shortcut": ""
+                },
+                {
+                  "label": "write",
+                  "value": "3",
+                  "shortcut": ""
+                },
+                {
+                  "label": "create",
+                  "value": "7",
+                  "shortcut": ""
+                },
+                {
+                  "label": "delete",
+                  "value": "15",
+                  "shortcut": ""
+                }
+              ],
+              "clearOnHide": false,
+              "validate": {
+                "custom": "var selectedMax = 0;\nvar permissionMax = 0;\nif (row.permission['15'] == true) {\n  permissionMax = 15;\n}\nelse if (row.permission['7'] == true) {\n  permissionMax = 7;\n}\nelse if (row.permission['3'] == true) {\n  permissionMax = 3;\n}\nelse if (row.permission['1'] == true) {\n  permissionMax = 1;\n}\n\nif (row.permission['15'] == true) {\n  selectedMax = 15;\n}\nelse if (row.permission['7'] == true) {\n  selectedMax = 7;\n}\nelse if (row.permission['3'] == true) {\n  selectedMax = 3;\n}\nelse if (row.permission['1'] == true) {\n  selectedMax = 1;\n}\nvalid =\n  selectedMax <= permissionMax\n    ? true\n    : \"Please select a valid permission level\";"
               },
-              {
-                "components": [
-                  {
-                    "label": "HTML",
-                    "attrs": [{ "attr": "", "value": "" }],
-                    "content": "<b>Create</b>",
-                    "refreshOnChange": false,
-                    "key": "html4",
-                    "type": "htmlelement",
-                    "input": false,
-                    "tableView": false
-                  }
-                ]
-              },
-              {
-                "components": [
-                  {
-                    "label": "HTML",
-                    "attrs": [{ "attr": "", "value": "" }],
-                    "content": "<b>Delete</b>",
-                    "refreshOnChange": false,
-                    "key": "html5",
-                    "type": "htmlelement",
-                    "input": false,
-                    "tableView": false
-                  }
-                ]
-              }
-            ],
-            [
-              { "components": [] },
-              { "components": [] },
-              { "components": [] },
-              { "components": [] },
-              { "components": [] },
-              { "components": [] }
-            ],
-            [
-              { "components": [] },
-              { "components": [] },
-              { "components": [] },
-              { "components": [] },
-              { "components": [] },
-              { "components": [] }
-            ]
+              "key": "permission",
+              "logic": [
+                {
+                  "name": "FFTF",
+                  "trigger": {
+                    "type": "javascript",
+                    "javascript": "result = (row.permission['1'] == false && row.permission['3'] == false && row.permission['7'] == true && row.permission['15'] == false);"
+                  },
+                  "actions": [
+                    {
+                      "name": "action",
+                      "type": "value",
+                      "value": "value = {'15': false, '7': true, '3': true, '1': true};"
+                    }
+                  ]
+                },
+                {
+                  "name": "FFFT",
+                  "trigger": {
+                    "type": "javascript",
+                    "javascript": "result = (row.permission['1'] == false && row.permission['3'] == false && row.permission['7'] == false && row.permission['15'] == true);"
+                  },
+                  "actions": [
+                    {
+                      "name": "action",
+                      "type": "value",
+                      "value": "value = {'15': true, '7': true, '3': true, '1': true};"
+                    }
+                  ]
+                },
+                {
+                  "name": "TFTF",
+                  "trigger": {
+                    "type": "javascript",
+                    "javascript": "result = (row.permission['1'] == true && row.permission['3'] == false && row.permission['7'] == true && row.permission['15'] == false);"
+                  },
+                  "actions": [
+                    {
+                      "name": "action",
+                      "type": "value",
+                      "value": "value = {'15': false, '7': true, '3': true, '1': true};"
+                    }
+                  ]
+                },
+                {
+                  "name": "TFFT",
+                  "trigger": {
+                    "type": "javascript",
+                    "javascript": "\r\nresult = (row.permission['1'] == true && row.permission['3'] == false && row.permission['7'] == false && row.permission['15'] == true);"
+                  },
+                  "actions": [
+                    {
+                      "name": "action",
+                      "type": "value",
+                      "value": "value = {'15': true, '7': true, '3': true, '1': true};"
+                    }
+                  ]
+                },
+                {
+                  "name": "FTTF",
+                  "trigger": {
+                    "type": "javascript",
+                    "javascript": "result = (row.permission['1'] == false && row.permission['3'] == true && row.permission['7'] == true && row.permission['15'] == false);"
+                  },
+                  "actions": [
+                    {
+                      "name": "action",
+                      "type": "value",
+                      "value": "value = {'15': false, '7': true, '3': true, '1': true};"
+                    }
+                  ]
+                },
+                {
+                  "name": "FFTT",
+                  "trigger": {
+                    "type": "javascript",
+                    "javascript": "result = (row.permission['1'] == false && row.permission['3'] == false && row.permission['7'] == true && row.permission['15'] == true);"
+                  },
+                  "actions": [
+                    {
+                      "name": "action",
+                      "type": "value",
+                      "value": "value = {'15': true, '7': true, '3': true, '1': true};"
+                    }
+                  ]
+                },
+                {
+                  "name": "FTFT",
+                  "trigger": {
+                    "type": "javascript",
+                    "javascript": "result = (row.permission['1'] == false && row.permission['3'] == true && row.permission['7'] == false && row.permission['15'] == true);"
+                  },
+                  "actions": [
+                    {
+                      "name": "action",
+                      "type": "value",
+                      "value": "value = {'15': true, '7': false, '3': true, '1': false};"
+                    }
+                  ]
+                },
+                {
+                  "name": "TTTF",
+                  "trigger": {
+                    "type": "javascript",
+                    "javascript": "result = (row.permission['1'] == true && row.permission['3'] == true && row.permission['7'] == true && row.permission['15'] == false);"
+                  },
+                  "actions": [
+                    {
+                      "name": "action",
+                      "type": "value",
+                      "value": "value = {'15': false, '7': true, '3': true, '1': true};"
+                    }
+                  ]
+                },
+                {
+                  "name": "TFTT",
+                  "trigger": {
+                    "type": "javascript",
+                    "javascript": "result = (row.permission['1'] == true && row.permission['3'] == false && row.permission['7'] == true && row.permission['15'] == true);"
+                  },
+                  "actions": [
+                    {
+                      "name": "action",
+                      "type": "value",
+                      "value": "value = {'15': true, '7': true, '3': true, '1': true};"
+                    }
+                  ]
+                },
+                {
+                  "name": "FTTT",
+                  "trigger": {
+                    "type": "javascript",
+                    "javascript": "result = (row.permission['1'] == false && row.permission['3'] == true && row.permission['7'] == true && row.permission['15'] == true);"
+                  },
+                  "actions": [
+                    {
+                      "name": "action",
+                      "type": "value",
+                      "value": "value = {'15': false, '7': false, '3': false, '1': true};"
+                    }
+                  ]
+                },
+                {
+                  "name": "TTFT",
+                  "trigger": {
+                    "type": "javascript",
+                    "javascript": "result = (row.permission['1'] == true && row.permission['3'] == true && row.permission['7'] == false && row.permission['15'] == true);"
+                  },
+                  "actions": [
+                    {
+                      "name": "action",
+                      "type": "value",
+                      "value": "value = {'15': true, '7': true, '3': true, '1': true};"
+                    }
+                  ]
+                },
+                {
+                  "name": "FTFF",
+                  "trigger": {
+                    "type": "javascript",
+                    "javascript": "result = (row.permission['1'] == false && row.permission['3'] == true && row.permission['7'] == false && row.permission['15'] == false);"
+                  },
+                  "actions": [
+                    {
+                      "name": "action",
+                      "type": "value",
+                      "value": "value = {'15': false, '7': false, '3': false, '1': true};"
+                    }
+                  ]
+                },
+                {
+                  "name": "FFFF",
+                  "trigger": {
+                    "type": "javascript",
+                    "javascript": "result = (row.permission['1'] == false && row.permission['3'] == false && row.permission['7'] == false && row.permission['15'] == false);"
+                  },
+                  "actions": [
+                    {
+                      "name": "action",
+                      "type": "value",
+                      "value": "value = {'15': false, '7': false, '3': false, '1': true};\n"
+                    }
+                  ]
+                },
+                {
+                  "name": "selectAllTrigger",
+                  "trigger": {
+                    "type": "javascript",
+                    "javascript": "result = (data.selectAll === true);"
+                  },
+                  "actions": [
+                    {
+                      "name": "selectAllAction",
+                      "type": "value",
+                      "value": "value = {'15': true, '7': true, '3': true, '1': true};"
+                    }
+                  ]
+                }
+              ],
+              "type": "selectboxes",
+              "input": true,
+              "inputType": "checkbox"
+            }
           ]
         }
       ]
+    },
+    {
+      "label": "basePrivileges",
+      "customDefaultValue": "// basePrivileges coming from Roles.js",
+      "key": "basePrivileges",
+      "type": "hidden",
+      "input": true,
+      "tableView": false
     },
     {
       "label": "Columns",
@@ -195,6 +413,7 @@
           "currentWidth": 6
         }
       ],
+      "customClass": "pb-3",
       "key": "columns",
       "type": "columns",
       "input": false,
@@ -203,7 +422,7 @@
   ],
   "revisions": "",
   "_vid": 0,
-  "title": "Admin - Role",
+  "title": "Admin - Roles (Copy)",
   "display": "form",
   "access": [
     {
@@ -219,10 +438,10 @@
   "controller": "",
   "properties": {},
   "settings": {},
-  "name": "adminRole",
-  "path": "adminrole",
+  "name": "adminRolesCopy",
+  "path": "adminrolescopy",
   "project": "5dc1489e4f668513e9535090",
-  "created": "2021-12-06T09:31:39.444Z",
-  "modified": "2022-01-03T08:12:14.495Z",
-  "machineName": "eoxproductsupport:adminRole"
+  "created": "2022-03-13T08:07:00.873Z",
+  "modified": "2022-03-16T09:46:16.220Z",
+  "machineName": "eoxproductsupport:adminRolesCopy"
 }
