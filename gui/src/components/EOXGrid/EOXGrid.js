@@ -419,7 +419,6 @@ export default class EOXGrid extends React.Component {
 									key={columns.field}
 									// field={columns.field}
 									title={columns.title}
-									filterable={columns.filterable}
 									cell={(props) => (
 										<LogoCell
 											{...props}
@@ -434,7 +433,6 @@ export default class EOXGrid extends React.Component {
 									key={columns.field}
 									field={columns.field}
 									title={columns.title}
-									filterable={columns.filterable}
 								></GridColumn>
 							)
 						)}
