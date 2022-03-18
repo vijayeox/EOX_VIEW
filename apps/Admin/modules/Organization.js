@@ -55,6 +55,7 @@ class Organization extends React.Component {
           {
             title: "Image",
             field: "logo",
+            filterable:false,
           },
 
           {
