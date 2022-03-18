@@ -157,7 +157,6 @@ class PageContent extends React.Component {
   renderRow(e, config) {
     var url = config[0].content.route;
     var dataString = this.prepareDataRoute(url, e);
-
     return <OX_Grid appId={this.appId} osjsCore={this.core} data={dataString} pageId={this.pageId} gridToolbar={config[0].content.toolbarTemplate} columnConfig={config[0].content.columnConfig} />;
   }
 
@@ -509,23 +508,11 @@ class PageContent extends React.Component {
         content.push(<CustomGoogleMapComponent core={this.core} appId={this.appId} />);
       } else if (item.type == "ReactComponent") {
         var fileId = this.props.fileId ? this.props.fileId : this.state.currentRow.uuid;
-        content.push(
-          <ReactComponent fileId={fileId} parentPageData={this.parentPageData} core={this.core} appId={this.appId} data={item.content} componentProps={this}/>
-        );
-      } else if(item.type == "UploadArtifact"){
-          item.params = ParameterHandler.replaceParams(this.appId, item.params, this.state.currentRow);
-          content.push(
-          <UploadArtifact
-              {...item}
-              key={i}
-              components={OxzionGUIComponents}
-              appId={this.appId}
-              notif={this.notif}
-              core={this.core}
-              refresh={this.postSubmitCallback}
-            ></UploadArtifact>
-        )
-      }else {
+        content.push(<ReactComponent fileId={fileId} parentPageData={this.parentPageData} core={this.core} appId={this.appId} data={item.content} componentProps={this} />);
+      } else if (item.type == "UploadArtifact") {
+        item.params = ParameterHandler.replaceParams(this.appId, item.params, this.state.currentRow);
+        content.push(<UploadArtifact {...item} key={i} components={OxzionGUIComponents} appId={this.appId} notif={this.notif} core={this.core} refresh={this.postSubmitCallback}></UploadArtifact>);
+      } else {
         if (this.extGUICompoents && this.extGUICompoents[item.type]) {
           this.externalComponent = this.extGUICompoents[item.type];
           item.params = ParameterHandler.replaceParams(this.appId, item.params, this.state.currentRow);
