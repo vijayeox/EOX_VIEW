@@ -170,11 +170,12 @@ class DashboardManager extends React.Component {
                     appliedFilters.push(filter);
                   }
                 });
+                let dashboardStackLen = dashboardStack.length - 1;
                 //replacing with new filter values after dashboard edit
-                dashboardStack[dashboardStack.length - 1]["filterConfiguration"] = appliedFilters;
-                dashboardStack[dashboardStack.length - 1]["filterOptions"] = filterOptions;
-                dashboardStack[dashboardStack.length - 1]["drilldownDashboardFilter"] = drilldownDashboardFilter;
-                dashboardStack[dashboardStack.length - 1]["data"] = dash;
+                dashboardStack[dashboardStackLen]["filterConfiguration"] = appliedFilters;
+                dashboardStack[dashboardStackLen]["filterOptions"] = filterOptions;
+                dashboardStack[dashboardStackLen]["drilldownDashboardFilter"] = drilldownDashboardFilter;
+                dashboardStack[dashboardStackLen]["data"] = dash;
               }
             }
             that.setState({
@@ -409,13 +410,20 @@ class DashboardManager extends React.Component {
       optionalFilter = replaceCommonFilters([...this.state.dashboardStack[this.state.dashboardStack.length - 2]["filterConfiguration"]], filterConfig, "filterOptions");
       this.setState({ filterOptions: optionalFilter });
     }
-    this.setState({
-      inputs: inputs,
-      uuid: value["uuid"],
-      filterConfiguration: filterConfig,
-      showFilter: false,
-      drilldownDashboardFilter: event.drilldownDashboardFilter,
-    });
+    this.setState(
+      {
+        inputs: inputs,
+        uuid: value["uuid"],
+        filterConfiguration: filterConfig,
+        showFilter: false,
+        filter: [],
+        dashboardFilter: [],
+        drilldownDashboardFilter: event.drilldownDashboardFilter,
+      },
+      () => {
+        console.log(this.state);
+      }
+    );
   }
 
   handleChange(event, inputName) {
@@ -572,7 +580,7 @@ class DashboardManager extends React.Component {
         >
           <FrontSide /*style={{ marginTop: '-50px' }}*/>
             <div id={filterContainer} style={{ width: "30vw" }} className='filter-form-container disappear'>
-              {containsFilter && <DashboardFilter ref={this.filterRef} core={this.core} filterMode='APPLY' hideFilterDiv={() => this.hideFilter()} filterConfiguration={this.getFilterProperty("filterConfiguration")} applyFilterOption={this.getOptionalFilters("filterOptions")} setDashboardFilter={(filter) => this.applyDashboardFilter(filter)} dashboardStack={this.state.dashboardStack} />}
+              {containsFilter && <DashboardFilter ref={this.filterRef} core={this.core} filterMode='APPLY' hideFilterDiv={() => this.hideFilter()} filterConfiguration={this.getFilterProperty("filterConfiguration")} applyFilterOption={this.getOptionalFilters("filterOptions")} setDashboardFilter={(filter) => this.applyDashboardFilter(filter)} dashboardStack={this.state.dashboardStack} dashboardUuid={this.state.uuid} />}
             </div>
             {this.state.dashList != undefined && this.state.dashList.length > 0 ? (
               <div id={filterPreview}>

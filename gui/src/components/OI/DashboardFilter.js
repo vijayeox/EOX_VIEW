@@ -497,6 +497,7 @@ class DashboardFilter extends React.Component {
       dataSourceOptions: [],
       disableDateField: null,
       multiFilters: this.props.filterConfiguration ? [...this.props.filterConfiguration] : [],
+      uuid: this.props.dashboardUuid,
     };
   }
 
@@ -801,7 +802,7 @@ class DashboardFilter extends React.Component {
   }
 
   hideFilterDiv() {
-    let filterContainer = "filter-form-container-" + this.state.uuid;
+    let filterContainer = "filter-form-container-" + this.props.dashboardUuid;
     var element = document.getElementById(filterContainer);
     element && element.classList.add("disappear");
     element = document.getElementById("filtereditor-form-container");
