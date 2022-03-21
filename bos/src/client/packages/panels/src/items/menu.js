@@ -238,7 +238,7 @@ export default class MenuPanelItem extends PanelItem {
 			input.name = "appsearch";
 			input.id = "appsearch";
 			input.classList.add("placeholder");
-			input.placeholder = "Search...";
+			input.placeholder = "Search App";
 			// input.placeholder.style.color='#265160';
 			input.onkeyup = function () {
 				addSearch(searchDiv, input);
