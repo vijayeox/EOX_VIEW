@@ -322,7 +322,7 @@ export default class EOXGrid extends React.Component {
 
   render() {
     let gridTag = (
-      <div id="eox-grid" style={{ position: "relative" }}>
+      <div id="eox-grid" style={{ position: "relative",marginTop:"-32px" }}>
         <div id="eox-grid-form"></div>
         {/* create new user */}
         <div style={{ float: "right" }} className="dash-manager-buttons">
