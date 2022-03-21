@@ -76,7 +76,10 @@ export default function Board(props) {
   return (
     <Container fluid>
       <div className="expense-item k_expense-item">
-        <div style={{ display: "flex" }}>
+        <div style={{
+          display: "flex",
+          alignItems: "center"
+        }}>
           {/* Date Filter hidden because it should get populated from Apppbuilder */}
           <Badge>
             <DateRangePickerCustom

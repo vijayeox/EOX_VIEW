@@ -15,7 +15,7 @@ export default class GridActions extends React.Component {
     this.editForm = this.props.editForm;
     this.editApi = this.props.editApi;
     this.createApi = this.props.createApi;
-    this.deleteApi = this.props.deleteApi;  
+    this.deleteApi = this.props.deleteApi;
     this.gridId = this.props.gridId;
     this.addConfig = this.props.addConfig;
     this.onUpdate = this.props.onUpdate.bind(this);
@@ -82,7 +82,7 @@ export default class GridActions extends React.Component {
   };
 
   async handleSubmit(formData, index, createFlag) {
-    if (formData) {
+    if (formData) { 
       this.props.appendAttachments?.(formData);
       Requests.editFormPushData(this.core, this.editApi, this.props.getCustomPayload?.(formData, 'put') || formData, formData, this.props.createCrudType).then(
         (response) => {
@@ -109,52 +109,48 @@ export default class GridActions extends React.Component {
     }
   }
 
-  edit = (data, form, api, index) => {
+  edit = async (data, form, api, index) => {
     let gridsId = document.getElementsByClassName("eox-grids")[0].parentNode.id;
     if (data) {
-			document.getElementById(gridsId).classList.add("display-none");
-			document.getElementById("eox-grid").style.marginTop = "7px";
-			document
-				.getElementById("dash-manager-button")
-				.classList.add("display-none");
-		} else {
-			document.getElementById(gridsId).classList.remove("display-none");
-			document.getElementById("eox-grid").style.marginTop = "-32px";
-			document
-				.getElementById("dash-manager-button")
-				.classList.remove("display-none");
-		}
-    ReactDOM.render(
-      data ? (
-        <div
-          style={{
-            position: "absolute",
-            left: "0",
-            top: "0",
-            width: "100%",
-            height: "100%",
-            zIndex: "10",
-          }}
-        >
-          <FormRender
-            key={"abc"}
-            core={this.core}
-            data={data}
-            updateFormData={true}
-            getAttachment={true}
-            postSubmitCallback={(formData) =>
-              this.handleSubmit(formData, api, index, false)
-            }
-            content={form}
-            appId={data.uuid}
-          // route= {this.api}
-          />
-        </div>
-      ) : null,
-      document.getElementById("eox-grid-form")
-    )
-      ? (document.getElementById("eox-grid-form").style.overflow = "scroll")
-      : (document.getElementById("eox-grid-form").style.overflow = "auto");
+      document.getElementById(gridsId).classList.add("display-none");
+    } else {
+      document.getElementById(gridsId).classList.remove("display-none");
+    }
+    let formRenderProps = { data };
+    if(this.props.prepareFormData){
+      formRenderProps = await this.props.prepareFormData(data);   
+      }
+      ReactDOM.render(
+        data ? (
+          <div
+            style={{
+              position: "absolute",
+              left: "0",
+              top: "0",
+              width: "100%",
+              height: "100%",
+              zIndex: "10",
+            }}
+          >
+            <FormRender
+              key={"abc"}
+              core={this.core}
+              {...formRenderProps}
+              updateFormData={true}
+              getAttachment={true}
+              postSubmitCallback={(formData) =>
+                this.handleSubmit(formData, api, index, false)
+              }
+              content={form}
+              appId={data.uuid}
+            // route= {this.api}
+            />
+          </div>
+        ) : null,
+        document.getElementById("eox-grid-form")
+      )
+        ? (document.getElementById("eox-grid-form").style.overflow = "scroll")
+        : (document.getElementById("eox-grid-form").style.overflow = "auto");
   };
 
   async fetchCurrentEntries(route) {

@@ -5,6 +5,7 @@ import { toODataString } from '@progress/kendo-data-query';
 import { string } from 'prop-types';
 import { preparefilter } from './DashboardUtils'
 import { filter } from '@progress/kendo-data-query/dist/npm/transducers';
+import './WidgetGridLoader.scss'
 
 export class WidgetGridLoader extends React.Component {
 
@@ -231,7 +232,7 @@ export class WidgetGridLoader extends React.Component {
 class LoadingPanel extends React.Component {
     render() {
         const loadingPanel = (
-            <div className="k-loading-mask">
+            <div className="k-loading-mask" style={{"backgroundColor":"white","minHeight":"200vh"}}>
                 <span className="k-loading-text">Loading</span>
                 <div className="k-loading-image"></div>
                 <div className="k-loading-color"></div>
