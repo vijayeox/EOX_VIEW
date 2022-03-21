@@ -113,9 +113,17 @@ export default class GridActions extends React.Component {
     let gridsId = document.getElementsByClassName("eox-grids")[0].parentNode.id;
     if (data) {
       document.getElementById(gridsId).classList.add("display-none");
-    } else {
+      document.getElementById("eox-grid").style.marginTop = "7px";
+      document
+          .getElementById("dash-manager-button")
+          .classList.add("display-none");
+  } else {
       document.getElementById(gridsId).classList.remove("display-none");
-    }
+      document.getElementById("eox-grid").style.marginTop = "-32px";
+      document
+          .getElementById("dash-manager-button")
+          .classList.remove("display-none");
+  }
     let formRenderProps = { data };
     if(this.props.prepareFormData){
       formRenderProps = await this.props.prepareFormData(data);   
