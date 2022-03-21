@@ -164,45 +164,49 @@ export default class EOXGrid extends React.Component {
     }
   }
 
-  create = (form, createFlag) => {
+  create = async (form, createFlag) => {
     let gridsId = document.getElementsByClassName("eox-grids")[0].parentNode.id;
     if (createFlag) {
       document.getElementById(gridsId).classList.add("display-none");
     } else {
       document.getElementById(gridsId).classList.remove("display-none");
     }
-
-    ReactDOM.render(
-      createFlag ? (
-        <div
-          style={{
-            position: "absolute",
-            left: "0",
-            top: "-37px",
-            width: "100%",
-            height: "100%",
-            zIndex: "100",
-          }}
-        >
-          <FormRender
-            key={"abc"}
-            core={this.core}
-            // data={data}
-            updateFormData={true}
-            getAttachment={true}
-            postSubmitCallback={(formData) =>
-              this.handleCreateSubmit(formData, true)
-            }
-            content={form}
-          // appId={data.uuid}
-          // route= {this.api}
-          />
-        </div>
-      ) : null,
-      document.getElementById("eox-grid-form")
-    )
-      ? (document.getElementById("eox-grid-form").style.overflow = "scroll")
-      : (document.getElementById("eox-grid-form").style.overflow = "auto");
+    let data = {};
+    if(this.props.prepareCreateFormData){
+      data = await this.props.prepareCreateFormData()
+    }
+      ReactDOM.render(
+        createFlag ? (
+          <div
+            style={{
+              position: "absolute",
+              left: "0",
+              top: "-37px",
+              width: "100%",
+              height: "100%",
+              zIndex: "100",
+            }}
+          >
+            <FormRender
+              key={"abc"}
+              core={this.core}
+              // data={data}
+              updateFormData={true}
+              getAttachment={true}
+              postSubmitCallback={(formData) =>
+                this.handleCreateSubmit(formData, true)
+              }
+              {...data}
+              content={form}
+            // appId={data.uuid}
+            // route= {this.api}
+            />
+          </div>
+        ) : null,
+        document.getElementById("eox-grid-form")
+      )
+        ? (document.getElementById("eox-grid-form").style.overflow = "scroll")
+        : (document.getElementById("eox-grid-form").style.overflow = "auto");
   };
 
   saveAsExcel = () => {
@@ -431,9 +435,10 @@ export default class EOXGrid extends React.Component {
                   gridId={this.gridId}
                   addConfig={this.addConfig}
                   appendAttachments={this.props.appendAttachments}
-                  fetchAttachments = {this.props.fetchAttachments}
-                  createCrudType = {this.props.createCrudType}
-                  getCustomPayload = {this.props.getCustomPayload}
+                  fetchAttachments={this.props.fetchAttachments}
+                  createCrudType={this.props.createCrudType}
+                  getCustomPayload={this.props.getCustomPayload}
+                  prepareFormData={this.props.prepareFormData}
                 />
               )}
             ></GridColumn>
