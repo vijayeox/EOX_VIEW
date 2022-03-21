@@ -55,7 +55,7 @@ class Announcement extends React.Component {
           {
             title: "Banner",
             field: "media",
-            //filterable: false,
+            filterable: false,
           },
           {
             title: "Name",
@@ -97,10 +97,12 @@ class Announcement extends React.Component {
   }
 
   appendAttachments = (formData) => {
-      if (formData._attachments.length > 0) {
-        const attachmentFilename = formData._attachments[0][0].filename[0];
-        formData.media = attachmentFilename;
-      }
+    if (formData._attachments.length > 0) {
+      const attachmentFilename = formData._attachments[0][0].filename
+        ? formData._attachments[0][0].filename[0]
+        : formData._attachments[0][0].uuid;
+      formData.media = attachmentFilename;
+    }
   }
 
   orgChange = (event) => {

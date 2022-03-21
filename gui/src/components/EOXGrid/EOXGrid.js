@@ -325,7 +325,7 @@ export default class EOXGrid extends React.Component {
       <div id="eox-grid" style={{ position: "relative",marginTop:"-32px" }}>
         <div id="eox-grid-form"></div>
         {/* create new user */}
-        <div style={{ float: "right" }} className="dash-manager-buttons">
+        <div style={{ float: "right" }} id="dash-manager-button" className="dash-manager-buttons">
           {Object["values"](this.actionItems).map((actions, key) =>
             (actions.text === "CREATE") && (!(this.noCreateAction)) ? (
               <abbr title={actions.title} key={key}>
@@ -401,6 +401,7 @@ export default class EOXGrid extends React.Component {
                   key={columns.field}
                   // field={columns.field}
                   title={columns.title}
+                  filterable={columns.filterable}
                   cell={(props) => (
                     <LogoCell
                       {...props}
@@ -415,6 +416,7 @@ export default class EOXGrid extends React.Component {
                   key={columns.field}
                   field={columns.field}
                   title={columns.title}
+                  filterable={columns.filterable}
                 ></GridColumn>
               )
             )}
