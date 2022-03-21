@@ -171,7 +171,7 @@ class Organization extends React.Component {
   }
   render() {
     return (
-      <div style={{ height: "inherit" }}>
+      <div style={{ height: "inherit",marginTop:"7px"}}>
         <TitleBar
           title="Manage Account"
           menu={this.props.menu}
