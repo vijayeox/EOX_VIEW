@@ -127,7 +127,7 @@ class PageContent extends React.Component {
             <abbr title={action[key].name} key={index}>
               <Button
                 primary={true}
-                className=' btn manage-btn k-grid-edit-command'
+                className=' btn manage-btn k-grid-edit-command render-operation-btn'
                 onClick={() => {
                   action[key].confirmationMessage
                     ? Swal.fire({
@@ -336,20 +336,20 @@ class PageContent extends React.Component {
       } else if (item.type == "List") {
         var itemContent = item.gridContent ? item.gridContent : item.content;
         var columnConfig = itemContent.columnConfig;
-        // if (itemContent.actions) {
-        //   if (columnConfig[columnConfig.length - 1].title == "Actions") {
-        //     null;
-        //   } else {
-        //     columnConfig.push({
-        //       title: "Actions",
-        //       width: itemContent.actionsWidth ? itemContent.actionsWidth : "200px",
-        //       cell: (e) => this.renderButtons(e, itemContent.actions),
-        //       filterCell: {
-        //         type: "empty"
-        //       }
-        //     });
-        //   }
-        // }
+        if (itemContent.actions && itemContent.disableContextAction) {
+          if (columnConfig[columnConfig.length - 1].title == "Actions") {
+            null;
+          } else {
+            columnConfig.push({
+              title: "Actions",
+              width: itemContent.actionsWidth ? itemContent.actionsWidth : "200px",
+              cell: (e) => this.renderButtons(e, itemContent.actions),
+              filterCell: {
+                type: "empty"
+              }
+            });
+          }
+        }
         var mergeRowData = this.props.params ? { ...this.props.params, ...this.state.currentRow } : this.state.currentRow;
         var dataString = this.prepareDataRoute(itemContent.route, mergeRowData, itemContent.disableAppId);
         var urlPostParams = ParameterHandler.replaceParams(this.appId, item.urlPostParams, mergeRowData);

@@ -233,7 +233,8 @@ export default class OX_Grid extends React.Component {
     const trProps = {
       ...trElement.props,
       onContextMenu: (e) => {
-        e.preventDefault();
+        e.preventDefault();        
+        if(this.props.disableContextAction) return;
         this.handleContextMenuOpen(e, dataItem.dataItem);
       },
       onClick: (e) => {
@@ -980,7 +981,7 @@ class CustomCell extends React.Component {
       if (this.props.type == "filterTemplate") {
         return <div className='gridActions'>{cellTemplate}</div>;
       } else {
-        return <td className='gridActions'>{cellTemplate}</td>;
+        return <td className='gridActions-grid'>{cellTemplate}</td>;
       }
     } else if (checkType == "string" || this.props.dataItem.rygRule) {
       return (
