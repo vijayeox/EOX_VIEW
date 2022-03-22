@@ -104,6 +104,12 @@ class Announcement extends React.Component {
       formData.media = attachmentFilename;
     }
   }
+  getCustomPayload=(formData,method)=>{
+    if(method ==='put' && formData.start_date ){
+      formData.start_date = formData.start_date.split("T")[0];
+    }
+    return formData;
+  }
 
   orgChange = (event) => {
     this.setState({ selectedOrg: event.target.value, isLoading: true }, () => {
@@ -193,6 +199,7 @@ class Announcement extends React.Component {
               isLoading={this.state.isLoading}
               // key={Math.random()}
               appendAttachments={this.appendAttachments}
+              getCustomPayload={this.getCustomPayload}
             />
           </div>
         </React.Suspense>
