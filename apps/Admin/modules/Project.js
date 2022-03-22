@@ -72,9 +72,9 @@ class Project extends React.Component {
         selectedOrg: this.props.userProfile.accountId,
 
         permission: {
-          canAdd: this.props.userProfile.privileges.MANAGE_PROJECT_WRITE,
+          canAdd: this.props.userProfile.privileges.MANAGE_PROJECT_CREATE,
           canEdit: this.props.userProfile.privileges.MANAGE_PROJECT_WRITE,
-          canDelete: this.props.userProfile.privileges.MANAGE_PROJECT_WRITE,
+          canDelete: this.props.userProfile.privileges.MANAGE_PROJECT_DELETE,
         },
       }),
       (this.api = "account/" + this.state.selectedOrg + "/projects");
