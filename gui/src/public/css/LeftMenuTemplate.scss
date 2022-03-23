@@ -1,5 +1,5 @@
 .LeftMenuTemplate {
-  height: 100%; 
+  height: 100%;
   overflow: auto;
   display: flex;
   flex-direction: row;
@@ -8,6 +8,7 @@
   .sidenav---sidenav-subnav---1EN61 {
     background: #275362;
     color: white;
+    box-shadow: 0 0 10px #275362;
   }
   .sidenav---sidenav---_2tBP {
     position: relative;
@@ -18,7 +19,7 @@
   // added custom scroll bar for all apps
   .sidenav---sidenav---_2tBP::-webkit-scrollbar {
     width: 10px;
-}
+  }
 
   .sidenav---sidenav---_2tBP::-webkit-scrollbar-track {
     border-radius: 10px;
@@ -27,7 +28,7 @@
     margin-top: 1px;
     margin-bottom: 1px;
   }
-  
+
   .sidenav---sidenav---_2tBP::-webkit-scrollbar-thumb {
     background-color: #306475;
     border-radius: 10px;
@@ -37,7 +38,7 @@
 
   .sidenav---sidenav-subnav---1EN61 {
     .sidenav---navitem---9uL5T:hover {
-      background: #0003!important;
+      background: #0003 !important;
     }
     .sidenav---navitem---9uL5T {
       padding: 10px;

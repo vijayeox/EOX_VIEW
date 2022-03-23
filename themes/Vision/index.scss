@@ -199,7 +199,7 @@ html {
 }
 
 .osjs-panel-item[data-name="windows"] > div {
-  font-size: 12px;
+  font-size: 14px;
   color: white !important;
   background-color: #275362 !important;
   border-radius: 0px;
@@ -462,6 +462,10 @@ label {
   font-size: 10px;
 }
 
+iframe {
+  border: none;
+}
+
 [class*="Window_"] {
   $primary-color: #275362;
 
@@ -504,7 +508,7 @@ label {
     color: $primary-color;
   }
 
-  .display-none{
+  .display-none {
     display: none;
   }
 }

@@ -22,8 +22,20 @@ export function prepareMultiFilter(filter1) {
       multiFilter.push(filter1["0"]);
       multiFilter.push(filter1["1"]);
       multiFilter.push(filterArr["value"] != null ? filterArr["value"] : filter1["2"]);
-      subFilter.push(multiFilter);
+      if (subFilter.length > 3) {
+        subFilter.pop();
+        let tempFilter = [];
+        tempFilter.push(subFilter);
+        tempFilter.push("OR");
+        tempFilter.push(multiFilter);
+        subFilter = [];
+        subFilter.push(tempFilter);
+      } else {
+        subFilter.push(multiFilter);
+      }
       subFilter.push("OR");
+      // filterArr.splice(i, 1);
+      // prepareMultiFilter(filterArr);
     });
     subFilter.pop();
   } else {
