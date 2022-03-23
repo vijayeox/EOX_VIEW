@@ -1,31 +1,30 @@
-import React from "react";
 import { Button } from "@progress/kendo-react-buttons";
 import moment from "moment";
+import React from "react";
+import { Dropdown } from "react-bootstrap";
 import Swal from "sweetalert2";
-import FormRender from "./FormRender";
-import HTMLViewer from "./HTMLViewer";
-import CommentsView from "./CommentsView";
-import OX_Grid from "../../components/OI/OX_Grid";
-import SearchPage from "./SearchPage";
-import RenderButtons from "./RenderButtons";
-import Notification from "../../Notification";
-import DocumentViewer from "../../DocumentViewer";
-import Page from "./Page";
-import TabSegment from "./TabSegment";
-import merge from "deepmerge";
-import "./Styles/PageComponentStyles.scss";
 import * as OxzionGUIComponents from "../../../index";
-import ParameterHandler from "./ParameterHandler";
-import PageNavigation from "../PageNavigation";
-import EntityViewer from "./EntityViewer";
 import Dashboard from "../../components/OI/Dashboard";
 import DashboardManager from "../../components/OI/DashboardManager";
-import ActivityLog from "./ActivityLog";
-import DynamicTemplateViewer from "./DynamicTemplateViewer";
-import KanbanView from "../Kanban/KanbanRoutes";
+import OX_Grid from "../../components/OI/OX_Grid";
+import DocumentViewer from "../../DocumentViewer";
 import CustomGoogleMapComponent from "../googlemapfinal/App";
-import ReactComponent from "./ReactComponent";
+import KanbanView from "../Kanban/KanbanRoutes";
+import PageNavigation from "../PageNavigation";
 import UploadArtifact from "../UploadArtifact";
+import ActivityLog from "./ActivityLog";
+import CommentsView from "./CommentsView";
+import DynamicTemplateViewer from "./DynamicTemplateViewer";
+import EntityViewer from "./EntityViewer";
+import FormRender from "./FormRender";
+import HTMLViewer from "./HTMLViewer";
+import Page from "./Page";
+import ParameterHandler from "./ParameterHandler";
+import ReactComponent from "./ReactComponent";
+import RenderButtons from "./RenderButtons";
+import SearchPage from "./SearchPage";
+import "./Styles/PageComponentStyles.scss";
+import TabSegment from "./TabSegment";
 
 class PageContent extends React.Component {
   constructor(props) {
@@ -105,52 +104,111 @@ class PageContent extends React.Component {
 
   renderButtons(e, action) {
     var actionButtons = [];
-    Object.keys(action).map(function (key, index) {
-      var row = e;
-      var string = ParameterHandler.replaceParams(this.appId, action[key].rule, e);
-      var _moment = moment;
-      var profile = this.userprofile;
-      string = string.replace(/moment/g, "_moment");
-      var showButton = eval(string);
-      var buttonStyles = action[key].icon
-        ? {
-            width: "auto",
-          }
-        : {
-            width: "auto",
-            // paddingTop: "5px",
-            color: "white",
-            fontWeight: "600",
-          };
-      showButton
-        ? actionButtons.push(
-            <abbr title={action[key].name} key={index}>
-              <Button
-                primary={true}
-                className=' btn manage-btn k-grid-edit-command render-operation-btn'
-                onClick={() => {
-                  action[key].confirmationMessage
-                    ? Swal.fire({
-                        title: action[key].confirmationMessage,
-                        confirmButtonText: "Agree",
-                        confirmButtonColor: "#275362",
-                        showCancelButton: true,
-                        cancelButtonColor: "#7b7878",
-                        target: ".PageRender",
-                      }).then((result) => {
-                        result.value ? this.buttonAction(action[key], e) : null;
-                      })
-                    : action[key].details
-                    ? this.buttonAction(action[key], e)
-                    : null;
-                }}
-                style={buttonStyles}>
-                {action[key].icon ? <i className={action[key].icon + " manageIcons"}></i> : action[key].name}
-              </Button>
-            </abbr>
-          )
+    const onActionClick = (action) => {
+      action.confirmationMessage
+        ? Swal.fire({
+            title: action.confirmationMessage,
+            confirmButtonText: "Agree",
+            confirmButtonColor: "#275362",
+            showCancelButton: true,
+            cancelButtonColor: "#7b7878",
+            target: ".PageRender",
+          }).then((result) => {
+            result.value ? this.buttonAction(action, e) : null;
+          })
+        : action.details
+        ? this.buttonAction(action, e)
         : null;
-    }, this);
+    };
+    const showAction = (action) => {
+      try {
+        const row = e;
+        const _moment = moment;
+        const profile = this.userprofile;
+        const string = ParameterHandler.replaceParams(
+          this.appId,
+          action[key].rule,
+          e
+        ).replace(/moment/g, "_moment");
+        return eval(string);
+      } catch (e) {
+        return true;
+      }
+    };
+    Object.keys(action)
+      .slice(0, 3)
+      .map(function (key, index) {
+        var showButton = showAction(action[key]);
+        var buttonStyles = action[key].icon
+          ? {
+              width: "auto",
+            }
+          : {
+              width: "auto",
+              color: "white",
+              fontWeight: "600",
+            };
+        showButton
+          ? actionButtons.push(
+              <abbr title={action[key].name} key={index}>
+                <Button
+                  primary={true}
+                  className=" btn manage-btn k-grid-edit-command render-operation-btn"
+                  onClick={() => onActionClick(action[key])}
+                  style={buttonStyles}
+                >
+                  {action[key].icon ? (
+                    <i className={action[key].icon + " manageIcons"}></i>
+                  ) : (
+                    action[key].name
+                  )}
+                </Button>
+              </abbr>
+            )
+          : null;
+      }, this);
+    if (action.length > 3) {
+      actionButtons.push(
+        <Dropdown className="show-more-action">
+          <Dropdown.Toggle className="show-more-actions">
+            Show More
+          </Dropdown.Toggle>
+          <Dropdown.Menu
+            popperConfig={{ strategy: "fixed" }}
+            onClick={(e) =>
+              {
+                console.log(e.nativeEvent?.target?.id)
+                const a = action[e.nativeEvent?.target?.id?.split("-")?.[2]];
+                if(a) onActionClick(a);
+              }
+            }
+          >
+            {action
+              .slice(3)
+              .filter(showAction)
+              .map(({ name, icon }, index) => {
+                return (
+                  <Dropdown.Item key={name}>
+                    <div
+                      id={`actions-${name}-${index+3}`}
+                      style={{ padding: "5px", fontWeight: "500" }}
+                      text={name}
+                      onClick={() => onActionClick(action)}
+                    >
+                      <i
+                        style={{ marginRight: "5px" }}
+                        className={icon + " manageIcons"}
+                      ></i>
+                      {name}
+                    </div>
+                  </Dropdown.Item>
+                );
+              })}
+          </Dropdown.Menu>
+        </Dropdown>
+      );
+    }
+
     return actionButtons;
   }
 
@@ -342,7 +400,7 @@ class PageContent extends React.Component {
           } else {
             columnConfig.push({
               title: "Actions",
-              width: itemContent.actionsWidth ? itemContent.actionsWidth : "200px",
+              width:  itemContent.actions?.length > 3 && "250px" || null,
               cell: (e) => this.renderButtons(e, itemContent.actions),
               filterCell: {
                 type: "empty"
