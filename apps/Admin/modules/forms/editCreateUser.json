@@ -391,16 +391,11 @@
             {
               "components": [
                 {
-                  "label": "accountId",
-                  "key": "accountId",
-                  "type": "hidden",
-                  "input": true,
-                  "tableView": false
-                },
-                {
-                  "label": "Select Projects",
+                  "label": "Projects",
                   "widget": "choicesjs",
-                  "tableView": true,
+                  "placeholder": "Select Projects",
+                  "tooltip": "Select one or more projects for this user.",
+                  "tableView": false,
                   "multiple": true,
                   "dataSrc": "url",
                   "defaultValue": [
@@ -418,7 +413,6 @@
                   "idPath": "uuid",
                   "template": "<span>{{ item.name }}</span>",
                   "clearOnHide": false,
-                  "customDefaultValue": "console.log(data);\n\n",
                   "key": "project",
                   "properties": {
                     "absoluteUrl": "true"
@@ -428,6 +422,13 @@
                   "input": true,
                   "disableLimit": false,
                   "lazyLoad": false
+                },
+                {
+                  "label": "accountId",
+                  "key": "accountId",
+                  "type": "hidden",
+                  "input": true,
+                  "tableView": false
                 }
               ],
               "width": 6,
@@ -442,7 +443,9 @@
                 {
                   "label": "Role",
                   "widget": "choicesjs",
-                  "tableView": true,
+                  "placeholder": "Select Roles",
+                  "tooltip": "Select one or more roles for this user.",
+                  "tableView": false,
                   "multiple": true,
                   "dataSrc": "url",
                   "data": {
@@ -541,6 +544,7 @@
               "currentWidth": 6
             }
           ],
+          "customClass": "pb-3",
           "key": "columns6",
           "type": "columns",
           "input": false,
@@ -571,6 +575,6 @@
   "path": "adminuser",
   "project": "5dc1489e4f668513e9535090",
   "created": "2021-12-01T10:01:16.951Z",
-  "modified": "2022-02-18T13:10:17.494Z",
+  "modified": "2022-02-24T09:03:23.220Z",
   "machineName": "eoxproductsupport:adminUser"
 }

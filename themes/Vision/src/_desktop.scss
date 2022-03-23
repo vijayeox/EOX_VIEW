@@ -43,9 +43,12 @@ div#appmenu {
   cursor: pointer;
   transition: all $transition-duration $transition-timing-function;
 }
-input#appsearch::placeholder {
-  color: white;
+input.placeholder::placeholder {
+  color: #265160 !important;
 }
+// input.placeholder::-webkit-input-placeholder { 
+//   color: #265160 !important;
+// }
 input#appsearch {
   border-bottom: 1px solid #2e7374;
 }

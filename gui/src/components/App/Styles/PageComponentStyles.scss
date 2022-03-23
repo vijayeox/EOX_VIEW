@@ -335,6 +335,55 @@ $primary-color: #275362;
   }
 }
 
+.show-more-action{
+  .show-more-actions{    
+      // font-size: 10px !important;
+      // background: #e4e7eb !important;
+      // color: #345561 !important;
+      // border: none !important;
+      // box-shadow: grey 0px 0px 4px 0px !important;
+      background: none !important;
+      color: #212529 !important;
+      transform: rotate(90deg) !important;
+      font-size: 30px !important;
+      border: none !important;
+      &::after{
+        display: none;
+      }
+  }
+    .dropdown-menu{
+      border-color: #dde2e7 !important;
+      color: #212529 !important;
+      background-color: #f8f9fa !important;
+      font-size: 12px !important;
+    }
+}
+.gridActions-grid{
+  display: grid;
+  gap: 8px;
+  align-items: center;
+  grid-template-columns: repeat(auto-fill, minmax(30px, 1fr));
+  abbr{
+    text-decoration : unset !important;
+    display: flex; 
+    align-items: center;
+    text-align: center;
+    .render-operation-btn{
+      display: flex !important;
+      border: unset !important;
+      box-shadow: grey 0px 0px 4px 0px;
+      background-color: rgb(228, 231, 235) !important;
+      border-radius: 50% !important;
+      font-size: 14px !important;
+      height: 30px !important;
+      padding: 16px !important;
+      width: 30px !important;
+      i{
+        color: rgb(52, 85, 97) !important;
+      }
+    }
+  }
+}
 .searchInput {
   border: 0;
   background: transparent;

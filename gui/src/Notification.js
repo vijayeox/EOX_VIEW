@@ -16,9 +16,9 @@ class Notification extends React.Component {
       container: container ? container : "bottom-right",
       animationIn: ["animated", "bounceIn"],
       animationOut: ["animated", "bounceOut"],
-      dismiss: { duration: duration ? duration : 3000  },
-      dismissable: { click: true }
-    })
+      dismiss: { duration: duration ? duration : 3000 },
+      dismissable: { click: true },
+    });
   }
   render() {
     return (

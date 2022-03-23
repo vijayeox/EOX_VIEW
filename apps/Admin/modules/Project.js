@@ -43,11 +43,11 @@ class Project extends React.Component {
         sortable: true,
         // sort:true,
         pageSize: 10,
-        // pageable:true,
         pageable: {
           skip: 0,
-          // pageSize: 10,
           buttonCount: 3,
+          info: true,
+          pageSizes: [10, 20, 50]
         },
         groupable: true,
         resizable: true,
@@ -72,9 +72,9 @@ class Project extends React.Component {
         selectedOrg: this.props.userProfile.accountId,
 
         permission: {
-          canAdd: this.props.userProfile.privileges.MANAGE_PROJECT_WRITE,
+          canAdd: this.props.userProfile.privileges.MANAGE_PROJECT_CREATE,
           canEdit: this.props.userProfile.privileges.MANAGE_PROJECT_WRITE,
-          canDelete: this.props.userProfile.privileges.MANAGE_PROJECT_WRITE,
+          canDelete: this.props.userProfile.privileges.MANAGE_PROJECT_DELETE,
         },
       }),
       (this.api = "account/" + this.state.selectedOrg + "/projects");
@@ -122,6 +122,7 @@ class Project extends React.Component {
 
   dataStateChanged({ dataState: { filter, group, skip, sort, take } }) {
     this.setState({ isLoading: true });
+    this.config.pageSize = take;
     GetData(
       this.api +
         `?filter=[{"skip":${skip},"take":${

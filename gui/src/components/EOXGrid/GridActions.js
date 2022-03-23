@@ -8,9 +8,9 @@ export default class GridActions extends React.Component {
   constructor(props) {
     super(props);
     this.core = this.props.core;
-    (this.actionItems = this.props.actionItems),
-      (this.dataItems = this.props.dataItem),
-      (this.api = this.props.api);
+    this.actionItems = this.props.actionItems;
+    this.dataItems = this.props.dataItem;
+    this.api = this.props.api;
     this.permission = this.props.permission;
     this.editForm = this.props.editForm;
     this.editApi = this.props.editApi;
@@ -37,10 +37,10 @@ export default class GridActions extends React.Component {
               showConfirmButton: true,
             }))
           : Swal.fire({
-              icon: "error",
-              title: response.status,
-              showConfirmButton: true,
-            });
+            icon: "error",
+            title: response.status,
+            showConfirmButton: true,
+          });
       }
     );
   };
@@ -56,10 +56,10 @@ export default class GridActions extends React.Component {
             showConfirmButton: true,
           }))
         : Swal.fire({
-            icon: "error",
-            title: response.status,
-            showConfirmButton: true,
-          });
+          icon: "error",
+          title: response.status,
+          showConfirmButton: true,
+        });
     });
   };
 
@@ -74,16 +74,17 @@ export default class GridActions extends React.Component {
             showConfirmButton: true,
           }))
         : Swal.fire({
-            icon: "error",
-            title: response.status + "(" + response.message + ")",
-            showConfirmButton: true,
-          });
+          icon: "error",
+          title: response.status + "(" + response.message + ")",
+          showConfirmButton: true,
+        });
     });
   };
 
   async handleSubmit(formData, index, createFlag) {
-    if (formData) {
-      Requests.editFormPushData(this.core, this.editApi, formData).then(
+    if (formData) { 
+      this.props.appendAttachments?.(formData);
+      Requests.editFormPushData(this.core, this.editApi, this.props.getCustomPayload?.(formData, 'put') || formData, formData, this.props.createCrudType).then(
         (response) => {
           if (response.status == "success") {
             this.onUpdate({ crudType: "EDIT", index, data: response.data });
@@ -108,44 +109,56 @@ export default class GridActions extends React.Component {
     }
   }
 
-  edit = (data, form, api, index) => {
-    this.props.fetchAttachments?.(data);
-    let gridsId= document.getElementsByClassName("eox-grids")[0].parentNode.id;
+  edit = async (data, form, api, index) => {
+    let gridsId = document.getElementsByClassName("eox-grids")[0].parentNode.id;
     if (data) {
       document.getElementById(gridsId).classList.add("display-none");
-    } else {
+      document.getElementById("eox-grid").style.marginTop = "7px";
+      document
+          .getElementById("dash-manager-button")
+          .classList.add("display-none");
+  } else {
       document.getElementById(gridsId).classList.remove("display-none");
-    }
-    ReactDOM.render(
-      data ? (
-        <div
-          style={{
-            position: "absolute",
-            left: "0",
-            top: "0",
-            width: "100%",
-            height: "100%",
-            zIndex: "10",
-          }}
-        >
-          <FormRender
-            key={"abc"}
-            core={this.core}
-            data={data}
-            updateFormData={true}
-            postSubmitCallback={(formData) =>
-              this.handleSubmit(formData, api, index, false)
-            }
-            content={form}
-            appId={data.uuid}
+      document.getElementById("eox-grid").style.marginTop = "-32px";
+      document
+          .getElementById("dash-manager-button")
+          .classList.remove("display-none");
+  }
+    let formRenderProps = { data };
+    if(this.props.prepareFormData){
+      formRenderProps = await this.props.prepareFormData(data);   
+      }
+      ReactDOM.render(
+        data ? (
+          <div
+            style={{
+              position: "absolute",
+              left: "0",
+              top: "0",
+              width: "100%",
+              height: "100%",
+              zIndex: "10",
+            }}
+          >
+            <FormRender
+              key={"abc"}
+              core={this.core}
+              {...formRenderProps}
+              updateFormData={true}
+              getAttachment={true}
+              postSubmitCallback={(formData) =>
+                this.handleSubmit(formData, api, index, false)
+              }
+              content={form}
+              appId={data.uuid}
             // route= {this.api}
-          />
-        </div>
-      ) : null,
-      document.getElementById("eox-grid-form")
-    )
-      ? (document.getElementById("eox-grid-form").style.overflow = "scroll")
-      : (document.getElementById("eox-grid-form").style.overflow = "auto");
+            />
+          </div>
+        ) : null,
+        document.getElementById("eox-grid-form")
+      )
+        ? (document.getElementById("eox-grid-form").style.overflow = "scroll")
+        : (document.getElementById("eox-grid-form").style.overflow = "auto");
   };
 
   async fetchCurrentEntries(route) {
@@ -351,23 +364,23 @@ export default class GridActions extends React.Component {
                   {
                     actions.text === "DELETE" && this.permission.canDelete
                       ? Swal.fire({
-                          title: "Are you sure?",
-                          text: "Do you really want to delete the record? This cannot be undone.",
-                          // imageUrl:
-                          //   "https://image.flaticon.com/icons/svg/1632/1632714.svg",
-                          icon: "question",
-                          imageWidth: 75,
-                          imageHeight: 75,
-                          confirmButtonText: "Delete",
-                          confirmButtonColor: "#d33",
-                          showCancelButton: true,
-                          cancelButtonColor: "#3085d6",
-                          target: ".Window_Admin",
-                        }).then((result) => {
-                          if (result.value) {
-                            this.delete(this.dataItems.data[index], index);
-                          }
-                        })
+                        title: "Are you sure?",
+                        text: "Do you really want to delete the record? This cannot be undone.",
+                        // imageUrl:
+                        //   "https://image.flaticon.com/icons/svg/1632/1632714.svg",
+                        icon: "question",
+                        imageWidth: 75,
+                        imageHeight: 75,
+                        confirmButtonText: "Delete",
+                        confirmButtonColor: "#d33",
+                        showCancelButton: true,
+                        cancelButtonColor: "#3085d6",
+                        target: ".Window_Admin",
+                      }).then((result) => {
+                        if (result.value) {
+                          this.delete(this.dataItems.data[index], index);
+                        }
+                      })
                       : " ";
                   }
                   {
@@ -378,26 +391,26 @@ export default class GridActions extends React.Component {
                   {
                     actions.text === "RESET"
                       ? Swal.fire({
-                          title: "Are you sure?",
-                          text: "Do you really want to reset your password",
-                          // imageUrl:
-                          //   "https://image.flaticon.com/icons/svg/1632/1632714.svg",
-                          icon: "question",
-                          imageWidth: 75,
-                          imageHeight: 75,
-                          confirmButtonText: "Reset",
-                          confirmButtonColor: "#d33",
-                          showCancelButton: true,
-                          cancelButtonColor: "#3085d6",
-                          target: ".Window_Admin",
-                        }).then((result) => {
-                          if (result.value) {
-                            this.resetPassword(
-                              this.dataItems.data[index],
-                              index
-                            );
-                          }
-                        })
+                        title: "Are you sure?",
+                        text: "Do you really want to reset your password",
+                        // imageUrl:
+                        //   "https://image.flaticon.com/icons/svg/1632/1632714.svg",
+                        icon: "question",
+                        imageWidth: 75,
+                        imageHeight: 75,
+                        confirmButtonText: "Reset",
+                        confirmButtonColor: "#d33",
+                        showCancelButton: true,
+                        cancelButtonColor: "#3085d6",
+                        target: ".Window_Admin",
+                      }).then((result) => {
+                        if (result.value) {
+                          this.resetPassword(
+                            this.dataItems.data[index],
+                            index
+                          );
+                        }
+                      })
                       : " ";
                   }
 
@@ -410,10 +423,10 @@ export default class GridActions extends React.Component {
                   {
                     actions.text === "EDIT" && this.permission.canEdit
                       ? this.edit(
-                          this.dataItems.data[index],
-                          this.editForm,
-                          index
-                        )
+                        this.dataItems.data[index],
+                        this.editForm,
+                        index
+                      )
                       : " ";
                   }
                 }}

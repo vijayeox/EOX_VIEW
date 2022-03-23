@@ -13,10 +13,7 @@ const register = (core, args, options, metadata) => {
   let sessions = Object.entries(session);
   var i, finalposition, finalDimension, finalMaximised, finalMinimised, win;
   for (i = 0; i < sessions.length; i++) {
-    if (
-      Object.keys(session[i].windows).length &&
-      session[i].name == metadata.name
-    ) {
+    if (Object.keys(session[i].windows).length && session[i].name == metadata.name) {
       finalposition = session[i].windows[0].position;
       finalDimension = session[i].windows[0].dimension;
       finalMaximised = session[i].windows[0].maximized;
@@ -34,9 +31,9 @@ const register = (core, args, options, metadata) => {
         dimension: finalDimension
           ? finalDimension
           : {
-            width: 900,
-            height: 570,
-          },
+              width: 900,
+              height: 570,
+            },
         minDimension: {
           width: 900,
           height: 570,
@@ -44,18 +41,16 @@ const register = (core, args, options, metadata) => {
         position: finalposition
           ? finalposition
           : {
-            left: 150,
-            top: 50,
-          },
+              left: 150,
+              top: 50,
+            },
       },
     })
     .on("destroy", () => proc.destroy())
     .on("render", (e) => {
       win.maximize();
     })
-    .render(($content) =>
-      ReactDOM.render(<Body args={core} proc={proc} />, $content)
-    );
+    .render(($content) => ReactDOM.render(<Body args={core} proc={proc} />, $content));
   if (finalMinimised) {
     win.minimize();
   }

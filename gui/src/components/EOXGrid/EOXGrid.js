@@ -8,7 +8,7 @@ import GridActions from "./GridActions";
 import FormRender from "../App/FormRender";
 import Requests from "../../Requests";
 import Swal from "sweetalert2";
-import {GridDetailRow} from "@progress/kendo-react-grid";
+import { GridDetailRow } from "@progress/kendo-react-grid";
 
 const loadingPanel = (
   <div className="k-loading-mask">
@@ -51,7 +51,7 @@ export default class EOXGrid extends React.Component {
         : "100%"
       : "100%";
     this.subRoute = configuration.subRoute
-       
+
     this.width = configuration
       ? configuration.width
         ? configuration.width
@@ -94,10 +94,10 @@ export default class EOXGrid extends React.Component {
     this.createApi = this.props.createApi;
     this.deleteApi = this.props.deleteApi;
     this.addConfig = this.props.addConfig;
-    this.noCreateAction=this.props.noCreateAction ? this.props.noCreateAction :false;
+    this.noCreateAction = this.props.noCreateAction ? this.props.noCreateAction : false;
     this.baseUrl = this.core.config("wrapper.url");
     this.gridId = Date.now();
-    this.detailGrid= Date.now()+1;
+    this.detailGrid = Date.now() + 1;
     this.state = {
       filter: null,
       props: this.props,
@@ -111,10 +111,10 @@ export default class EOXGrid extends React.Component {
           : null
         : null,
       group: null,
-      displayedData: {data : this.props.data},
-      isLoading : props.isLoading,
+      displayedData: { data: this.props.data },
+      isLoading: props.isLoading,
       exportFilterData: [],
-      dataState:{}
+      dataState: {}
     };
 
     let beginWith = configuration ? configuration.beginWith : null;
@@ -132,13 +132,13 @@ export default class EOXGrid extends React.Component {
 
   //updating the data 
   updateDisplayData = () => {
-    this.props.dataStateChanged({dataState : {skip : this.props.skip, take : this.pageSize, filter: null, group: null, sort: null}})
+    this.props.dataStateChanged({ dataState: { skip: this.props.skip, take: this.pageSize, filter: null, group: null, sort: null } })
   };
 
   async handleCreateSubmit(formData, createFlag) {
     if (formData) {
       this.props.appendAttachments?.(formData)
-      Requests.createFormPushData(this.core, this.createApi, formData).then(
+      Requests.createFormPushData(this.core, this.createApi, this.props.getCustomPayload?.(formData) || formData, this.props.createCrudType).then(
         (response) => {
           if (response.status === "success") {
             Swal.fire({
@@ -149,60 +149,72 @@ export default class EOXGrid extends React.Component {
             this.updateDisplayData({ crudType: "CREATE", data: response.data });
             this.create(null);
           }
-          else if(response.status === "error"){
+          else if (response.status === "error") {
             Swal.fire({
               icon: "error",
-              title: response.status + "(" + response.message +")",
+              title: response.status + "(" + response.message + ")",
               showConfirmButton: true,
             });
             this.create(null);
           }
-      }
+        }
       );
     } else {
       this.create(null);
     }
   }
 
-  create = (form, createFlag) => {
-    let gridsId= document.getElementsByClassName("eox-grids")[0].parentNode.id;
+  create = async (form, createFlag) => {
+    let gridsId = document.getElementsByClassName("eox-grids")[0].parentNode.id;
     if (createFlag) {
       document.getElementById(gridsId).classList.add("display-none");
-    } else {
+      document.getElementById("eox-grid").style.marginTop = "44px";
+      document
+          .getElementById("dash-manager-button")
+          .classList.add("display-none");
+  } else {
       document.getElementById(gridsId).classList.remove("display-none");
+      document.getElementById("eox-grid").style.marginTop = "-32px";
+      document
+          .getElementById("dash-manager-button")
+          .classList.remove("display-none");
+  }
+    let data = {};
+    if(this.props.prepareCreateFormData){
+      data = await this.props.prepareCreateFormData()
     }
-
-    ReactDOM.render(
-      createFlag ? (
-        <div
-          style={{
-            position: "absolute",
-            left: "0",
-            top: "0",
-            width: "100%",
-            height: "100%",
-            zIndex: "10",
-          }}
-        >
-          <FormRender
-            key={"abc"}
-            core={this.core}
-            // data={data}
-            updateFormData={true}
-            getAttachment={true}
-            postSubmitCallback={(formData) =>
-              this.handleCreateSubmit(formData, true)
-            }
-            content={form}
+      ReactDOM.render(
+        createFlag ? (
+          <div
+            style={{
+              position: "absolute",
+              left: "0",
+              top: "-37px",
+              width: "100%",
+              height: "100%",
+              zIndex: "100",
+            }}
+          >
+            <FormRender
+              key={"abc"}
+              core={this.core}
+              // data={data}
+              updateFormData={true}
+              getAttachment={true}
+              postSubmitCallback={(formData) =>
+                this.handleCreateSubmit(formData, true)
+              }
+              {...data}
+              content={form}
             // appId={data.uuid}
             // route= {this.api}
-          />
-        </div>
-      ) : null,
-      document.getElementById("eox-grid-form")
-    )
-      ? (document.getElementById("eox-grid-form").style.overflow = "scroll")
-      : (document.getElementById("eox-grid-form").style.overflow = "auto");
+            />
+          </div>
+        ) : null,
+        document.getElementById("eox-grid-form")
+      )
+        ? (document.getElementById("eox-grid-form").style.overflow = "scroll")
+        : (document.getElementById("eox-grid-form").style.overflow = "auto");
   };
 
   saveAsExcel = () => {
@@ -276,7 +288,7 @@ export default class EOXGrid extends React.Component {
   };
 
   componentDidMount() {
-    if(this.props.expandableApi){
+    if (this.props.expandableApi) {
       this.props.expandableApi((childGridResponse) => {
         this.allData = childGridResponse;
         // this.setState({displayedData :childGridResponse, isLoading : props.isLoading})
@@ -289,9 +301,9 @@ export default class EOXGrid extends React.Component {
     // this.prepareData(true);
   }
 
-  componentWillReceiveProps(props){
-    if(props.isLoading !== this.state.displayedData?.isLoading){
-      this.setState({displayedData : props.data, isLoading : props.isLoading})
+  componentWillReceiveProps(props) {
+    if (props.isLoading !== this.state.displayedData?.isLoading) {
+      this.setState({ displayedData: props.data, isLoading: props.isLoading })
     }
   }
 
@@ -318,12 +330,12 @@ export default class EOXGrid extends React.Component {
 
   render() {
     let gridTag = (
-      <div id="eox-grid" style={{ position: "relative" }}>
+      <div id="eox-grid" style={{ position: "relative",marginTop:"-32px" }}>
         <div id="eox-grid-form"></div>
         {/* create new user */}
-        <div style={{ float: "right" }} className="dash-manager-buttons">
+        <div style={{ float: "right" }} id="dash-manager-button" className="dash-manager-buttons">
           {Object["values"](this.actionItems).map((actions, key) =>
-           ( actions.text === "CREATE")  && (!(this.noCreateAction))? (
+            (actions.text === "CREATE") && (!(this.noCreateAction)) ? (
               <abbr title={actions.title} key={key}>
                 <button
                   type={actions.type}
@@ -341,14 +353,14 @@ export default class EOXGrid extends React.Component {
                 </button>
               </abbr>
             ) : (
-            null
+              null
             )
           )}
         </div>
-        <div id={this.noCreateAction?this.detailGrid:this.gridId}>
+        <div id={this.noCreateAction ? this.detailGrid : this.gridId}>
           <Grid
             style={{ height: this.height, width: this.width }}
-            className={ "eox-grids"}
+            className={"eox-grids"}
             data={this.state.displayedData}
             resizable={this.resizable}
             reorderable={this.reorderable}
@@ -356,13 +368,13 @@ export default class EOXGrid extends React.Component {
             //   this.cellRender(tdelement, cellProps, this)
             // }
             detail={
-              this.props.rowTemplate 
+              this.props.rowTemplate
                 ? (dataItem) => (
-                    <DetailComponent
-                      rowTemplate={this.props.rowTemplate}
-                      dataItem={dataItem.dataItem}
-                    />
-                  )
+                  <DetailComponent
+                    rowTemplate={this.props.rowTemplate}
+                    dataItem={dataItem.dataItem}
+                  />
+                )
                 : undefined
             }
             filterable={this.filterable}
@@ -383,8 +395,8 @@ export default class EOXGrid extends React.Component {
             onGroupChange={this.gridGroupChanged}
             onExpandChange={this.gridGroupExpansionChanged}
             onDataStateChange={(e) => {
-              if(e?.dataState?.filter?.filters?.find(v => !v.field)) return
-              this.setState({dataState : e.dataState});
+              if (e?.dataState?.filter?.filters?.find(v => !v.field)) return
+              this.setState({ dataState: e.dataState });
               // console.log('datastate-',e)
               this.props.dataStateChanged(e)
             }}
@@ -397,6 +409,7 @@ export default class EOXGrid extends React.Component {
                   key={columns.field}
                   // field={columns.field}
                   title={columns.title}
+                  filterable={columns.filterable}
                   cell={(props) => (
                     <LogoCell
                       {...props}
@@ -411,6 +424,7 @@ export default class EOXGrid extends React.Component {
                   key={columns.field}
                   field={columns.field}
                   title={columns.title}
+                  filterable={columns.filterable}
                 ></GridColumn>
               )
             )}
@@ -430,7 +444,11 @@ export default class EOXGrid extends React.Component {
                   deleteApi={this.deleteApi}
                   gridId={this.gridId}
                   addConfig={this.addConfig}
-                  fetchAttachments = {this.props.fetchAttachments}
+                  appendAttachments={this.props.appendAttachments}
+                  fetchAttachments={this.props.fetchAttachments}
+                  createCrudType={this.props.createCrudType}
+                  getCustomPayload={this.props.getCustomPayload}
+                  prepareFormData={this.props.prepareFormData}
                 />
               )}
             ></GridColumn>
@@ -533,7 +551,7 @@ class LogoCell extends React.Component {
     }
   }
 }
- class DetailComponent extends GridDetailRow {
+class DetailComponent extends GridDetailRow {
   render() {
     const dataItem = this.props.dataItem;
     return <React.Fragment>{this.props.rowTemplate(dataItem)}</React.Fragment>;

@@ -234,7 +234,7 @@ export default class Home extends React.Component {
 						this.userProfile.privileges.MANAGE_MAILADMIN_READ ? (
 							<NavItem
 								eventKey={this.userProfile.privileges.MANAGE_MAILADMIN_WRITE}
-								key={this.userProfile.privileges.MANAGE_MAILADMIN_WRITE}
+								// key={this.userProfile.privileges.MANAGE_MAILADMIN_WRITE}
 								onClick={() => this.launchExternalApp("MailAdmin")}
 								title="Mail Admin"
 								key="MailAdmin"
@@ -251,7 +251,7 @@ export default class Home extends React.Component {
 						this.userProfile.privileges.MANAGE_CRMADMIN_READ ? (
 							<NavItem
 								eventKey={this.userProfile.privileges.MANAGE_CRMADMIN_WRITE}
-								key={this.userProfile.privileges.MANAGE_CRMADMIN_WRITE}
+								// key={this.userProfile.privileges.MANAGE_CRMADMIN_WRITE}
 								onClick={() => this.launchExternalApp("CRMAdmin")}
 								title="CRM Admin"
 								key="CRMAdmin"
@@ -268,7 +268,7 @@ export default class Home extends React.Component {
 						this.userProfile.privileges.MANAGE_TASKADMIN_READ ? (
 							<NavItem
 								eventKey={this.userProfile.privileges.MANAGE_TASKADMIN_WRITE}
-								key={this.userProfile.privileges.MANAGE_TASKADMIN_WRITE}
+								// key={this.userProfile.privileges.MANAGE_TASKADMIN_WRITE}
 								onClick={() => this.launchExternalApp("TaskAdmin")}
 								title="PM Admin"
 								key="PMAdmin"
@@ -285,7 +285,7 @@ export default class Home extends React.Component {
 						this.userProfile.privileges.MANAGE_APPBUILDER_WRITE ? (
 							<NavItem
 								eventKey={this.userProfile.privileges.MANAGE_APPBUILDER_READ}
-								key={this.userProfile.privileges.MANAGE_APPBUILDER_READ}
+								// key={this.userProfile.privileges.MANAGE_APPBUILDER_READ}
 								onClick={() => this.launchExternalApp("EOXAppBuilder")}
 								title="App Studio"
 								key="AppBuilder"
@@ -303,7 +303,7 @@ export default class Home extends React.Component {
 						this.userProfile.privileges.MANAGE_OIBUILDER_WRITE ? (
 							<NavItem
 								eventKey={this.userProfile.privileges.MANAGE_OIBUILDER_READ}
-								key={this.userProfile.privileges.MANAGE_OIBUILDER_READ}
+								// key={this.userProfile.privileges.MANAGE_OIBUILDER_READ}
 								onClick={() => this.launchExternalApp("Analytics")}
 								title="OI Studio"
 								key="OI"
@@ -315,18 +315,8 @@ export default class Home extends React.Component {
 							</NavItem>
 						) : (
 							""
-
-            {this.userProfile.privileges.MANAGE_OIBUILDER_READ || this.userProfile.privileges.MANAGE_OIBUILDER_WRITE ? (
-              <NavItem eventKey={this.userProfile.privileges.MANAGE_OIBUILDER_READ} key={this.userProfile.privileges.MANAGE_OIBUILDER_READ} onClick={() => this.launchExternalApp("Analytics")} title='OI Studio' key='OI'>
-                <NavIcon>
-                  <i className='fad fa-chart-bar' aria-hidden='true'></i>
-                </NavIcon>
-                <NavText>OI Studio</NavText>
-              </NavItem>
-            ) : (
-              ""
             )}
-
+          
             {this.userProfile.privileges.MANAGE_USER_READ || this.userProfile.privileges.MANAGE_USER_WRITE ? (
               <NavItem eventKey='EOXLogs' key='EOXLogs' title='EOXLogs' onClick={() => this.externalLink("http://13.58.246.62:3000/")}>
                 <NavIcon>

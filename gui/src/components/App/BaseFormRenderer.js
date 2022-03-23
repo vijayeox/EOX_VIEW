@@ -658,7 +658,7 @@ class BaseFormRenderer extends React.Component {
     // if (!(await this.uploadStorageAttachments(data))) return
     if (that.props.updateFormData) {
       // that.props.postSubmitCallback(data);
-      const attachmentObj = that.props.getAttachment ? {_attachments : uploadedAttachmentResponse } : {}
+      const attachmentObj = that.props.getAttachment ? {_attachments : uploadedAttachmentResponse, _filesToUpload: this.state.filesToUpload } : {}
       that.props.postSubmitCallback({...data, ...attachmentObj})
       return;
     }

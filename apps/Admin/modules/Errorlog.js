@@ -59,9 +59,9 @@ class Errorlog extends React.Component {
       isLoading: true,
       accountData: [], 
       permission: {
-          canAdd: this.props.userProfile.privileges.MANAGE_TEAM_CREATE,
-          canEdit: this.props.userProfile.privileges.MANAGE_TEAM_WRITE,
-          canDelete: this.props.userProfile.privileges.MANAGE_TEAM_DELETE,
+          canAdd: this.props.userProfile.privileges.MANAGE_ERROR_CREATE,
+          canEdit: this.props.userProfile.privileges.MANAGE_ERROR_WRITE,
+          canDelete: this.props.userProfile.privileges.MANAGE_ERROR_DELETE,
         },
     }),
     (this.api = "errorlog");

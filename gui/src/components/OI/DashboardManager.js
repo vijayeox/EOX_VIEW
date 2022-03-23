@@ -1,14 +1,14 @@
 import React from "react";
-import dashboardJson from "../metadata.json";
+import dashboardJson from "../../../metadata.json";
 // import { dashboard as section } from '../metadata.json';
-import Notification from "./Notification";
+import Notification from "../../Notification";
 import DashboardViewer from "./Dashboard";
 import DashboardFilter from "./DashboardFilter";
 import { preparefilter, replaceCommonFilters, showDashboard, extractFilterValues, prepareMultiFilter } from "./DashboardUtils";
 import { Button } from "react-bootstrap";
-import "../../gui/src/public/css/sweetalert.css";
+import "../../public/css/sweetalert.css";
 import Flippy, { FrontSide, BackSide } from "react-flippy";
-import DashboardEditorModal from "./components/Modals/DashboardEditorModal";
+import DashboardEditorModal from "../Modals/DashboardEditorModal";
 import DashboardEditor from "./dashboardEditor";
 import Select, { createFilter } from "react-select";
 import exportFromJSON from "export-from-json";
@@ -44,19 +44,15 @@ class DashboardManager extends React.Component {
       inputs: {},
       dashboardBody: "",
       loadEditor: false,
-      filterConfiguration: [], // @remove - Remove this
-      filterOptions: [], // @remove - Remove this
+      filterConfiguration: [],
+      filterOptions: [],
       showFilter: false,
-      dashboardFilter: [], // @remove - Remove this
-      drilldownDashboardFilter: [], // @remove - Remove this
+      dashboardFilter: [],
+      drilldownDashboardFilter: [],
       hideEdit: this.props.hideEdit,
       dashboardStack: [],
       exportConfiguration: null,
       loadDefaultFilters: false,
-
-      //New Filter related parameters
-      dashboardFilterNC: [],
-      drilldownFilterNC: [],
     };
     this.appId = this.props.app;
     this.proc = this.props.proc;
@@ -141,7 +137,7 @@ class DashboardManager extends React.Component {
     let helper = this.restClient;
     let filterOptions = [];
     let inputs = this.state.inputs !== undefined ? this.state.inputs : undefined;
-    let dashboardStack = JSON.parse(JSON.stringify(this.state.dashboardStack)); //Contains everything that is part of a dashboard (Including the data and filter)
+    let dashboardStack = !isRefreshed ? [] : JSON.parse(JSON.stringify(this.state.dashboardStack)); //Contains everything that is part of a dashboard (Including the data and filter)
     let response = await helper.request("v1", '/analytics/dashboard?filter=[{"sort":[{"field":"name","dir":"asc"}],"skip":0,"take":0}]', {}, "get");
     if (response.data.length > 0) {
       that.setState({ dashList: response.data, uuid: "" });
@@ -163,22 +159,23 @@ class DashboardManager extends React.Component {
             } else {
               if (dashboardStack.length > 0) {
                 let appliedFilters = [];
-                filterConfig &&
-                  filterConfig.map((filter, index) => {
-                    if (!filter.isDefault) {
-                      filterOptions.push({
-                        label: filter["filterName"],
-                        value: filter,
-                      });
-                    } else {
-                      appliedFilters.push(filter);
-                    }
-                  });
+                filterConfig && optionalFilter;
+                filterConfig.map((filter, index) => {
+                  if (!filter.isDefault) {
+                    filterOptions.push({
+                      label: filter["filterName"],
+                      value: filter,
+                    });
+                  } else {
+                    appliedFilters.push(filter);
+                  }
+                });
+                let dashboardStackLen = dashboardStack.length - 1;
                 //replacing with new filter values after dashboard edit
-                dashboardStack[dashboardStack.length - 1]["filterConfiguration"] = appliedFilters;
-                dashboardStack[dashboardStack.length - 1]["filterOptions"] = filterOptions;
-                dashboardStack[dashboardStack.length - 1]["drilldownDashboardFilter"] = drilldownDashboardFilter;
-                dashboardStack[dashboardStack.length - 1]["data"] = dash;
+                dashboardStack[dashboardStackLen]["filterConfiguration"] = appliedFilters;
+                dashboardStack[dashboardStackLen]["filterOptions"] = filterOptions;
+                dashboardStack[dashboardStackLen]["drilldownDashboardFilter"] = drilldownDashboardFilter;
+                dashboardStack[dashboardStackLen]["data"] = dash;
               }
             }
             that.setState({
@@ -296,6 +293,10 @@ class DashboardManager extends React.Component {
     });
   }
 
+  refreshDashboard() {
+    this.fetchDashboards(false);
+  }
+
   hideFilter() {
     let filterPreview = "dashboard-preview-container-" + this.state.uuid;
     this.setState({ showFilter: false });
@@ -409,13 +410,20 @@ class DashboardManager extends React.Component {
       optionalFilter = replaceCommonFilters([...this.state.dashboardStack[this.state.dashboardStack.length - 2]["filterConfiguration"]], filterConfig, "filterOptions");
       this.setState({ filterOptions: optionalFilter });
     }
-    this.setState({
-      inputs: inputs,
-      uuid: value["uuid"],
-      filterConfiguration: filterConfig,
-      showFilter: false,
-      drilldownDashboardFilter: event.drilldownDashboardFilter,
-    });
+    this.setState(
+      {
+        inputs: inputs,
+        uuid: value["uuid"],
+        filterConfiguration: filterConfig,
+        showFilter: false,
+        filter: [],
+        dashboardFilter: [],
+        drilldownDashboardFilter: event.drilldownDashboardFilter,
+      },
+      () => {
+        console.log(this.state);
+      }
+    );
   }
 
   handleChange(event, inputName) {
@@ -423,6 +431,7 @@ class DashboardManager extends React.Component {
     inputs = { ...this.state.inputs };
     let name;
     let value;
+    let filterOptions = [];
     // resetting stack on manual change of dashboard
     let dashboardStack = [];
     value = JSON.parse(event.value);
@@ -444,6 +453,17 @@ class DashboardManager extends React.Component {
     let dashboardFilter = value["filter_configuration"] != "" ? JSON.parse(value["filter_configuration"]) : [];
     let extractedFilterValues = extractFilterValues(dashboardFilter, [...this.state.dashboardStack], "default");
     let preapredExtractedFilterValue = null;
+
+    dashboardFilter &&
+      dashboardFilter.map((filter, index) => {
+        if (!filter.isDefault) {
+          filterOptions.push({
+            label: filter["filterName"],
+            value: filter,
+          });
+        }
+      });
+
     if (dashboardStack.length != 0) {
       if (extractedFilterValues && extractedFilterValues.length > 1) {
         preapredExtractedFilterValue = extractedFilterValues[0];
@@ -459,15 +479,22 @@ class DashboardManager extends React.Component {
       drilldownDashboardFilter: preapredExtractedFilterValue,
       filterConfiguration: dashboardFilter,
     });
-    this.setState({
-      inputs: inputs,
-      uuid: value["uuid"],
-      filterConfiguration: dashboardFilter,
-      showFilter: false,
-      drilldownDashboardFilter: event.drilldownDashboardFilter,
-      dashboardStack: dashboardStack,
-      loadDefaultFilters: true,
-    });
+    this.setState(
+      {
+        inputs: inputs,
+        uuid: value["uuid"],
+        filterConfiguration: dashboardFilter,
+        showFilter: false,
+        filter: dashboardFilter,
+        drilldownDashboardFilter: event.drilldownDashboardFilter,
+        dashboardStack: dashboardStack,
+        loadDefaultFilters: true,
+        filterOptions: filterOptions,
+      },
+      () => {
+        console.log(this.state);
+      }
+    );
   }
 
   rollupToDashboard() {
@@ -541,8 +568,9 @@ class DashboardManager extends React.Component {
     let containsFilter = (Array.isArray(this.state.filterConfiguration) && this.state.filterConfiguration.length > 0) || this.getFilterProperty("filterConfiguration").length > 0 || this.getOptionalFilters("filterOptions").length > 0;
     let filterContainer = "filter-form-container-" + this.state.uuid;
     let filterPreview = "dashboard-preview-container-" + this.state.uuid;
+    let dashboardView = "dashboard" + this.state.uuid;
     return (
-      <div ref={this.myRef} className='dashboard'>
+      <div ref={this.myRef} className={dashboardView}>
         <Notification ref={this.notif} />
         <Flippy
           flipDirection='horizontal' // horizontal or vertical
@@ -552,7 +580,7 @@ class DashboardManager extends React.Component {
         >
           <FrontSide /*style={{ marginTop: '-50px' }}*/>
             <div id={filterContainer} style={{ width: "30vw" }} className='filter-form-container disappear'>
-              {containsFilter && <DashboardFilter ref={this.filterRef} core={this.core} filterMode='APPLY' hideFilterDiv={() => this.hideFilter()} filterConfiguration={this.getFilterProperty("filterConfiguration")} applyFilterOption={this.getOptionalFilters("filterOptions")} setDashboardFilter={(filter) => this.applyDashboardFilter(filter)} dashboardStack={this.state.dashboardStack} />}
+              {containsFilter && <DashboardFilter ref={this.filterRef} core={this.core} filterMode='APPLY' hideFilterDiv={() => this.hideFilter()} filterConfiguration={this.getFilterProperty("filterConfiguration")} applyFilterOption={this.getOptionalFilters("filterOptions")} setDashboardFilter={(filter) => this.applyDashboardFilter(filter)} dashboardStack={this.state.dashboardStack} dashboardUuid={this.state.uuid} />}
             </div>
             {this.state.dashList != undefined && this.state.dashList.length > 0 ? (
               <div id={filterPreview}>
@@ -608,11 +636,11 @@ class DashboardManager extends React.Component {
                             <i className='fa fa-filter' aria-hidden='true'></i>
                           </Button>
                         )}
-                        {/* {
-                          <Button onClick={() => this.refreshDashboard()} title="Refresh OI">
-                            <i className="fa fa-refresh" aria-hidden="true"></i>
+                        {
+                          <Button onClick={() => this.refreshDashboard()} title='Refresh OI'>
+                            <i className='fa fa-refresh' aria-hidden='true'></i>
                           </Button>
-                        } */}
+                        }
                         {/* <ReactToPrint
                           trigger={() => {
                             return <Button title="Print OI">

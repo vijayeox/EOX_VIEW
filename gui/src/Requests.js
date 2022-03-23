@@ -6,102 +6,49 @@ import moment from "moment";
 class Requests {
   static async getDashboardHtmlDataByUuid(core, uuid) {
     let helper = core.make("oxzion/restClient");
-    let response = await helper.request(
-      "v1",
-      "analytics/dashboard/" + uuid,
-      {},
-      "get"
-    );
+    let response = await helper.request("v1", "analytics/dashboard/" + uuid, {}, "get");
     return response;
   }
 
   static async getWidgetByUuid(core, uuid, filterParams) {
     let helper = core.make("oxzion/restClient");
-    let filterParameter =
-      filterParams && filterParams != [] && filterParams.length != 0
-        ? "&filter=" + JSON.stringify(filterParams)
-        : "";
-    let response = await helper.request(
-      "v1",
-      "analytics/widget/" + uuid + "?data=true" + filterParameter,
-      {},
-      "get"
-    );
+    let filterParameter = filterParams && filterParams != [] && filterParams.length != 0 ? "&filter=" + JSON.stringify(filterParams) : "";
+    let response = await helper.request("v1", "analytics/widget/" + uuid + "?data=true" + filterParameter, {}, "get");
     return response;
   }
 
   static async getDocumentsListService(core, appId, url) {
     let helper = core.make("oxzion/restClient");
-    let response = await helper.request(
-      "v1",
-      "/app/" + appId + "/" + url,
-      {},
-      "get"
-    );
+    let response = await helper.request("v1", "/app/" + appId + "/" + url, {}, "get");
     return response;
   }
 
   static async deleteFile(core, appId, fileId, attachementId) {
     let helper = core.make("oxzion/restClient");
-    let response = await helper.request(
-      "v1",
-      "/app/" +
-        appId +
-        "/file/" +
-        fileId +
-        "/attachment/" +
-        attachementId +
-        "/remove",
-      {},
-      "delete"
-    );
+    let response = await helper.request("v1", "/app/" + appId + "/file/" + fileId + "/attachment/" + attachementId + "/remove", {}, "delete");
     return response;
   }
 
   static async renameFile(core, appId, fileId, attachementId, name) {
     let helper = core.make("oxzion/restClient");
-    let response = await helper.request(
-      "v1",
-      "/app/" + appId + "/file/" + fileId + "/attachment/" + attachementId,
-      { name: name },
-      "post"
-    );
+    let response = await helper.request("v1", "/app/" + appId + "/file/" + fileId + "/attachment/" + attachementId, { name: name }, "post");
     return response;
   }
 
   static async getMenulist(core, appId) {
     let helper = core.make("oxzion/restClient");
-    let menulist = await helper.request(
-      "v1",
-      "/app/" + appId + "/menu",
-      {},
-      "get"
-    );
+    let menulist = await helper.request("v1", "/app/" + appId + "/menu", {}, "get");
     return menulist;
   }
 
-  static doRestRequest = (
-    core,
-    url,
-    params,
-    method,
-    successHandler,
-    failureHandler,
-    loader
-  ) => {
+  static doRestRequest = (core, url, params, method, successHandler, failureHandler, loader) => {
     if (!loader) {
       loader = core.make("oxzion/splash");
     }
     loader.show();
-    let restResponse = core
-      .make("oxzion/restClient")
-      .request("v1", url, params ? params : {}, method ? method : "get");
+    let restResponse = core.make("oxzion/restClient").request("v1", url, params ? params : {}, method ? method : "get");
     function handleNonSuccessResponse(response) {
-      console.info(
-        `Received a non-success status from server for URL ${url}. JSON:${JSON.stringify(
-          response
-        )}.`
-      );
+      console.info(`Received a non-success status from server for URL ${url}. JSON:${JSON.stringify(response)}.`);
       if (loader) {
         loader.destroy();
       }
@@ -134,11 +81,7 @@ class Requests {
             };
             let dataContent = response.data;
             for (let property in dataContent) {
-              if (
-                property === "url" ||
-                property === "params" ||
-                property === "status"
-              ) {
+              if (property === "url" || property === "params" || property === "status") {
                 throw `Reserved property name ${property} used in REST response. Modify the server side controller to use some other property name.`;
               }
               responseObject[property] = dataContent[property];
@@ -162,71 +105,46 @@ class Requests {
   };
 
   //EOXGrids API calls
-  static  async  GetData(core,api) {
+  static async GetData(core, api) {
     let helper = core.make("oxzion/restClient");
     let response = await helper.request("v1", "/" + api, {}, "get");
     return response;
-  } 
+  }
 
   static async DeleteEntry(core, api, dataItem) {
     let helper = core.make("oxzion/restClient");
-    let response = await helper.request(
-      "v1",
-      "/" + api + "/" + dataItem,
-      {},
-      "delete"
-    );
+    let response = await helper.request("v1", "/" + api + "/" + dataItem, {}, "delete");
     return response;
   }
 
   static async retryCall(core, api, dataItem) {
     let helper2 = core.make("oxzion/restClient");
-    let response = await helper2.request(
-      "v1",
-      api + "/" + dataItem.id + "/retry",
-      {},
-      "post"
-    );
+    let response = await helper2.request("v1", api + "/" + dataItem.id + "/retry", {}, "post");
     return response;
   }
 
   static async resetPasswordCall(core, username) {
     let helper = core.make("oxzion/restClient");
-    let response = await helper.request(
-      "v1",
-      "user/me/forgotpassword",
-      { username: username },
-      "post"
-    );
+    let response = await helper.request("v1", "user/me/forgotpassword", { username: username }, "post");
     return response;
   }
 
-  static async editFormPushData(core, editApi, dataItem) {
+  static async editFormPushData(core, editApi, dataItem, originalPayload, crudType) {
     let helper = core.make("oxzion/restClient");
-    let response = await helper.request(
-      "v1",
-      "/" + editApi + "/" + dataItem.uuid,
-      dataItem,
-      "put"
-    );
+    let response = await helper.request("v1", "/" + editApi + "/" + originalPayload.uuid, dataItem, crudType || "put");
     return response;
   }
 
-  static async createFormPushData(core, createApi, dataItem) {
+  static async createFormPushData(core, createApi, dataItem, crudType) {
     let helper = core.make("oxzion/restClient");
-    let response = await helper.request(
-      "v1",
-      "/" + createApi,
-      dataItem,
-      "post"
-    );
+    let response = await helper.request("v1", "/" + createApi, dataItem, crudType || "post");
     return response;
   }
-  static async pushOrgUsers(core,dataItem, dataObject,api) {
+  static async pushOrgUsers(core, dataItem, dataObject, api) {
     let helper = core.make("oxzion/restClient");
     let response = await helper.request(
       "v1",
-      api +"/" + dataItem + "/save",
+      api + "/" + dataItem + "/save",
       {
         userIdList: dataObject,
       },
@@ -235,24 +153,17 @@ class Requests {
     return response;
   }
 
-  static async getAnnouncementTeams(core ,dataItem) {
+  static async getAnnouncementTeams(core, dataItem) {
     let helper = core.make("oxzion/restClient");
-    let groupUsers = await helper.request(
-      "v1",
-      "/announcement/" + dataItem + "/teams",
-      {},
-      "get"
-    );
+    let groupUsers = await helper.request("v1", "/announcement/" + dataItem + "/teams", {}, "get");
     return groupUsers;
   }
 
-  static async pushAnnouncementTeams(core ,api,dataItem, dataObject) {
+  static async pushAnnouncementTeams(core, api, dataItem, dataObject) {
     let helper = core.make("oxzion/restClient");
     let addTeams = await helper.request(
       "v1",
-      api +"/"+
-        dataItem +
-        "/save",
+      api + "/" + dataItem + "/save",
       {
         teams: dataObject,
       },

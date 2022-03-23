@@ -1,14 +1,14 @@
 import React from "react";
 import { Overlay, Tooltip, Button, Form } from "react-bootstrap";
-import dashboardJson from "../metadata.json";
-import JavascriptLoader from "./components/javascriptLoader";
+import dashboardJson from "../../../metadata.json";
+import JavascriptLoader from "../javascriptLoader";
 import WidgetRenderer from "./WidgetRenderer";
 import DashboardFilter from "./DashboardFilter";
-import DashboardExportModal from "./components/Modals/DashbordExportModal";
+import DashboardExportModal from "../Modals/DashbordExportModal";
 import Swal from "sweetalert2";
-import "./public/css/sweetalert.css";
-import "./components/widget/editor/widgetEditorApp.scss";
-import "./public/css/dashboardEditor.scss";
+import "../../public/css/sweetalert.css";
+import "../widget/editor/widgetEditorApp.scss";
+import "../../public/css/dashboardEditor.scss";
 import "@progress/kendo-theme-bootstrap/dist/all.css";
 import { ckeditorConfig } from "./CkEditorConfig";
 
