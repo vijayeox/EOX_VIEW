@@ -337,14 +337,19 @@ $primary-color: #275362;
 
 .show-more-action{
   .show-more-actions{    
-    // button{
-      font-size: 10px !important;
-      background: #e4e7eb !important;
-      color: #345561 !important;
+      // font-size: 10px !important;
+      // background: #e4e7eb !important;
+      // color: #345561 !important;
+      // border: none !important;
+      // box-shadow: grey 0px 0px 4px 0px !important;
+      background: none !important;
+      color: #212529 !important;
+      transform: rotate(90deg) !important;
+      font-size: 30px !important;
       border: none !important;
-      box-shadow: grey 0px 0px 4px 0px !important;
-    // }
-  
+      &::after{
+        display: none;
+      }
   }
     .dropdown-menu{
       border-color: #dde2e7 !important;

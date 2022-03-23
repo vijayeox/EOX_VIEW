@@ -168,45 +168,48 @@ class PageContent extends React.Component {
           : null;
       }, this);
     if (action.length > 3) {
-      actionButtons.push(
-        <Dropdown className="show-more-action">
-          <Dropdown.Toggle className="show-more-actions">
-            Show More
-          </Dropdown.Toggle>
-          <Dropdown.Menu
-            popperConfig={{ strategy: "fixed" }}
-            onClick={(e) =>
-              {
-                console.log(e.nativeEvent?.target?.id)
-                const a = action[e.nativeEvent?.target?.id?.split("-")?.[2]];
-                if(a) onActionClick(a);
-              }
-            }
-          >
-            {action
-              .slice(3)
-              .filter(showAction)
-              .map(({ name, icon }, index) => {
-                return (
-                  <Dropdown.Item key={name}>
-                    <div
-                      id={`actions-${name}-${index+3}`}
-                      style={{ padding: "5px", fontWeight: "500" }}
-                      text={name}
-                      onClick={() => onActionClick(action)}
-                    >
-                      <i
-                        style={{ marginRight: "5px" }}
-                        className={icon + " manageIcons"}
-                      ></i>
-                      {name}
-                    </div>
-                  </Dropdown.Item>
-                );
-              })}
-          </Dropdown.Menu>
-        </Dropdown>
-      );
+      const validActions = action
+        .slice(3)
+        .filter(showAction)
+        .map(({ name, icon }, index) => {
+          return (
+            <Dropdown.Item key={name}>
+              <div
+                id={`actions-${name}-${index+3}`}
+                style={{ padding: "5px", fontWeight: "500" }}
+                text={name}
+                onClick={() => onActionClick(action)}
+              >
+                <i
+                  style={{ marginRight: "5px" }}
+                  className={icon + " manageIcons"}
+                ></i>
+                {name}
+              </div>
+            </Dropdown.Item>
+          );
+        });
+        if(validActions.length > 0){
+          actionButtons.push(
+            <Dropdown className="show-more-action">
+              <Dropdown.Toggle className="show-more-actions">
+              ...
+              </Dropdown.Toggle>
+              <Dropdown.Menu
+                popperConfig={{ strategy: "fixed" }}
+                onClick={(e) =>
+                  {
+                    const a = action[e.nativeEvent?.target?.id?.split("-")?.[2]];
+                    if(a) onActionClick(a);
+                  }
+                }
+              >
+                {validActions}
+              </Dropdown.Menu>
+            </Dropdown>
+          );
+        }
+      
     }
 
     return actionButtons;
@@ -278,7 +281,18 @@ class PageContent extends React.Component {
             }
           }
         });
-        action.updateOnly ? null : PageNavigation.loadPage(this.appId, this.pageId, pageId, action.icon, true, action.name, mergeRowData, copyPageContent);
+        action.updateOnly ? null : PageNavigation.loadPage
+        (this.appId, 
+          this.pageId, 
+          pageId, 
+          action.icon, 
+          true, 
+          action.name, 
+          mergeRowData, 
+          copyPageContent,
+          undefined, 
+          action.popupConfig, 
+          mergeRowData);
       }
     }
   }
@@ -400,7 +414,7 @@ class PageContent extends React.Component {
           } else {
             columnConfig.push({
               title: "Actions",
-              width:  itemContent.actions?.length > 3 && "250px" || null,
+              // width:  itemContent.actions?.length > 3 && "250px" || null,
               cell: (e) => this.renderButtons(e, itemContent.actions),
               filterCell: {
                 type: "empty"
