@@ -1,28 +1,28 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { Grid, GridCell, GridColumn, GridDetailRow, GridColumnMenuCheckboxFilter, GridNoRecords, GridToolbar } from "@progress/kendo-react-grid";
 import { process } from "@progress/kendo-data-query";
-import { GridPDFExport } from "@progress/kendo-react-pdf";
-import { ExcelExport, ExcelExportColumn } from "@progress/kendo-react-excel-export";
 import { Button, DropDownButton } from "@progress/kendo-react-buttons";
-import $ from "jquery";
-import JsxParser from "react-jsx-parser";
-import moment from "moment";
-import { ColumnMenu } from "../Grid/ColumnMenu";
-import Swal from "sweetalert2";
-import DataLoader from "../Grid/DataLoader";
-import DataOperation from "../Grid/DataOperation";
-import CustomFilter from "../Grid/CustomFilter";
-import "../Grid/customStyles.scss";
-import "@progress/kendo-theme-bootstrap/dist/all.css";
-import InlineComponent from "../Grid/InlineComponent";
-const util = require("util");
-import { Popup } from "@progress/kendo-react-popup";
-import { Menu, MenuItem } from "@progress/kendo-react-layout";
-import ParameterHandler from "../App/ParameterHandler";
-import PageNavigation from "../PageNavigation";
 import { DateTimePicker } from "@progress/kendo-react-dateinputs";
 import { Dialog, DialogActionsBar } from "@progress/kendo-react-dialogs";
+import { ExcelExport, ExcelExportColumn } from "@progress/kendo-react-excel-export";
+import { Grid, GridColumn, GridColumnMenuCheckboxFilter, GridDetailRow, GridNoRecords, GridToolbar } from "@progress/kendo-react-grid";
+import { Menu, MenuItem } from "@progress/kendo-react-layout";
+import { GridPDFExport } from "@progress/kendo-react-pdf";
+import { Popup } from "@progress/kendo-react-popup";
+import "@progress/kendo-theme-bootstrap/dist/all.css";
+import $ from "jquery";
+import moment from "moment";
+import PropTypes from "prop-types";
+import React from "react";
+import JsxParser from "react-jsx-parser";
+import Swal from "sweetalert2";
+import ParameterHandler from "../App/ParameterHandler";
+import { ColumnMenu } from "../Grid/ColumnMenu";
+import CustomFilter from "../Grid/CustomFilter";
+import "../Grid/customStyles.scss";
+import DataLoader from "../Grid/DataLoader";
+import DataOperation from "../Grid/DataOperation";
+import InlineComponent from "../Grid/InlineComponent";
+import PageNavigation from "../PageNavigation";
+const util = require("util");
 
 export default class OX_Grid extends React.Component {
   constructor(props) {
@@ -233,7 +233,8 @@ export default class OX_Grid extends React.Component {
     const trProps = {
       ...trElement.props,
       onContextMenu: (e) => {
-        e.preventDefault();
+        e.preventDefault();        
+        if(this.props.disableContextAction) return;
         this.handleContextMenuOpen(e, dataItem.dataItem);
       },
       onClick: (e) => {
@@ -980,7 +981,7 @@ class CustomCell extends React.Component {
       if (this.props.type == "filterTemplate") {
         return <div className='gridActions'>{cellTemplate}</div>;
       } else {
-        return <td className='gridActions'>{cellTemplate}</td>;
+        return <td ><div className='gridActions-grid'>{cellTemplate}</div></td>;
       }
     } else if (checkType == "string" || this.props.dataItem.rygRule) {
       return (
