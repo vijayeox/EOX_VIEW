@@ -76,10 +76,10 @@ class Announcement extends React.Component {
         accountData: [],
         selectedOrg: this.props.userProfile.accountId,
         permission: {
-          canAdd: this.props.userProfile.privileges.MANAGE_ANNOUNCEMENT_WRITE,
+          canAdd: this.props.userProfile.privileges.MANAGE_ANNOUNCEMENT_CREATE,
           canEdit: this.props.userProfile.privileges.MANAGE_ANNOUNCEMENT_WRITE,
           canDelete:
-            this.props.userProfile.privileges.MANAGE_ANNOUNCEMENT_WRITE,
+            this.props.userProfile.privileges.MANAGE_ANNOUNCEMENT_DELETE,
         },
         skip: 0,
         isLoading: true,
@@ -103,6 +103,12 @@ class Announcement extends React.Component {
         : formData._attachments[0][0].uuid;
       formData.media = attachmentFilename;
     }
+  }
+  getCustomPayload=(formData,method)=>{
+    if(method ==='put' && formData.start_date ){
+      formData.start_date = formData.start_date.split("T")[0];
+    }
+    return formData;
   }
 
   orgChange = (event) => {
@@ -193,6 +199,7 @@ class Announcement extends React.Component {
               isLoading={this.state.isLoading}
               // key={Math.random()}
               appendAttachments={this.appendAttachments}
+              getCustomPayload={this.getCustomPayload}
             />
           </div>
         </React.Suspense>
