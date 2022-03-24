@@ -238,12 +238,17 @@ export default class MenuPanelItem extends PanelItem {
 			input.name = "appsearch";
 			input.id = "appsearch";
 			input.classList.add("placeholder");
-			input.placeholder = "Search App";
+			input.placeholder = "Search Applications";
+			let searchIcon = document.createElement("i");
+			searchIcon.classList.add("fas");
+			searchIcon.classList.add("fa-search");
+			searchIcon.setAttribute("style", "margin-top: 14px;color: #275362;border-bottom: 1px solid;");
 			// input.placeholder.style.color='#265160';
 			input.onkeyup = function () {
 				addSearch(searchDiv, input);
 			};
 			searchBarDiv.appendChild(input);
+			searchBarDiv.appendChild(searchIcon);
 			searchDiv.appendChild(searchBarDiv);
 			appmenuElement.appendChild(searchDiv);
 
