@@ -694,6 +694,13 @@ function ReplyTextArea({header, saveComment, core}){
       <MentionsInput
         value={state.value}
         onChange={handleChange}
+        onKeyPress={(event) => {
+          if (event.nativeEvent.key == "Enter" && event.ctrlKey ) { // && event.ctrlKey  to submit the comment on clicking ctrl+enter
+            emojiCheck();
+            saveComment(false, state.value);
+            setState({ value: '' })
+          }
+        }}
         markup="@{{__type__||__id__||__display__}}"
         placeholder="Type a comment here..."
         className="mentions"
