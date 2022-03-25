@@ -125,11 +125,7 @@ class PageContent extends React.Component {
         const row = e;
         const _moment = moment;
         const profile = this.userprofile;
-        const string = ParameterHandler.replaceParams(
-          this.appId,
-          action[key].rule,
-          e
-        ).replace(/moment/g, "_moment");
+        const string = ParameterHandler.replaceParams(this.appId, action[key].rule, e).replace(/moment/g, "_moment");
         return eval(string);
       } catch (e) {
         return true;
@@ -151,17 +147,8 @@ class PageContent extends React.Component {
         showButton
           ? actionButtons.push(
               <abbr title={action[key].name} key={index}>
-                <Button
-                  primary={true}
-                  className=" btn manage-btn k-grid-edit-command render-operation-btn"
-                  onClick={() => onActionClick(action[key])}
-                  style={buttonStyles}
-                >
-                  {action[key].icon ? (
-                    <i className={action[key].icon + " manageIcons"}></i>
-                  ) : (
-                    action[key].name
-                  )}
+                <Button primary={true} className=' btn manage-btn k-grid-edit-command render-operation-btn' onClick={() => onActionClick(action[key])} style={buttonStyles}>
+                  {action[key].icon ? <i className={action[key].icon + " manageIcons"}></i> : action[key].name}
                 </Button>
               </abbr>
             )
@@ -174,42 +161,28 @@ class PageContent extends React.Component {
         .map(({ name, icon }, index) => {
           return (
             <Dropdown.Item key={name}>
-              <div
-                id={`actions-${name}-${index+3}`}
-                style={{ padding: "5px", fontWeight: "500" }}
-                text={name}
-                onClick={() => onActionClick(action)}
-              >
-                <i
-                  style={{ marginRight: "5px" }}
-                  className={icon + " manageIcons"}
-                ></i>
+              <div id={`actions-${name}-${index + 3}`} style={{ padding: "5px", fontWeight: "500" }} text={name} onClick={() => onActionClick(action)}>
+                <i style={{ marginRight: "5px" }} className={icon + " manageIcons"}></i>
                 {name}
               </div>
             </Dropdown.Item>
           );
         });
-        if(validActions.length > 0){
-          actionButtons.push(
-            <Dropdown className="show-more-action">
-              <Dropdown.Toggle className="show-more-actions">
-              ...
-              </Dropdown.Toggle>
-              <Dropdown.Menu
-                popperConfig={{ strategy: "fixed" }}
-                onClick={(e) =>
-                  {
-                    const a = action[e.nativeEvent?.target?.id?.split("-")?.[2]];
-                    if(a) onActionClick(a);
-                  }
-                }
-              >
-                {validActions}
-              </Dropdown.Menu>
-            </Dropdown>
-          );
-        }
-      
+      if (validActions.length > 0) {
+        actionButtons.push(
+          <Dropdown className='show-more-action'>
+            <Dropdown.Toggle className='show-more-actions'>...</Dropdown.Toggle>
+            <Dropdown.Menu
+              popperConfig={{ strategy: "fixed" }}
+              onClick={(e) => {
+                const a = action[e.nativeEvent?.target?.id?.split("-")?.[2]];
+                if (a) onActionClick(a);
+              }}>
+              {validActions}
+            </Dropdown.Menu>
+          </Dropdown>
+        );
+      }
     }
 
     return actionButtons;
@@ -281,18 +254,7 @@ class PageContent extends React.Component {
             }
           }
         });
-        action.updateOnly ? null : PageNavigation.loadPage
-        (this.appId, 
-          this.pageId, 
-          pageId, 
-          action.icon, 
-          true, 
-          action.name, 
-          mergeRowData, 
-          copyPageContent,
-          undefined, 
-          action.popupConfig, 
-          mergeRowData);
+        action.updateOnly ? null : PageNavigation.loadPage(this.appId, this.pageId, pageId, action.icon, true, action.name, mergeRowData, copyPageContent, undefined, action.popupConfig, mergeRowData);
       }
     }
   }
@@ -417,8 +379,8 @@ class PageContent extends React.Component {
               // width:  itemContent.actions?.length > 3 && "250px" || null,
               cell: (e) => this.renderButtons(e, itemContent.actions),
               filterCell: {
-                type: "empty"
-              }
+                type: "empty",
+              },
             });
           }
         }
@@ -477,7 +439,6 @@ class PageContent extends React.Component {
             reorderable={reorderable}
             customActions={this.props.customActions}
             parentData={this.state.currentRow}
-            pageId={this.pageId}
             notif={this.notif}
             urlPostParams={urlPostParams}
             gridDefaultFilters={itemContent.defaultFilters ? (typeof itemContent.defaultFilters == "string" ? JSON.parse(ParameterHandler.replaceParams(this.appId, itemContent.defaultFilters, mergeRowData)) : JSON.parse(ParameterHandler.replaceParams(this.appId, JSON.stringify(itemContent.defaultFilters), mergeRowData))) : undefined}
@@ -530,7 +491,7 @@ class PageContent extends React.Component {
         }
         content.push(<CommentsView appId={this.appId} key={i} core={this.core} url={url} notif={this.notif} fileId={fileId} currentRow={this.state.currentRow} />);
       } else if (item.type == "TabSegment") {
-        content.push(<TabSegment appId={this.appId} core={this.core} appId={this.appId} notif={this.notif} proc={this.props.proc} fileId={fileId} tabs={item.content.tabs} pageId={this.state.pageId} currentRow={this.state.currentRow} />);
+        content.push(<TabSegment appId={this.appId} core={this.core} notif={this.notif} proc={this.props.proc} fileId={fileId} tabs={item.content.tabs} pageId={this.state.pageId} currentRow={this.state.currentRow} />);
       } else if (item.type == "Dashboard") {
         content.push(<Dashboard appId={this.appId} key={i} core={this.core} notif={this.notif} content={item.content} proc={this.proc} />);
       } else if (item.type == "DashboardManager") {
@@ -553,7 +514,7 @@ class PageContent extends React.Component {
         }
         var dashboardoperations = ParameterHandler.replaceParams(this.appId, itemContent.dashboardoperations);
         var uuid = item.content ? (item.content.uuid ? item.content.uuid : null) : null;
-        content.push(<DashboardManager appId={this.appId} uuid={uuid} content={item.content} notif={this.notif} args={this.core} key={i} content={item.content} setTitle={() => {}} proc={this.proc} editDashboard='EDB' hideEdit={true} dashboardoperations={dashboardoperations} parentDiv={this.contentDivID} customActions={this.props.customActions} />);
+        content.push(<DashboardManager appId={this.appId} uuid={uuid} content={item.content} notif={this.notif} args={this.core} key={i} setTitle={() => {}} proc={this.proc} editDashboard='EDB' hideEdit={true} dashboardoperations={dashboardoperations} parentDiv={this.contentDivID} customActions={this.props.customActions} />);
       } else if (item.type == "Page") {
         var mergeRowData = this.props.params ? { ...this.props.params, ...item.params } : item.params;
         var params = ParameterHandler.replaceParams(this.appId, mergeRowData, this.state.currentRow);
@@ -564,10 +525,10 @@ class PageContent extends React.Component {
         if (item.useRowData) {
           item.content = ParameterHandler.replaceParams(this.appId, item.content, this.state.currentRow);
         }
-        content.push(<HTMLViewer key={i} core={this.core} key={i} appId={this.appId} url={item.url ? ParameterHandler.replaceParams(this.appId, item.url, this.state.currentRow) : undefined} fileId={fileId} content={item.content ? item.content : ""} fileData={fileData} notif={this.notif} className={item.className} item={item} currentRow={this.state.currentRow} />);
+        content.push(<HTMLViewer key={i} core={this.core} appId={this.appId} url={item.url ? ParameterHandler.replaceParams(this.appId, item.url, this.state.currentRow) : undefined} fileId={fileId} content={item.content ? item.content : ""} fileData={fileData} notif={this.notif} className={item.className} item={item} currentRow={this.state.currentRow} />);
       } else if (item.type == "EntityViewer") {
         var fileId = this.props.fileId ? this.props.fileId : this.state.currentRow.uuid;
-        content.push(<EntityViewer key={i} core={this.core} key={i} appId={this.appId} proc={this.props.proc} fileId={fileId} notif={this.notif} fileData={this.state.currentRow} className={item.className} />);
+        content.push(<EntityViewer key={i} core={this.core} appId={this.appId} proc={this.props.proc} fileId={fileId} notif={this.notif} fileData={this.state.currentRow} className={item.className} />);
       } else if (item.type == "History") {
         var fileId = this.props.fileId ? this.props.fileId : this.state.currentRow.uuid;
         content.push(<ActivityLog appId={this.appId} fileId={fileId} core={this.core} disableControls={item?.disableControls} />);
