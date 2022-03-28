@@ -168,8 +168,9 @@ body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown) {
     th.k-header {
       font-size: 15px;
       padding: 0.4rem 0.6rem;
-      background-color: $primary-color;
-      color: #f8f0ee;
+      // background-color: $primary-color;
+      // color: #f8f0ee;
+      
       font-weight: bolder;
       font-family: "Century Gothic", "Futura", "Didact Gothic", san-serif;
     }
@@ -1296,8 +1297,9 @@ div.iconTitle {
   height: 100px;
 }
 .k-grid-container {
-	min-height: 52vh;
-
+	// min-height: 52vh;
+  height: 70vh !important;
+}
 // Grid changes
 .Window_Admin {
   .k-grouping-header {
@@ -1323,15 +1325,15 @@ div.iconTitle {
     font-size: small !important;
   }
 }
-.Window_Admin tr th.k-header {
-  font-size: 15px;
-  padding: 0.4rem 0.6rem;
-  background-color: #f8f9fa;
-  font-weight: 100;
-  font-family: Roboto, sans-serif !important;
-}
-.Window_Admin .DashBG {
-  background-color: #f1f1f1;
-  min-height: 97%;
-  overflow-y: hidden;
-}
+  .Window_Admin tr th.k-header {
+    font-size: 15px;
+    padding: 0.4rem 0.6rem;
+    background-color: #f8f9fa;
+    font-weight: 100;
+    font-family: Roboto, sans-serif !important;
+  }
+  .Window_Admin .DashBG {
+    background-color: #f1f1f1;
+    // max-height: 97%;
+    overflow-y: hidden;
+  }
