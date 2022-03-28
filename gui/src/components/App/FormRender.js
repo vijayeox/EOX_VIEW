@@ -1,17 +1,17 @@
 import $ from "jquery";
 
-import BaseFormRenderer from './BaseFormRenderer'
+import BaseFormRenderer from "./BaseFormRenderer";
 class FormRender extends BaseFormRenderer {
   constructor(props) {
     super(props);
     this.core = this.props.core;
-    var userprofile = this.props.userprofile?this.props.userprofile: this.core.make("oxzion/profile").get();
+    var userprofile = this.props.userprofile ? this.props.userprofile : this.core.make("oxzion/profile").get();
     this.privileges = userprofile.key.privileges;
     this.userprofile = userprofile.key;
     this.loader = this.core.make("oxzion/splash");
     this.state = {
       appId: this.props.appId,
-      entityId: this.props.entityId?this.props.entityId:null,
+      entityId: this.props.entityId ? this.props.entityId : null,
       workflowId: this.props.workflowId ? this.props.workflowId : null,
       cacheId: this.props.cacheId ? this.props.cacheId : null,
       isDraft: this.props.isDraft ? this.props.isDraft : false,
@@ -49,20 +49,12 @@ class FormRender extends BaseFormRenderer {
     if (this.props.parentWorkflowInstanceId != "null") {
       return await this.helper.request("v1", this.appUrl + "/workflowInstance/" + this.props.parentWorkflowInstanceId, {}, "get");
     }
-    return
+    return;
   }
 
   async getFileDataById() {
     // call to api using wrapper
-    return await this.helper.request(
-      "v1",
-      this.appUrl +
-        "/file/" +
-        (this.props.fileId ? this.props.fileId : this.props.parentFileId) +
-        "/data",
-      {},
-      "get"
-    );
+    return await this.helper.request("v1", this.appUrl + "/file/" + (this.props.fileId ? this.props.fileId : this.props.parentFileId) + "/data", {}, "get");
   }
 
   async getDataByUrl() {
@@ -81,19 +73,12 @@ class FormRender extends BaseFormRenderer {
   }
 
   async getFormContents(url) {
-    return this.props.urlPostParams
-      ? await this.helper.request("v1", url, this.props.urlPostParams, "post")
-      : await this.helper.request("v1", url, {}, "get");
+    return this.props.urlPostParams ? await this.helper.request("v1", url, this.props.urlPostParams, "post") : await this.helper.request("v1", url, {}, "get");
   }
 
-  processProperties(form){
+  processProperties(form) {
     if (form._form.properties || form.originalComponent.properties) {
-      this.runDelegates(
-        form,
-        form._form.properties
-          ? form._form.properties
-          : form.originalComponent.properties
-      );
+      this.runDelegates(form, form._form.properties ? form._form.properties : form.originalComponent.properties);
       // Should'nt run both runDelegates and runProps func on form initializaton as it creates duplicate delegate calls
     }
   }
@@ -101,7 +86,7 @@ class FormRender extends BaseFormRenderer {
   loadWorkflow(form) {
     let that = this;
     if (this.state.parentWorkflowInstanceId && !this.state.isDraft) {
-      this.getFileData().then(response => {
+      this.getFileData().then((response) => {
         if (response.status == "success") {
           let fileData = JSON.parse(response.data.data);
           fileData.parentWorkflowInstanceId = that.props.parentWorkflowInstanceId;
@@ -118,8 +103,8 @@ class FormRender extends BaseFormRenderer {
           }
         }
       });
-    } else if (this.state.workflowId && (this.state.workflowId != null) && this.state.isDraft) {
-      this.getStartFormWorkflow().then(response => {
+    } else if (this.state.workflowId && this.state.workflowId != null && this.state.isDraft) {
+      this.getStartFormWorkflow().then((response) => {
         var parsedData = {};
         var template;
         if (response.data) {
@@ -140,14 +125,15 @@ class FormRender extends BaseFormRenderer {
           workflowInstanceId: parsedData.workflow_instance_id,
           activityInstanceId: parsedData.activity_instance_id,
           workflowId: parsedData.workflow_uuid,
-          formId: parsedData.form_id
+          formId: parsedData.form_id,
         });
         that.createForm().then((form) => {
           this.getCacheData().then((cacheResponse) => {
-            if (Object.keys(cacheResponse.data).length > 1) {//to account for only workflow_uuid
+            if (Object.keys(cacheResponse.data).length > 1) {
+              //to account for only workflow_uuid
               var that = this;
               if (cacheResponse.data) {
-                form.setSubmission({ data: this.formatFormData(cacheResponse.data) }).then(respone => {
+                form.setSubmission({ data: this.formatFormData(cacheResponse.data) }).then((respone) => {
                   that.processProperties(form);
                   if (cacheResponse.data.page && form.wizard) {
                     if (form.wizard && form.wizard.display == "wizard") {
@@ -160,10 +146,9 @@ class FormRender extends BaseFormRenderer {
             }
           });
         });
-
       });
     } else if (this.state.activityInstanceId && this.state.workflowInstanceId && this.state.isDraft) {
-      this.getActivityInstance().then(response => {
+      this.getActivityInstance().then((response) => {
         var parsedData = {};
         var template;
         if (response.data) {
@@ -184,14 +169,15 @@ class FormRender extends BaseFormRenderer {
           workflowInstanceId: parsedData.workflow_instance_id,
           activityInstanceId: parsedData.activity_instance_id,
           workflowId: parsedData.workflow_uuid,
-          formId: parsedData.form_id
+          formId: parsedData.form_id,
         });
         that.createForm().then((form) => {
           this.getCacheData().then((cacheResponse) => {
-            if (Object.keys(cacheResponse.data).length > 1) {//to account for only workflow_uuid
+            if (Object.keys(cacheResponse.data).length > 1) {
+              //to account for only workflow_uuid
               var that = this;
               if (cacheResponse.data) {
-                form.setSubmission({ data: this.formatFormData(cacheResponse.data) }).then(respone => {
+                form.setSubmission({ data: this.formatFormData(cacheResponse.data) }).then((respone) => {
                   that.processProperties(form);
                   if (cacheResponse.data.page && form.wizard) {
                     if (form.wizard && form.wizard.display == "wizard") {
@@ -204,22 +190,32 @@ class FormRender extends BaseFormRenderer {
             }
           });
         });
-
       });
     } else if (this.state.fileId || this.props.parentFileId) {
       this.getFileDataById().then((response) => {
         if (response.status == "success") {
-          this.setState({
-            data: this.state.fileId
-            ? this.formatFormData(response.data.data)
-            : {
-                ...this.state.data,
-                parentData: this.formatFormData(response.data.data,true),
-              },
-            entityId: response.data.entity_id
-          }, () => {
-            (form || this.state.currentForm) ? form ? form.setSubmission({ data: this.state.data }).then(function () { that.processProperties(form); }) : this.state.currentForm.setSubmission({ data: this.state.data }).then(function () { that.processProperties(that.state.currentForm); }) : null;
-          });
+          this.setState(
+            {
+              data: this.state.fileId
+                ? this.formatFormData(response.data.data)
+                : {
+                    ...this.state.data,
+                    parentData: this.formatFormData(response.data.data, true),
+                  },
+              entityId: response.data.entity_id,
+            },
+            () => {
+              form || this.state.currentForm
+                ? form
+                  ? form.setSubmission({ data: this.state.data }).then(function () {
+                      that.processProperties(form);
+                    })
+                  : this.state.currentForm.setSubmission({ data: this.state.data }).then(function () {
+                      that.processProperties(that.state.currentForm);
+                    })
+                : null;
+            }
+          );
         }
       });
     } else if (this.props.dataUrl) {
@@ -227,15 +223,24 @@ class FormRender extends BaseFormRenderer {
         if (response.status == "success") {
           this.setState(
             {
-              data: this.formatFormData(response.data)
-            }, () => {
-              (form || this.state.currentForm) ? form ? form.setSubmission({ data: this.state.data }).then(function () { that.processProperties(form); }) : this.state.currentForm.setSubmission({ data: this.state.data }).then(function () { that.processProperties(that.state.currentForm); }) : null;
-            });
+              data: this.formatFormData(response.data),
+            },
+            () => {
+              form || this.state.currentForm
+                ? form
+                  ? form.setSubmission({ data: this.state.data }).then(function () {
+                      that.processProperties(form);
+                    })
+                  : this.state.currentForm.setSubmission({ data: this.state.data }).then(function () {
+                      that.processProperties(that.state.currentForm);
+                    })
+                : null;
+            }
+          );
         }
       });
-    }
-    else if (this.state.activityInstanceId && this.state.workflowInstanceId && !this.state.cacheId) {
-      this.getActivityInstance().then(response => {
+    } else if (this.state.activityInstanceId && this.state.workflowInstanceId && !this.state.cacheId) {
+      this.getActivityInstance().then((response) => {
         if (response.status == "success") {
           that.setState({ workflowInstanceId: response.data.workflow_instance_id });
           that.setState({ workflowId: response.data.workflow_id });
@@ -252,7 +257,7 @@ class FormRender extends BaseFormRenderer {
         }
       });
     } else if (this.state.instanceId) {
-      this.getInstanceData().then(response => {
+      this.getInstanceData().then((response) => {
         if (response.status == "success" && response.data.workflow_id) {
           that.setState({ workflowInstanceId: response.data.workflow_instance_id });
           that.setState({ workflowId: response.data.workflow_id });
@@ -275,24 +280,23 @@ class FormRender extends BaseFormRenderer {
     }
   }
 
-
   triggerComponent(form, targetProperties) {
-    var targetList = targetProperties.split(',');
-    targetList.map(item => {
+    var targetList = targetProperties.split(",");
+    targetList.map((item) => {
       var targetComponent = form.getComponent(item);
       setTimeout(function () {
-        if (targetComponent.type == 'datagrid') {
+        if (targetComponent.type == "datagrid") {
           targetComponent.triggerRedraw();
         }
       }, 3000);
     });
-  };
+  }
 
   componentDidMount() {
     this.showFormLoader(true, 1);
     if (this.props.url) {
-      this.getFormContents(this.props.url).then(response => {
-        if (response.status == 'success') {
+      this.getFormContents(this.props.url).then((response) => {
+        if (response.status == "success") {
           var parsedData = {};
           var template;
           if (response.data) {
@@ -313,13 +317,14 @@ class FormRender extends BaseFormRenderer {
             workflowInstanceId: parsedData.workflow_instance_id,
             activityInstanceId: parsedData.activity_instance_id,
             workflowId: parsedData.workflow_uuid,
-            formId: parsedData.form_id
+            formId: parsedData.form_id,
           });
-          this.createForm().then(form => {
-            if (Object.keys(parsedData).length > 1) {//to account for only workflow_uuid
+          this.createForm().then((form) => {
+            if (Object.keys(parsedData).length > 1) {
+              //to account for only workflow_uuid
               var that = this;
               if (parsedData.data) {
-                form.setSubmission({ data: this.formatFormData(parsedData.data) }).then(respone => {
+                form.setSubmission({ data: this.formatFormData(parsedData.data) }).then((respone) => {
                   that.processProperties(form);
                 });
               } else {
@@ -331,18 +336,18 @@ class FormRender extends BaseFormRenderer {
           });
         } else {
           var errorMessage = "";
-          if (response.errors && response.errors[0] && response.errors[0]['message']) {
-            errorMessage = response.errors[0]['message'];
+          if (response.errors && response.errors[0] && response.errors[0]["message"]) {
+            errorMessage = response.errors[0]["message"];
           }
           if (response.message) {
-            errorMessage = response.errors[0]['message'];
+            errorMessage = response.errors[0]["message"];
           }
           this.showFormError(true, errorMessage);
         }
       });
     } else if (this.props.pipeline) {
-      this.loadFormWithCommands(this.props.pipeline).then(response => {
-        this.createForm().then(form => {
+      this.loadFormWithCommands(this.props.pipeline).then((response) => {
+        this.createForm().then((form) => {
           this.loadWorkflow(form);
         });
       });
@@ -350,10 +355,7 @@ class FormRender extends BaseFormRenderer {
       this.getForm().then((response) => {
         if (response.status == "success") {
           if (!this.state.content) {
-            this.setState(
-              { content: JSON.parse(response.data.template),
-                entity_name: response.data.entity_name }
-            );
+            this.setState({ content: JSON.parse(response.data.template), entity_name: response.data.entity_name });
           }
           this.createForm().then((form) => {
             var that = this;
@@ -362,10 +364,9 @@ class FormRender extends BaseFormRenderer {
           });
         }
       });
-
     } else {
       if (this.state.content) {
-        this.createForm().then(form => {
+        this.createForm().then((form) => {
           this.loadWorkflow(form);
         });
       } else {
@@ -377,33 +378,35 @@ class FormRender extends BaseFormRenderer {
     }
     $("#" + this.loaderDivID).off("customButtonAction");
     document.getElementById(this.loaderDivID).addEventListener("customButtonAction", (e) => this.customButtonAction(e), false);
-    if(this.state.fileId){
-        this.generateViewButton();
+    if (this.state.fileId) {
+      this.generateViewButton();
     }
   }
 
   async loadFormWithCommands(commands) {
-    await this.callPipeline(commands, commands).then(response => {
-      if (response.status == "success") {
-        if (response.data.data) {
-          var data = response.data;
-          var tempdata = null;
-          if (data.data) {
-            tempdata = data.data
-          } else if (data.form_data) {
-            tempdata = data.form_data;
+    await this.callPipeline(commands, commands)
+      .then((response) => {
+        if (response.status == "success") {
+          if (response.data.data) {
+            var data = response.data;
+            var tempdata = null;
+            if (data.data) {
+              tempdata = data.data;
+            } else if (data.form_data) {
+              tempdata = data.form_data;
+            }
+            this.setState({
+              content: JSON.parse(data.template),
+              data: this.addAddlData(tempdata),
+              formId: data.id,
+              workflowId: response.data.workflow_id,
+            });
           }
-          this.setState({
-            content: JSON.parse(data.template),
-            data: this.addAddlData(tempdata),
-            formId: data.id,
-            workflowId: response.data.workflow_id
-          });
         }
-      }
-    }).catch(e => {
-      this.handleError(e);
-    });
+      })
+      .catch((e) => {
+        this.handleError(e);
+      });
   }
 }
 export default FormRender;
