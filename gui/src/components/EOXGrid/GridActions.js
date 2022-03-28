@@ -356,7 +356,7 @@ export default class GridActions extends React.Component {
               <button
                 type={actions.type}
                 key={key}
-                className="btn btn-primary EOXGrids"
+                className="btn btn-primary m-2 align-right EOXGrids"
                 onClick={(e) => {
                   var tr = e.target.closest("tr");
                   let index = tr.getAttribute("data-grid-row-index");

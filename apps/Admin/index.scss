@@ -953,6 +953,10 @@ body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown) {
     }
   }
 
+  .adminTitleBar{
+    margin: 10px 0px;
+  }
+
   .block {
     height: 105px;
     width: 125px;
@@ -1293,4 +1297,41 @@ div.iconTitle {
 }
 .k-grid-container {
 	min-height: 52vh;
+
+// Grid changes
+.Window_Admin {
+  .k-grouping-header {
+    border-color: #dde2e7;
+    background-color: #f8f9fa;
+    color: #8f9bb3;
+    text-align: center;
+    display: none;
+  }
+  .k-grid th, .k-grid td {
+    padding: 5px !important;
+  }
+  .k-grid td {
+    padding: 5px !important;
+    font-size: small !important;
+  }
+  .k-filtercell-wrapper > .k-textbox {
+    height: 25px;
+    width: 25px;
+    background-color: red;
+  }
+  .k-textbox {
+    font-size: small !important;
+  }
+}
+.Window_Admin tr th.k-header {
+  font-size: 15px;
+  padding: 0.4rem 0.6rem;
+  background-color: #f8f9fa;
+  font-weight: 100;
+  font-family: Roboto, sans-serif !important;
+}
+.Window_Admin .DashBG {
+  background-color: #f1f1f1;
+  min-height: 97%;
+  overflow-y: hidden;
 }
