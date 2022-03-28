@@ -576,7 +576,7 @@ class DashboardManager extends React.Component {
           flipDirection='horizontal' // horizontal or vertical
           isFlipped={this.state.flipped}
           flipOnClick={false}
-          style={{ width: "100%", height: "100vh" }} /// these are optional style, it is not necessary
+          style={{ width: "100%" }} /// these are optional style, it is not necessary -> removed height: "100vh"
         >
           <FrontSide /*style={{ marginTop: '-50px' }}*/>
             <div id={filterContainer} style={{ width: "30vw" }} className='filter-form-container disappear'>
