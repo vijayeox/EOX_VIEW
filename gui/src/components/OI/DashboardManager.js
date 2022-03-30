@@ -568,7 +568,7 @@ class DashboardManager extends React.Component {
     let containsFilter = (Array.isArray(this.state.filterConfiguration) && this.state.filterConfiguration.length > 0) || this.getFilterProperty("filterConfiguration").length > 0 || this.getOptionalFilters("filterOptions").length > 0;
     let filterContainer = "filter-form-container-" + this.state.uuid;
     let filterPreview = "dashboard-preview-container-" + this.state.uuid;
-    let dashboardView = "dashboard" + this.state.uuid;
+    let dashboardView = "dashboard dashboard_" + this.state.uuid;
     return (
       <div ref={this.myRef} className={dashboardView}>
         <Notification ref={this.notif} />
@@ -578,7 +578,7 @@ class DashboardManager extends React.Component {
           flipOnClick={false}
           style={{ width: "100%" }} /// these are optional style, it is not necessary -> removed height: "100vh"
         >
-          <FrontSide /*style={{ marginTop: '-50px' }}*/>
+          <FrontSide  style={{ boxShadow:"none"}} /*style={{ marginTop: '-50px' }}*/>
             <div id={filterContainer} style={{ width: "30vw" }} className='filter-form-container disappear'>
               {containsFilter && <DashboardFilter ref={this.filterRef} core={this.core} filterMode='APPLY' hideFilterDiv={() => this.hideFilter()} filterConfiguration={this.getFilterProperty("filterConfiguration")} applyFilterOption={this.getOptionalFilters("filterOptions")} setDashboardFilter={(filter) => this.applyDashboardFilter(filter)} dashboardStack={this.state.dashboardStack} dashboardUuid={this.state.uuid} />}
             </div>
