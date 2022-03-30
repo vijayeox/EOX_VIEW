@@ -191,26 +191,22 @@ export default class MenuPanelItem extends PanelItem {
 		const addSearch = (searchDiv, input) => {
 			let filter, items, i;
 			filter = input.value.toUpperCase();
-			items = document.getElementsByClassName("appcaption");
-			for (i = 0; i < items.length; i++) {
-				if (items[i].innerHTML.toUpperCase().indexOf(filter) > -1) {
-					items[i].parentElement.parentElement.parentElement.style.display =
-						"block";
-					items[i].parentElement.style.display = "flex";
-				} else {
-					items[i].parentElement.style.display = "none";
-					items[i].parentElement.parentElement.parentElement.style.display =
-						"none";
-				}
-			}
-			// for (i = 0; i < items.length; i++) {
-			//   if (items[i].innerHTML.toUpperCase().indexOf(filter) > -1) {
-			//     items[i].parentElement.parentElement.parentElement.style.display =
-			//       "block";
-			//     items[i].parentElement.style.display = "flex";
-			//   }
-			// }
-			// console.log("Valueeee",input.value);
+			const categories = [...document.querySelectorAll('#appmenu>.app-bar>.category')];
+            for(let category of categories){
+                const appLists = [...category.children[1].children];
+                let c = 0;
+                for(let app of appLists){
+                    const e = app.children[1];
+                    if(e.innerHTML.toLowerCase().includes(filter.toLowerCase())){
+                        app.style.display = "flex"
+                    }else{
+                        c++;
+                        app.style.display = "none"
+                    }
+                }
+                category.style.display = c === appLists.length ? "none" : "block"
+            }
+		
 		};
 
 		const onclick = (ev) => {
