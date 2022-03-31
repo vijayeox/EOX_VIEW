@@ -85,6 +85,7 @@ export default class OX_Grid extends React.Component {
   };
 
   dataStateChange = (e) => {
+    if (e?.dataState?.filter?.filters?.find(o => o.value === "")) return;
     const showLoader = (() => {
       try {
         return JSON.stringify(this.state?.dataState) !== JSON.stringify(e?.dataState);
