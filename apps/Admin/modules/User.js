@@ -55,6 +55,7 @@ class User extends React.Component {
           {
             title: "Image",
             field: "icon",
+            filterable: false
           },
           {
             title: "Name",

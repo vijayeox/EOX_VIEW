@@ -396,6 +396,7 @@ export default class EOXGrid extends React.Component {
             onExpandChange={this.gridGroupExpansionChanged}
             onDataStateChange={(e) => {
               if (e?.dataState?.filter?.filters?.find(v => !v.field)) return
+              if (e?.dataState?.filter?.filters?.find(o => o.value === "")) return
               this.setState({ dataState: e.dataState });
               // console.log('datastate-',e)
               this.props.dataStateChanged(e)
