@@ -445,11 +445,12 @@
                   "widget": "choicesjs",
                   "placeholder": "Select Roles",
                   "tooltip": "Select one or more roles for this user.",
+                  "uniqueOptions": true,
                   "tableView": false,
                   "multiple": true,
                   "dataSrc": "url",
                   "data": {
-                    "url": "/role",
+                    "url": "/account/{{data.userprofile.accountId}}/roles",
                     "headers": [
                       {
                         "key": "",
@@ -459,6 +460,7 @@
                   },
                   "idPath": "uuid",
                   "template": "<span>{{ item.name }}</span>",
+                  "customDefaultValue": "console.log(data)",
                   "validate": {
                     "required": true
                   },
@@ -467,10 +469,10 @@
                     "absoluteUrl": "true"
                   },
                   "type": "select",
-                  "filter": "filter=[{\"skip\":0,\"take\":10000}]",
-                  "input": true,
                   "lazyLoad": false,
-                  "disableLimit": false
+                  "disableLimit": false,
+                  "filter": "filter=[{\"skip\":0,\"take\":10000}]",
+                  "input": true
                 },
                 {
                   "label": "uuid",
@@ -575,6 +577,6 @@
   "path": "adminuser",
   "project": "5dc1489e4f668513e9535090",
   "created": "2021-12-01T10:01:16.951Z",
-  "modified": "2022-02-24T09:03:23.220Z",
+  "modified": "2022-03-31T05:51:23.964Z",
   "machineName": "eoxproductsupport:adminUser"
 }
