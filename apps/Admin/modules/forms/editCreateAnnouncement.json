@@ -7,6 +7,7 @@
     {
       "title": "Create Announcement",
       "collapsible": false,
+      "hideLabel": true,
       "key": "createAnnouncement",
       "type": "panel",
       "label": "Panel",
@@ -366,6 +367,6 @@
   "path": "adminannouncement",
   "project": "5dc1489e4f668513e9535090",
   "created": "2021-12-01T10:23:25.474Z",
-  "modified": "2022-03-22T12:24:32.230Z",
+  "modified": "2022-03-31T09:22:57.414Z",
   "machineName": "eoxproductsupport:adminAnnouncement"
 }
