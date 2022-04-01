@@ -7,6 +7,7 @@
     {
       "title": "Create Team",
       "collapsible": false,
+      "hideLabel": true,
       "key": "createTeam",
       "type": "panel",
       "label": "Panel",
@@ -229,6 +230,6 @@
   "path": "adminteam",
   "project": "5dc1489e4f668513e9535090",
   "created": "2021-12-01T10:14:34.756Z",
-  "modified": "2022-02-22T10:58:45.348Z",
+  "modified": "2022-03-31T09:31:48.217Z",
   "machineName": "eoxproductsupport:adminTeam"
 }

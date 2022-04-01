@@ -7,6 +7,7 @@
     {
       "title": "Create User",
       "collapsible": false,
+      "hideLabel": true,
       "key": "createUser",
       "type": "panel",
       "label": "Panel",
@@ -577,6 +578,6 @@
   "path": "adminuser",
   "project": "5dc1489e4f668513e9535090",
   "created": "2021-12-01T10:01:16.951Z",
-  "modified": "2022-03-31T05:51:23.964Z",
+  "modified": "2022-03-31T09:18:45.498Z",
   "machineName": "eoxproductsupport:adminUser"
 }
