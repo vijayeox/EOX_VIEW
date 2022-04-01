@@ -28,14 +28,9 @@ class SSOCustom extends Component {
 
   generateToken() {
     // Code to generate the URL
-    let returnDataEmail = this.state.data[0][this.state.config.email];
-    let returnDataIssuer = this.state.data[0][this.state.config.issuer];
     let url = 'app/' + this.state.appUuid + '/delegate/GenerateSpeedgaugeAuth';
-    // if (this.state.config.email) {
-    //   url += '?emailForSSO=' + this.state.config.email;
-    // }
-    if (this.state.config.email && this.state.config.issuer) {
-      url += '?emailForSSO=' + returnDataEmail + '&issuerForSSO=' + returnDataIssuer;
+    if (this.state.config.email) {
+      url += '?emailForSSO=' + this.state.config.email;
     }
     this.getURL(url).then((response) => {
       if (response.status == "success") {
