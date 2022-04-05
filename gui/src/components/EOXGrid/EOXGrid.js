@@ -431,6 +431,7 @@ export default class EOXGrid extends React.Component {
             )}
             <GridColumn
               title="Actions"
+              filterable={false}
               cell={() => (
                 <GridActions
                   dataItem={this.state.displayedData}
