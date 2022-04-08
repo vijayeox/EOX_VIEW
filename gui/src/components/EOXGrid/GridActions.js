@@ -355,10 +355,10 @@ export default class GridActions extends React.Component {
       if(key === "edit" && ((permissions.canEdit !== true )|| (permissions.canEdit === undefined ))){
         obj=  delete obj[`${key}`];
        }
-       if(key === "create" && ((permissions.canAdd !== true )|| (permissions.canAdd === undefined ))){
-        obj=  delete obj[`${key}`];
-        // console.log("object inside loop",obj);
-       }
+      //we dont have create action inside the list view -actions 
+      //  if(key === "create" && ((permissions.canAdd !== true )|| (permissions.canAdd === undefined ))){
+      //   obj=  delete obj[`${key}`];
+      //  }
       })
       return obj;
   }
