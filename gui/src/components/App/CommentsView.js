@@ -695,7 +695,7 @@ function ReplyTextArea({header, saveComment, core}){
         value={state.value}
         onChange={handleChange}
         onKeyPress={(event) => {
-          if (event.nativeEvent.key == "Enter" && event.ctrlKey ) { // && event.ctrlKey  to submit the comment on clicking ctrl+enter
+          if (event.which === 13 && event.ctrlKey ) { // && event.ctrlKey  to submit the comment on clicking ctrl+enter
             emojiCheck();
             saveComment(false, state.value);
             setState({ value: '' })

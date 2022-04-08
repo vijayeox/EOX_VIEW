@@ -7,6 +7,7 @@
     {
       "title": "Create Project",
       "collapsible": false,
+      "hideLabel": true,
       "key": "panel",
       "type": "panel",
       "label": "Panel",
@@ -231,6 +232,6 @@
   "path": "adminproject",
   "project": "5dc1489e4f668513e9535090",
   "created": "2021-12-01T09:35:49.729Z",
-  "modified": "2022-02-22T10:58:05.980Z",
+  "modified": "2022-03-31T09:32:43.828Z",
   "machineName": "eoxproductsupport:adminProject"
 }

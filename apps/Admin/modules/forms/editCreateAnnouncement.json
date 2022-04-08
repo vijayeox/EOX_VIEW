@@ -7,6 +7,7 @@
     {
       "title": "Create Announcement",
       "collapsible": false,
+      "hideLabel": true,
       "key": "createAnnouncement",
       "type": "panel",
       "label": "Panel",
@@ -115,7 +116,7 @@
                   "calculateValue": "if(data.start_date){\n  value=moment(data.start_date).format(\"YYYY-MM-DD\");\n}",
                   "validate": {
                     "required": true,
-                    "custom": "let today = new Date().toISOString().slice(0, 10);\nif(!data.uuid){\n  valid=(input >= today) ?true:\"please enter the date greater than or equal to today's date\";\n}\n"
+                    "custom": "let today = new Date().toISOString().slice(0, 10);\nif(!data.uuid){\n  valid=(input >= today) ? true:\"Please enter the date greater than or equal to today's date\";\n}"
                   },
                   "enableMinDateInput": false,
                   "enableMaxDateInput": false,
@@ -156,21 +157,21 @@
                   "format": "yyyy-MM-dd",
                   "placeholder": "End Date",
                   "tableView": false,
-                  "enableMinDateInput": false,
                   "datePicker": {
                     "disableWeekends": false,
                     "disableWeekdays": false
                   },
-                  "enableMaxDateInput": false,
                   "enableTime": false,
                   "timePicker": {
                     "showMeridian": false
                   },
-                  "customDefaultValue": "// if(!data.end_date){\n//   value=moment().format(\"YYYY-MM-DD\");\n// }\n// value = data.end_date;",
-                  "calculateValue": "if(data.end_date){\n  value=moment(data.end_date).format(\"YYYY-MM-DD\");\n}",
+                  "calculateValue": "if(data){\n  value=moment(data.end_date).format(\"YYYY-MM-DD\");\n}",
                   "validate": {
-                    "required": true
+                    "required": true,
+                    "custom": "if(data){\n  valid=(input >= data.start_date) ? true:\"Please enter the date greater than or equal to the start date\";\n}\n  "
                   },
+                  "enableMinDateInput": false,
+                  "enableMaxDateInput": false,
                   "key": "end_date",
                   "type": "datetime",
                   "input": true,
@@ -366,6 +367,6 @@
   "path": "adminannouncement",
   "project": "5dc1489e4f668513e9535090",
   "created": "2021-12-01T10:23:25.474Z",
-  "modified": "2022-03-22T12:24:32.230Z",
+  "modified": "2022-04-05T15:07:15.094Z",
   "machineName": "eoxproductsupport:adminAnnouncement"
 }

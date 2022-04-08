@@ -62,8 +62,9 @@ export default class Mapbox extends React.PureComponent {
     }
 
     componentDidMount() {
-        if (this.state.driver !== null && this.state.trip !== null) {
-            this.getTripSummary(this.state.driver, this.state.trip, this.state.fleet);
+        let mapData = this.props.data[0];
+        if (mapData[this.state.driver] !== null && mapData[this.state.trip] !== null) {
+            this.getTripSummary(mapData[this.state.driver], mapData[this.state.trip], mapData[this.state.fleet]);
         }
     }
 

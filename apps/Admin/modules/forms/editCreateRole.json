@@ -7,6 +7,7 @@
     {
       "title": "Create Role",
       "collapsible": false,
+      "hideLabel": true,
       "key": "createRole",
       "type": "panel",
       "label": "Panel",
@@ -436,6 +437,6 @@
   "path": "adminrolescopy",
   "project": "5dc1489e4f668513e9535090",
   "created": "2022-03-13T08:07:00.873Z",
-  "modified": "2022-03-16T13:46:36.546Z",
+  "modified": "2022-03-31T09:29:32.926Z",
   "machineName": "eoxproductsupport:adminRolesCopy"
 }

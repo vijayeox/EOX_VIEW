@@ -122,6 +122,11 @@ export default class Tray {
         Object.keys(u).forEach((k) => (entry[k] = u[k]));
 
         this.core.emit("osjs/tray:update", this.trayEntries);
+        setTimeout(() => {
+          [...document.querySelectorAll('.badgeCheck')].forEach(v => {
+            v.style.opacity = `${v.innerHTML.trim()}` === "0" && "0" || "1";
+          })
+        })
       },
       destroy: () => this.remove(entry),
     };

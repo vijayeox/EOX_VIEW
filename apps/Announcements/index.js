@@ -87,8 +87,8 @@ const register = (core, args, options, metadata) => {
               {
                 title: "AnnouncementWindow",
                 icon: proc.resource(metadata.icon_white),
-                badge: "badgeCheck",
-                count: announcementsCount,
+                badge: announcementsCount > 0 ? "badgeCheck" : "",
+                count: announcementsCount > 0 ? announcementsCount : "",
                 pos: 1,
                 onclick: () => {
                   win.raise();

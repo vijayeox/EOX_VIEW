@@ -38,7 +38,7 @@ export default class GridActions extends React.Component {
             }))
           : Swal.fire({
             icon: "error",
-            title: response.status,
+            title: response.message,
             showConfirmButton: true,
           });
       }
@@ -346,11 +346,48 @@ export default class GridActions extends React.Component {
     this.toggleDialog();
   };
 
+  getFilteredActions = (obj)=>{
+  let permissions = this.permission;
+      Object.keys(obj).forEach(key => {
+      if(key === "delete" && ((permissions.canDelete !== true )|| (permissions.canDelete === undefined ))){
+       obj=  delete obj[`${key}`];
+      }
+      if(key === "edit" && ((permissions.canEdit !== true )|| (permissions.canEdit === undefined ))){
+        obj=  delete obj[`${key}`];
+       }
+      //we dont have create action inside the list view -actions 
+      //  if(key === "create" && ((permissions.canAdd !== true )|| (permissions.canAdd === undefined ))){
+      //   obj=  delete obj[`${key}`];
+      //  }
+      })
+      return obj;
+  }
+
+  showConfirm(actionFunction,args,text ,confirmButtonText){
+    Swal.fire({
+      title: "Are you sure?",
+      text: text,
+      // imageUrl:
+      //   "https://image.flaticon.com/icons/svg/1632/1632714.svg",
+      icon: "question",
+      imageWidth: 75,
+      imageHeight: 75,
+      confirmButtonText: confirmButtonText,
+      confirmButtonColor: "#d33",
+      showCancelButton: true,
+      cancelButtonColor: "#3085d6",
+      target: ".Window_Admin",
+    })
+    .then((result) => {
+      if (result.value) {
+        actionFunction?.(...args)
+      }
+    })
+  }
   render() {
     return (
       <td>
-        {/* {this.state.visible} */}
-        {Object["values"](this.actionItems).map((actions, key) =>
+        {Object.values((this.getFilteredActions(this.actionItems))).map((actions, key) =>
           !(actions.text === "CREATE") ? (
             <abbr title={actions.title} key={key}>
               <button
@@ -362,27 +399,11 @@ export default class GridActions extends React.Component {
                   let index = tr.getAttribute("data-grid-row-index");
                   // console.log(this.dataItems.data[index]);
                   {
-                    actions.text === "DELETE" && this.permission.canDelete
-                      ? Swal.fire({
-                        title: "Are you sure?",
-                        text: "Do you really want to delete the record? This cannot be undone.",
-                        // imageUrl:
-                        //   "https://image.flaticon.com/icons/svg/1632/1632714.svg",
-                        icon: "question",
-                        imageWidth: 75,
-                        imageHeight: 75,
-                        confirmButtonText: "Delete",
-                        confirmButtonColor: "#d33",
-                        showCancelButton: true,
-                        cancelButtonColor: "#3085d6",
-                        target: ".Window_Admin",
-                      }).then((result) => {
-                        if (result.value) {
-                          this.delete(this.dataItems.data[index], index);
-                        }
-                      })
-                      : " ";
+                    actions.text === "DELETE" 
+                      ? 
+                      this.showConfirm(this.delete, [this.dataItems.data[index], index], "Do you really want to delete the record? This cannot be undone.", "Delete"):"";
                   }
+                  
                   {
                     actions.text === "RETRY"
                       ? this.retry(this.dataItems.data[index], index)
@@ -390,38 +411,19 @@ export default class GridActions extends React.Component {
                   }
                   {
                     actions.text === "RESET"
-                      ? Swal.fire({
-                        title: "Are you sure?",
-                        text: "Do you really want to reset your password",
-                        // imageUrl:
-                        //   "https://image.flaticon.com/icons/svg/1632/1632714.svg",
-                        icon: "question",
-                        imageWidth: 75,
-                        imageHeight: 75,
-                        confirmButtonText: "Reset",
-                        confirmButtonColor: "#d33",
-                        showCancelButton: true,
-                        cancelButtonColor: "#3085d6",
-                        target: ".Window_Admin",
-                      }).then((result) => {
-                        if (result.value) {
-                          this.resetPassword(
-                            this.dataItems.data[index],
-                            index
-                          );
-                        }
-                      })
-                      : " ";
+                      ?
+                      this.showConfirm( this.resetPassword, [ this.dataItems.data[index],
+                        index],  "Do you really want to reset your password", "Reset"):"";
                   }
 
                   {
-                    actions.text === "ADD" && this.permission.canAdd
+                    actions.text === "ADD"
                       ? (this.add(this.dataItems.data[index], this.addConfig),
                         this.state.visible)
                       : " ";
                   }
                   {
-                    actions.text === "EDIT" && this.permission.canEdit
+                    actions.text === "EDIT"
                       ? this.edit(
                         this.dataItems.data[index],
                         this.editForm,
