@@ -1138,9 +1138,10 @@ body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown) {
     }
   }
   //Filter and clear filter buttons changes
-  .k-filtercell-wrapper{
+  .k-filtercell .k-filtercell-wrapper{
   .k-filtercell-operator {
     display: block !important;
+    height: 35px !important;
   }
     span.k-dropdown-wrap,
     span.k-dropdown-wrap:hover {
@@ -1162,9 +1163,9 @@ body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown) {
       padding: 0px !important;
     }
 
-    .k-filtercell .k-filtercell-operator {
-      height: 35px !important;
-    }
+    // .k-filtercell .k-filtercell-operator {
+    //   height: 35px !important;
+    // }
   }
 }
 
