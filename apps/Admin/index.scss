@@ -1137,8 +1137,36 @@ body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown) {
       /* Mozilla-based browsers will ignore this. */
     }
   }
+  //Filter and clear filter buttons changes
+  .k-filtercell .k-filtercell-wrapper{
+  .k-filtercell-operator {
+    display: block !important;
+    height: 35px !important;
+  }
+    span.k-dropdown-wrap,
+    span.k-dropdown-wrap:hover {
+      border-color: #e4e7eb00;
+      color: #212529;
+      background-color: #e4e7eb00;
+    }
 
-  // ---Contact Number Input Component (End)---
+    button.k-button.k-button-icon.k-clear-button-visible {
+      background-color: #e4e7eb00;
+      border-color: #e4e7eb00;
+    }
+
+    span.k-select {
+      padding: 0px !important;
+    }
+
+    button.k-button.k-button-icon.k-clear-button-visible {
+      padding: 0px !important;
+    }
+
+    // .k-filtercell .k-filtercell-operator {
+    //   height: 35px !important;
+    // }
+  }
 }
 
 .gender1,
@@ -1309,8 +1337,9 @@ div.iconTitle {
     text-align: center;
     display: none;
   }
-  .k-grid th, .k-grid td {
-    padding: 12px 2px !important;
+  .k-grid th,
+  .k-grid td {
+    padding: 0px 2px !important;
   }
   .k-grid td {
     padding: 5px !important;
@@ -1324,16 +1353,16 @@ div.iconTitle {
   .k-textbox {
     font-size: small !important;
   }
-}
-  .Window_Admin tr th.k-header {
+  tr th.k-header {
     font-size: 15px;
     padding: 0.4rem 0.6rem;
     background-color: #f8f9fa;
     font-weight: 100;
     font-family: Roboto, sans-serif !important;
   }
-  .Window_Admin .DashBG {
+  .DashBG {
     background-color: #f1f1f1;
     // max-height: 97%;
     // overflow-y: hidden;
   }
+}
