@@ -235,3 +235,22 @@
     }
   }
 }
+
+.k-dateinput-wrap input[type="text"]:not(.browser-default) {
+  border-bottom : none !important;
+}
+
+.GridCustomStyle .k-filtercell .k-datepicker .k-dateinput-wrap input {
+  font-size: 0.75rem !important;
+  height: 25px !important;
+  padding: 1px;
+  margin-left: 5px;
+}
+
+.GridCustomStyle .k-filtercell .k-datepicker {
+  height: 25px !important;
+  border: 1px solid #dadada;
+  border-radius: 7px;
+  background-color: #ffffff;
+  color: #212529;
+}
