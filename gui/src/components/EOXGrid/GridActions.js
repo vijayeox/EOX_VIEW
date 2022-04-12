@@ -46,22 +46,22 @@ export default class GridActions extends React.Component {
   };
 
   //Retry -ErrorLogs
-  retry = (data, index) => {
-    Requests.retryCall(this.core, this.api, data).then((response) => {
-      response.status == "success"
-        ? (this.onUpdate({ crudType: "RETRY", index }),
-          Swal.fire({
-            icon: "success",
-            title: response.status,
-            showConfirmButton: true,
-          }))
-        : Swal.fire({
-          icon: "error",
-          title: response.status,
-          showConfirmButton: true,
-        });
-    });
-  };
+  // retry = (data, index) => {
+  //   Requests.retryCall(this.core, this.api, data).then((response) => {
+  //     response.status == "success"
+  //       ? (this.onUpdate({ crudType: "RETRY", index }),
+  //         Swal.fire({
+  //           icon: "success",
+  //           title: response.status,
+  //           showConfirmButton: true,
+  //         }))
+  //       : Swal.fire({
+  //         icon: "error",
+  //         title: response.status,
+  //         showConfirmButton: true,
+  //       });
+  //   });
+  // };
 
   //Reset Password-Users
   resetPassword = (data, index) => {
@@ -355,10 +355,10 @@ export default class GridActions extends React.Component {
       if(key === "edit" && ((permissions.canEdit !== true )|| (permissions.canEdit === undefined ))){
         obj=  delete obj[`${key}`];
        }
-       if(key === "create" && ((permissions.canAdd !== true )|| (permissions.canAdd === undefined ))){
-        obj=  delete obj[`${key}`];
-        // console.log("object inside loop",obj);
-       }
+      //we dont have create action inside the list view -actions 
+      //  if(key === "create" && ((permissions.canAdd !== true )|| (permissions.canAdd === undefined ))){
+      //   obj=  delete obj[`${key}`];
+      //  }
       })
       return obj;
   }
@@ -397,35 +397,38 @@ export default class GridActions extends React.Component {
                 onClick={(e) => {
                   var tr = e.target.closest("tr");
                   let index = tr.getAttribute("data-grid-row-index");
-                  // console.log(this.dataItems.data[index]);
+                  //console.log("dataitem",this.dataItems.data[index],index);
                   {
-                    actions.text === "DELETE" 
-                      ? 
-                      this.showConfirm(this.delete, [this.dataItems.data[index], index], "Do you really want to delete the record? This cannot be undone.", "Delete"):"";
+                    actions.text === "DELETE"
+                      ?
+                      this.showConfirm(this.delete, [this.dataItems.data ? this.dataItems.data[index] : this.dataItems[index],
+                        index], "Do you really want to delete the record? This cannot be undone.", "Delete") : "";
                   }
-                  
-                  {
-                    actions.text === "RETRY"
-                      ? this.retry(this.dataItems.data[index], index)
-                      : " ";
-                  }
+                  // {
+                  //   actions.text === "RETRY"
+                  //     ? this.retry(this.dataItems.data ? this.dataItems.data[index] : this.dataItems[index],
+                  //       index)
+                  //     : " ";
+                  // }
                   {
                     actions.text === "RESET"
                       ?
-                      this.showConfirm( this.resetPassword, [ this.dataItems.data[index],
-                        index],  "Do you really want to reset your password", "Reset"):"";
+                      this.showConfirm(this.resetPassword, [this.dataItems.data ? this.dataItems.data[index] : this.dataItems[index],
+                        index], "Do you really want to reset your password", "Reset") : "";
                   }
 
                   {
                     actions.text === "ADD"
-                      ? (this.add(this.dataItems.data[index], this.addConfig),
+                      ? (this.add(
+                        this.dataItems.data ? this.dataItems.data[index] : this.dataItems[index],
+                        this.addConfig),
                         this.state.visible)
                       : " ";
                   }
                   {
                     actions.text === "EDIT"
                       ? this.edit(
-                        this.dataItems.data[index],
+                        this.dataItems.data ? this.dataItems.data[index] : this.dataItems[index],
                         this.editForm,
                         index
                       )
