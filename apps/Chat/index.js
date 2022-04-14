@@ -238,7 +238,7 @@
           const iframe = createIframe(core, proc, win, send => {
           });
           
-          console.log(core);
+          // console.log(core);
           // Finally set the source and attach
           iframe.src = src;
           
