@@ -1,7 +1,7 @@
 {
 	"name": "analytics",
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1",
+		"test": "jest --coverage",
 		"eslint": "eslint *.js",
 		"build": "NODE_ENV=production webpack",
 		"build:dev": "webpack",
@@ -10,6 +10,14 @@
 		"start": "webpack-dev-server  --config webpack.dev.js --open",
 		"stylelint": "stylelint index.scss src/**/*.scss",
 		"prepublishOnly": "npm run eslint && npm run stylelint && rm ./dist/* && npm run build"
+	},
+	"jest": {
+		"moduleNameMapper": {
+			"\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",
+			"\\.(css|less)$": "<rootDir>/__mocks__/styleMock.js",
+			"^./oxziongui": "path.resolve(__dirname, 'node_modules/oxziongui')",
+			"^./osjs": "path.resolve(__dirname, 'node_modules/osjs')"
+		}
 	},
 	"dependencies": {
 		"@progress/kendo-react-buttons": "^4.8.0",
@@ -48,6 +56,7 @@
 		"dotenv-webpack": "^7.0.3",
 		"eslint": "^5.12.1",
 		"html-loader": "^2.1.2",
+		"jest": "^27.5.1",
 		"mini-css-extract-plugin": "2.4.5",
 		"node-sass": "^6.0.1",
 		"prop-types": "^15.6.1",
