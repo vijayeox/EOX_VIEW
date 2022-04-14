@@ -126,18 +126,15 @@
                   "idPath": "uuid",
                   "valueProperty": "uuid",
                   "template": "<span>{{ item.name }}</span>",
-                  "validate": {
-                    "required": true
-                  },
                   "key": "managerId",
                   "properties": {
                     "absoluteUrl": "true"
                   },
                   "type": "select",
-                  "lazyLoad": false,
-                  "disableLimit": false,
                   "filter": "filter=[{\"skip\":0,\"take\":10000}]",
-                  "input": true
+                  "input": true,
+                  "lazyLoad": false,
+                  "disableLimit": false
                 }
               ],
               "width": 6,
@@ -417,18 +414,22 @@
                   "idPath": "uuid",
                   "template": "<span>{{ item.name }}</span>",
                   "clearOnHide": false,
-                  "validate": {
-                    "required": true
-                  },
                   "key": "project",
                   "properties": {
                     "absoluteUrl": "true"
                   },
                   "type": "select",
-                  "lazyLoad": false,
-                  "disableLimit": false,
                   "filter": "filter=[{\"skip\":0,\"take\":10000}]",
-                  "input": true
+                  "input": true,
+                  "disableLimit": false,
+                  "lazyLoad": false
+                },
+                {
+                  "label": "accountId",
+                  "key": "accountId",
+                  "type": "hidden",
+                  "input": true,
+                  "tableView": false
                 }
               ],
               "width": 6,
@@ -473,6 +474,13 @@
                   "disableLimit": false,
                   "filter": "filter=[{\"skip\":0,\"take\":10000}]",
                   "input": true
+                },
+                {
+                  "label": "uuid",
+                  "key": "uuid",
+                  "type": "hidden",
+                  "input": true,
+                  "tableView": false
                 }
               ],
               "width": 6,
@@ -570,6 +578,6 @@
   "path": "adminuser",
   "project": "5dc1489e4f668513e9535090",
   "created": "2021-12-01T10:01:16.951Z",
-  "modified": "2022-04-14T10:25:34.952Z",
+  "modified": "2022-03-31T09:18:45.498Z",
   "machineName": "eoxproductsupport:adminUser"
 }
