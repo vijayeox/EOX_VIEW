@@ -1,75 +1,64 @@
-const Dotenv = require('dotenv-webpack')
-const path = require('path');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
+const Dotenv = require("dotenv-webpack");
+const path = require("path");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 
-const mode = process.env.NODE_ENV || 'development';
-const minimize = mode === 'production';
+const mode = process.env.NODE_ENV || "development";
+const minimize = mode === "production";
 const plugins = [];
 
-if (mode === 'production') { }
+if (mode === "production") {
+}
 module.exports = {
-  mode: (mode !== 'development' ? 'production' : mode),
-  devtool: 'source-map',
+  mode: mode !== "development" ? "production" : mode,
+  devtool: "source-map",
   entry: {
-    'main': [
-      path.resolve(__dirname, 'index.js'),
-      path.resolve(__dirname, 'index.scss')
-    ],
-    'widgetEditor': [
-      path.resolve(__dirname, '../../gui/src/components/widget/editor/widgetEditorApp.js'),
-    ]
+    main: [path.resolve(__dirname, "index.js"), path.resolve(__dirname, "index.scss")],
+    widgetEditor: [path.resolve(__dirname, "../../gui/src/components/widget/editor/widgetEditorApp.js")],
   },
   output: {
-    filename: '[name].js', //main.[contentHash].js
-    path: __dirname + '/dist'
+    filename: "[name].js", //main.[contentHash].js
+    path: __dirname + "/dist",
   },
   externals: {
-    osjs: 'OSjs',
-    oxziongui: "oxziongui"
+    osjs: "OSjs",
+    oxziongui: "oxziongui",
   },
   resolve: {
-    modules: ['node_modules'],
+    modules: ["node_modules"],
     alias: {
-      react: path.resolve(__dirname, 'node_modules/react'),
-      // OxzionGUI: path.resolve(__dirname, "node_modules/@oxzion/gui/src/")
-    }
+      react: path.resolve(__dirname, "node_modules/react"),
+    },
   },
   optimization: {
-    minimizer: [
-      new CssMinimizerPlugin(),
-      new TerserPlugin(),
-    ],
+    minimizer: [new CssMinimizerPlugin(), new TerserPlugin()],
   },
   plugins: [
     new CopyWebpackPlugin({
       patterns: [
-        // 'icon.png',
-        // 'icon_white.png',
-        // 'images/',
         {
-          from: 'node_modules/@progress/kendo-theme-default/dist/all.css',
-          to: 'kendo-theme-default-all.css'
+          from: "node_modules/@progress/kendo-theme-default/dist/all.css",
+          to: "kendo-theme-default-all.css",
         },
-      ]
+      ],
     }),
     new MiniCssExtractPlugin({
-      filename: '[name].css',
-      chunkFilename: '[id].css'
+      filename: "[name].css",
+      chunkFilename: "[id].css",
     }),
     new Dotenv({
-      path: './.env',
-      safe: true
+      path: "./.env",
+      safe: true,
     }),
-    ...plugins
+    ...plugins,
   ],
   module: {
     rules: [
       {
         test: /\.html$/,
-        use: ["html-loader"]
+        use: ["html-loader"],
       },
       {
         test: /\.(svg|png|jpe?g|gif|webp|)$/,
@@ -78,26 +67,22 @@ module.exports = {
             loader: "file-loader",
             options: {
               name: "[name].[hash].[ext]",
-              outputPath: "images"
-            }
-          }
-        ]
+              outputPath: "images",
+            },
+          },
+        ],
       },
       {
         test: /\.(woff(2)?|ttf|eot)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
         loader: "file-loader",
         options: {
           name: "[name].[hash].[ext]",
-          outputPath: "font"
-        }
+          outputPath: "font",
+        },
       },
       {
         test: /\.(sa|sc|c)ss$/,
-        use: [
-          MiniCssExtractPlugin.loader,
-          'css-loader',
-          'sass-loader',
-        ],
+        use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
         sideEffects: true,
       },
       {
@@ -106,20 +91,11 @@ module.exports = {
         use: {
           loader: "babel-loader",
           options: {
-            presets: [
-              require.resolve("@babel/preset-react"),
-              require.resolve("@babel/preset-env")
-            ],
-            plugins: [
-              require.resolve("@babel/plugin-transform-runtime"),
-              [
-                require.resolve("@babel/plugin-proposal-class-properties"),
-                { loose: false }
-              ]
-            ]
-          }
-        }
-      }
-    ]
-  }
+            presets: [require.resolve("@babel/preset-react"), require.resolve("@babel/preset-env")],
+            plugins: [require.resolve("@babel/plugin-transform-runtime"), [require.resolve("@babel/plugin-proposal-class-properties"), { loose: true }]],
+          },
+        },
+      },
+    ],
+  },
 };

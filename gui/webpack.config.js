@@ -1,9 +1,9 @@
 const path = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const CopyWebpackPlugin = require('copy-webpack-plugin');
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
-const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const mode = process.env.NODE_ENV || "development";
 const minimize = mode === "production";
@@ -11,25 +11,22 @@ const plugins = [];
 
 module.exports = {
   output: {
-    library: 'oxziongui',
+    library: "oxziongui",
     path: path.resolve(__dirname, "dist"),
-    libraryTarget: 'umd',
+    libraryTarget: "umd",
     umdNamedDefine: true,
-    sourceMapFilename: '[file].map',
-    filename: '[name].js',
+    sourceMapFilename: "[file].map",
+    filename: "[name].js",
     // clean: true,
   },
   mode,
   devtool: "source-map",
   entry: [path.resolve(__dirname, "index.js")],
   externals: {
-    osjs: "OSjs"
+    osjs: "OSjs",
   },
   optimization: {
-    minimizer: [
-      new CssMinimizerPlugin(),
-      new TerserPlugin(),
-    ],
+    minimizer: [new CssMinimizerPlugin(), new TerserPlugin()],
     chunkIds: "named",
     splitChunks: {
       cacheGroups: {
@@ -37,39 +34,35 @@ module.exports = {
           chunks: "initial",
           minChunks: 2,
           maxInitialRequests: 5, // The default limit is too small to showcase the effect
-          minSize: 0 // This is example is too small to create commons chunks
+          minSize: 0, // This is example is too small to create commons chunks
         },
         vendor: {
           test: /node_modules/,
           chunks: "initial",
           name: "vendor",
           priority: 10,
-          enforce: true
-        }
-      }
-    }
+          enforce: true,
+        },
+      },
+    },
   },
   plugins: [
     new CopyWebpackPlugin({
-      patterns: [
-        { from: path.resolve(__dirname, './src/ckeditor') }
-      ]
+      patterns: [{ from: path.resolve(__dirname, "./src/ckeditor") }],
     }),
     new MiniCssExtractPlugin({
       filename: "[name].css",
-      chunkFilename: "[id].css"
+      chunkFilename: "[id].css",
     }),
     new NodePolyfillPlugin(),
-    new HtmlWebpackPlugin({
-      
-    }),
-    ...plugins
+    new HtmlWebpackPlugin({}),
+    ...plugins,
   ],
   resolve: {
     alias: {
       OxzionGUI: path.resolve(__dirname, "./src"),
-      "react-icons": path.resolve(__dirname, "./node_modules/react-icons")
-    }
+      "react-icons": path.resolve(__dirname, "./node_modules/react-icons"),
+    },
   },
   module: {
     rules: [
@@ -80,26 +73,22 @@ module.exports = {
             loader: "file-loader",
             options: {
               name: "[name].[ext]",
-              outputPath: "images"
-            }
-          }
-        ]
+              outputPath: "images",
+            },
+          },
+        ],
       },
       {
         test: /\.(woff(2)?|ttf|eot)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
         loader: "file-loader",
         options: {
           name: "[name].[ext]",
-          outputPath: "font"
-        }
+          outputPath: "font",
+        },
       },
       {
         test: /\.(sa|sc|c)ss$/,
-        use: [
-          MiniCssExtractPlugin.loader,
-          'css-loader',
-          'sass-loader',
-        ],
+        use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
         sideEffects: true,
       },
       {
@@ -109,16 +98,11 @@ module.exports = {
           loader: "babel-loader",
           options: {
             generatorOpts: { compact: false },
-            presets: [
-              '@babel/react', '@babel/env'
-            ],
-            plugins: [
-              require.resolve("@babel/plugin-transform-runtime"),
-              '@babel/proposal-class-properties'
-            ]
-          }
-        }
-      }
-    ]
-  }
+            presets: ["@babel/react", "@babel/env"],
+            plugins: [require.resolve("@babel/plugin-transform-runtime"), "@babel/proposal-class-properties"],
+          },
+        },
+      },
+    ],
+  },
 };

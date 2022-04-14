@@ -2,7 +2,7 @@ import "./index.scss";
 import osjs from "osjs";
 import { React, ReactDOM } from "oxziongui";
 import metaData from "./metadata.json";
-import Body from "./body";
+import Body from "./components/body";
 
 // Our launcher
 const register = (core, args, options, metadata) => {
