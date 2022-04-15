@@ -66,8 +66,11 @@ function CommentsAttachments(props) {
                 marginBottom: "30px",
                 float: "left",
                 width: "100%",
-                fontWeight: "bold"
+                fontWeight: "bold",
+                overflow: "hidden",
+                textOverflow: "text-ellipsis",
               }}
+              title={props.fileName}
             >
               {props.fileName}
             </span>
