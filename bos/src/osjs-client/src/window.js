@@ -222,10 +222,7 @@ const renderCallback = (win, callback) => {
   if (typeof callback === "function") {
     if (win.attributes.shadowDOM) {
       try {
-        const mode =
-          typeof win.attributes.shadowDOM === "string"
-            ? win.attributes.shadowDOM
-            : "open";
+        const mode = typeof win.attributes.shadowDOM === "string" ? win.attributes.shadowDOM : "open";
 
         const shadow = win.$content.attachShadow({ mode });
 
@@ -244,17 +241,12 @@ const renderCallback = (win, callback) => {
 /*
  * Adds a list of classnames to window element
  */
-const addClassNames = (win, names) =>
-  names
-    .filter((val) => !!val)
-    .forEach((val) => win.$element.classList.add(val));
+const addClassNames = (win, names) => names.filter((val) => !!val).forEach((val) => win.$element.classList.add(val));
 
 const transformVectors = (rect, { width, height }, { top, left }) => {
   const transform = (val, attr) => {
     if (!isNaN(val)) {
-      return Number.isInteger(val)
-        ? val
-        : Math.round(rect[attr] * parseFloat(val));
+      return Number.isInteger(val) ? val : Math.round(rect[attr] * parseFloat(val));
     }
 
     return val;
@@ -283,13 +275,13 @@ const TEMPLATE = `<div class="osjs-window-inner">
     <div class="osjs-window-title"></div>
     <div class="osjs-window-breadcrumb"></div>
     <div class="osjs-window-button" data-action="minimize">
-      <div></div>
+      <i class="fal fa-window-minimize"></i>
     </div>
     <div class="osjs-window-button" data-action="maximize">
-      <div></div>
+      <i class="fas fa-square"></i>
     </div>
     <div class="osjs-window-button" data-action="close">
-      <div></div>
+      <i class="fal fa-times"></i>
     </div>
   </div>
   <div class="osjs-window-content">
@@ -517,10 +509,7 @@ export default class Window extends EventEmitter {
     // Insert template
     const tpl = this.core.config("windows.template") || TEMPLATE;
     if (this._template) {
-      this.$element.innerHTML =
-        typeof this._template === "function"
-          ? this._template(this, tpl)
-          : this._template;
+      this.$element.innerHTML = typeof this._template === "function" ? this._template(this, tpl) : this._template;
     } else {
       this.$element.innerHTML = tpl;
     }
@@ -534,11 +523,7 @@ export default class Window extends EventEmitter {
     // Transform percentages in dimension to pixels etc
     if (this.core.has("osjs/desktop")) {
       const rect = this.core.make("osjs/desktop").getRect();
-      const { dimension, position } = transformVectors(
-        rect,
-        this.state.dimension,
-        this.state.position
-      );
+      const { dimension, position } = transformVectors(rect, this.state.dimension, this.state.position);
       this.state.dimension = dimension;
       this.state.position = position;
     }
@@ -572,10 +557,7 @@ export default class Window extends EventEmitter {
    * Updates the window buttons
    */
   _updateButtons() {
-    const hideButton = (action) =>
-      (this.$header.querySelector(
-        `.osjs-window-button[data-action=${action}]`
-      ).style.display = "none");
+    const hideButton = (action) => (this.$header.querySelector(`.osjs-window-button[data-action=${action}]`).style.display = "none");
 
     if (this.attributes.controls) {
       if (!this.attributes.maximizable) {
@@ -590,9 +572,7 @@ export default class Window extends EventEmitter {
         hideButton("close");
       }
     } else {
-      Array.from(this.$header.querySelectorAll(".osjs-window-button")).forEach(
-        (el) => (el.style.display = "none")
-      );
+      Array.from(this.$header.querySelectorAll(".osjs-window-button")).forEach((el) => (el.style.display = "none"));
     }
   }
 
@@ -772,11 +752,7 @@ export default class Window extends EventEmitter {
       return;
     }
 
-    const innerBox = (
-      container.parentNode.classList.contains("osjs-gui")
-        ? container.parentNode
-        : container
-    ).getBoundingClientRect();
+    const innerBox = (container.parentNode.classList.contains("osjs-gui") ? container.parentNode : container).getBoundingClientRect();
 
     const outerBox = this.$content.getBoundingClientRect();
     const diffY = Math.ceil(outerBox.height - innerBox.height);
@@ -788,10 +764,7 @@ export default class Window extends EventEmitter {
     const max = this.attributes.maxDimension;
 
     let width = Math.max(container.offsetWidth + diffX, min.width);
-    let height = Math.max(
-      container.offsetHeight + diffY + topHeight,
-      min.height
-    );
+    let height = Math.max(container.offsetHeight + diffY + topHeight, min.height);
 
     if (max.width > 0) {
       width = Math.min(width, max.width);
@@ -826,11 +799,7 @@ export default class Window extends EventEmitter {
 
     const rect = this.core.make("osjs/desktop").getRect();
 
-    this.state.position = Object.assign(
-      {},
-      this.state.position,
-      clampPosition(rect, this.state)
-    );
+    this.state.position = Object.assign({}, this.state.position, clampPosition(rect, this.state));
 
     if (update) {
       this._updateDOM();
@@ -864,11 +833,7 @@ export default class Window extends EventEmitter {
    * @param {WindowDimension} dimension The dimension
    */
   setDimension(dimension) {
-    const { width, height } = Object.assign(
-      {},
-      this.state.dimension,
-      dimension || {}
-    );
+    const { width, height } = Object.assign({}, this.state.dimension, dimension || {});
 
     this.state.dimension.width = width;
     this.state.dimension.height = height;
@@ -882,11 +847,7 @@ export default class Window extends EventEmitter {
    * @param {Boolean} [preventDefault=false] Prevents any future position setting in init procedure
    */
   setPosition(position, preventDefault = false) {
-    const { left, top } = Object.assign(
-      {},
-      this.state.position,
-      position || {}
-    );
+    const { left, top } = Object.assign({}, this.state.position, position || {});
 
     this.state.position.top = top;
     this.state.position.left = left;
@@ -994,9 +955,7 @@ export default class Window extends EventEmitter {
   getState(n) {
     const value = this.state[n];
 
-    return ["position", "dimension", "styles"].indexOf(n) !== -1
-      ? Object.assign({}, value)
-      : value;
+    return ["position", "dimension", "styles"].indexOf(n) !== -1 ? Object.assign({}, value) : value;
   }
 
   /**
@@ -1129,9 +1088,7 @@ export default class Window extends EventEmitter {
     }
 
     if ($element) {
-      Object.keys(attrs).forEach((a) =>
-        $element.setAttribute(`data-${a}`, String(attrs[a]))
-      );
+      Object.keys(attrs).forEach((a) => $element.setAttribute(`data-${a}`, String(attrs[a])));
 
       $element.style.cssText = cssText;
     }

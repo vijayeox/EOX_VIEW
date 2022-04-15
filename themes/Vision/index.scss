@@ -52,7 +52,9 @@ html {
 
 .osjs-window-button {
   position: relative;
-  min-width: 3em;
+  min-width: 0em;
+  padding: 0px !important;
+  margin-left: 1em;
 
   &:not(:last-child) {
     margin-right: 0;
@@ -76,40 +78,40 @@ html {
     // transform: scale(1.2);
   }
 
-  &[data-action="minimize"] {
-    & > div {
-      background-position: 50% 50%;
-      background-size: 14px;
-      background-image: url("./src/images/minimize.svg");
-    }
-    &:hover {
-      transform: scale(1.2);
-    }
-  }
-  &[data-action="maximize"] {
-    & > div {
-      background-position: 50% 50%;
-      background-size: 14px;
-      background-image: url("./src/images/maximize.svg");
-    }
-    &:hover {
-      transform: scale(1.2);
-    }
-  }
+  // &[data-action="minimize"] {
+  //   & > div {
+  //     background-position: 50% 50%;
+  //     background-size: 14px;
+  //     background-image: url("./src/images/minimize.svg");
+  //   }
+  //   &:hover {
+  //     transform: scale(1.2);
+  //   }
+  // }
+  // &[data-action="maximize"] {
+  //   & > div {
+  //     background-position: 50% 50%;
+  //     background-size: 14px;
+  //     background-image: url("./src/images/maximize.svg");
+  //   }
+  //   &:hover {
+  //     transform: scale(1.2);
+  //   }
+  // }
 
-  &[data-action="close"] {
-    min-width: 3em;
+  // &[data-action="close"] {
+  //   min-width: 3em;
 
-    & > div {
-      background-position: 50% 50%;
-      background-size: 14px;
-      background-image: url("./src/images/close.svg");
-    }
+  //   & > div {
+  //     background-position: 50% 50%;
+  //     background-size: 14px;
+  //     background-image: url("./src/images/close.svg");
+  //   }
 
-    &:hover {
-      transform: scale(1.2);
-    }
-  }
+  //   &:hover {
+  //     transform: scale(1.2);
+  //   }
+  // }
 }
 
 .osjs-window-content {
@@ -200,8 +202,8 @@ html {
 
 .osjs-panel-item[data-name="windows"] > div {
   font-size: 14px;
-  color: white !important;
-  background-color: #275362 !important;
+  background-color: transparent !important;
+  color: #ffffff !important;
   border-radius: 0px;
   padding: 12px 3px !important;
   align-self: center;
@@ -519,7 +521,7 @@ iframe {
     font-size: 1.2vh !important;
   }
   .GridCustomStyle .k-grid-table {
-  font-size: 1.2vh !important;
+    font-size: 1.2vh !important;
   }
   .k-grid-header .k-header {
     font-size: 2vh !important;
@@ -531,7 +533,7 @@ iframe {
     font-size: 1.8vh !important;
   }
   .GridCustomStyle .k-grid-table {
-  font-size: 1.8vh !important;
+    font-size: 1.8vh !important;
   }
   .k-grid-header .k-header {
     font-size: 2vh !important;

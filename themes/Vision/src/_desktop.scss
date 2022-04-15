@@ -26,8 +26,8 @@ div#appmenu {
   }
   & > div[data-focused="true"] {
     box-shadow: inset 0px 3px 0px 0px #275362 !important;
-    background-color: white !important;
-    color: #275362 !important;
+    color: white !important;
+    background-color: #275362 !important;
   }
 }
 .profile-content {
@@ -46,7 +46,7 @@ div#appmenu {
 input.placeholder::placeholder {
   color: #275362a1 !important;
 }
-// input.placeholder::-webkit-input-placeholder { 
+// input.placeholder::-webkit-input-placeholder {
 //   color: #265160 !important;
 // }
 input#appsearch {
