@@ -1194,13 +1194,14 @@ body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown) {
 }
 
 .k-list-filter {
-  padding: 0px !important;
+  padding: 4px !important;
   min-height: 35px;
 }
 
 .k-list-filter > .k-textbox {
   margin: 0px;
-  height: 35px;
+  height: 40px;
+  font-size: small;
 }
 
 .parentProjectDropdown {

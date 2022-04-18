@@ -43,7 +43,7 @@ export class TitleBar extends React.Component {
               // top: "4px",
               // position: "absolute",
               zIndex: "1",
-              width: "155px",
+              width: "160px",
             }}
           >
             <DropDown
