@@ -13,6 +13,8 @@
 .osjs-window-inner {
   background-color: $white;
   overflow: hidden;
+  border-radius: 2px;
+  box-shadow: #00000059 0px 5px 15px 1px;
 }
 .osjs-window-header {
   background-color: $primary;
