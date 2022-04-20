@@ -153,22 +153,17 @@ class ParameterHandler {
         .split(";")
         .find((n) => n.includes("filename="))
         .replace("filename=", "")
+        .replaceAll('"', "")
         .trim();
   
       if (window.navigator.msSaveOrOpenBlob)
         // IE10+
         window.navigator.msSaveOrOpenBlob(file, fileName);
       else {
-        var a = document.createElement("a"),
-          url = URL.createObjectURL(file);
-        a.href = url;
-        a.download = fileName;
-        document.body.appendChild(a);
-        a.click();
-        setTimeout(function () {
-          document.body.removeChild(a);
-          window.URL.revokeObjectURL(url);
-        }, 0);
+        const ele = document.createElement("a");
+        ele.href = URL.createObjectURL(file);
+        ele.download = fileName;
+        ele.click();
       }
       return true;
     } catch (error) {
