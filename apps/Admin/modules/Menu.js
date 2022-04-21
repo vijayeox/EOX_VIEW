@@ -40,30 +40,30 @@ export default class Menu extends React.Component {
   list = () => {
     let iconTitleList = [
       {
-        name: "Account",
+        name: "Accounts",
         icon: <i className='fad fa-users-cog' aria-hidden='true'></i>,
-        component: "Account",
+        component: "Accounts",
         type: "internal",
         privileges: "ACCOUNT",
       },
       {
         name: "Users",
         icon: <i className='fad fa-user ' aria-hidden='true'></i>,
-        component: "User",
+        component: "Users",
         type: "internal",
         privileges: "USER",
       },
       {
         name: "Roles",
         icon: <i className='fad fa-person-sign' aria-hidden='true'></i>,
-        component: "Role",
+        component: "Roles",
         type: "internal",
         privileges: "ROLE",
       },
       {
         name: "Teams",
         icon: <i className='fad fa-users' aria-hidden='true'></i>,
-        component: "Team",
+        component: "Teams",
         type: "internal",
         privileges: "TEAM",
       },
@@ -84,14 +84,14 @@ export default class Menu extends React.Component {
       {
         name: "Projects",
         icon: <i className='fad fa-cogs' aria-hidden='true'></i>,
-        component: "Project",
+        component: "Projects",
         type: "internal",
         privileges: "PROJECT",
       },
       {
         name: "Announcements",
         icon: <i className='fad fa-bullhorn' aria-hidden='true'></i>,
-        component: "Announcement",
+        component: "Announcements",
         type: "internal",
         privileges: "ANNOUNCEMENT",
       },
