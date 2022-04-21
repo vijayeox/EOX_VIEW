@@ -18,6 +18,15 @@ const dateConvert = date => {
 export default function WorkItem(props) {
   const CardInfo = props.cardInfo;
   const cardParameters = JSON.parse(props.ymlData.cardParameters);
+  let rygColor = "";
+  if (CardInfo.rygStatus.toUpperCase() === "GREEN") {
+    rygColor = "#a3c53a"
+  } else if (CardInfo.rygStatus.toUpperCase() === "YELLOW") {
+    rygColor = "#f3ba1c"
+  } else if (CardInfo.rygStatus.toUpperCase() === "RED") {
+    rygColor = "#ee4424"
+  }
+
   return (
     <Draggable
       key={CardInfo[cardParameters.myId.name]}
@@ -55,7 +64,7 @@ export default function WorkItem(props) {
                       margin: "5px 5px 0 5px",
                       padding: "auto",
                       borderRadius: "50%",
-                      backgroundColor: CardInfo.rygStatus
+                      backgroundColor: rygColor
                     }}
                     className="img k_img"
                   />
