@@ -46,6 +46,12 @@ class UploadArtifact extends React.Component {
       this.infoMessage =
         "Please verify if the Migration file has a unique File Name";
       this.fileExtension = ".sql";
+    }else if(this.props.entity == 'component'){
+      this.postURL =
+        "app/" + this.props.params.app_uuid + "/artifact/add/" + this.props.entity;
+      this.infoMessage =
+        "Please verify if the component file has a unique File Name";
+      this.fileExtension = ".js";
     }
     this.core = this.props.core;
     this.loader = this.core.make("oxzion/splash");
