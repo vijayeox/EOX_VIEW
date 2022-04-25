@@ -48,9 +48,9 @@ class RenderButtons extends React.Component {
       if(showButton){
           const isExportPdf = currentValue?.details?.find((detail) => detail?.type === 'exportPdf')
           adminItems.push(
-          <div
+          <button
             key={index}
-            className="moduleBtn"
+            className="btn btn-primary"
             onClick={() => {
               let p_ev = new CustomEvent("addPage", {
                 detail: pageDetails,
@@ -66,10 +66,10 @@ class RenderButtons extends React.Component {
                 currentValue.name
               )}
             </div>
-            {currentValue.icon ? (
+            {/* {currentValue.icon ? (
               <div className="titles">{currentValue.name}</div>
-            ) : null}
-          </div>
+            ) : null} */}
+          </button>
         );
       }
     });
@@ -143,7 +143,7 @@ class RenderButtons extends React.Component {
     });
   }
   render() {
-    return <div className="appButtons">{this.createTiles()}</div>;
+    return <div className="dash-manager-buttons w-100 text-right pt-2 pr-2">{this.createTiles()}</div>;
   }
 }
 
