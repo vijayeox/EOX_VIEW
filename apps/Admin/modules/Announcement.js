@@ -200,6 +200,7 @@ class Announcement extends React.Component {
               // key={Math.random()}
               appendAttachments={this.appendAttachments}
               getCustomPayload={this.getCustomPayload}
+              uniqueAttachments={true}
             />
           </div>
         </React.Suspense>
