@@ -206,6 +206,7 @@ export default class EOXGrid extends React.Component {
               }
               {...data}
               content={form}
+              uniqueAttachments={this.props.uniqueAttachments || false}
             // appId={data.uuid}
             // route= {this.api}
             />
@@ -451,7 +452,8 @@ export default class EOXGrid extends React.Component {
                   createCrudType={this.props.createCrudType}
                   getCustomPayload={this.props.getCustomPayload}
                   prepareFormData={this.props.prepareFormData}
-                />
+                  uniqueAttachments={this.props.uniqueAttachments || false}
+              />
               )}
             ></GridColumn>
           </Grid>

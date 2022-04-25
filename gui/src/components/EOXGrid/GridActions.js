@@ -156,6 +156,7 @@ export default class GridActions extends React.Component {
             }
             content={form}
             appId={data.uuid}
+            uniqueAttachments={this.props.uniqueAttachments || false}
           // route= {this.api}
           />
         </div>

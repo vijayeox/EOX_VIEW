@@ -596,6 +596,9 @@ class BaseFormRenderer extends React.Component {
           if (newFiles.length > 0) {
             const responses = await Promise.all(
               newFiles.map((file) => {
+                if(this.props.uniqueAttachments && file.uploadFile?.file){
+                  file.uploadFile.file = new File([file.uploadFile.file], `${this.generateUUID()}-${file.uploadFile.file.name}`,{type : file.uploadFile.type})
+                }
                 return this.helper.request(
                   "v1",
                   component?.properties?.["absoluteUrl"] ||
