@@ -12,19 +12,19 @@ class Role extends React.Component {
     (this.actionItems = {
       edit: {
         type: "button",
-        icon: "fad fa-pencil",
+        icon: "fas fa-pencil",
         text: "EDIT",
         title: "Edit Role",
       },
       delete: {
         type: "button",
-        icon: "fad fa-trash",
+        icon: "fas fa-trash",
         text: "DELETE",
         title: "Delete Role",
       },
       create: {
         type: "button",
-        icon: " fad fa-plus",
+        icon: " fas fa-plus",
         text: "CREATE",
         title: "Create New",
       },

@@ -10,26 +10,26 @@ class Project extends React.Component {
     (this.actionItems = {
       edit: {
         type: "button",
-        icon: "fad fa-pencil",
+        icon: "fas fa-pencil",
         text: "EDIT",
         title: "Edit Project",
       },
       delete: {
         type: "button",
-        icon: "fad fa-trash",
+        icon: "fas fa-trash",
         text: "DELETE",
         title: "Delete Project",
       },
       add: {
         type: "button",
-        icon: "fad fa-user-plus",
+        icon: "fas fa-user-plus",
         text: "ADD",
         title: "Add Members to Project",
       },
       create: {
         type: "button",
         api: "account/add",
-        icon: " fad fa-plus",
+        icon: " fas fa-plus",
         text: "CREATE",
         title: "Create New",
       },

@@ -11,25 +11,25 @@ class User extends React.Component {
     (this.actionItems = {
       edit: {
         type: "button",
-        icon: "fad fa-pencil",
+        icon: "fas fa-pencil",
         text: "EDIT",
         title: "Edit User",
       },
       delete: {
         type: "button",
-        icon: "fad fa-trash",
+        icon: "fas fa-trash",
         text: "DELETE",
         title: "Delete User",
       },
       create: {
         type: "button",
-        icon: " fad fa-plus",
+        icon: " fas fa-plus",
         text: "CREATE",
         title: "Create New",
       },
       resetPassword: {
         type: "button",
-        icon: "fad fa-redo",
+        icon: "fas fa-redo",
         text: "RESET",
         title: "Reset Password",
       },
