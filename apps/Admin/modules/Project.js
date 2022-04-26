@@ -1,4 +1,4 @@
-import { React, EOXGrid } from "oxziongui";
+import { React, EOXGrid, ChildEOXGrid } from "oxziongui";
 import { TitleBar } from "./components/titlebar";
 import { GetData } from "./components/apiCalls";
 import form from "../modules/forms/editCreateProject.json";
@@ -216,7 +216,8 @@ class Project extends React.Component {
             deleteApi={this.deleteApi}
             addConfig={this.addConfig}
             // key={Math.random()}
-            rowTemplate={(e) => this.renderRow(e, this.config)}
+            rowTemplate={(e) => <ChildEOXGrid instance={this} e={e} form={form} GetData={GetData}/>}
+            // rowTemplate={(e) => this.renderRow(e, this.config)}
             skip={this.state.skip}
             dataStateChanged={this.dataStateChanged.bind(this)}
             isLoading={this.state.isLoading}

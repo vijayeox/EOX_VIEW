@@ -1,7 +1,7 @@
 import EOXApplication from "./src/EOXApplication";
 import LeftMenuTemplate from "./src/LeftMenuTemplate";
 import Notification from "./src/Notification";
-import React, { lazy, Suspense } from "react";
+import React, { lazy, Suspense,useState } from "react";
 import ReactDOM from "react-dom";
 import "./index.scss";
 import DateComponent from "./src/components/DateComponent.js";
@@ -47,6 +47,7 @@ import WidgetManager from "./src/components/OI/WidgetManager";
 import TemplateManager from "./src/components/OI/TemplateManager";
 import SSOCustom from "./src/components/Custom/SSOCustom";
 import EOXGrid from "./src/components/EOXGrid/EOXGrid";
+import ChildEOXGrid from "./src/components/EOXGrid/ChildEOXGrid";
 //import Mapbox from "./src/components/Custom/Mapbox";
 
 const LazyLoad = ({ component: Component, ...rest }) => (
@@ -94,6 +95,7 @@ export {
   CommentsView,
   FormRender,
   OX_Grid,
+  ChildEOXGrid,
   DocumentViewer,
   DashboardManager,
   Dashboard,
@@ -103,6 +105,7 @@ export {
   Query,
   DashboardFilter,
   React,
+  useState,
   PageContent,
   ReactDOM,
   DateFormats,
