@@ -1,4 +1,4 @@
-import { React, EOXGrid } from "oxziongui";
+import { React, EOXGrid, ChildEOXGrid } from "oxziongui";
 import { TitleBar } from "./components/titlebar";
 import { GetData } from "./components/apiCalls";
 import form from "../modules/forms/editCreateTeam.json";
@@ -158,33 +158,7 @@ class Team extends React.Component {
     return route;
   }
 
-  renderRow(e, rowConfig) {
-    let subRoute = this.replaceParams(rowConfig.subRoute, e);
-    return (
-      <EOXGrid
-        configuration={this.config}
-        data={this.state.displayChildGrid}
-        core={this.core}
-        isDrillDownTable={this.props.drillDownRequired}
-        actionItems={this.actionItems}
-        api={subRoute}
-        permission={this.state.permission}
-        editForm={form}
-        editApi={this.editApi}
-        createApi={this.createApi}
-        deleteApi={this.deleteApi}
-        addConfig={this.addConfig}
-        expandableApi={(callback) => {
-          GetData(subRoute).then((response) => {
-            callback?.((response.status === "success" && response.data) || []);
-          });
-        }}
-        noCreateAction={this.noCreateAction}
-        dataStateChanged={this.dataStateChanged.bind(this)}
-        // key={Math.random()}
-      />
-    );
-  }
+  
 
   render() {
     return (
@@ -214,7 +188,7 @@ class Team extends React.Component {
             createApi={this.createApi}
             deleteApi={this.deleteApi}
             addConfig={this.addConfig}
-            rowTemplate={(e) => this.renderRow(e, this.config)}
+            rowTemplate={(e) => <ChildEOXGrid instance={this} e={e} form={form} GetData={GetData}/>}
             // key={Math.random()}
             skip={this.state.skip}
             dataStateChanged={this.dataStateChanged.bind(this)}
@@ -225,5 +199,4 @@ class Team extends React.Component {
     );
   }
 }
-
 export default Team;
