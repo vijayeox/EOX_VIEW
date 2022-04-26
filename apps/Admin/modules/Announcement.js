@@ -62,8 +62,14 @@ class Announcement extends React.Component {
             field: "name",
           },
           {
-            title: "Description",
-            field: "description",
+            title: "Start Date",
+            field: "start_date",
+            
+          },
+          {
+            title: "End Date",
+            field: "end_date",
+            
           },
           {
             title: "Type",
