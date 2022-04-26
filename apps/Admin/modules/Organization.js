@@ -11,25 +11,25 @@ class Organization extends React.Component {
     (this.actionItems = {
       edit: {
         type: "button",
-        icon: "fad fa-pencil",
+        icon: "fas fa-pencil",
         text: "EDIT",
         title: "Edit Account",
       },
       delete: {
         type: "button",
-        icon: "fad fa-trash",
+        icon: "fas fa-trash",
         text: "DELETE",
         title: "Delete Account",
       },
       add: {
         type: "button",
-        icon: "fad fa-user-plus",
+        icon: "fas fa-user-plus",
         text: "ADD",
         title: "Add Users to Account",
       },
       create: {
         type: "button",
-        icon: " fad fa-plus",
+        icon: " fas fa-plus",
         text: "CREATE",
         title: "Create New",
       },
@@ -171,7 +171,7 @@ class Organization extends React.Component {
   }
   render() {
     return (
-      <div style={{ height: "inherit",marginTop:"7px"}}>
+      <div style={{ height: "inherit",marginTop:"18px"}}>
         <TitleBar
           title="Manage Account"
           menu={this.props.menu}

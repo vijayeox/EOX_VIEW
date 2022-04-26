@@ -11,25 +11,25 @@ class Announcement extends React.Component {
     (this.actionItems = {
       edit: {
         type: "button",
-        icon: "fad fa-pencil",
+        icon: "fas fa-pencil",
         text: "EDIT",
         title: "Edit Announcement",
       },
       delete: {
         type: "button",
-        icon: "fad fa-trash",
+        icon: "fas fa-trash",
         text: "DELETE",
         title: "Delete Announcement",
       },
       add: {
         type: "button",
-        icon: "fad fa-user-plus",
+        icon: "fas fa-user-plus",
         text: "ADD",
         title: "Add Teams to announcement",
       },
       create: {
         type: "button",
-        icon: " fad fa-plus",
+        icon: " fas fa-plus",
         text: "CREATE",
         title: "Create New Announcement",
       },
@@ -62,8 +62,14 @@ class Announcement extends React.Component {
             field: "name",
           },
           {
-            title: "Description",
-            field: "description",
+            title: "Start Date",
+            field: "start_date",
+            
+          },
+          {
+            title: "End Date",
+            field: "end_date",
+            
           },
           {
             title: "Type",
