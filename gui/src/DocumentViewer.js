@@ -144,7 +144,7 @@ export default class DocumentViewer extends Component {
             attachments[index]["id"] =
               attachments[index]["id"] || attachment.file;
           }
-          if(!attachment?.id || attachment?.id?.trim()?.length === 0){
+          if(!attachment?.id || attachment?.id && `${attachment?.id}`?.trim()?.length === 0){
             attachments[index]["id"] = `${math.random()}${math.random()}`;
           }
         });

@@ -70,24 +70,26 @@ export default class FileComponent extends File {
             if(_this6.component.storage=='url'){
             var uploadFile = {file:file,data:{name:file.name,type:file.type}}
             //
-            var index = _this6.statuses.indexOf(fileUpload);
-            if (index !== -1) {
-              _this6.statuses.splice(index, 1);
+            if(_this6?.options?.fileUploadCallback){
+              var index = _this6.statuses.indexOf(fileUpload);
+              if (index !== -1) {
+                _this6.statuses.splice(index, 1);
+              }
+              if (!_this6.hasValue()) {
+                _this6.dataValue = [];
+              }
+              const obj = {
+                id : Math.random(),
+                size: file.size,
+                ...uploadFile.data,
+                uploadFile,
+              };
+              _this6.dataValue.push(obj);
+              _this6?.options?.fileUploadCallback?.(obj)
+              _this6.redraw();
+              _this6.triggerChange();
+              return
             }
-            if (!_this6.hasValue()) {
-              _this6.dataValue = [];
-            }
-            const obj = {
-              id : Math.random(),
-              size: file.size,
-              ...uploadFile.data,
-              uploadFile,
-            };
-            _this6.dataValue.push(obj);
-            _this6?.options?.fileUploadCallback?.(obj)
-            _this6.redraw();
-            _this6.triggerChange();
-            return
             //
             var helper = _this6.component.core.make("oxzion/restClient");
             helper.request("v1",(_this6.component.properties['absoluteUrl'] ? url : "/app/"+_this6.component.appId +_this6.component.url),uploadFile,"fileupload").then(function (response) {
