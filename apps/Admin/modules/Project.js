@@ -1,4 +1,4 @@
-import { React, EOXGrid } from "oxziongui";
+import { React, EOXGrid, ChildEOXGrid } from "oxziongui";
 import { TitleBar } from "./components/titlebar";
 import { GetData } from "./components/apiCalls";
 import form from "../modules/forms/editCreateProject.json";
@@ -10,26 +10,26 @@ class Project extends React.Component {
     (this.actionItems = {
       edit: {
         type: "button",
-        icon: "fad fa-pencil",
+        icon: "fas fa-pencil",
         text: "EDIT",
         title: "Edit Project",
       },
       delete: {
         type: "button",
-        icon: "fad fa-trash",
+        icon: "fas fa-trash",
         text: "DELETE",
         title: "Delete Project",
       },
       add: {
         type: "button",
-        icon: "fad fa-user-plus",
+        icon: "fas fa-user-plus",
         text: "ADD",
         title: "Add Members to Project",
       },
       create: {
         type: "button",
         api: "account/add",
-        icon: " fad fa-plus",
+        icon: " fas fa-plus",
         text: "CREATE",
         title: "Create New",
       },
@@ -216,7 +216,8 @@ class Project extends React.Component {
             deleteApi={this.deleteApi}
             addConfig={this.addConfig}
             // key={Math.random()}
-            rowTemplate={(e) => this.renderRow(e, this.config)}
+            rowTemplate={(e) => <ChildEOXGrid instance={this} e={e} form={form} GetData={GetData}/>}
+            // rowTemplate={(e) => this.renderRow(e, this.config)}
             skip={this.state.skip}
             dataStateChanged={this.dataStateChanged.bind(this)}
             isLoading={this.state.isLoading}

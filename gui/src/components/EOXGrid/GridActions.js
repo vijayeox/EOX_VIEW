@@ -156,6 +156,7 @@ export default class GridActions extends React.Component {
             }
             content={form}
             appId={data.uuid}
+            uniqueAttachments={this.props.uniqueAttachments || false}
           // route= {this.api}
           />
         </div>
@@ -461,7 +462,7 @@ export default class GridActions extends React.Component {
               <button
                 type={actions.type}
                 key={permissionType}
-                className="btn btn-primary m-2 align-right EOXGrids"
+                className="btn btn-primary m-1 EOXGrids"
                 onClick={(e) => {
                   var tr = e.target.closest("tr");
                   let index = tr.getAttribute("data-grid-row-index");

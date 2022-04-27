@@ -25,9 +25,13 @@ export default function Board(props) {
     const { draggableId, destination } = result;
     let url = "/app/" + props.appId + "/file/crud/" + draggableId // also add entity_ID
     let rygColor;
-    if (destination.droppableId === "Delayed") rygColor = "Red";
-    else if (destination.droppableId === "In Progress") rygColor = "Yellow";
-    else if (destination.droppableId === "Completed" || destination.droppableId === "Open") rygColor = "Green";
+    if (destination.droppableId === "Delayed" || destination.droppableId === "Lost") {
+      rygColor = "RED"
+    } else if (destination.droppableId === "In Progress" || destination.droppableId === "Forecast" || destination.droppableId === "Cold" || destination.droppableId === "Chasing" || destination.droppableId === "Prospecting") {
+      rygColor = "YELLOW"
+    } else if (destination.droppableId === "Completed" || destination.droppableId === "Open" || destination.droppableId === "Active" || destination.droppableId === "Won" || destination.droppableId === "Qualified") {
+      rygColor = "GREEN"
+    };
 
     Requests.doRestRequest(
       props.core,

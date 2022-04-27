@@ -8,9 +8,6 @@ export default class FileComponent extends File {
     constructor(component, options, data) {
         var formOptions = Formio.getPlugin("optionsPlugin");
         var customOptions = _lodash.default.merge(options, formOptions.options);
-        if(customOptions.core == null || customOptions.core == undefined){
-            console.log(customOptions);
-        }
         super(component, customOptions, data);
         component.core = customOptions.core;
         component.appId = customOptions.appId;
