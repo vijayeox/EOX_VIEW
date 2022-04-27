@@ -656,7 +656,7 @@ class BaseFormRenderer extends React.Component {
   }
   async saveForm(form, data) {
     var that = this;
-    if(this.props.disableAttachmentControl){
+    if(!this.props.disableAttachmentControl){
       const uploadedAttachmentResponse = await this.uploadStorageAttachments(data);
       if(!uploadedAttachmentResponse) return;
       // if (!(await this.uploadStorageAttachments(data))) return
