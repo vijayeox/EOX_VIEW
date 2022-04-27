@@ -253,7 +253,9 @@ class DashboardManager extends React.Component {
     return preapredExtractedFilterValue;
   }
 
-  setTitle(title) {}
+  setTitle = (title) => {
+    this.setState({ title: title });
+  };
 
   deleteDashboard() {
     let inputs = { ...this.state.inputs };
@@ -578,7 +580,7 @@ class DashboardManager extends React.Component {
           flipOnClick={false}
           style={{ width: "100%" }} /// these are optional style, it is not necessary -> removed height: "100vh"
         >
-          <FrontSide  style={{ boxShadow:"none"}} /*style={{ marginTop: '-50px' }}*/>
+          <FrontSide style={{ boxShadow: "none" }} /*style={{ marginTop: '-50px' }}*/>
             <div id={filterContainer} style={{ width: "30vw" }} className='filter-form-container disappear'>
               {containsFilter && <DashboardFilter ref={this.filterRef} core={this.core} filterMode='APPLY' hideFilterDiv={() => this.hideFilter()} filterConfiguration={this.getFilterProperty("filterConfiguration")} applyFilterOption={this.getOptionalFilters("filterOptions")} setDashboardFilter={(filter) => this.applyDashboardFilter(filter)} dashboardStack={this.state.dashboardStack} dashboardUuid={this.state.uuid} />}
             </div>
@@ -636,6 +638,11 @@ class DashboardManager extends React.Component {
                             <i className='fa fa-filter' aria-hidden='true'></i>
                           </Button>
                         )}
+                        {this.state.exportConfiguration !== null && this.state.exportConfiguration !== "" && (
+                          <Button onClick={() => this.exportExcel()} title='Export OI'>
+                            <i className='fas fa-file-export'></i>
+                          </Button>
+                        )}
                         {
                           <Button onClick={() => this.refreshDashboard()} title='Refresh OI'>
                             <i className='fa fa-refresh' aria-hidden='true'></i>
@@ -649,11 +656,6 @@ class DashboardManager extends React.Component {
                           }}
                           content={() => this.dashboardViewerRef}
                         /> */}
-                        {this.state.exportConfiguration != null && (
-                          <Button onClick={() => this.exportExcel()} title='Export OI'>
-                            <i className='fas fa-file-export'></i>
-                          </Button>
-                        )}
                         {this.userProfile.key.privileges.MANAGE_DASHBOARD_WRITE && this.state.inputs["dashname"] != undefined && this.state.inputs["dashname"]["isdefault"] == "0"
                           ? this.props.hideEdit == false && (
                               <Button onClick={() => this.dashboardOperation(this.state.inputs["dashname"], "SetDefault")} title='Make current OI as default OI'>
