@@ -575,24 +575,24 @@ class DashboardManager extends React.Component {
       <div ref={this.myRef} className={dashboardView}>
         <Notification ref={this.notif} />
         <Flippy
-          flipDirection='horizontal' // horizontal or vertical
+          flipDirection="horizontal" // horizontal or vertical
           isFlipped={this.state.flipped}
           flipOnClick={false}
           style={{ width: "100%" }} /// these are optional style, it is not necessary -> removed height: "100vh"
         >
           <FrontSide style={{ boxShadow: "none" }} /*style={{ marginTop: '-50px' }}*/>
-            <div id={filterContainer} style={{ width: "30vw" }} className='filter-form-container disappear'>
-              {containsFilter && <DashboardFilter ref={this.filterRef} core={this.core} filterMode='APPLY' hideFilterDiv={() => this.hideFilter()} filterConfiguration={this.getFilterProperty("filterConfiguration")} applyFilterOption={this.getOptionalFilters("filterOptions")} setDashboardFilter={(filter) => this.applyDashboardFilter(filter)} dashboardStack={this.state.dashboardStack} dashboardUuid={this.state.uuid} />}
+            <div id={filterContainer} style={{ width: "30vw" }} className="filter-form-container disappear">
+              {containsFilter && <DashboardFilter ref={this.filterRef} core={this.core} filterMode="APPLY" hideFilterDiv={() => this.hideFilter()} filterConfiguration={this.getFilterProperty("filterConfiguration")} applyFilterOption={this.getOptionalFilters("filterOptions")} setDashboardFilter={(filter) => this.applyDashboardFilter(filter)} dashboardStack={this.state.dashboardStack} dashboardUuid={this.state.uuid} />}
             </div>
             {this.state.dashList != undefined && this.state.dashList.length > 0 ? (
               <div id={filterPreview}>
-                <div className='dash-manager-bar'>
+                <div className="dash-manager-bar">
                   {!this.props.hideEdit && this.userProfile.key.privileges.MANAGE_DASHBOARD_WRITE && (
                     <Select
-                      name='dashname'
-                      className='react-select-container'
-                      placeholder='Select OI'
-                      id='dashname'
+                      name="dashname"
+                      className="react-select-container"
+                      placeholder="Select OI"
+                      id="dashname"
                       filterOption={createFilter({ ignoreAccents: false })}
                       onChange={(e) => this.handleChange(e, "dashname")}
                       value={
@@ -615,37 +615,37 @@ class DashboardManager extends React.Component {
                       }
                     />
                   )}
-                  <div className='dash-manager-buttons'>
+                  <div className="dash-manager-buttons">
                     {!this.props.hideEdit && this.userProfile.key.privileges.MANAGE_DASHBOARD_WRITE && (
-                      <Button onClick={() => this.createDashboard()} title='Add New OI'>
-                        <i className='fa fa-plus' aria-hidden='true'></i>
+                      <Button onClick={() => this.createDashboard()} title="Add New OI">
+                        <i className="fa fa-plus" aria-hidden="true"></i>
                       </Button>
                     )}
                     {this.state.uuid !== "" && this.state.inputs["dashname"] != undefined && (
                       <>
                         {!this.props.hideEdit && this.userProfile.key.privileges.MANAGE_DASHBOARD_WRITE && (
-                          <Button onClick={() => this.editDashboard()} title='Edit OI'>
-                            <i className='fa fa-edit' aria-hidden='true'></i>
+                          <Button onClick={() => this.editDashboard()} title="Edit OI">
+                            <i className="fa fa-edit" aria-hidden="true"></i>
                           </Button>
                         )}
                         {this.userProfile.key.privileges.MANAGE_DASHBOARD_DELETE && this.state.inputs["dashname"]["isdefault"] == "0" && (
-                          <Button onClick={() => this.dashboardOperation(this.state.inputs["dashname"], "Delete")} title='Delete OI'>
-                            <i className='fa fa-trash' aria-hidden='true'></i>
+                          <Button onClick={() => this.dashboardOperation(this.state.inputs["dashname"], "Delete")} title="Delete OI">
+                            <i className="fa fa-trash" aria-hidden="true"></i>
                           </Button>
                         )}
                         {containsFilter && (
-                          <Button onClick={() => this.showFilter(this.state.uuid)} title='Filter OI'>
-                            <i className='fa fa-filter' aria-hidden='true'></i>
+                          <Button onClick={() => this.showFilter(this.state.uuid)} title="Filter OI">
+                            <i className="fa fa-filter" aria-hidden="true"></i>
                           </Button>
                         )}
                         {this.state.exportConfiguration !== null && this.state.exportConfiguration !== "" && (
-                          <Button onClick={() => this.exportExcel()} title='Export OI'>
-                            <i className='fas fa-file-export'></i>
+                          <Button onClick={() => this.exportExcel()} title="Export OI">
+                            <i className="fa fa-file-export"></i>
                           </Button>
                         )}
                         {
-                          <Button onClick={() => this.refreshDashboard()} title='Refresh OI'>
-                            <i className='fa fa-refresh' aria-hidden='true'></i>
+                          <Button onClick={() => this.refreshDashboard()} title="Refresh OI">
+                            <i className="fa fa-refresh" aria-hidden="true"></i>
                           </Button>
                         }
                         {/* <ReactToPrint
@@ -658,14 +658,13 @@ class DashboardManager extends React.Component {
                         /> */}
                         {this.userProfile.key.privileges.MANAGE_DASHBOARD_WRITE && this.state.inputs["dashname"] != undefined && this.state.inputs["dashname"]["isdefault"] == "0"
                           ? this.props.hideEdit == false && (
-                              <Button onClick={() => this.dashboardOperation(this.state.inputs["dashname"], "SetDefault")} title='Make current OI as default OI'>
-                                {" "}
-                                MAKE DEFAULT
+                              <Button onClick={() => this.dashboardOperation(this.state.inputs["dashname"], "SetDefault")} title="Make current OI as default OI">
+                                <i class="fa fa-home-heart"></i>
                               </Button>
                             )
                           : this.props.hideEdit == false && (
-                              <Button title='Selected OI is default OI' disabled>
-                                Default OI
+                              <Button title="Selected OI is default OI" disabled>
+                                <i class="fa fa-home"></i>
                               </Button>
                             )}
                       </>
@@ -673,29 +672,11 @@ class DashboardManager extends React.Component {
                   </div>
                 </div>
 
-                <div className='dashboard-viewer-div'>
-                  {this.state.uuid !== "" && (
-                    <DashboardViewer
-                      drilldownToDashboard={(e, type) => this.drilldownToDashboard(e, type)}
-                      ref={(el) => (this.dashboardViewerRef = el)}
-                      key={this.state.uuid}
-                      uuid={this.state.uuid}
-                      core={this.core}
-                      setTitle={this.props.setTitle}
-                      proc={this.props.proc}
-                      dashboardFilter={this.state.dashboardFilter}
-                      applyDashboardFilter={(filter) => this.applyDashboardFilter(filter)}
-                      drilldownDashboardFilter={this.state.drilldownDashboardFilter}
-                      dashboardStack={this.state.dashboardStack}
-                      rollupToDashboard={() => this.rollupToDashboard()}
-                      loadDefaultFilters={this.state.loadDefaultFilters}
-                    />
-                  )}
-                </div>
+                <div className="dashboard-viewer-div">{this.state.uuid !== "" && <DashboardViewer drilldownToDashboard={(e, type) => this.drilldownToDashboard(e, type)} ref={(el) => (this.dashboardViewerRef = el)} key={this.state.uuid} uuid={this.state.uuid} core={this.core} setTitle={this.props.setTitle} proc={this.props.proc} dashboardFilter={this.state.dashboardFilter} applyDashboardFilter={(filter) => this.applyDashboardFilter(filter)} drilldownDashboardFilter={this.state.drilldownDashboardFilter} dashboardStack={this.state.dashboardStack} rollupToDashboard={() => this.rollupToDashboard()} loadDefaultFilters={this.state.loadDefaultFilters} />}</div>
               </div>
             ) : (
               <div
-                className='dashboard-viewer-div'
+                className="dashboard-viewer-div"
                 style={{
                   textAlign: "center",
                   fontWeight: "bolder",
@@ -707,7 +688,7 @@ class DashboardManager extends React.Component {
           </FrontSide>
           <BackSide>
             {this.state.flipped && (
-              <div id='dashboard-editor-div'>
+              <div id="dashboard-editor-div">
                 {this.state.loadEditor && (
                   <DashboardEditor
                     args={this.core}
