@@ -420,6 +420,7 @@ export default class GridActions extends React.Component {
           const actions = this.actionItems[this.permissionMap[permissionType]];
           return (
             <abbr title={actions.title} key={permissionType}>
+              {(actions.text !== "CREATE") ?
               <button
                 type={actions.type}
                 key={permissionType}
@@ -483,7 +484,8 @@ export default class GridActions extends React.Component {
                 }}
               >
                 <i className={actions.icon}></i>
-              </button>
+              </button> :""
+        }
             </abbr>
           )
         }
