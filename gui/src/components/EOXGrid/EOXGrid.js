@@ -73,6 +73,11 @@ export default class EOXGrid extends React.Component {
         ? configuration.pageSize
         : 10
       : 10;
+    this.isReactComponent = configuration
+      ? configuration.isReactComponent
+        ? configuration.isReactComponent
+        : false
+      : false;
     //need to pass these in org config
     let oxzionMeta = configuration
       ? configuration["oxzion-meta"]
@@ -168,21 +173,38 @@ export default class EOXGrid extends React.Component {
     let gridsId = document.getElementsByClassName("eox-grids")[0].parentNode.id;
     if (createFlag) {
       document.getElementById(gridsId).classList.add("display-none");
-      document.getElementById("eox-grid").style.marginTop = "40px";
+      document.getElementById("eox-grid").style.marginTop = "44px";
       document
-          .getElementById("dash-manager-button")
-          .classList.add("display-none");
-  } else {
+        .getElementById("dash-manager-button")
+        .classList.add("display-none");
+    } else {
       document.getElementById(gridsId).classList.remove("display-none");
-      // document.getElementById("eox-grid").style.marginTop = "-32px";
+      document.getElementById("eox-grid").style.marginTop = "-32px";
       document
-          .getElementById("dash-manager-button")
-          .classList.remove("display-none");
-  }
+        .getElementById("dash-manager-button")
+        .classList.remove("display-none");
+    }
     let data = {};
-    if(this.props.prepareCreateFormData){
+    if (this.props.prepareCreateFormData) {
       data = await this.props.prepareCreateFormData()
     }
+   
+    const RoleFormComponent = this.isReactComponent ? this.editForm : null
+    this.isReactComponent ?
+      ReactDOM.render(
+        <RoleFormComponent 
+        args={this.core}  
+        formAction={"post"} 
+        createApi={this.createApi} 
+        selectedOrg={this.props.selectedOrg} 
+        create={this.create(null)}
+        // diableField="false"
+        gridsId= {gridsId}
+        isReactComponent={this.isReactComponent}
+        />, 
+        document.getElementById("eox-grid-form")
+      ) ? (document.getElementById("eox-grid-form").style.overflow = "scroll")
+        : (document.getElementById("eox-grid-form").style.overflow = "auto") :
       ReactDOM.render(
         createFlag ? (
           <div
@@ -331,10 +353,10 @@ export default class EOXGrid extends React.Component {
 
   render() {
     let gridTag = (
-      <div id="eox-grid" style={{ position: "relative" }}>
+      <div id="eox-grid" style={{ position: "relative", marginTop: "-38px" }}>
         <div id="eox-grid-form"></div>
         {/* create new user */}
-        <div style={{ float: "right","marginTop":"-44px" }} id="dash-manager-button" className="dash-manager-buttons mr-4">
+        <div style={{ float: "right" }} id="dash-manager-button" className="dash-manager-buttons mr-4 mb-2">
           {Object["values"](this.actionItems).map((actions, key) =>
             (actions.text === "CREATE") && (!(this.noCreateAction)) ? (
               <abbr title={actions.title} key={key}>
@@ -399,7 +421,6 @@ export default class EOXGrid extends React.Component {
               if (e?.dataState?.filter?.filters?.find(v => !v.field)) return
               if (e?.dataState?.filter?.filters?.find(o => o.value === "")) return
               this.setState({ dataState: e.dataState });
-              // console.log('datastate-',e)
               this.props.dataStateChanged(e)
             }}
             expandField="expanded"
@@ -452,8 +473,9 @@ export default class EOXGrid extends React.Component {
                   createCrudType={this.props.createCrudType}
                   getCustomPayload={this.props.getCustomPayload}
                   prepareFormData={this.props.prepareFormData}
-                  uniqueAttachments={this.props.uniqueAttachments || false}
-              />
+                  isReactComponent={this.isReactComponent}
+                  selectedOrg = {this.props.selectedOrg}
+                />
               )}
             ></GridColumn>
           </Grid>
