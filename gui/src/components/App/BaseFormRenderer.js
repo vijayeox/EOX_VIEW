@@ -656,14 +656,16 @@ class BaseFormRenderer extends React.Component {
   }
   async saveForm(form, data) {
     var that = this;
-    const uploadedAttachmentResponse = await this.uploadStorageAttachments(data);
-    if(!uploadedAttachmentResponse) return;
-    // if (!(await this.uploadStorageAttachments(data))) return
-    if (that.props.updateFormData) {
-      // that.props.postSubmitCallback(data);
-      const attachmentObj = that.props.getAttachment ? {_attachments : uploadedAttachmentResponse, _filesToUpload: this.state.filesToUpload } : {}
-      that.props.postSubmitCallback({...data, ...attachmentObj})
-      return;
+    if(!this.props.disableAttachmentControl){
+      const uploadedAttachmentResponse = await this.uploadStorageAttachments(data);
+      if(!uploadedAttachmentResponse) return;
+      // if (!(await this.uploadStorageAttachments(data))) return
+      if (that.props.updateFormData) {
+        // that.props.postSubmitCallback(data);
+        const attachmentObj = that.props.getAttachment ? {_attachments : uploadedAttachmentResponse, _filesToUpload: this.state.filesToUpload } : {}
+        that.props.postSubmitCallback({...data, ...attachmentObj})
+        return;
+      }
     }
     if (
       that.props.customSaveForm &&
@@ -1666,7 +1668,12 @@ class BaseFormRenderer extends React.Component {
       options.wrapperUrl = this.core.config("wrapper.url");
       options.formDivID = this.formDivID;
       options.appId = this.state.appId;
-      options.fileUploadCallback = this.onFileUpload.bind(this)
+      if(!this.props.disableAttachmentControl){
+        //this block will have control over attachments
+        //post form submit attachments are uploaded instead later are appended in pipline payload
+        //disableAttachmentControl in yaml only when there's an inconsistency for a specific application, if not sure.
+        options.fileUploadCallback = this.onFileUpload.bind(this)
+      }
       Formio.registerPlugin(
         {
           options: {
