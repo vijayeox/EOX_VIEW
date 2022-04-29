@@ -1731,6 +1731,7 @@ class BaseFormRenderer extends React.Component {
             that.hideBreadCrumb(true);
           }
         }
+  
         if (that.state.data != undefined) {
           form.setSubmission({ data: that.state.data });
         }
@@ -1830,6 +1831,12 @@ class BaseFormRenderer extends React.Component {
           if (that.state.formLevelDelegateCalled == false) {
             that.setState({ formLevelDelegateCalled: true });
           }
+          //remove all events listeners attached by formio since download api is handled in core resource endpoint.
+          [
+            ...(document
+              .getElementById(that.formDivID)
+              ?.querySelectorAll('a[ref="fileLink"]') || []),
+          ].forEach((element) => element.hasAttribute('href') && element.replaceWith(element.cloneNode(true)));
         });
         form.on("customEvent", function (event) {
           var changed = event.data;
