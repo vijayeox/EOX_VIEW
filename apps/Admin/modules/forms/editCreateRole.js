@@ -165,20 +165,23 @@ export default class EditCreateRole extends React.Component {
                             <i className='fa fa-lock'></i>
                             </div>
                         ) : null} */}
-                        <div className='form-group'>
-                            <label className='required-label'>Role Name</label>
+                        <div className='form-group' style={{ display: "flex", marginBottom: "2px" }}>
+                            <label className='required-label' style={{ marginBottom: "0px" }}>Role Name</label>
                             <input id='Name' type='text' className='form-control validate' name='name' value={this.state.roleInEdit.name || ""} maxLength='25' onChange={this.onDialogInputChange} placeholder='Enter Role Name' required={true} disabled={this.state.roleInEdit.is_system_role == "1" || this.props.diableField ? true : false} />
+
                         </div>
 
-                        <div className='form-group text-area-custom'>
-                            <label className='required-label'>Role Description</label>
-                            <textarea type='text' className='form-control' name='description' value={this.state.roleInEdit.description || ""} maxLength='200' onChange={this.onDialogInputChange} required={true} disabled={this.props.diableField ? true : false} placeholder='Enter Role Description' style={{ marginTop: "5px" }} />
+                        <div className='form-group text-area-custom' style={{ marginBottom: "0px" }}>
+                            <label className='required-label' style={{ marginBottom: "2px" }}>Role Description</label>
+                            <textarea type='text' className='form-control' name='description' value={this.state.roleInEdit.description || ""} maxLength='200' onChange={this.onDialogInputChange} required={true} disabled={this.props.diableField ? true : false} placeholder='Enter Role Description'
+                                style={{ padding: "2px" }}
+                            />
                         </div>
                     </form>
 
                     <Ripple.Ripple>
-                        <div className='col-11 pt-3' style={{ margin: "auto" }}>
-                            <div className='privilegeGrid'>
+                        <div className='col-11 pt-3' style={{ margin: "0px", padding: "0px", top: "-12px", left: "-10px" }}>
+                            <div className='privilegeGrid' style={{ width: "fit-content" }}>
                                 <Grid.Grid
                                     data={this.state.masterList}
                                     resizable={true}
@@ -193,7 +196,7 @@ export default class EditCreateRole extends React.Component {
                                         <div>
                                             <div
                                                 style={{
-                                                    fontSize: "20px",
+                                                    fontSize: "14px", fontWeight: "500"
                                                 }}>
                                                 Configure Privileges
                                                 {this.state.isAdmin ? (
@@ -202,9 +205,9 @@ export default class EditCreateRole extends React.Component {
                                                         <i
                                                             className='fa fa-lock'
                                                             style={{
-                                                                fontSize: "2.4rem",
+                                                                fontSize: "1.2rem",
                                                                 right: "2%",
-                                                                top: "2px",
+                                                                top: "4px",
                                                                 position: "absolute",
                                                             }}></i>
                                                     </React.Fragment>
@@ -289,15 +292,15 @@ export default class EditCreateRole extends React.Component {
                                     />
                                 </Grid.Grid>
                             </div>
-                            <div style={{ margin: "75px" }} />
+                            {/* <div style={{ margin: "75px" }} /> */}
                         </div>
                     </Ripple.Ripple>
                 </div>
-                <SaveCancel save='roleForm' cancel={function () {
+                <SaveCancel save='roleForm' cancel={function(){
                     ReactDOM.unmountComponentAtNode(document.getElementById("eox-grid-form"));
-                    document.getElementById(this.props.gridsId).classList.remove("display-none")
-                    document.getElementById("eox-grid").style.marginTop = "-50px",
-                        document.getElementById("dash-manager-button").classList.remove("display-none")
+                    document.getElementById("dash-manager-button").classList.remove("display-none")
+                    // document.getElementById(this.props.gridsId).classList.remove("display-none")
+                    // document.getElementById("eox-grid").style.marginTop = "-35px"
                 }} />
             </Window.Window>
         );
