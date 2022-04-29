@@ -34,6 +34,16 @@ class FormRender extends BaseFormRenderer {
   async getCacheData() {
     return await this.helper.request("v1", this.appUrl + "/cache/" + this.state.cacheId, {}, "get");
   }
+  async checkCacheData(parsedData) {
+    let params = '';
+    if (parsedData.workflow_uuid) {
+      params = '/workflowId/' + parsedData.workflow_uuid;
+    }
+    if (parsedData.formName) {
+      params = '/formId/' + parsedData.id;
+    }
+    return await this.helper.request("v1", this.appUrl + "/formCache" + params, {}, "get");
+  }
 
   async getWorkflow() {
     // call to api using wrapper
@@ -320,19 +330,28 @@ class FormRender extends BaseFormRenderer {
             formId: parsedData.form_id,
           });
           this.createForm().then((form) => {
-            if (Object.keys(parsedData).length > 1) {
-              //to account for only workflow_uuid
-              var that = this;
-              if (parsedData.data) {
-                form.setSubmission({ data: this.formatFormData(parsedData.data) }).then((respone) => {
-                  that.processProperties(form);
+            this.checkCacheData(parsedData).then(cacheResponse => {
+              if (cacheResponse.status == "success" && Object.keys(cacheResponse.data).length > 1) {
+                this.setState({
+                  isDraft: true,
+                  cacheId: cacheResponse.data.cacheId,
                 });
+                parsedData.data = cacheResponse.data;
+              }
+              if (Object.keys(parsedData).length > 1) {
+                //to account for only workflow_uuid
+                var that = this;
+                if (parsedData.data) {
+                  form.setSubmission({ data: this.formatFormData(parsedData.data) }).then((respone) => {
+                    that.processProperties(form);
+                  });
+                } else {
+                  this.loadWorkflow(form);
+                }
               } else {
                 this.loadWorkflow(form);
               }
-            } else {
-              this.loadWorkflow(form);
-            }
+            });
           });
         } else {
           var errorMessage = "";
