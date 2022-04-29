@@ -55,7 +55,8 @@ class User extends React.Component {
           {
             title: "Image",
             field: "icon",
-            filterable: false
+            filterable: false,
+            width: "60px"
           },
           {
             title: "Name",
@@ -64,6 +65,14 @@ class User extends React.Component {
           {
             title: "Email",
             field: "email",
+          },
+           {
+            title: "Phone Number",
+            field: "phone",
+          },
+           {
+            title: "Employee ID",
+            field: "employee_id",
           },
           {
             title: "Designation",

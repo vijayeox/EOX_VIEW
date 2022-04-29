@@ -56,6 +56,7 @@ class Announcement extends React.Component {
             title: "Banner",
             field: "media",
             filterable: false,
+            width: "60px"
           },
           {
             title: "Name",
