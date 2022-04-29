@@ -12,7 +12,7 @@ export class TitleBar extends React.Component {
           alignItems: "center",
           position: "relative",
           width: "92%",
-          top: "5px",
+          top: "2px",
         }}
         className="adminTitleBar"
       >

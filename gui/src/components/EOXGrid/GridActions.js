@@ -125,10 +125,8 @@ export default class GridActions extends React.Component {
         .classList.add("display-none");
     } else {
       document.getElementById(gridsId).classList.remove("display-none");
-      document.getElementById("eox-grid").style.marginTop = "-32px";
-      document
-        .getElementById("dash-manager-button")
-        .classList.remove("display-none");
+      document.getElementById("eox-grid").style.marginTop = "-35px";
+      document.getElementById("dash-manager-button").classList.remove("display-none");
     }
     let formRenderProps = { data };
     if (this.props.prepareFormData) {
@@ -297,7 +295,7 @@ export default class GridActions extends React.Component {
   toggleDialog(gridsId) {
     if (this.isReactComponent) {
       document.getElementById(gridsId).classList.remove("display-none")
-      document.getElementById("eox-grid").style.marginTop = "-32px";
+      document.getElementById("eox-grid").style.marginTop = "-35px";
       document.getElementById("dash-manager-button").classList.remove("display-none")
     }
     this.setState({

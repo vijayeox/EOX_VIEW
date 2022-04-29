@@ -179,7 +179,7 @@ export default class EOXGrid extends React.Component {
         .classList.add("display-none");
     } else {
       document.getElementById(gridsId).classList.remove("display-none");
-      document.getElementById("eox-grid").style.marginTop = "-32px";
+      document.getElementById("eox-grid").style.marginTop = "-35px";
       document
         .getElementById("dash-manager-button")
         .classList.remove("display-none");
@@ -353,7 +353,7 @@ export default class EOXGrid extends React.Component {
 
   render() {
     let gridTag = (
-      <div id="eox-grid" style={{ position: "relative", marginTop: "-38px" }}>
+      <div id="eox-grid" style={{ position: "relative", marginTop: "-35px" }}>
         <div id="eox-grid-form"></div>
         {/* create new user */}
         <div style={{ float: "right" }} id="dash-manager-button" className="dash-manager-buttons mr-4 mb-2">
