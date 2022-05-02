@@ -55,7 +55,7 @@ class ActivityLog extends React.Component {
       { title: "Previous Value", field: "initialValue" },
       { title: "Updated Value", field: "submittedValue" },
     ];
-    return <OX_Grid osjsCore={this.props.core} ref={this.childGrid} data={e.fields} columnConfig={childColumnConfig} inlineEdit={false} />;
+    return <OX_Grid osjsCore={this.props.core} ref={this.childGrid} data={e?.fields || []} columnConfig={childColumnConfig} inlineEdit={false} />;
   }
 
   render() {
