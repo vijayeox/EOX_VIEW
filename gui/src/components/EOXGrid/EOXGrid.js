@@ -324,6 +324,13 @@ export default class EOXGrid extends React.Component {
     // this.prepareData(true);
   }
 
+  shouldComponentUpdate(prevProps, props) {
+    (prevProps.api !== this.api) ? this.api= prevProps.api:"";
+    (prevProps.deleteApi !== this.deleteApi) ? this.deleteApi= prevProps.deleteApi:"";
+    (prevProps.createApi !== this.createApi) ? this.createApi= prevProps.createApi:"";
+    (prevProps.editApi !== this.editApi) ? this.editApi= prevProps.editApi:"";
+    return true;
+  }
   componentWillReceiveProps(props) {
     if (props.isLoading !== this.state.displayedData?.isLoading) {
       this.setState({ displayedData: props.data, isLoading: props.isLoading })
