@@ -95,6 +95,9 @@ class Team extends React.Component {
     this.setState({ selectedOrg: event.target.value, isLoading: true }, () => {
       this.api = "account/" + this.state.selectedOrg + "/teams";
       this.createApi = "account/" + this.state.selectedOrg + "/team";
+      this.deleteApi = "account/" + this.state.selectedOrg + "/team";
+      //this.addConfig.mainList= "account/" + this.state.selectedOrg + "/users/list",
+      //this.addConfig.subList="account/" + this.state.selectedOrg + "/team",
       GetData(this.api).then((data) => {
         this.setState({
           accountData: (data.status === "success" && data?.data) || [],
