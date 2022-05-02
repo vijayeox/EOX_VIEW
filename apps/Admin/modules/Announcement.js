@@ -85,8 +85,7 @@ class Announcement extends React.Component {
         permission: {
           canAdd: this.props.userProfile.privileges.MANAGE_ANNOUNCEMENT_CREATE,
           canEdit: this.props.userProfile.privileges.MANAGE_ANNOUNCEMENT_WRITE,
-          canDelete:
-            this.props.userProfile.privileges.MANAGE_ANNOUNCEMENT_DELETE,
+          canDelete:this.props.userProfile.privileges.MANAGE_ANNOUNCEMENT_DELETE,
         },
         skip: 0,
         isLoading: true,
@@ -119,9 +118,13 @@ class Announcement extends React.Component {
   }
 
   orgChange = (event) => {
+    //console.log("event account",event.target.value);
     this.setState({ selectedOrg: event.target.value, isLoading: true }, () => {
       this.api = "account/" + this.state.selectedOrg + "/announcements";
       this.createApi = "account/" + this.state.selectedOrg + "/announcement";
+      this.deleteApi = "account/" + this.state.selectedOrg + "/announcement";
+      this.addConfig.mainList= "account/" + this.state.selectedOrg + "/teams/list";
+      // add paginaton skip and take
       GetData(this.api).then((data) => {
         this.setState({
           accountData: (data.status === "success" && data?.data) || [],

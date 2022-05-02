@@ -103,8 +103,9 @@ class User extends React.Component {
 
   orgChange = (event) => {
     this.setState({ selectedOrg: event.target.value, isLoading: true }, () => {
-      this.api = "account/" + this.state.selectedOrg + "/users";
+      this.api = "account/" + this.state.selectedOrg + "/user";
       this.createApi = "account/" + this.state.selectedOrg + "/user";
+      this.deleteApi = "account/" + this.state.selectedOrg + "/user";
       GetData(this.api).then((data) => {
         this.setState({
           accountData: (data.status === "success" && data?.data) || [],
