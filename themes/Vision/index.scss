@@ -520,11 +520,21 @@ iframe {
   .k-grid {
     font-size: 1.2vh !important;
   }
-  .GridCustomStyle .k-grid-table {
+  .GridCustomStyle .k-grid-table td {
     font-size: 1.2vh !important;
   }
   .k-grid-header .k-header {
-    font-size: 16px !important;
+    font-size: 12px !important;
+  }
+
+  // Added as a table/Grid breakpoint - Refer customStyles.scss (gui/src/Grid/customStyles.scss)
+  .k-grid-header-wrap {
+    table {
+      min-width: 500px !important;
+    }
+  }
+  .GridCustomStyle .k-grid-content table {
+    min-width: 500px !important;
   }
 }
 

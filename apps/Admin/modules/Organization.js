@@ -56,11 +56,16 @@ class Organization extends React.Component {
             title: "Image",
             field: "logo",
             filterable:false,
+            width: "60px"
           },
 
           {
             title: "Name",
             field: "name",
+          },
+          {
+            title: "Country",
+            field: "country",
           },
           {
             title: "State",

@@ -18,6 +18,7 @@ export default class GridActions extends React.Component {
     this.deleteApi = this.props.deleteApi;
     this.gridId = this.props.gridId;
     this.addConfig = this.props.addConfig;
+    this.isReactComponent = this.props.isReactComponent;
     this.onUpdate = this.props.onUpdate.bind(this);
     this.state = {
       visible: false,
@@ -124,47 +125,61 @@ export default class GridActions extends React.Component {
         .classList.add("display-none");
     } else {
       document.getElementById(gridsId).classList.remove("display-none");
-      document.getElementById("eox-grid").style.marginTop = "-32px";
-      document
-        .getElementById("dash-manager-button")
-        .classList.remove("display-none");
+      document.getElementById("eox-grid").style.marginTop = "-35px";
+      document.getElementById("dash-manager-button").classList.remove("display-none");
     }
     let formRenderProps = { data };
     if (this.props.prepareFormData) {
       formRenderProps = await this.props.prepareFormData(data);
     }
-    ReactDOM.render(
-      data ? (
-        <div
-          style={{
-            position: "absolute",
-            left: "0",
-            top: "0",
-            width: "100%",
-            height: "100%",
-            zIndex: "10",
-          }}
-        >
-          <FormRender
-            key={"abc"}
-            core={this.core}
-            {...formRenderProps}
-            updateFormData={true}
-            getAttachment={true}
-            postSubmitCallback={(formData) =>
-              this.handleSubmit(formData, api, index, false)
-            }
-            content={form}
-            appId={data.uuid}
-            uniqueAttachments={this.props.uniqueAttachments || false}
-          // route= {this.api}
-          />
-        </div>
-      ) : null,
-      document.getElementById("eox-grid-form")
-    )
-      ? (document.getElementById("eox-grid-form").style.overflow = "scroll")
-      : (document.getElementById("eox-grid-form").style.overflow = "auto");
+
+    const RoleFormComponent = this.isReactComponent ? this.editForm : null
+    RoleFormComponent ?
+      ReactDOM.render(
+        <RoleFormComponent
+          args={this.core}
+          dataItem={data}
+          formAction={"put"}
+          editApi={this.editApi}
+          cancel={this.toggleDialog(gridsId)}
+          selectedOrg={this.props.selectedOrg}
+          // edit={this.edit(null)}
+          gridsId={gridsId}
+          isReactComponent={this.isReactComponent}
+        />, document.getElementById("eox-grid-form")
+      ) ? (document.getElementById("eox-grid-form").style.overflow = "scroll")
+        : (document.getElementById("eox-grid-form").style.overflow = "auto") :
+      ReactDOM.render(
+        data ? (
+          <div
+            style={{
+              position: "absolute",
+              left: "0",
+              top: "0",
+              width: "100%",
+              height: "100%",
+              zIndex: "10",
+            }}
+          >
+            <FormRender
+              key={"abc"}
+              core={this.core}
+              {...formRenderProps}
+              updateFormData={true}
+              getAttachment={true}
+              postSubmitCallback={(formData) =>
+                this.handleSubmit(formData, api, index, false)
+              }
+              content={form}
+              appId={data.uuid}
+            // route= {this.api}
+            />
+          </div>
+        ) : null,
+        document.getElementById("eox-grid-form")
+      )
+        ? (document.getElementById("eox-grid-form").style.overflow = "scroll")
+        : (document.getElementById("eox-grid-form").style.overflow = "auto");
   };
 
   async fetchCurrentEntries(route) {
@@ -277,8 +292,12 @@ export default class GridActions extends React.Component {
     }
   };
 
-  toggleDialog() {
-    ReactDOM.unmountComponentAtNode(document.getElementById("eox-grid-form"));
+  toggleDialog(gridsId) {
+    if (this.isReactComponent) {
+      document.getElementById(gridsId).classList.remove("display-none")
+      document.getElementById("eox-grid").style.marginTop = "-35px";
+      document.getElementById("dash-manager-button").classList.remove("display-none")
+    }
     this.setState({
       visible: !this.state.visible,
     });
@@ -391,66 +410,6 @@ export default class GridActions extends React.Component {
       })
   }
   render() {
-    // return (
-    //   <td>
-    //     {Object.values((this.getFilteredActions(this.actionItems))).map((actions, key) =>
-    //       !(actions.text === "CREATE") ? (
-    //         <abbr title={actions.title} key={key}>
-    //           <button
-    //             type={actions.type}
-    //             key={key}
-    //             className="btn btn-primary m-2 align-right EOXGrids"
-    //             onClick={(e) => {
-    //               var tr = e.target.closest("tr");
-    //               let index = tr.getAttribute("data-grid-row-index");
-    //               {
-    //                 actions.text === "DELETE"
-    //                   ?
-    //                   this.showConfirm(this.delete, [this.dataItems.data ? this.dataItems.data[index] : this.dataItems[index],
-    //                     index], "Do you really want to delete the record? This cannot be undone.", "Delete") : "";
-    //               }
-    //               // {
-    //               //   actions.text === "RETRY"
-    //               //     ? this.retry(this.dataItems.data ? this.dataItems.data[index] : this.dataItems[index],
-    //               //       index)
-    //               //     : " ";
-    //               // }
-    //               {
-    //                 actions.text === "RESET"
-    //                   ?
-    //                   this.showConfirm(this.resetPassword, [this.dataItems.data ? this.dataItems.data[index] : this.dataItems[index],
-    //                     index], "Do you really want to reset your password", "Reset") : "";
-    //               }
-
-    //               {
-    //                 actions.text === "ADD"
-    //                   ? (this.add(
-    //                     this.dataItems.data ? this.dataItems.data[index] : this.dataItems[index],
-    //                     this.addConfig),
-    //                     this.state.visible)
-    //                   : " ";
-    //               }
-    //               {
-    //                 actions.text === "EDIT"
-    //                   ? this.edit(
-    //                     this.dataItems.data ? this.dataItems.data[index] : this.dataItems[index],
-    //                     this.editForm,
-    //                     index
-    //                   )
-    //                   : " ";
-    //               }
-    //             }}
-    //           >
-    //             <i className={actions.icon}></i>
-    //           </button>
-    //         </abbr>
-    //       ) : (
-    //         ""
-    //       )
-    //     )}
-    //   </td>
-    // );
-
     return <td>{
       Object.entries(this.permission)
         .filter(([, flag]) => flag)
@@ -459,10 +418,11 @@ export default class GridActions extends React.Component {
           const actions = this.actionItems[this.permissionMap[permissionType]];
           return (
             <abbr title={actions.title} key={permissionType}>
+              {(actions.text !== "CREATE") ?
               <button
                 type={actions.type}
                 key={permissionType}
-                className="btn btn-primary m-1 EOXGrids"
+                className="btn btn-primary m-2 align-right EOXGrids"
                 onClick={(e) => {
                   var tr = e.target.closest("tr");
                   let index = tr.getAttribute("data-grid-row-index");
@@ -522,7 +482,8 @@ export default class GridActions extends React.Component {
                 }}
               >
                 <i className={actions.icon}></i>
-              </button>
+              </button> :""
+        }
             </abbr>
           )
         }

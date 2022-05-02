@@ -17,9 +17,17 @@ import * as KendoReactDateInputs from "@progress/kendo-react-dateinputs";
 import * as KendoReactPopup from "@progress/kendo-react-popup";
 import * as KendoDataQuery from "@progress/kendo-data-query";
 import * as KendoReactWindow from "@progress/kendo-react-dialogs";
+import * as Window from "@progress/kendo-react-dialogs";
 import * as KendoReactGrid from "@progress/kendo-react-grid";
+import * as   Grid from "@progress/kendo-react-grid";
+import * as  GridColumn  from "@progress/kendo-react-grid";
+import * as  GridToolbar  from "@progress/kendo-react-grid";
 import * as KendoReactInput from "@progress/kendo-react-inputs";
+import * as Input from "@progress/kendo-react-inputs";
 // import * as KendoReactRipple from "@progress/kendo-react-ripple";
+import * as Ripple from "@progress/kendo-react-ripple";
+import  * as   orderBy  from '@progress/kendo-data-query';
+// import { Grid, GridColumn } from "@progress/kendo-react-grid";
 import { library, config } from "@fortawesome/fontawesome-svg-core";
 import { fal } from "@fortawesome/pro-light-svg-icons";
 
@@ -124,7 +132,14 @@ export {
   KendoReactWindow,
   KendoReactGrid,
   KendoReactInput,
+  Grid,
+  GridColumn,
+  GridToolbar,
+  Window,
+  orderBy,
+  Input,
   // KendoReactRipple,
+  Ripple,
   PopupDialog,
   Moment,
   MomentTZ,

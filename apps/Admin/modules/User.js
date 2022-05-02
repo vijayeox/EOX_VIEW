@@ -55,7 +55,8 @@ class User extends React.Component {
           {
             title: "Image",
             field: "icon",
-            filterable: false
+            filterable: false,
+            width: "60px"
           },
           {
             title: "Name",
@@ -64,6 +65,14 @@ class User extends React.Component {
           {
             title: "Email",
             field: "email",
+          },
+           {
+            title: "Phone Number",
+            field: "phone",
+          },
+           {
+            title: "Employee ID",
+            field: "employee_id",
           },
           {
             title: "Designation",
@@ -94,8 +103,9 @@ class User extends React.Component {
 
   orgChange = (event) => {
     this.setState({ selectedOrg: event.target.value, isLoading: true }, () => {
-      this.api = "account/" + this.state.selectedOrg + "/users";
+      this.api = "account/" + this.state.selectedOrg + "/user";
       this.createApi = "account/" + this.state.selectedOrg + "/user";
+      this.deleteApi = "account/" + this.state.selectedOrg + "/user";
       GetData(this.api).then((data) => {
         this.setState({
           accountData: (data.status === "success" && data?.data) || [],
