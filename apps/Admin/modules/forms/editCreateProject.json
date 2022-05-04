@@ -74,7 +74,7 @@
                   "tableView": true,
                   "dataSrc": "url",
                   "data": {
-                    "url": "/user",
+                    "url": "/account/{{data.accountId}}/user",
                     "headers": [
                       {
                         "key": "",
@@ -93,10 +93,10 @@
                     "absoluteUrl": "true"
                   },
                   "type": "select",
-                  "filter": "filter=[{\"skip\":0,\"take\":10000}]",
-                  "input": true,
                   "lazyLoad": false,
-                  "disableLimit": false
+                  "disableLimit": false,
+                  "filter": "filter=[{\"skip\":0,\"take\":10000}]",
+                  "input": true
                 }
               ],
               "width": 6,
@@ -114,7 +114,7 @@
                   "tableView": true,
                   "dataSrc": "url",
                   "data": {
-                    "url": "/project",
+                    "url": "/account/{{data.accountId}}/projects",
                     "headers": [
                       {
                         "key": "",
@@ -131,10 +131,10 @@
                     "absoluteUrl": "true"
                   },
                   "type": "select",
-                  "filter": "filter=[{\"skip\":0,\"take\":10000}]",
-                  "input": true,
                   "lazyLoad": false,
-                  "disableLimit": false
+                  "disableLimit": false,
+                  "filter": "filter=[{\"skip\":0,\"take\":10000}]",
+                  "input": true
                 }
               ],
               "width": 6,
@@ -232,6 +232,6 @@
   "path": "adminproject",
   "project": "5dc1489e4f668513e9535090",
   "created": "2021-12-01T09:35:49.729Z",
-  "modified": "2022-03-31T09:32:43.828Z",
+  "modified": "2022-05-04T09:18:12.037Z",
   "machineName": "eoxproductsupport:adminProject"
 }

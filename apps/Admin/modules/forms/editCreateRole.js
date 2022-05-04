@@ -105,9 +105,9 @@ export default class EditCreateRole extends React.Component {
     toggleDialog() {
         if (this.props.isReactComponent) {
             ReactDOM.unmountComponentAtNode(document.getElementById("eox-grid-form"));
-            document.getElementById(this.props.gridsId).classList.remove("display-none")
-            document.getElementById("eox-grid").style.marginTop = "-50px",
-                document.getElementById("dash-manager-button").classList.remove("display-none")
+            document.getElementById(this.props.gridsId).classList.remove("display-none");
+            // document.getElementById("eox-grid").style.marginTop = "-50px";
+            // document.getElementById("dash-manager-button").classList.remove("display-none")
         } else {
             ""
         }
@@ -156,7 +156,7 @@ export default class EditCreateRole extends React.Component {
         return (
             <Window.Window
                 // onClose={this.props.cancel} 
-                style={{ height: "auto", left: "10px" }}>
+                style={{ height: "auto", left: "0px" }}>
                 <div>
                     <form id='roleForm' onSubmit={this.submitData}>
                         {/* {this.props.diableField ? (
@@ -296,11 +296,12 @@ export default class EditCreateRole extends React.Component {
                         </div>
                     </Ripple.Ripple>
                 </div>
-                <SaveCancel save='roleForm' cancel={function(){
+                <SaveCancel save='roleForm'
+                cancel={function(){
                     ReactDOM.unmountComponentAtNode(document.getElementById("eox-grid-form"));
-                    document.getElementById("dash-manager-button").classList.remove("display-none")
+                    // document.getElementById("dash-manager-button").classList.remove("display-none")
                     // document.getElementById(this.props.gridsId).classList.remove("display-none")
-                    // document.getElementById("eox-grid").style.marginTop = "-35px"
+                    // document.getElementById("eox-grid").style.marginTop = "-50px"
                 }} />
             </Window.Window>
         );

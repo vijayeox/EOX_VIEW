@@ -115,7 +115,7 @@
                   "tableView": true,
                   "dataSrc": "url",
                   "data": {
-                    "url": "/user",
+                    "url": "/account/{{data.accountId}}/user",
                     "headers": [
                       {
                         "key": "",
@@ -126,15 +126,18 @@
                   "idPath": "uuid",
                   "valueProperty": "uuid",
                   "template": "<span>{{ item.name }}</span>",
+                  "validate": {
+                    "required": true
+                  },
                   "key": "managerId",
                   "properties": {
                     "absoluteUrl": "true"
                   },
                   "type": "select",
-                  "filter": "filter=[{\"skip\":0,\"take\":10000}]",
-                  "input": true,
                   "lazyLoad": false,
-                  "disableLimit": false
+                  "disableLimit": false,
+                  "filter": "filter=[{\"skip\":0,\"take\":10000}]",
+                  "input": true
                 }
               ],
               "width": 6,
@@ -403,7 +406,7 @@
                     {}
                   ],
                   "data": {
-                    "url": "/project",
+                    "url": "/account/{{data.accountId}}/project",
                     "headers": [
                       {
                         "key": "",
@@ -419,17 +422,10 @@
                     "absoluteUrl": "true"
                   },
                   "type": "select",
-                  "filter": "filter=[{\"skip\":0,\"take\":10000}]",
-                  "input": true,
+                  "lazyLoad": false,
                   "disableLimit": false,
-                  "lazyLoad": false
-                },
-                {
-                  "label": "accountId",
-                  "key": "accountId",
-                  "type": "hidden",
-                  "input": true,
-                  "tableView": false
+                  "filter": "filter=[{\"skip\":0,\"take\":10000}]",
+                  "input": true
                 }
               ],
               "width": 6,
@@ -451,7 +447,7 @@
                   "multiple": true,
                   "dataSrc": "url",
                   "data": {
-                    "url": "/account/{{data.userprofile.accountId}}/roles",
+                    "url": "/account/{{data.accountId}}/roles",
                     "headers": [
                       {
                         "key": "",
@@ -474,13 +470,6 @@
                   "disableLimit": false,
                   "filter": "filter=[{\"skip\":0,\"take\":10000}]",
                   "input": true
-                },
-                {
-                  "label": "uuid",
-                  "key": "uuid",
-                  "type": "hidden",
-                  "input": true,
-                  "tableView": false
                 }
               ],
               "width": 6,
@@ -578,6 +567,6 @@
   "path": "adminuser",
   "project": "5dc1489e4f668513e9535090",
   "created": "2021-12-01T10:01:16.951Z",
-  "modified": "2022-03-31T09:18:45.498Z",
+  "modified": "2022-05-04T09:15:02.516Z",
   "machineName": "eoxproductsupport:adminUser"
 }
