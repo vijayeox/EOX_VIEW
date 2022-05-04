@@ -1,7 +1,6 @@
 import $ from "jquery";
-import { React, Query, DataSource, Visualization, TemplateManager } from "oxziongui";
-import { WidgetManager, DashboardManager } from "oxziongui";
-import SideNav, { Toggle, Nav, NavItem, NavIcon, NavText } from "@trendmicro/react-sidenav";
+import { React, Query, DataSource, Visualization, TemplateManager, WidgetManager, DashboardManager } from "oxziongui";
+import SideNav, { NavItem, NavIcon, NavText } from "@trendmicro/react-sidenav";
 import "@trendmicro/react-sidenav/dist/react-sidenav.css";
 
 const SECTION_DATA_SOURCE = "DS"; //DataSource

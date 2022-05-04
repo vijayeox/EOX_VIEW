@@ -28,7 +28,7 @@ class Page extends React.Component {
       title: "",
       displaySection: "DB",
       params: this.props.params ? this.props.params : null,
-      sectionData: null
+      sectionData: null,
     };
     if (this.props.pageId && !this.props.pageId.includes("_subpage")) {
       this.loadPage(this.props.pageId);
@@ -40,10 +40,7 @@ class Page extends React.Component {
   loadPage(pageId, icon, hideLoader) {
     this.getPageContent(pageId).then((response) => {
       if (response.status == "success") {
-        this.setState(
-          { pageContent: response.data.content },
-          hideLoader ? this.setState({ showLoader: false }) : null
-        );
+        this.setState({ pageContent: response.data.content }, hideLoader ? this.setState({ showLoader: false }) : null);
         this.setState({ showLoader: false });
         let responseContent = response.data;
         icon ? (responseContent.icon = icon) : null;
@@ -53,12 +50,7 @@ class Page extends React.Component {
   }
   async getPageContent(pageId) {
     let helper = this.core.make("oxzion/restClient");
-    let pageContent = await helper.request(
-      "v1",
-      "/app/" + this.appId + "/page/" + pageId,
-      {},
-      "get"
-    );
+    let pageContent = await helper.request("v1", "/app/" + this.appId + "/page/" + pageId, {}, "get");
     return pageContent;
   }
 
@@ -76,13 +68,13 @@ class Page extends React.Component {
 
   stepDownPage() {
     let ev = new CustomEvent("stepDownPage", {
-        detail: {},
-        bubbles: true
+      detail: {},
+      bubbles: true,
     });
     if (document.getElementById("navigation_" + this.props.app)) {
-        document.getElementById("navigation_" + this.props.app).dispatchEvent(ev);
+      document.getElementById("navigation_" + this.props.app).dispatchEvent(ev);
     }
-}
+  }
 
   setTitle = (title) => {
     this.setState({ title: title });
@@ -98,21 +90,11 @@ class Page extends React.Component {
   };
 
   render() {
-    if (
-      this.state.pageContent &&
-      this.state.pageContent.length > 0 &&
-      !this.state.showLoader
-    ) {
+    if (this.state.pageContent && this.state.pageContent.length > 0 && !this.state.showLoader) {
       this.loader.destroy();
       if (this.props.popupConfig) {
         return (
-          <Popup
-            anchor={document.getElementById("navigation_" + this.appId)}
-            appendTo={document.getElementById("navigation_" + this.appId)}
-            show={true}
-            popupClass={"popup-content"}
-            {...this.props.popupConfig}
-          >
+          <Popup anchor={document.getElementById("navigation_" + this.appId)} appendTo={document.getElementById("navigation_" + this.appId)} show={true} popupClass={"popup-content"} {...this.props.popupConfig}>
             <PageContent
               ref={this.pageContentRef}
               key={this.componentKey}
@@ -132,8 +114,8 @@ class Page extends React.Component {
               postSubmitCallback={this.props.postSubmitCallback}
               parentRowData={this.parentRowData}
             />
-            <div style={{display: 'contents'}}>
-              <Button primary={true} onClick={()=>this.stepDownPage()}>
+            <div style={{ display: "contents" }}>
+              <Button primary={true} onClick={() => this.stepDownPage()}>
                 Cancel
               </Button>
             </div>
