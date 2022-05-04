@@ -196,4 +196,3 @@ class User extends React.Component {
 }
 
 export default User;
-//add switch account for users

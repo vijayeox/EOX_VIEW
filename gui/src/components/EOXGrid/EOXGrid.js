@@ -9,6 +9,7 @@ import FormRender from "../App/FormRender";
 import Requests from "../../Requests";
 import Swal from "sweetalert2";
 import { GridDetailRow } from "@progress/kendo-react-grid";
+import { split } from "lodash";
 
 const loadingPanel = (
   <div className="k-loading-mask">
@@ -98,6 +99,7 @@ export default class EOXGrid extends React.Component {
     this.editApi = this.props.editApi;
     this.createApi = this.props.createApi;
     this.deleteApi = this.props.deleteApi;
+    this.selectedOrg = this.props.selectedOrg;
     this.addConfig = this.props.addConfig;
     this.noCreateAction = this.props.noCreateAction ? this.props.noCreateAction : false;
     this.baseUrl = this.core.config("wrapper.url");
@@ -190,6 +192,8 @@ export default class EOXGrid extends React.Component {
     }
    
     const RoleFormComponent = this.isReactComponent ? this.editForm : null
+    let apiSplit = this.api;
+    let changedAccountId = apiSplit.split("/")[1];
     this.isReactComponent ?
       ReactDOM.render(
         <RoleFormComponent 
@@ -220,7 +224,7 @@ export default class EOXGrid extends React.Component {
             <FormRender
               key={"abc"}
               core={this.core}
-              // data={data}
+              data={{accountId:changedAccountId}}
               updateFormData={true}
               getAttachment={true}
               postSubmitCallback={(formData) =>

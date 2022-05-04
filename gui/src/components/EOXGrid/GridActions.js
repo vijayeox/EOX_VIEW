@@ -128,6 +128,8 @@ export default class GridActions extends React.Component {
       document.getElementById("eox-grid").style.marginTop = "-35px";
       document.getElementById("dash-manager-button").classList.remove("display-none");
     }
+    let changedAccountId = this.api.split("/")[1];
+    data ? data.changedAccountId = changedAccountId:"";
     let formRenderProps = { data };
     if (this.props.prepareFormData) {
       formRenderProps = await this.props.prepareFormData(data);
@@ -162,16 +164,16 @@ export default class GridActions extends React.Component {
             }}
           >
             <FormRender
-              key={"abc"}
-              core={this.core}
-              {...formRenderProps}
-              updateFormData={true}
-              getAttachment={true}
-              postSubmitCallback={(formData) =>
-                this.handleSubmit(formData, api, index, false)
-              }
-              content={form}
-              appId={data.uuid}
+             key={"abc"}
+             core={this.core}
+            {...formRenderProps}
+            updateFormData={true}
+            getAttachment={true}
+            postSubmitCallback={(formData) =>
+              this.handleSubmit(formData, api, index, false)
+            }
+            content={form}
+            appId={data.uuid}
             // route= {this.api}
             />
           </div>

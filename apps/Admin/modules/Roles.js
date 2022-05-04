@@ -222,8 +222,8 @@ class Role extends React.Component {
             dataStateChanged={this.dataStateChanged.bind(this)}
             isLoading={this.state.isLoading}
             // key={Math.random()}
-            prepareFormData={this.fetchPrivileges}
-            prepareCreateFormData={this.fetchPrivilegesCreate}
+            // prepareFormData={this.fetchPrivileges}
+            // prepareCreateFormData={this.fetchPrivilegesCreate}
             getCustomPayload={this.getCustomPayload}
             selectedOrg = {this.state.selectedOrg}
           />
