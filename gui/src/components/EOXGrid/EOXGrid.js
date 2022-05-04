@@ -175,16 +175,13 @@ export default class EOXGrid extends React.Component {
     let gridsId = document.getElementsByClassName("eox-grids")[0].parentNode.id;
     if (createFlag) {
       document.getElementById(gridsId).classList.add("display-none");
-      document.getElementById("eox-grid").style.marginTop = "44px";
-      document
-        .getElementById("dash-manager-button")
-        .classList.add("display-none");
+      (this.api  === "account") ?document.getElementById("eox-grid").style.marginTop = "-38px":document.getElementById("eox-grid").style.marginTop = "-25px";
+      document.getElementById("eox-grid").style.zIndex = "99";
+      // document.getElementById("dash-manager-button").classList.add("display-none");
     } else {
       document.getElementById(gridsId).classList.remove("display-none");
       document.getElementById("eox-grid").style.marginTop = "-35px";
-      document
-        .getElementById("dash-manager-button")
-        .classList.remove("display-none");
+      // document.getElementById("dash-manager-button").classList.remove("display-none");
     }
     let data = {};
     if (this.props.prepareCreateFormData) {
@@ -215,7 +212,7 @@ export default class EOXGrid extends React.Component {
             style={{
               position: "absolute",
               left: "0",
-              top: "-37px",
+              top: (this.api ==="account")?"0px":"-15px",
               width: "100%",
               height: "100%",
               zIndex: "100",
