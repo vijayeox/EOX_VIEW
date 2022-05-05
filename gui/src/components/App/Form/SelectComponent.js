@@ -18,6 +18,7 @@ export default class SelectComponent extends Select {
     component.wrapperUrl = customOptions.wrapperUrl;
     component.appId = customOptions.appId;
     this.form = this.getRoot();
+    this.cache = {};
   }
 
   loadItems(url, search, headers, options, method, body) {
@@ -34,6 +35,10 @@ export default class SelectComponent extends Select {
       // Set empty items.
       return this.setItems([]);
     } // Ensure we have a method and remove any body if method is get
+
+    if(this.cache[this.component.key]?.length > 0){
+      return this.setItems(this.cache[this.component.key])
+    }
 
     method = method || "GET";
 
@@ -136,6 +141,7 @@ export default class SelectComponent extends Select {
       .then(function (response) {
         _this3.loading = false;
         if (response.status == "success") {
+          _this3.cache[_this3.component.key] = response.data;
           response.data
             ? _this3.setItems(response.data, !!search)
             : _this3.setItems(response, !!search);
