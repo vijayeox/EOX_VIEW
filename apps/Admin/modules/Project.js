@@ -195,6 +195,7 @@ class Project extends React.Component {
           menu={this.props.menu}
           args={this.core}
           orgChange={this.orgChange}
+          selectedOrgId={this.props.userProfile.active_account.name}
           orgSwitch={
             this.props.userProfile.privileges.MANAGE_ACCOUNT_WRITE
               ? true
