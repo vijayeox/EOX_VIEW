@@ -9,6 +9,7 @@ import FormRender from "../App/FormRender";
 import Requests from "../../Requests";
 import Swal from "sweetalert2";
 import { GridDetailRow } from "@progress/kendo-react-grid";
+import { split } from "lodash";
 
 const loadingPanel = (
   <div className="k-loading-mask">
@@ -98,6 +99,7 @@ export default class EOXGrid extends React.Component {
     this.editApi = this.props.editApi;
     this.createApi = this.props.createApi;
     this.deleteApi = this.props.deleteApi;
+    this.selectedOrg = this.props.selectedOrg;
     this.addConfig = this.props.addConfig;
     this.noCreateAction = this.props.noCreateAction ? this.props.noCreateAction : false;
     this.baseUrl = this.core.config("wrapper.url");
@@ -173,16 +175,13 @@ export default class EOXGrid extends React.Component {
     let gridsId = document.getElementsByClassName("eox-grids")[0].parentNode.id;
     if (createFlag) {
       document.getElementById(gridsId).classList.add("display-none");
-      document.getElementById("eox-grid").style.marginTop = "44px";
-      document
-        .getElementById("dash-manager-button")
-        .classList.add("display-none");
+      (this.api  === "account") ?document.getElementById("eox-grid").style.marginTop = "-38px":document.getElementById("eox-grid").style.marginTop = "-25px";
+      document.getElementById("eox-grid").style.zIndex = "99";
+      // document.getElementById("dash-manager-button").classList.add("display-none");
     } else {
       document.getElementById(gridsId).classList.remove("display-none");
       document.getElementById("eox-grid").style.marginTop = "-35px";
-      document
-        .getElementById("dash-manager-button")
-        .classList.remove("display-none");
+      // document.getElementById("dash-manager-button").classList.remove("display-none");
     }
     let data = {};
     if (this.props.prepareCreateFormData) {
@@ -190,6 +189,8 @@ export default class EOXGrid extends React.Component {
     }
    
     const RoleFormComponent = this.isReactComponent ? this.editForm : null
+    let apiSplit = this.api;
+    let changedAccountId = apiSplit.split("/")[1];
     this.isReactComponent ?
       ReactDOM.render(
         <RoleFormComponent 
@@ -211,7 +212,7 @@ export default class EOXGrid extends React.Component {
             style={{
               position: "absolute",
               left: "0",
-              top: "-37px",
+              top: (this.api ==="account")?"0px":"-15px",
               width: "100%",
               height: "100%",
               zIndex: "100",
@@ -220,7 +221,7 @@ export default class EOXGrid extends React.Component {
             <FormRender
               key={"abc"}
               core={this.core}
-              // data={data}
+              data={{accountId:changedAccountId}}
               updateFormData={true}
               getAttachment={true}
               postSubmitCallback={(formData) =>
@@ -324,6 +325,13 @@ export default class EOXGrid extends React.Component {
     // this.prepareData(true);
   }
 
+  shouldComponentUpdate(prevProps, props) {
+    (prevProps.api !== this.api) ? this.api= prevProps.api:"";
+    (prevProps.deleteApi !== this.deleteApi) ? this.deleteApi= prevProps.deleteApi:"";
+    (prevProps.createApi !== this.createApi) ? this.createApi= prevProps.createApi:"";
+    (prevProps.editApi !== this.editApi) ? this.editApi= prevProps.editApi:"";
+    return true;
+  }
   componentWillReceiveProps(props) {
     if (props.isLoading !== this.state.displayedData?.isLoading) {
       this.setState({ displayedData: props.data, isLoading: props.isLoading })

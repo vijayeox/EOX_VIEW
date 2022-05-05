@@ -139,6 +139,9 @@ export default class DocumentViewer extends Component {
       for (let attachmentType in attachmentTypes) {
         let attachments = attachmentTypes[attachmentType]?.value || [];
         attachments?.forEach((attachment, index) => {
+          if(!attachment.file && attachmentTypes[attachmentType]['app_docs_folder']){
+            attachment['file'] = attachment.path.replace(attachmentTypes[attachmentType]['app_docs_folder'], "");
+          }
           if (!attachment.url && attachment.file) {
             attachments[index]["url"] = `${this.baseUrl}${attachment.file}`
             attachments[index]["id"] =

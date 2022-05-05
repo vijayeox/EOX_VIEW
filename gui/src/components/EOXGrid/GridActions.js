@@ -119,15 +119,16 @@ export default class GridActions extends React.Component {
     let gridsId = document.getElementsByClassName("eox-grids")[0].parentNode.id;
     if (data) {
       document.getElementById(gridsId).classList.add("display-none");
-      document.getElementById("eox-grid").style.marginTop = "7px";
-      document
-        .getElementById("dash-manager-button")
-        .classList.add("display-none");
+      document.getElementById("eox-grid").style.marginTop = "-40px";
+      document.getElementById("eox-grid").style.zIndex = "99";
+      // document.getElementById("dash-manager-button").classList.add("display-none");
     } else {
       document.getElementById(gridsId).classList.remove("display-none");
       document.getElementById("eox-grid").style.marginTop = "-35px";
-      document.getElementById("dash-manager-button").classList.remove("display-none");
+      // document.getElementById("dash-manager-button").classList.remove("display-none");
     }
+    let changedAccountId = this.api.split("/")[1];
+    data ? data.changedAccountId = changedAccountId:"";
     let formRenderProps = { data };
     if (this.props.prepareFormData) {
       formRenderProps = await this.props.prepareFormData(data);
@@ -162,16 +163,16 @@ export default class GridActions extends React.Component {
             }}
           >
             <FormRender
-              key={"abc"}
-              core={this.core}
-              {...formRenderProps}
-              updateFormData={true}
-              getAttachment={true}
-              postSubmitCallback={(formData) =>
-                this.handleSubmit(formData, api, index, false)
-              }
-              content={form}
-              appId={data.uuid}
+             key={"abc"}
+             core={this.core}
+            {...formRenderProps}
+            updateFormData={true}
+            getAttachment={true}
+            postSubmitCallback={(formData) =>
+              this.handleSubmit(formData, api, index, false)
+            }
+            content={form}
+            appId={data.uuid}
             // route= {this.api}
             />
           </div>

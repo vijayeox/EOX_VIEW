@@ -76,6 +76,7 @@ class Role extends React.Component {
         },
       }),
       (this.api = "account/" + this.state.selectedOrg + "/role");
+    // this.editApi =  "/role";
     this.editApi = "account/" + this.state.selectedOrg + "/role";
     this.createApi = "account/" + this.state.selectedOrg + "/role";
     this.deleteApi = "account/" + this.state.selectedOrg + "/role";
@@ -83,8 +84,9 @@ class Role extends React.Component {
 
   orgChange = (event) => {
     this.setState({ selectedOrg: event.target.value, isLoading: true }, () => {
-      this.api = "account/" + this.state.selectedOrg + "/roles";
+      this.api = "account/" + this.state.selectedOrg + "/role";
       this.createApi = "account/" + this.state.selectedOrg + "/role";
+      this.editApi = "account/" + this.state.selectedOrg + "/role";
       GetData(this.api).then((data) => {
         this.setState({
           accountData: (data.status === "success" && data?.data) || [],
@@ -220,8 +222,8 @@ class Role extends React.Component {
             dataStateChanged={this.dataStateChanged.bind(this)}
             isLoading={this.state.isLoading}
             // key={Math.random()}
-            prepareFormData={this.fetchPrivileges}
-            prepareCreateFormData={this.fetchPrivilegesCreate}
+            // prepareFormData={this.fetchPrivileges}
+            // prepareCreateFormData={this.fetchPrivilegesCreate}
             getCustomPayload={this.getCustomPayload}
             selectedOrg = {this.state.selectedOrg}
           />
