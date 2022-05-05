@@ -9,7 +9,6 @@ import FormRender from "../App/FormRender";
 import Requests from "../../Requests";
 import Swal from "sweetalert2";
 import { GridDetailRow } from "@progress/kendo-react-grid";
-import { split } from "lodash";
 
 const loadingPanel = (
   <div className="k-loading-mask">
@@ -202,6 +201,7 @@ export default class EOXGrid extends React.Component {
         // diableField="false"
         gridsId= {gridsId}
         isReactComponent={this.isReactComponent}
+        onUpdate= {this.updateDisplayData}
         />, 
         document.getElementById("eox-grid-form")
       ) ? (document.getElementById("eox-grid-form").style.overflow = "scroll")

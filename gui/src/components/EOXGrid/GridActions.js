@@ -147,6 +147,8 @@ export default class GridActions extends React.Component {
           // edit={this.edit(null)}
           gridsId={gridsId}
           isReactComponent={this.isReactComponent}
+          index={index}
+          onUpdate = {this.onUpdate}
         />, document.getElementById("eox-grid-form")
       ) ? (document.getElementById("eox-grid-form").style.overflow = "scroll")
         : (document.getElementById("eox-grid-form").style.overflow = "auto") :
