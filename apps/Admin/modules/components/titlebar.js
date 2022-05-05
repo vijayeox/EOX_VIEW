@@ -51,8 +51,9 @@ export class TitleBar extends React.Component {
               args={this.props.args}
               mainList={"account"}
               selectedItem={{
-                id: "111",
-                name: "Switch Account",
+                // id:this.props.selectedOrgId
+                // id: "111",
+                name: this.props.selectedOrgId
               }}
               preFetch={true}
               onDataChange={this.props.orgChange}
