@@ -175,7 +175,7 @@ export default class EOXGrid extends React.Component {
     if (createFlag) {
       document.getElementById(gridsId).classList.add("display-none");
       (this.api  === "account") ?document.getElementById("eox-grid").style.marginTop = "-38px":document.getElementById("eox-grid").style.marginTop = "-25px";
-      document.getElementById("eox-grid").style.zIndex = "99";
+      document.getElementById("titlebar-admin").style.zIndex = "10";
       // document.getElementById("dash-manager-button").classList.add("display-none");
     } else {
       document.getElementById(gridsId).classList.remove("display-none");

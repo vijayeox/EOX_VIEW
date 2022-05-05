@@ -120,7 +120,7 @@ export default class GridActions extends React.Component {
     if (data) {
       document.getElementById(gridsId).classList.add("display-none");
       document.getElementById("eox-grid").style.marginTop = "-40px";
-      document.getElementById("eox-grid").style.zIndex = "99";
+      document.getElementById("titlebar-admin").style.zIndex = "10";
       // document.getElementById("dash-manager-button").classList.add("display-none");
     } else {
       document.getElementById(gridsId).classList.remove("display-none");
