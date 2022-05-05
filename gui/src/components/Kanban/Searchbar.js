@@ -4,25 +4,26 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function Searchbar(props) {
     const [key, setKey] = useState("");
+    const [filterData, setFilterData] = useState([]);
     const cardParameters = JSON.parse(props.ymlData.cardParameters);
+    
+    useEffect(() => {
+
+    }, []);
 
     const filter = (value) => {
         setKey(value);
-        if (value.trim().length > 0) {
-            props.onChildFilter("searchFilter", [
-                {
-                    "logic": "or",
-                    "filters": [
-                        { field: cardParameters.title.name, operator: "contains", value },
-                        { field: cardParameters.user1.name, operator: "contains", value },
-                        { field: cardParameters.user2.name, operator: "contains", value }, // comment this when AssignedTo filter is functional
-                        // { field: cardParameters.date_created.name, operator: "contains", value }
-                    ]
-                }
-            ])
-        } else {
-            props.onChildFilter("searchFilter", []) // if search is empty
-        }
+        setFilterData(value.trim().length > 0 ? [
+            {
+                "logic": "or",
+                "filters": [
+                    { field: cardParameters.title.name, operator: "contains", value },
+                    { field: cardParameters.user1.name, operator: "contains", value },
+                    { field: cardParameters.user2.name, operator: "contains", value }, // comment this when AssignedTo filter is functional
+                    // { field: cardParameters.date_created.name, operator: "contains", value }
+                ]
+            }
+        ] : [])
     }
 
     return (
@@ -42,7 +43,13 @@ function Searchbar(props) {
                         onChange={e => { filter(e.target.value) }}
                     />
 
-                    <Button variant="primary" size="sm" onClick={props.setFilterFromProps}>
+                    <Button variant="primary" size="sm"
+                        // onClick={props.setFilterFromProps}
+                        onClick={() => {
+                            // props.onChildFilter("searchFilter", filterData)
+                            props.setFilterFromProps({searchFilter : filterData})
+                        }}
+                    >
                         <FontAwesomeIcon icon={['fal', 'search']} />
                     </Button>
                 </InputGroup>

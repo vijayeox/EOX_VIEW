@@ -71,6 +71,7 @@ function CommentsAttachments(props) {
                 textOverflow: "text-ellipsis",
               }}
               title={props.fileName}
+              className="text-truncate"
             >
               {props.fileName}
             </span>

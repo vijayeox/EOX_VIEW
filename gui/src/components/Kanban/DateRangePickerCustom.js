@@ -205,7 +205,7 @@ const DateRangePickerCustom = (props) => {
               </div>
             </div>
           }
-          <div><Button id="k_button" onClick={props.setFilterFromProps} disabled={(startDate > endDate) ? true : false}> Submit </Button></div>
+          <div><Button id="k_button" onClick={() => props.setFilterFromProps()} disabled={(startDate > endDate) ? true : false}> Submit </Button></div>
         </div>
       </DropdownMenu>
     </Dropdown>

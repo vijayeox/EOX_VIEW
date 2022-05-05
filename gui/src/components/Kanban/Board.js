@@ -73,7 +73,10 @@ export default function Board(props) {
   // DateRangePickerCustom - onDateRange, Search
   const setFilterFromProps = (filterFromProps) => {
     // , ...(childFilter.assignedToFilter || []) <- add this for AssignedTO
-    const newFilter = [...(childFilter.dateFilter || []), ...(childFilter.searchFilter || [])]
+    if(filterFromProps){
+      setChildFilter({ ...childFilter, ...filterFromProps })
+    }
+    const newFilter = [...(childFilter.dateFilter || []), ...(filterFromProps?.searchFilter || [])]
     setFilter(newFilter);
   };
 
