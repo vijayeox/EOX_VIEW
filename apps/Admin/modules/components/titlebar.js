@@ -15,6 +15,7 @@ export class TitleBar extends React.Component {
           top: "2px",
         }}
         className="adminTitleBar"
+        id="titlebar-admin"
       >
         {/* <div> */}
         {/* <div

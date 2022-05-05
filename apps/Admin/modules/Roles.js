@@ -75,7 +75,7 @@ class Role extends React.Component {
           canDelete: this.props.userProfile.privileges.MANAGE_ROLE_DELETE,
         },
       }),
-      (this.api = "account/" + this.state.selectedOrg + "/role");
+      (this.api = "account/" + this.state.selectedOrg + "/roles");
     // this.editApi =  "/role";
     this.editApi = "account/" + this.state.selectedOrg + "/role";
     this.createApi = "account/" + this.state.selectedOrg + "/role";
@@ -84,7 +84,7 @@ class Role extends React.Component {
 
   orgChange = (event) => {
     this.setState({ selectedOrg: event.target.value, isLoading: true }, () => {
-      this.api = "account/" + this.state.selectedOrg + "/role";
+      this.api = "account/" + this.state.selectedOrg + "/roles";
       this.createApi = "account/" + this.state.selectedOrg + "/role";
       this.editApi = "account/" + this.state.selectedOrg + "/role";
       GetData(this.api).then((data) => {

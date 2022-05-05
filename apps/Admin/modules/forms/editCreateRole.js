@@ -134,6 +134,7 @@ export default class EditCreateRole extends React.Component {
         event.preventDefault();
         this.pushData().then((response) => {
             if (response.status == "success") {
+                this.props.formAction === "post"? this.props.onUpdate({ crudType: "CREATE", data: response.data }): this.props.onUpdate({ crudType: "EDIT", index: this.props.index, data: response.data });
                 Swal.fire({
                     icon: "success",
                     title: response.status,
