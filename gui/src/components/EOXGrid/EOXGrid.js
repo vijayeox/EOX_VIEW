@@ -197,7 +197,6 @@ export default class EOXGrid extends React.Component {
         formAction={"post"} 
         createApi={this.createApi} 
         selectedOrg={this.props.selectedOrg} 
-        create={this.create(null)}
         // diableField="false"
         gridsId= {gridsId}
         isReactComponent={this.isReactComponent}
