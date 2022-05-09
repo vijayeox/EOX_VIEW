@@ -291,7 +291,8 @@ export default class DocumentViewer extends Component {
                         </Card>
                       );
                     })}
-                    {this.state.folderType[docType] == "file" ? (
+                    {/* [#35182] Remove upload button */}
+                    {/* {this.state.folderType[docType] == "file" ? (
                       <div className="popupWindow">
                         <Upload
                           batch={false}
@@ -337,7 +338,7 @@ export default class DocumentViewer extends Component {
                           Upload
                         </button>
                       </div>
-                    ) : null}
+                    ) : null} */}
                   </Card.Body>
                 </Accordion.Collapse>
               </Card>
