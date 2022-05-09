@@ -106,7 +106,8 @@ export default class EditCreateRole extends React.Component {
         if (this.props.isReactComponent) {
             ReactDOM.unmountComponentAtNode(document.getElementById("eox-grid-form"));
             document.getElementById(this.props.gridsId).classList.remove("display-none");
-            // document.getElementById("eox-grid").style.marginTop = "-50px";
+            document.getElementById("eox-grid").style.marginTop = "-50px";
+            document.getElementById("eox-grid").style.left = "8px";
             // document.getElementById("dash-manager-button").classList.remove("display-none")
         } else {
             ""
@@ -298,12 +299,14 @@ export default class EditCreateRole extends React.Component {
                     </Ripple.Ripple>
                 </div>
                 <SaveCancel save='roleForm'
-                cancel={function(){
-                    ReactDOM.unmountComponentAtNode(document.getElementById("eox-grid-form"));
-                    // document.getElementById("dash-manager-button").classList.remove("display-none")
-                    // document.getElementById(this.props.gridsId).classList.remove("display-none")
-                    // document.getElementById("eox-grid").style.marginTop = "-50px"
-                }} />
+                // cancel={function(){
+                //     ReactDOM.unmountComponentAtNode(document.getElementById("eox-grid-form"));
+                //     // document.getElementById("dash-manager-button").classList.remove("display-none")
+                //    setTimeout(document.getElementById(this.props.gridsId).classList.remove("display-none") , 1000);
+                //     // document.getElementById("eox-grid").style.marginTop = "-50px"
+                // }} 
+                cancel = {() => this.toggleDialog()}
+                />
             </Window.Window>
         );
     }

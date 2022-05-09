@@ -174,8 +174,15 @@ export default class EOXGrid extends React.Component {
     let gridsId = document.getElementsByClassName("eox-grids")[0].parentNode.id;
     if (createFlag) {
       document.getElementById(gridsId).classList.add("display-none");
-      (this.api  === "account") ?document.getElementById("eox-grid").style.marginTop = "-38px":document.getElementById("eox-grid").style.marginTop = "-25px";
       document.getElementById("titlebar-admin").style.zIndex = "10";
+      (this.api === "account") ? document.getElementById("eox-grid").style.marginTop = "-38px" : document.getElementById("eox-grid").style.marginTop = "-25px";
+      if(this.isReactComponent){
+        document.getElementById("eox-grid").style.marginTop = "-35px";
+        document.getElementById("eox-grid").style.left = "8px";
+      }else{
+        document.getElementById("eox-grid").style.marginTop = "-25px";
+      }
+    
       // document.getElementById("dash-manager-button").classList.add("display-none");
     } else {
       document.getElementById(gridsId).classList.remove("display-none");
