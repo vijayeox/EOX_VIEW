@@ -9,10 +9,10 @@ class RenderButtons extends React.Component {
     this.appId = this.props.appId;
     this.pageId = this.props.pageId;
     this.fileData = this.props.currentRow;
-    this.appNavigationDiv = "navigation_"+this.appId;
+    this.appNavigationDiv = "navigation_" + this.appId;
     this.userProfile = this.props.core
-    ? this.props.core.make("oxzion/profile").get().key
-    : undefined;
+      ? this.props.core.make("oxzion/profile").get().key
+      : undefined;
   }
 
   createTiles = () => {
@@ -20,43 +20,47 @@ class RenderButtons extends React.Component {
     var rowData = this.fileData;
     this.props.content.buttonList.map((currentValue, index) => {
       var showButton;
-      if(currentValue.rule){
+      if (currentValue.rule) {
         const profile = this.userProfile; //for eval
         var string = this.replaceParams(currentValue.rule, rowData);
         var _moment = moment;
-        string = string.replace(/moment/g,'_moment');
+        string = string.replace(/moment/g, "_moment");
         showButton = eval(string);
       } else {
         showButton = true;
       }
       var copyPageContent = [];
       var that = this;
-      if(currentValue.details && currentValue.details.length > 0){
+      if (currentValue.details && currentValue.details.length > 0) {
         currentValue.details.every(async (item, index) => {
-            if (item.params && item.params.page_id) {
-              copyPageContent.pageId =item.params.page_id;
-            } else if(item.pageId){
-              copyPageContent.pageId =item.page_id;
-            } else {
-              var pageContentObj=item;
-              pageContentObj = that.replaceParams(item, rowData);
-              copyPageContent.push(pageContentObj);
-            }
+          if (item.params && item.params.page_id) {
+            copyPageContent.pageId = item.params.page_id;
+          } else if (item.pageId) {
+            copyPageContent.pageId = item.page_id;
+          } else {
+            var pageContentObj = item;
+            pageContentObj = that.replaceParams(item, rowData);
+            copyPageContent.push(pageContentObj);
+          }
         });
       }
       var pageDetails = {title:currentValue.name,pageContent:copyPageContent,pageId:currentValue.pageId,icon:currentValue.icon,parentPage:this.pageId}
       if(showButton){
           const isExportPdf = currentValue?.details?.find((detail) => detail?.type === 'exportPdf')
           adminItems.push(
-          <div
+          <button
             key={index}
-            className="moduleBtn"
+            className="btn btn-primary"
             onClick={() => {
               let p_ev = new CustomEvent("addPage", {
                 detail: pageDetails,
-                bubbles: true
+                bubbles: true,
               });
-              document.getElementById(this.appNavigationDiv).dispatchEvent(isExportPdf ?  new CustomEvent("exportPdf") : p_ev);
+              document
+                .getElementById(this.appNavigationDiv)
+                .dispatchEvent(
+                  isExportPdf ? new CustomEvent("exportPdf") : p_ev
+                );
             }}
           >
             <div className="block">
@@ -66,10 +70,10 @@ class RenderButtons extends React.Component {
                 currentValue.name
               )}
             </div>
-            {currentValue.icon ? (
+            {/* {currentValue.icon ? (
               <div className="titles">{currentValue.name}</div>
-            ) : null}
-          </div>
+            ) : null} */}
+          </button>
         );
       }
     });
@@ -78,7 +82,7 @@ class RenderButtons extends React.Component {
   replaceParams(route) {
     var finalParams = merge(this.fileData ? this.fileData : {}, {
       current_date: moment().format("YYYY-MM-DD"),
-      appId: this.appId
+      appId: this.appId,
     });
     if (typeof route == "object") {
       var final_route = JSON.parse(JSON.stringify(route));
@@ -89,7 +93,7 @@ class RenderButtons extends React.Component {
           } else {
             if (item == "appId") {
               final_route[item] = this.appId;
-            }else {
+            } else {
               final_route[item] = route[item];
             }
           }
@@ -101,30 +105,24 @@ class RenderButtons extends React.Component {
     } else {
       var regex = /\{\{.*?\}\}/g;
       let m;
-      var matches=[];
+      var matches = [];
       do {
-        m = regex.exec(route)
-        if(m){
+        m = regex.exec(route);
+        if (m) {
           if (m.index === regex.lastIndex) {
             regex.lastIndex++;
           }
           // The result can be accessed through the `m`-variable.
-        matches.push(m);
+          matches.push(m);
         }
       } while (m);
       matches.forEach((match, groupIndex) => {
         var param = match[0].replace("{{", "");
         param = param.replace("}}", "");
-        if(finalParams[param] !=undefined){
-          route = route.replace(
-            match[0],
-            finalParams[param]
-          );
+        if (finalParams[param] != undefined) {
+          route = route.replace(match[0], finalParams[param]);
         } else {
-          route = route.replace(
-            match[0],
-            null
-          );
+          route = route.replace(match[0], null);
         }
       });
       return route;
@@ -136,14 +134,14 @@ class RenderButtons extends React.Component {
       var queryRoute = that.replaceParams(details.params.url, rowData);
       that.updateCall(queryRoute, rowData).then((response) => {
         that.setState({
-          showLoader: false
+          showLoader: false,
         });
         resolve(response);
       });
     });
   }
   render() {
-    return <div className="appButtons">{this.createTiles()}</div>;
+    return <div className="dash-manager-buttons w-100 text-right pt-2 pr-2">{this.createTiles()}</div>;
   }
 }
 

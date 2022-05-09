@@ -139,12 +139,15 @@ export default class DocumentViewer extends Component {
       for (let attachmentType in attachmentTypes) {
         let attachments = attachmentTypes[attachmentType]?.value || [];
         attachments?.forEach((attachment, index) => {
+          if(!attachment.file && attachmentTypes[attachmentType]['app_docs_folder']){
+            attachment['file'] = attachment.path.replace(attachmentTypes[attachmentType]['app_docs_folder'], "");
+          }
           if (!attachment.url && attachment.file) {
             attachments[index]["url"] = `${this.baseUrl}${attachment.file}`
             attachments[index]["id"] =
               attachments[index]["id"] || attachment.file;
           }
-          if(!attachment?.id || attachment?.id?.trim()?.length === 0){
+          if(!attachment?.id || attachment?.id && `${attachment?.id}`?.trim()?.length === 0){
             attachments[index]["id"] = `${math.random()}${math.random()}`;
           }
         });
@@ -288,7 +291,8 @@ export default class DocumentViewer extends Component {
                         </Card>
                       );
                     })}
-                    {this.state.folderType[docType] == "file" ? (
+                    {/* [#35182] Remove upload button */}
+                    {/* {this.state.folderType[docType] == "file" ? (
                       <div className="popupWindow">
                         <Upload
                           batch={false}
@@ -334,7 +338,7 @@ export default class DocumentViewer extends Component {
                           Upload
                         </button>
                       </div>
-                    ) : null}
+                    ) : null} */}
                   </Card.Body>
                 </Accordion.Collapse>
               </Card>

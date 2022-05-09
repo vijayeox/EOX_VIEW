@@ -7,6 +7,7 @@
     {
       "title": "Create Team",
       "collapsible": false,
+      "hideLabel": true,
       "key": "createTeam",
       "type": "panel",
       "label": "Panel",
@@ -21,7 +22,9 @@
                 {
                   "label": "Team Name",
                   "tableView": true,
-                  "validate": { "required": true },
+                  "validate": {
+                    "required": true
+                  },
                   "key": "name",
                   "type": "textfield",
                   "input": true
@@ -68,20 +71,29 @@
                   "tableView": true,
                   "dataSrc": "url",
                   "data": {
-                    "url": "/user",
-                    "headers": [{ "key": "", "value": "" }]
+                    "url": "/account/{{data.accountId}}/user",
+                    "headers": [
+                      {
+                        "key": "",
+                        "value": ""
+                      }
+                    ]
                   },
                   "idPath": "uuid",
                   "valueProperty": "uuid",
                   "template": "<span>{{item.name}}</span>",
-                  "validate": { "required": true },
+                  "validate": {
+                    "required": true
+                  },
                   "key": "managerId",
-                  "properties": { "absoluteUrl": "true" },
+                  "properties": {
+                    "absoluteUrl": "true"
+                  },
                   "type": "select",
-                  "filter": "filter=[{\"skip\":0,\"take\":10000}]",
-                  "input": true,
                   "lazyLoad": false,
-                  "disableLimit": false
+                  "disableLimit": false,
+                  "filter": "filter=[{\"skip\":0,\"take\":10000}]",
+                  "input": true
                 }
               ],
               "width": 6,
@@ -99,21 +111,31 @@
                   "tableView": true,
                   "dataSrc": "url",
                   "data": {
-                    "url": "/team",
-                    "headers": [{ "key": "", "value": "" }]
+                    "url": "/account/{{data.accountId}}/team",
+                    "headers": [
+                      {
+                        "key": "",
+                        "value": ""
+                      }
+                    ]
                   },
                   "idPath": "uuid",
                   "valueProperty": "uuid",
                   "template": "<span>{{ item.name }}</span>",
-                  "calculateValue": "// console.log(\"Check for null or empty\", data);\n\n// if(data.parent_id === null || data.parent_id === \"\" ){\n// value = null;\n// console.log(\"Data\",value);\n// }",
+                  "calculateValue": "if(data.parent_id === \"\"){\n  value = null\n}\n",
                   "allowCalculateOverride": true,
                   "key": "parent_id",
-                  "properties": { "absoluteUrl": "true" },
+                  "properties": {
+                    "absoluteUrl": "true"
+                  },
+                  "conditional": {
+                    "show": true
+                  },
                   "type": "select",
-                  "filter": "filter=[{\"skip\":0,\"take\":10000}]",
-                  "input": true,
                   "lazyLoad": false,
-                  "disableLimit": false
+                  "disableLimit": false,
+                  "filter": "filter=[{\"skip\":0,\"take\":10000}]",
+                  "input": true
                 }
               ],
               "width": 6,
@@ -180,6 +202,7 @@
               "currentWidth": 6
             }
           ],
+          "customClass": "pb-3",
           "key": "columns2",
           "type": "columns",
           "input": false,
@@ -210,6 +233,6 @@
   "path": "adminteam",
   "project": "5dc1489e4f668513e9535090",
   "created": "2021-12-01T10:14:34.756Z",
-  "modified": "2022-01-04T11:50:46.632Z",
+  "modified": "2022-05-04T09:10:23.650Z",
   "machineName": "eoxproductsupport:adminTeam"
 }

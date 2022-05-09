@@ -5,19 +5,19 @@ import WidgetGrid from "./WidgetGrid";
 import WidgetGridNew from "./WidgetGridNew";
 import Parser from "html-react-parser";
 import WidgetDrillDownHelper from "./WidgetDrillDownHelper";
-import * as am4core from "../amcharts/core";
-import * as am4charts from "../amcharts/charts";
-import * as am4maps from "../amcharts/maps";
+import * as am4core from "../../../amcharts/core";
+import * as am4charts from "../../../amcharts/charts";
+import * as am4maps from "../../../amcharts/maps";
 import am4geodata_usaAlbersLow from "@amcharts/amcharts4-geodata/usaAlbersLow";
-import am4themes_animated from "../amcharts/themes/animated";
+import am4themes_animated from "../../../amcharts/themes/animated";
 // import am4themes_kelly from '../amcharts/themes/kelly';
 import WidgetTransformer from "./WidgetTransformer";
-import * as am4plugins_forceDirected from "../amcharts/plugins/forceDirected";
+import * as am4plugins_forceDirected from "../../../amcharts/plugins/forceDirected";
 import am4geodata_worldLow from "@amcharts/amcharts4-geodata/worldLow";
 am4core.useTheme(am4themes_animated);
 am4core.options.commercialLicense = true;
 // import Mapbox from './components/Custom/Mapbox';
-import ComponentIndex from "./components/Custom/ComponentIndex";
+import ComponentIndex from "../Custom/ComponentIndex";
 // import WidgetcustomReport from './components/Custom/WidgetCustom'
 // import WidgetCustom from './components/Custom/WidgetCustom';
 

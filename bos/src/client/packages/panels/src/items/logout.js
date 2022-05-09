@@ -80,10 +80,10 @@ export default class LogoutPanelItem extends PanelItem {
           className: "osjs-panel-logout",
         },
         [
-          h("img", {
-            src: logoutIcon,
-            alt: "Log Out",
-          }),
+          h("i", {
+            className: "fad fa-sign-out",
+            alt: "logout-Icon",
+          })
         ]
       ),
     ]);

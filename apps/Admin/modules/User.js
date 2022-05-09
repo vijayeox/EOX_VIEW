@@ -11,25 +11,25 @@ class User extends React.Component {
     (this.actionItems = {
       edit: {
         type: "button",
-        icon: "fad fa-pencil",
+        icon: "fas fa-pencil",
         text: "EDIT",
         title: "Edit User",
       },
       delete: {
         type: "button",
-        icon: "fad fa-trash",
+        icon: "fas fa-trash",
         text: "DELETE",
         title: "Delete User",
       },
       create: {
         type: "button",
-        icon: " fad fa-plus",
+        icon: " fas fa-plus",
         text: "CREATE",
         title: "Create New",
       },
       resetPassword: {
         type: "button",
-        icon: "fad fa-redo",
+        icon: "fas fa-redo",
         text: "RESET",
         title: "Reset Password",
       },
@@ -42,11 +42,11 @@ class User extends React.Component {
         sortable: true,
         // sort:true,
         pageSize: 10,
-        // pageable:true,
         pageable: {
           skip: 0,
-          // pageSize: 10,
           buttonCount: 3,
+          info: true,
+          pageSizes: [10, 20, 50]
         },
         groupable: true,
         resizable: true,
@@ -55,6 +55,8 @@ class User extends React.Component {
           {
             title: "Image",
             field: "icon",
+            filterable: false,
+            width: "60px"
           },
           {
             title: "Name",
@@ -63,6 +65,14 @@ class User extends React.Component {
           {
             title: "Email",
             field: "email",
+          },
+           {
+            title: "Phone Number",
+            field: "phone",
+          },
+           {
+            title: "Employee ID",
+            field: "employee_id",
           },
           {
             title: "Designation",
@@ -93,8 +103,9 @@ class User extends React.Component {
 
   orgChange = (event) => {
     this.setState({ selectedOrg: event.target.value, isLoading: true }, () => {
-      this.api = "account/" + this.state.selectedOrg + "/users";
+      this.api = "account/" + this.state.selectedOrg + "/user";
       this.createApi = "account/" + this.state.selectedOrg + "/user";
+      this.deleteApi = "account/" + this.state.selectedOrg + "/user";
       GetData(this.api).then((data) => {
         this.setState({
           accountData: (data.status === "success" && data?.data) || [],
@@ -123,6 +134,7 @@ class User extends React.Component {
 
   dataStateChanged({ dataState: { filter, group, skip, sort, take } }) {
     this.setState({ isLoading: true });
+    this.config.pageSize = take;
     GetData(
       this.api +
         `?filter=[{"skip":${skip},"take":${
@@ -153,6 +165,7 @@ class User extends React.Component {
           menu={this.props.menu}
           args={this.core}
           orgChange={this.orgChange}
+          selectedOrgId={this.props.userProfile.active_account.name}
           orgSwitch={
             this.props.userProfile.privileges.MANAGE_ACCOUNT_WRITE
               ? true
@@ -184,4 +197,3 @@ class User extends React.Component {
 }
 
 export default User;
-//add switch account for users

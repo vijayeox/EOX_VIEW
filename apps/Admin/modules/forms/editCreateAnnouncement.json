@@ -7,6 +7,7 @@
     {
       "title": "Create Announcement",
       "collapsible": false,
+      "hideLabel": true,
       "key": "createAnnouncement",
       "type": "panel",
       "label": "Panel",
@@ -104,20 +105,21 @@
                   "format": "yyyy-MM-dd",
                   "placeholder": "Start Date",
                   "tableView": false,
-                  "enableMinDateInput": false,
                   "datePicker": {
                     "disableWeekends": false,
                     "disableWeekdays": false
                   },
-                  "enableMaxDateInput": false,
                   "enableTime": false,
                   "timePicker": {
                     "showMeridian": false
                   },
-                  "calculateValue": "if(data.start_date){\n  value=moment(data.date_of_birth).format(\"YYYY-MM-DD\");\n}",
+                  "calculateValue": "if(data.start_date){\n  value=moment(data.start_date).format(\"YYYY-MM-DD\");\n}",
                   "validate": {
-                    "required": true
+                    "required": true,
+                    "custom": "let today = new Date().toISOString().slice(0, 10);\nif(!data.uuid){\n  valid=(input >= today) ? true:\"Please enter the date greater than or equal to today's date\";\n}"
                   },
+                  "enableMinDateInput": false,
+                  "enableMaxDateInput": false,
                   "key": "start_date",
                   "type": "datetime",
                   "input": true,
@@ -155,21 +157,21 @@
                   "format": "yyyy-MM-dd",
                   "placeholder": "End Date",
                   "tableView": false,
-                  "enableMinDateInput": false,
                   "datePicker": {
                     "disableWeekends": false,
                     "disableWeekdays": false
                   },
-                  "enableMaxDateInput": false,
                   "enableTime": false,
                   "timePicker": {
                     "showMeridian": false
                   },
-                  "customDefaultValue": "// if(!data.end_date){\n//   value=moment().format(\"YYYY-MM-DD\");\n// }\n// value = data.end_date;",
-                  "calculateValue": "if(data.end_date){\n  value=moment(data.end_date).format(\"YYYY-MM-DD\");\n}",
+                  "calculateValue": "if(data){\n  value=moment(data.end_date).format(\"YYYY-MM-DD\");\n}",
                   "validate": {
-                    "required": true
+                    "required": true,
+                    "custom": "if(data){\n  valid=(input >= data.start_date) ? true:\"Please enter the date greater than or equal to the start date\";\n}\n  "
                   },
+                  "enableMinDateInput": false,
+                  "enableMaxDateInput": false,
                   "key": "end_date",
                   "type": "datetime",
                   "input": true,
@@ -209,7 +211,7 @@
                   "tableView": false,
                   "values": [
                     {
-                      "label": "Homescreen",
+                      "label": "LoginScreen",
                       "value": "HOMESCREEN",
                       "shortcut": ""
                     },
@@ -261,13 +263,15 @@
           "properties": {
             "absoluteUrl": "true"
           },
+          "attributes": {
+            "id": "Announcement_file"
+          },
           "type": "file",
-          "input": true,
-          "url": "/attachment"
+          "url": "/attachment",
+          "input": true
         },
         {
           "label": "media",
-          "calculateValue": "console.log(\"Data\", data);\n// if(data.upload.length > 0){\n// console.log(\"data.upload[0].filename\", data.upload[0].filename);\n// // value= data.upload[0].filename;\n// }",
           "key": "media",
           "type": "hidden",
           "input": true,
@@ -275,7 +279,7 @@
         },
         {
           "label": "media_type",
-          "calculateValue": "if(data.upload.length > 0){\nlet mediaType = data.upload[0].type;\nconst type = mediaType.split(\"/\");\nvalue = type[0];\n}\n \n ",
+          "calculateValue": "if(data.upload.length > 0){\nlet mediaType = data.upload[0].type;\nconst type = mediaType.split(\"/\");\nvalue = type[0];\n}",
           "key": "media_type",
           "type": "hidden",
           "input": true,
@@ -332,6 +336,7 @@
               "currentWidth": 6
             }
           ],
+          "customClass": "pb-3",
           "key": "columns4",
           "type": "columns",
           "input": false,
@@ -362,6 +367,6 @@
   "path": "adminannouncement",
   "project": "5dc1489e4f668513e9535090",
   "created": "2021-12-01T10:23:25.474Z",
-  "modified": "2022-02-18T11:10:24.727Z",
+  "modified": "2022-04-05T15:07:15.094Z",
   "machineName": "eoxproductsupport:adminAnnouncement"
 }

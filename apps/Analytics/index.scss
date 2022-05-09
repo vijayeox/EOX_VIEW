@@ -41,7 +41,7 @@
 }
 
 .page-body .page-content {
-  overflow-y: scroll;
+  overflow-y: auto;
   height: calc(100% - 0.2em); /* Height of .page-body minus title bar height. */
 }
 

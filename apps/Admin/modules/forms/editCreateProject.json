@@ -7,6 +7,7 @@
     {
       "title": "Create Project",
       "collapsible": false,
+      "hideLabel": true,
       "key": "panel",
       "type": "panel",
       "label": "Panel",
@@ -21,7 +22,9 @@
                 {
                   "label": "Project Name",
                   "tableView": true,
-                  "validate": { "required": true },
+                  "validate": {
+                    "required": true
+                  },
                   "key": "name",
                   "type": "textfield",
                   "input": true
@@ -53,7 +56,9 @@
           "label": "Project Description",
           "autoExpand": false,
           "tableView": true,
-          "validate": { "required": true },
+          "validate": {
+            "required": true
+          },
           "key": "description",
           "type": "textarea",
           "input": true
@@ -69,20 +74,29 @@
                   "tableView": true,
                   "dataSrc": "url",
                   "data": {
-                    "url": "/user",
-                    "headers": [{ "key": "", "value": "" }]
+                    "url": "/account/{{data.accountId}}/user",
+                    "headers": [
+                      {
+                        "key": "",
+                        "value": ""
+                      }
+                    ]
                   },
                   "idPath": "uuid",
                   "valueProperty": "uuid",
                   "template": "<span>{{item.name}}</span>",
-                  "validate": { "required": true },
+                  "validate": {
+                    "required": true
+                  },
                   "key": "managerId",
-                  "properties": { "absoluteUrl": "true" },
+                  "properties": {
+                    "absoluteUrl": "true"
+                  },
                   "type": "select",
-                  "filter": "filter=[{\"skip\":0,\"take\":10000}]",
-                  "input": true,
                   "lazyLoad": false,
-                  "disableLimit": false
+                  "disableLimit": false,
+                  "filter": "filter=[{\"skip\":0,\"take\":10000}]",
+                  "input": true
                 }
               ],
               "width": 6,
@@ -100,20 +114,27 @@
                   "tableView": true,
                   "dataSrc": "url",
                   "data": {
-                    "url": "/project",
-                    "headers": [{ "key": "", "value": "" }]
+                    "url": "/account/{{data.accountId}}/projects",
+                    "headers": [
+                      {
+                        "key": "",
+                        "value": ""
+                      }
+                    ]
                   },
                   "idPath": "uuid",
                   "valueProperty": "uuid",
                   "template": "<span>{{ item.name }}</span>",
                   "allowCalculateOverride": true,
                   "key": "parent_id",
-                  "properties": { "absoluteUrl": "true" },
+                  "properties": {
+                    "absoluteUrl": "true"
+                  },
                   "type": "select",
-                  "filter": "filter=[{\"skip\":0,\"take\":10000}]",
-                  "input": true,
                   "lazyLoad": false,
-                  "disableLimit": false
+                  "disableLimit": false,
+                  "filter": "filter=[{\"skip\":0,\"take\":10000}]",
+                  "input": true
                 }
               ],
               "width": 6,
@@ -180,6 +201,7 @@
               "currentWidth": 6
             }
           ],
+          "customClass": "pb-3",
           "key": "columns2",
           "type": "columns",
           "input": false,
@@ -210,6 +232,6 @@
   "path": "adminproject",
   "project": "5dc1489e4f668513e9535090",
   "created": "2021-12-01T09:35:49.729Z",
-  "modified": "2022-01-04T11:44:28.069Z",
+  "modified": "2022-05-04T09:18:12.037Z",
   "machineName": "eoxproductsupport:adminProject"
 }

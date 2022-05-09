@@ -12,8 +12,8 @@ if (mode === "production") {
   plugins.push(
     new OptimizeCSSAssetsPlugin({
       cssProcessorOptions: {
-        discardComments: true
-      }
+        discardComments: true,
+      },
     })
   );
 }
@@ -21,25 +21,22 @@ if (mode === "production") {
 module.exports = {
   mode: mode !== "development" ? "production" : mode,
   devtool: "source-map",
-  entry: [
-    path.resolve(__dirname, "index.js"),
-    path.resolve(__dirname, "index.scss")
-  ],
+  entry: [path.resolve(__dirname, "index.js"), path.resolve(__dirname, "index.scss")],
   externals: {
     osjs: "OSjs",
-    oxziongui: "oxziongui"
+    oxziongui: "oxziongui",
   },
   optimization: {
-    minimize
+    minimize,
   },
   plugins: [
     // new BundleAnalyzerPlugin(),
-    new CopyWebpackPlugin(['icon.svg','icon_white.svg']),
+    new CopyWebpackPlugin(["icon.svg", "icon_white.svg"]),
     new MiniCssExtractPlugin({
       filename: "[name].css",
-      chunkFilename: "[id].css"
+      chunkFilename: "[id].css",
     }),
-    ...plugins
+    ...plugins,
   ],
   module: {
     rules: [
@@ -49,10 +46,10 @@ module.exports = {
           {
             loader: "file-loader",
             options: {
-              publicPath: "/apps/Admin"
-            }
-          }
-        ]
+              publicPath: "/apps/Admin",
+            },
+          },
+        ],
       },
       {
         test: /\.(eot|ttf|woff|woff2)$/,
@@ -61,13 +58,13 @@ module.exports = {
           loader: "file-loader",
           options: {
             name: "fonts/[name].[ext]",
-            publicPath: "apps/Admin"
-          }
-        }
+            publicPath: "apps/Admin",
+          },
+        },
       },
       {
         test: /\.mjs$/,
-        type: 'javascript/auto',
+        type: "javascript/auto",
       },
       {
         test: /\.(sa|sc|c)ss$/,
@@ -76,17 +73,17 @@ module.exports = {
           {
             loader: "css-loader",
             options: {
-              sourceMap: true
-            }
+              sourceMap: true,
+            },
           },
           {
             loader: "sass-loader",
             options: {
               minimize,
-              sourceMap: true
-            }
-          }
-        ]
+              sourceMap: true,
+            },
+          },
+        ],
       },
       {
         test: /\.js$/,
@@ -94,27 +91,18 @@ module.exports = {
         use: {
           loader: "babel-loader",
           options: {
-            presets: [
-              require.resolve("@babel/preset-react"),
-              require.resolve("@babel/preset-env")
-            ],
-            plugins: [
-              require.resolve("@babel/plugin-transform-runtime"),
-              [
-                require.resolve("@babel/plugin-proposal-class-properties"),
-                { loose: false }
-              ]
-            ]
-          }
-        }
+            presets: [require.resolve("@babel/preset-react"), require.resolve("@babel/preset-env")],
+            plugins: [require.resolve("@babel/plugin-transform-runtime"), [require.resolve("@babel/plugin-proposal-class-properties"), { loose: false }]],
+          },
+        },
       },
       {
         test: /\.html$/,
-        loader: "html-loader"
-      }
-    ]
+        loader: "html-loader",
+      },
+    ],
   },
   node: {
-    fs: "empty"
-  }
+    fs: "empty",
+  },
 };

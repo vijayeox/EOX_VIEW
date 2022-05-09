@@ -10,17 +10,17 @@
   right: 98px;
 }
 
-.dashboard .flippy-back {
-  height: 120vh !important;
-  min-height: 70vh;
-}
+// .dashboard .flippy-back {
+//   height: 120vh !important;
+//   min-height: 70vh;
+// }
 
-.dashboard .flippy-front {
-  height: auto;
-  min-height: 70vh;
-  padding: 0px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0);
-}
+// .dashboard .flippy-front {
+//   height: auto;
+//   min-height: 70vh;
+//   padding: 0px;
+//   // box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0);
+// }
 
 .dashboard-filter-btn {
   position: absolute;
@@ -240,11 +240,11 @@ div.filter-form-container.show-filter-panel {
 .dash-manager-buttons .btn.btn-primary {
   color: $button-color !important;
   background-color: $button-background-color !important;
-  border-radius: 42px;
+  border-radius: 50%;
   font-size: 13px !important;
   box-shadow: 0px 0px 4px 0px grey;
 
-  padding: 7px 9px 7px 11px;
+  // padding: 7px 9px 7px 11px;
   margin-bottom: 4px;
 }
 

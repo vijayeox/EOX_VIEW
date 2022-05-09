@@ -3,7 +3,7 @@ import { TitleBar } from "./components/titlebar";
 import { GetData } from "./components/apiCalls";
 import form from "../modules/forms/editCreateAnnouncement.json";
 class Announcement extends React.Component {
-  
+
   constructor(props) {
     super(props);
     this.core = this.props.args;
@@ -11,27 +11,27 @@ class Announcement extends React.Component {
     (this.actionItems = {
       edit: {
         type: "button",
-        icon: "fad fa-pencil",
+        icon: "fas fa-pencil",
         text: "EDIT",
         title: "Edit Announcement",
       },
       delete: {
         type: "button",
-        icon: "fad fa-trash",
+        icon: "fas fa-trash",
         text: "DELETE",
         title: "Delete Announcement",
       },
       add: {
         type: "button",
-        icon: "fad fa-user-plus",
+        icon: "fas fa-user-plus",
         text: "ADD",
         title: "Add Teams to announcement",
       },
       create: {
         type: "button",
-        icon: " fad fa-plus",
+        icon: " fas fa-plus",
         text: "CREATE",
-        title: "Create New",
+        title: "Create New Announcement",
       },
     }),
       (this.config = {
@@ -42,11 +42,11 @@ class Announcement extends React.Component {
         sortable: true,
         // sort:true,
         pageSize: 10,
-        // pageable:true,
         pageable: {
           skip: 0,
-          // pageSize: 10,
           buttonCount: 3,
+          info: true,
+          pageSizes: [10, 20, 50]
         },
         groupable: true,
         resizable: true,
@@ -55,14 +55,22 @@ class Announcement extends React.Component {
           {
             title: "Banner",
             field: "media",
+            filterable: false,
+            width: "60px"
           },
           {
             title: "Name",
             field: "name",
           },
           {
-            title: "Description",
-            field: "description",
+            title: "Start Date",
+            field: "start_date",
+            
+          },
+          {
+            title: "End Date",
+            field: "end_date",
+            
           },
           {
             title: "Type",
@@ -75,10 +83,9 @@ class Announcement extends React.Component {
         accountData: [],
         selectedOrg: this.props.userProfile.accountId,
         permission: {
-          canAdd: this.props.userProfile.privileges.MANAGE_ANNOUNCEMENT_WRITE,
+          canAdd: this.props.userProfile.privileges.MANAGE_ANNOUNCEMENT_CREATE,
           canEdit: this.props.userProfile.privileges.MANAGE_ANNOUNCEMENT_WRITE,
-          canDelete:
-            this.props.userProfile.privileges.MANAGE_ANNOUNCEMENT_WRITE,
+          canDelete:this.props.userProfile.privileges.MANAGE_ANNOUNCEMENT_DELETE,
         },
         skip: 0,
         isLoading: true,
@@ -94,25 +101,30 @@ class Announcement extends React.Component {
       addAnnouncementFlag: true,
     };
   }
-  
+
   appendAttachments = (formData) => {
-    if(formData._attachments.length > 0){
-      const attachmentFilename = formData._attachments[0][0].filename[0];
+    if (formData._attachments.length > 0) {
+      const attachmentFilename = formData._attachments[0][0].filename
+        ? formData._attachments[0][0].filename[0]
+        : formData._attachments[0][0].uuid;
       formData.media = attachmentFilename;
     }
   }
-
-  fetchAttachments = async (data) => {
-    console.log(data)
-    // const api = "attachment/" + data.media;
-    // const response = await GetData(api);
-    // data.upload = response.data[0].path;
+  getCustomPayload=(formData,method)=>{
+    if(method ==='put' && formData.start_date ){
+      formData.start_date = formData.start_date.split("T")[0];
+    }
+    return formData;
   }
 
   orgChange = (event) => {
+    //console.log("event account",event.target.value);
     this.setState({ selectedOrg: event.target.value, isLoading: true }, () => {
       this.api = "account/" + this.state.selectedOrg + "/announcements";
       this.createApi = "account/" + this.state.selectedOrg + "/announcement";
+      this.deleteApi = "account/" + this.state.selectedOrg + "/announcement";
+      this.addConfig.mainList= "account/" + this.state.selectedOrg + "/teams/list";
+      // add paginaton skip and take
       GetData(this.api).then((data) => {
         this.setState({
           accountData: (data.status === "success" && data?.data) || [],
@@ -141,11 +153,11 @@ class Announcement extends React.Component {
 
   dataStateChanged({ dataState: { filter, group, skip, sort, take } }) {
     this.setState({ isLoading: true });
+    this.config.pageSize = take;
     GetData(
       this.api +
-        `?filter=[{"skip":${skip},"take":${
-          this.config.pageSize
-        }, "filter" : ${JSON.stringify(filter)}}]`
+      `?filter=[{"skip":${skip},"take":${(this.config.pageSize)
+      }, "filter" : ${JSON.stringify(filter)}}]`
     )
       .then((data) => {
         this.setState({
@@ -171,6 +183,7 @@ class Announcement extends React.Component {
           menu={this.props.menu}
           args={this.core}
           orgChange={this.orgChange}
+          selectedOrgId={this.props.userProfile.active_account.name}
           orgSwitch={
             this.props.userProfile.privileges.MANAGE_ACCOUNT_WRITE
               ? true
@@ -195,9 +208,10 @@ class Announcement extends React.Component {
               skip={this.state.skip}
               dataStateChanged={this.dataStateChanged.bind(this)}
               isLoading={this.state.isLoading}
-              appendAttachments={this.appendAttachments}
-              fetchAttachments={this.fetchAttachments}
               // key={Math.random()}
+              appendAttachments={this.appendAttachments}
+              getCustomPayload={this.getCustomPayload}
+              uniqueAttachments={true}
             />
           </div>
         </React.Suspense>

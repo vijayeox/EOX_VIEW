@@ -596,6 +596,9 @@ class BaseFormRenderer extends React.Component {
           if (newFiles.length > 0) {
             const responses = await Promise.all(
               newFiles.map((file) => {
+                if(this.props.uniqueAttachments && file.uploadFile?.file){
+                  file.uploadFile.file = new File([file.uploadFile.file], `${this.generateUUID()}-${file.uploadFile.file.name}`,{type : file.uploadFile.type})
+                }
                 return this.helper.request(
                   "v1",
                   component?.properties?.["absoluteUrl"] ||
@@ -653,14 +656,16 @@ class BaseFormRenderer extends React.Component {
   }
   async saveForm(form, data) {
     var that = this;
-    const uploadedAttachmentResponse = await this.uploadStorageAttachments(data);
-    if(!uploadedAttachmentResponse) return;
-    // if (!(await this.uploadStorageAttachments(data))) return
-    if (that.props.updateFormData) {
-      // that.props.postSubmitCallback(data);
-      const attachmentObj = that.props.getAttachment ? {_attachments : uploadedAttachmentResponse } : {}
-      that.props.postSubmitCallback({...data, ...attachmentObj})
-      return;
+    if(!this.props.disableAttachmentControl){
+      const uploadedAttachmentResponse = await this.uploadStorageAttachments(data);
+      if(!uploadedAttachmentResponse) return;
+      // if (!(await this.uploadStorageAttachments(data))) return
+      if (that.props.updateFormData) {
+        // that.props.postSubmitCallback(data);
+        const attachmentObj = that.props.getAttachment ? {_attachments : uploadedAttachmentResponse, _filesToUpload: this.state.filesToUpload } : {}
+        that.props.postSubmitCallback({...data, ...attachmentObj})
+        return;
+      }
     }
     if (
       that.props.customSaveForm &&
@@ -1663,7 +1668,12 @@ class BaseFormRenderer extends React.Component {
       options.wrapperUrl = this.core.config("wrapper.url");
       options.formDivID = this.formDivID;
       options.appId = this.state.appId;
-      options.fileUploadCallback = this.onFileUpload.bind(this)
+      if(!this.props.disableAttachmentControl){
+        //this block will have control over attachments
+        //post form submit attachments are uploaded instead later are appended in pipline payload
+        //disableAttachmentControl in yaml only when there's an inconsistency for a specific application, if not sure.
+        options.fileUploadCallback = this.onFileUpload.bind(this)
+      }
       Formio.registerPlugin(
         {
           options: {
@@ -1721,6 +1731,7 @@ class BaseFormRenderer extends React.Component {
             that.hideBreadCrumb(true);
           }
         }
+  
         if (that.state.data != undefined) {
           form.setSubmission({ data: that.state.data });
         }
@@ -1820,6 +1831,12 @@ class BaseFormRenderer extends React.Component {
           if (that.state.formLevelDelegateCalled == false) {
             that.setState({ formLevelDelegateCalled: true });
           }
+          //remove all events listeners attached by formio since download api is handled in core resource endpoint.
+          [
+            ...(document
+              .getElementById(that.formDivID)
+              ?.querySelectorAll('a[ref="fileLink"]') || []),
+          ].forEach((element) => element.hasAttribute('href') && element.replaceWith(element.cloneNode(true)));
         });
         form.on("customEvent", function (event) {
           var changed = event.data;

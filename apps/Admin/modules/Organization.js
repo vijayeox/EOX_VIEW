@@ -11,25 +11,25 @@ class Organization extends React.Component {
     (this.actionItems = {
       edit: {
         type: "button",
-        icon: "fad fa-pencil",
+        icon: "fas fa-pencil",
         text: "EDIT",
         title: "Edit Account",
       },
       delete: {
         type: "button",
-        icon: "fad fa-trash",
+        icon: "fas fa-trash",
         text: "DELETE",
         title: "Delete Account",
       },
       add: {
         type: "button",
-        icon: "fad fa-user-plus",
+        icon: "fas fa-user-plus",
         text: "ADD",
         title: "Add Users to Account",
       },
       create: {
         type: "button",
-        icon: " fad fa-plus",
+        icon: " fas fa-plus",
         text: "CREATE",
         title: "Create New",
       },
@@ -42,12 +42,11 @@ class Organization extends React.Component {
         sortable: true,
         // sort:true,
         pageSize: 20,
-        // pageable:true,
         pageable: {
           skip: 0,
-          pageSize: 20,
           buttonCount: 3,
-          // info: true
+          info: true,
+          pageSizes: [10, 20, 50]
         },
         groupable: true,
         resizable: true,
@@ -56,11 +55,17 @@ class Organization extends React.Component {
           {
             title: "Image",
             field: "logo",
+            filterable:false,
+            width: "60px"
           },
 
           {
             title: "Name",
             field: "name",
+          },
+          {
+            title: "Country",
+            field: "country",
           },
           {
             title: "State",
@@ -76,9 +81,9 @@ class Organization extends React.Component {
       isLoading: true,
       accountData: [],
       permission: {
-        canAdd: this.props.userProfile.privileges.MANAGE_USER_CREATE,
-        canEdit: this.props.userProfile.privileges.MANAGE_USER_WRITE,
-        canDelete: this.props.userProfile.privileges.MANAGE_USER_DELETE,
+        canAdd: this.props.userProfile.privileges.MANAGE_ACCOUNT_CREATE,
+        canEdit: this.props.userProfile.privileges.MANAGE_ACCOUNT_WRITE,
+        canDelete: this.props.userProfile.privileges.MANAGE_ACCOUNT_DELETE,
       },
       total: 0,
       skip: 0,
@@ -112,8 +117,42 @@ class Organization extends React.Component {
       });
   }
 
+  getCustomPayload = (formData, type) => {
+    /**
+     * name: accountname
+      address1: 696 West Fabien Court
+      Recusandae Necessit
+      city: In debitis debitis e
+      state: Dolorem non adipisic
+      country: Albania
+      zip: 94933
+      logo: (binary)
+      contact: {"firstname":"Jaden","lastname":"Dejesus","username":"sagarsp","email":"ryqa@mailinator.com"}
+      preferences: {"dateformat":"dd-MMM-yyyy","currency":"AFN","timezone":"Africa/Abidjan"}
+     */
+    const newPayload = {};
+    const logo = formData?._filesToUpload && Object.values(formData?._filesToUpload)?.[0]?.uploadFile?.file;
+    newPayload['name'] = formData.name;
+    newPayload['address1'] = formData.address1;
+    newPayload['city'] = formData.city;
+    newPayload['country'] = formData.country;
+    newPayload['state'] = formData.state;
+    newPayload['zip'] = formData.zip;
+    newPayload['preferences'] = JSON.stringify(formData.preferences);
+    if(logo){
+      newPayload['logo'] = logo;
+    }
+    if(type == "put"){
+      newPayload['contactid'] = formData.contactid;
+    }
+    newPayload['contact'] =JSON.stringify( formData.contact)
+    return newPayload;
+  }
+
+
   dataStateChanged({ dataState: { filter, group, skip, sort, take } }) {
     this.setState({ isLoading: true });
+    this.config.pageSize = take;
     GetData(
       this.api +
         `?filter=[{"skip":${skip},"take":${
@@ -137,7 +176,7 @@ class Organization extends React.Component {
   }
   render() {
     return (
-      <div style={{ height: "inherit" }}>
+      <div style={{ height: "inherit",marginTop:"12px"}}>
         <TitleBar
           title="Manage Account"
           menu={this.props.menu}
@@ -160,6 +199,9 @@ class Organization extends React.Component {
             skip={this.state.skip}
             dataStateChanged={this.dataStateChanged.bind(this)}
             isLoading={this.state.isLoading}
+            appendAttachments={this.appendAttachments}
+            getCustomPayload={this.getCustomPayload}
+            createCrudType="filepost"
             // key={Math.random()}
           />
         </React.Suspense>

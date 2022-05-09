@@ -38,15 +38,9 @@ const defaultIcon = require("../../../../assets/images/oxfav.png");
 const sortBy = (fn) => (a, b) => -(fn(a) < fn(b)) || +(fn(a) > fn(b));
 const sortByLabel = (iter) => String(iter.label).toLowerCase();
 
-const getIcon = (core, m) =>
-  m.icon
-    ? m.icon.match(/^(https?:)\//)
-      ? m.icon
-      : core.url(m.icon, {}, m)
-    : defaultIcon;
+const getIcon = (core, m) => (m.icon ? (m.icon.match(/^(https?:)\//) ? m.icon : core.url(m.icon, {}, m)) : defaultIcon);
 
-const getTitle = (locale, item) =>
-  locale.translatableFlat(item.title, item.name);
+const getTitle = (locale, item) => locale.translatableFlat(item.title, item.name);
 
 const getCategory = (locale, cat) => locale.translate(cat);
 
@@ -55,8 +49,23 @@ const makeCategory = (category, core) => {
   categoryDiv.classList.add("category");
   let captionDiv = document.createElement("div");
   captionDiv.classList.add("caption");
+  let dropdown = document.createElement("i");
+  dropdown.classList.add("fad");
+  dropdown.classList.add("fa-caret-down");
+  dropdown.classList.add("dropdown-icon");
+  dropdown.style.float = "right";
+  dropdown.addEventListener("click", function (e) {
+    if (!e.target.classList.contains("fa-rotate-270")) {
+      e.target.classList.add("fa-rotate-270"); //to rotate the icon
+      e.target.parentNode.parentNode.childNodes[1].style.display = "none";
+    } else {
+      e.target.classList.remove("fa-rotate-270");
+      e.target.parentNode.parentNode.childNodes[1].style.display = "flex";
+    }
+  });
   let categoryLabel = document.createTextNode(category.label);
   captionDiv.append(categoryLabel);
+  captionDiv.append(dropdown);
   categoryDiv.appendChild(captionDiv);
   categoryDiv = makeAppList(category, categoryDiv, core);
   return categoryDiv;
@@ -98,9 +107,7 @@ const makeTree = (core, __, metadata) => {
   metadata
     .filter((m) => m.hidden !== true)
     .forEach((m) => {
-      const cat =
-        Object.keys(configuredCategories).find((c) => c === m.category) ||
-        "other";
+      const cat = Object.keys(configuredCategories).find((c) => c === m.category) || "other";
       const found = configuredCategories[cat];
 
       if (!categories[cat]) {
@@ -139,14 +146,10 @@ const makeTree = (core, __, metadata) => {
 export default class MenuPanelItem extends PanelItem {
   attachKeybindings(el) {
     const onkeydown = (ev) => {
-      const checkKeys = (this.options.boundKey || "Alt+a")
-        .toLowerCase()
-        .split("+");
+      const checkKeys = (this.options.boundKey || "Alt+a").toLowerCase().split("+");
       const modifierNames = ["ctrl", "shift", "alt", "meta"];
       const keyName = String(ev.key).toLowerCase();
-      const validKeypress = checkKeys.every((k) =>
-        modifierNames.indexOf(k) !== -1 ? ev[k + "Key"] : keyName === k
-      );
+      const validKeypress = checkKeys.every((k) => (modifierNames.indexOf(k) !== -1 ? ev[k + "Key"] : keyName === k));
 
       if (!validKeypress) {
         return;
@@ -162,9 +165,7 @@ export default class MenuPanelItem extends PanelItem {
   hideMenu() {
     const _ = this.core.make("osjs/locale").translate;
     const __ = this.core.make("osjs/locale").translatable(languages);
-    const packages = this.core
-      .make("osjs/packages")
-      .getPackages((m) => m.type && m.type === "application");
+    const packages = this.core.make("osjs/packages").getPackages((m) => m.type && m.type === "application");
     let appArray = makeTree(this.core, __, [].concat(packages));
     return appArray.length == 0;
   }
@@ -173,34 +174,28 @@ export default class MenuPanelItem extends PanelItem {
     const _ = this.core.make("osjs/locale").translate;
     const __ = this.core.make("osjs/locale").translatable(languages);
 
-    // const addSearch = (searchDiv, input) => {
-    //   let filter, items, i;
-    //   filter = input.value.toUpperCase();
-    //   items = document.getElementsByClassName("appcaption");
-    //   for (i = 0; i < items.length; i++) {
-    //     if (items[i].innerHTML.toUpperCase().indexOf(filter) > -1) {
-    //       items[i].parentElement.parentElement.parentElement.style.display =
-    //         "block";
-    //       items[i].parentElement.style.display = "flex";
-    //     } else {
-    //       items[i].parentElement.style.display = "none";
-    //       items[i].parentElement.parentElement.parentElement.style.display =
-    //         "none";
-    //     }
-    //   }
-    //   for (i = 0; i < items.length; i++) {
-    //     if (items[i].innerHTML.toUpperCase().indexOf(filter) > -1) {
-    //       items[i].parentElement.parentElement.parentElement.style.display =
-    //         "block";
-    //       items[i].parentElement.style.display = "flex";
-    //     }
-    //   }
-    // };
+    const addSearch = (searchDiv, input) => {
+      let filter, items, i;
+      filter = input.value.toUpperCase();
+      const categories = [...document.querySelectorAll("#appmenu>.app-bar>.category")];
+      for (let category of categories) {
+        const appLists = [...category.children[1].children];
+        let c = 0;
+        for (let app of appLists) {
+          const e = app.children[1];
+          if (e.innerHTML.toLowerCase().includes(filter.toLowerCase())) {
+            app.style.display = "flex";
+          } else {
+            c++;
+            app.style.display = "none";
+          }
+        }
+        category.style.display = c === appLists.length ? "none" : "block";
+      }
+    };
 
     const onclick = (ev) => {
-      let packages = this.core
-        .make("osjs/packages")
-        .getPackages((m) => m.type && m.type === "application");
+      let packages = this.core.make("osjs/packages").getPackages((m) => m.type && m.type === "application");
       let appArray = makeTree(this.core, __, [].concat(packages));
 
       if (this.hideMenu()) {
@@ -212,26 +207,36 @@ export default class MenuPanelItem extends PanelItem {
       let appBarDiv = document.createElement("div");
       appBarDiv.classList.add("app-bar");
 
-      // let searchDiv = document.createElement('div');
-      // searchDiv.classList.add('app-search-div');
-      // let searchBarDiv = document.createElement('div');
-      // searchBarDiv.classList.add('app-search-bar-div');
+      let searchDiv = document.createElement("div");
+      searchDiv.classList.add("app-search-div");
+      let searchBarDiv = document.createElement("div");
+      searchBarDiv.classList.add("app-search-bar-div");
 
-      // let input = document.createElement('input');
-      // input.type = 'text';
-      // input.name = 'appsearch';
-      // input.id = 'appsearch';
-      // input.placeholder = 'Search...';
-      // input.onkeyup = function() { addSearch(searchDiv, input); };
-      // searchBarDiv.appendChild(input);
-      // searchDiv.appendChild(searchBarDiv);
-      // appmenuElement.appendChild(searchDiv);
+      let input = document.createElement("input");
+      input.type = "text";
+      input.name = "appsearch";
+      input.id = "appsearch";
+      input.classList.add("placeholder");
+      input.placeholder = "Search Applications";
+      let searchIcon = document.createElement("i");
+      searchIcon.classList.add("fas");
+      searchIcon.classList.add("fa-search");
+      searchIcon.setAttribute("style", "margin-top: 14px;color: #275362;border-bottom: 1px solid;");
+      // input.placeholder.style.color='#265160';
+      input.onkeyup = function () {
+        addSearch(searchDiv, input);
+      };
+      searchBarDiv.appendChild(input);
+      searchBarDiv.appendChild(searchIcon);
+      searchDiv.appendChild(searchBarDiv);
+      appmenuElement.appendChild(searchDiv);
 
       // appmenuElement.classList.toggle('appmenu-visible');
       for (let category = 0; category < appArray.length; category++) {
         appBarDiv.appendChild(makeCategory(appArray[category], this.core));
       }
       appmenuElement.appendChild(appBarDiv);
+
       // this.core.make('osjs/contextmenu').show({
       //   menu: makeTree(this.core, __, [].concat(packages)),
       //   position: ev.target,

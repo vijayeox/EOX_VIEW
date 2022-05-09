@@ -58,9 +58,9 @@ class Goal extends React.Component {
         accountData: [],
         selectedOrg: this.props.userProfile.accountId,
         permission: {
-          canAdd: this.props.userProfile.privileges.MANAGE_KRA_WRITE,
-          canEdit: this.props.userProfile.privileges.MANAGE_TEAM_WRITE,
-          canDelete: this.props.userProfile.privileges.MANAGE_KRA_WRITE,
+          canAdd: this.props.userProfile.privileges.MANAGE_KRA_CREATE,
+          canEdit: this.props.userProfile.privileges.MANAGE_KRA_WRITE,
+          canDelete: this.props.userProfile.privileges.MANAGE_KRA_DELETE,
         },
       }),
       (this.api = "account/" + this.state.selectedOrg + "/kra");

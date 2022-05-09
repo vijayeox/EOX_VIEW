@@ -1,7 +1,9 @@
 import { React, EOXGrid } from "oxziongui";
 import { TitleBar } from "./components/titlebar";
 import { GetData } from "./components/apiCalls";
-import form from "../modules/forms/editCreateRole.json";
+// import form from "../modules/forms/editCreateRole.json";
+import EditCreateRole from "./forms/editCreateRole";
+import { data } from "jquery";
 
 class Role extends React.Component {
   constructor(props) {
@@ -9,24 +11,24 @@ class Role extends React.Component {
     this.core = this.props.args;
     this.drillDownRequired = false;
     (this.actionItems = {
-      // edit: {
-      //   type: "button",
-      //   icon: "fad fa-pencil",
-      //   text: "EDIT",
-      //   title: "Edit Role",
-      // },
+      edit: {
+        type: "button",
+        icon: "fas fa-pencil",
+        text: "EDIT",
+        title: "Edit Role",
+      },
       delete: {
         type: "button",
-        icon: "fad fa-trash",
+        icon: "fas fa-trash",
         text: "DELETE",
         title: "Delete Role",
       },
-      // create: {
-      //   type: "button",
-      //   icon: " fad fa-plus",
-      //   text: "CREATE",
-      //   title: "Create New",
-      // },
+      create: {
+        type: "button",
+        icon: " fas fa-plus",
+        text: "CREATE",
+        title: "Create New",
+      },
     }),
       (this.config = {
         height: "100%",
@@ -36,17 +38,16 @@ class Role extends React.Component {
         sortable: true,
         // sort:true,
         pageSize: 10,
-        // pageable:true,
         pageable: {
           skip: 0,
-          // pageSize: 10,
           buttonCount: 3,
+          info: true,
+          pageSizes: [10, 20, 50]
         },
         groupable: true,
         resizable: true,
-
         isDrillDownTable: true,
-
+        isReactComponent :true,
         column: [
           {
             title: "Name",
@@ -69,13 +70,14 @@ class Role extends React.Component {
         accountData: [],
         selectedOrg: this.props.userProfile.accountId,
         permission: {
-          canAdd: this.props.userProfile.privileges.MANAGE_ROLE_WRITE,
+          canAdd: this.props.userProfile.privileges.MANAGE_ROLE_CREATE,
           canEdit: this.props.userProfile.privileges.MANAGE_ROLE_WRITE,
-          canDelete: this.props.userProfile.privileges.MANAGE_ROLE_WRITE,
+          canDelete: this.props.userProfile.privileges.MANAGE_ROLE_DELETE,
         },
       }),
       (this.api = "account/" + this.state.selectedOrg + "/roles");
-    this.editApi = "role";
+    // this.editApi =  "/role";
+    this.editApi = "account/" + this.state.selectedOrg + "/role";
     this.createApi = "account/" + this.state.selectedOrg + "/role";
     this.deleteApi = "account/" + this.state.selectedOrg + "/role";
   }
@@ -84,6 +86,7 @@ class Role extends React.Component {
     this.setState({ selectedOrg: event.target.value, isLoading: true }, () => {
       this.api = "account/" + this.state.selectedOrg + "/roles";
       this.createApi = "account/" + this.state.selectedOrg + "/role";
+      this.editApi = "account/" + this.state.selectedOrg + "/role";
       GetData(this.api).then((data) => {
         this.setState({
           accountData: (data.status === "success" && data?.data) || [],
@@ -112,11 +115,11 @@ class Role extends React.Component {
 
   dataStateChanged({ dataState: { filter, group, skip, sort, take } }) {
     this.setState({ isLoading: true });
+    this.config.pageSize = take;
     GetData(
       this.api +
-        `?filter=[{"skip":${skip},"take":${
-          this.config.pageSize
-        }, "filter" : ${JSON.stringify(filter)}}]`
+      `?filter=[{"skip":${skip},"take":${this.config.pageSize
+      }, "filter" : ${JSON.stringify(filter)}}]`
     )
       .then((data) => {
         this.setState({
@@ -133,6 +136,61 @@ class Role extends React.Component {
         });
       });
   }
+
+  // fetchPrivilegesCreate = () => {
+  //   return new Promise(resolve => {
+  //     let masterPrivilege = this.core.make("oxzion/restClient").request(
+  //       "v1",
+  //       "/account/" + this.props.userProfile.accountId + "/masterprivilege",
+  //       {},
+  //       "get"
+  //     );
+  //     masterPrivilege.then((response) => {
+  //       let privilegeList = response.data.masterPrivilege;
+  //       const set = new Set()
+  //       const privilegesSet = privilegeList.filter(v => {
+  //         if (set.has(v.name)) return;
+  //         set.add(v.name);
+  //         return v;
+  //       })
+  //       resolve({ data: { privilege: privilegesSet } })
+  //     })
+  //   })
+  // }
+
+  // fetchPrivileges = (data) => {
+  //   return new Promise(resolve => {
+  //     let masterPrivilege = this.core.make("oxzion/restClient").request(
+  //       "v1",
+  //       "/account/" + this.props.userProfile.accountId + "/masterprivilege/" + data?.uuid,
+  //       {},
+  //       "get"
+  //     );
+  //     if (!data) {
+  //       return resolve({ data });
+  //     }
+  //     masterPrivilege.then((response) => {
+  //       let privilegeList = (response.data.rolePrivilege.length > 0) ? response.data.rolePrivilege : response.data.masterPrivilege;
+  //       const set = new Set()
+  //       const privilegesSet = privilegeList.filter(v => {
+  //         if (set.has(v.name)) return;
+  //         set.add(v.name);
+  //         return v;
+  //       })
+  //       resolve({ data: { privilege: privilegesSet, ...data } })
+  //     })
+  //   })
+  // }
+
+  getCustomPayload = (formData, type) => {
+    const privilege = formData.privilege.map(v => {
+      let permissionValue = Object.entries(v.permission).filter(([k, v]) => v).slice(-1)?.[0]?.[0]
+      return { ...v, permission: permissionValue ? permissionValue.toString() : "" }
+    })
+    formData.privileges = privilege;
+    return formData;
+  }
+
   render() {
     return (
       <div style={{ height: "inherit" }}>
@@ -141,6 +199,7 @@ class Role extends React.Component {
           menu={this.props.menu}
           args={this.core}
           orgChange={this.orgChange}
+          selectedOrgId={this.props.userProfile.active_account.name}
           orgSwitch={
             this.props.userProfile.privileges.MANAGE_ACCOUNT_WRITE
               ? true
@@ -156,7 +215,7 @@ class Role extends React.Component {
             actionItems={this.actionItems}
             api={this.api}
             permission={this.state.permission}
-            editForm={form}
+            editForm={EditCreateRole}
             editApi={this.editApi}
             createApi={this.createApi}
             deleteApi={this.deleteApi}
@@ -164,6 +223,10 @@ class Role extends React.Component {
             dataStateChanged={this.dataStateChanged.bind(this)}
             isLoading={this.state.isLoading}
             // key={Math.random()}
+            // prepareFormData={this.fetchPrivileges}
+            // prepareCreateFormData={this.fetchPrivilegesCreate}
+            getCustomPayload={this.getCustomPayload}
+            selectedOrg = {this.state.selectedOrg}
           />
         </React.Suspense>
       </div>

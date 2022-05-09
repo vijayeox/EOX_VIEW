@@ -28,14 +28,14 @@
  * @licence Simplified BSD License
  */
 
-import Application from './application';
-import Websocket from './websocket';
-import {CoreBase} from '@osjs/common';
-import {defaultConfiguration} from './config';
-import {fetch} from './utils/fetch';
-import {urlResolver} from './utils/url';
-import merge from 'deepmerge';
-import LocalStorageAdapter from '../../client/adapters/localStorageAdapter.js';
+import Application from "./application";
+import Websocket from "./websocket";
+import { CoreBase } from "@osjs/common";
+import { defaultConfiguration } from "./config";
+import { fetch } from "./utils/fetch";
+import { urlResolver } from "./utils/url";
+import merge from "deepmerge";
+import LocalStorageAdapter from "../../client/adapters/localStorageAdapter.js";
 
 /**
  * Core
@@ -43,7 +43,6 @@ import LocalStorageAdapter from '../../client/adapters/localStorageAdapter.js';
  * @desc Main class for OS.js service providers and bootstrapping.
  */
 export default class Core extends CoreBase {
-
   /**
    * Create core instance
    * @param {Object} config Configuration tree
@@ -53,10 +52,14 @@ export default class Core extends CoreBase {
    * @param {String[]} [options.classNames] List of class names to apply to root dom element
    */
   constructor(config = {}, options = {}) {
-    options = Object.assign({}, {
-      classNames: ['osjs-root'],
-      root: document.body
-    }, options || {});
+    options = Object.assign(
+      {},
+      {
+        classNames: ["osjs-root"],
+        root: document.body,
+      },
+      options || {}
+    );
 
     super(defaultConfiguration, config, options);
 
@@ -64,17 +67,17 @@ export default class Core extends CoreBase {
     this.ws = null;
     this.ping = null;
     this.$root = options.root;
-    this.$resourceRoot = options.resourceRoot || document.querySelector('head');
+    this.$resourceRoot = options.resourceRoot || document.querySelector("head");
     this.requestOptions = {};
     this.urlResolver = urlResolver(this.configuration);
 
-    this.options.classNames.forEach(n => this.$root.classList.add(n));
+    this.options.classNames.forEach((n) => this.$root.classList.add(n));
 
-    const {uri} = this.configuration.ws;
+    const { uri } = this.configuration.ws;
     if (!uri.match(/^wss?:/)) {
-      const {protocol, host} = window.location;
+      const { protocol, host } = window.location;
 
-      this.configuration.ws.uri = protocol.replace(/^http/, 'ws') + '//' + host + uri.replace(/^\/+/, '/');
+      this.configuration.ws.uri = protocol.replace(/^http/, "ws") + "//" + host + uri.replace(/^\/+/, "/");
     }
   }
 
@@ -86,7 +89,7 @@ export default class Core extends CoreBase {
       return;
     }
 
-    this.emit('osjs/core:destroy');
+    this.emit("osjs/core:destroy");
 
     this.ping = clearInterval(this.ping);
 
@@ -109,9 +112,9 @@ export default class Core extends CoreBase {
    * Boots up OS.js
    */
   boot() {
-    const done = e => {
+    const done = (e) => {
       if (e) {
-        console.error('Error while booting', e);
+        console.error("Error while booting", e);
       }
 
       console.groupEnd();
@@ -123,55 +126,55 @@ export default class Core extends CoreBase {
       return Promise.resolve(false);
     }
 
-    console.group('Core::boot()');
+    console.group("Core::boot()");
 
     this._attachEvents();
-    this.emit('osjs/core:boot');
+    this.emit("osjs/core:boot");
 
     var that = this;
-    return super.boot()
+    return super
+      .boot()
       .then(() => {
-        this.emit('osjs/core:booted');
+        this.emit("osjs/core:booted");
         // auto login check
-        let lsHelper = new LocalStorageAdapter;
+        let lsHelper = new LocalStorageAdapter();
         lsHelper.supported();
-        const token = lsHelper.get('AUTH_token');
+        const token = lsHelper.get("AUTH_token");
         let jwt = null;
         let autoLogin = false;
         //validate token for auto login
-        if(token) {
-          jwt = token['key'];
+        if (token) {
+          jwt = token["key"];
           let formData = new FormData();
-          formData.append('jwt', jwt);
+          formData.append("jwt", jwt);
           let xhr = new XMLHttpRequest();
-          xhr.open('POST', that.config('wrapper.url') + 'validatetoken', false);
-          xhr.onload = function() {
+          xhr.open("POST", that.config("wrapper.url") + "validatetoken", false);
+          xhr.onload = function () {
             let data = JSON.parse(this.responseText);
-            if(data['status'] === 'success' && data['message'] === 'Token Valid') {
+            if (data["status"] === "success" && data["message"] === "Token Valid") {
               // console.log('token validated');
               autoLogin = true;
-            } else if(data['status'] === 'error' && data['message'] === 'Token Expired') {
+            } else if (data["status"] === "error" && data["message"] === "Token Expired") {
               //console.log('token has expired. make request to get new');
-              const rtoken = lsHelper.get('REFRESH_token');
+              const rtoken = lsHelper.get("REFRESH_token");
               let formData = new FormData();
-              formData.append('jwt', jwt);
-              formData.append('refresh_token', rtoken['key']);
+              formData.append("jwt", jwt);
+              formData.append("refresh_token", rtoken["key"]);
               let xhr = new XMLHttpRequest();
-              xhr.open('POST', that.config('wrapper.url')+ 'refreshtoken', false);
-              xhr.onload = function() {
+              xhr.open("POST", that.config("wrapper.url") + "refreshtoken", false);
+              xhr.onload = function () {
                 let data = JSON.parse(this.responseText);
-                if(data['status'] === 'success') {
-                  console.log('refresh api called and token reset');
+                if (data["status"] === "success") {
+                  console.log("refresh api called and token reset");
                   autoLogin = true;
-                  jwt = data['data']['jwt'];
-                  let refresh = data['data']['refresh_token'];
-                  lsHelper.set('AUTH_token', jwt);
-                  lsHelper.set('REFRESH_token', refresh);
-                }
-                else{
+                  jwt = data["data"]["jwt"];
+                  let refresh = data["data"]["refresh_token"];
+                  lsHelper.set("AUTH_token", jwt);
+                  lsHelper.set("REFRESH_token", refresh);
+                } else {
                   window.localStorage.clear();
                 }
-               };
+              };
               xhr.send(formData);
             }
           };
@@ -179,26 +182,27 @@ export default class Core extends CoreBase {
         } else {
           window.localStorage.clear();
         }
-        if(autoLogin) {
+        if (autoLogin) {
           // reset the user details on refresh
-          this.user = {jwt: jwt, username: lsHelper.get('User')['key']};
+          this.user = { jwt: jwt, username: lsHelper.get("User")["key"] };
           //console.log(this.user);
-          this.emit('osjs/core:logged-in');
-          if (this.has('osjs/settings')) {
-            this.make('osjs/settings').load()
+          this.emit("osjs/core:logged-in");
+          if (this.has("osjs/settings")) {
+            this.make("osjs/settings")
+              .load()
               .then(() => done())
               .catch(() => done());
           } else {
             done();
           }
-        }
-        else if (this.has('osjs/auth')) {
-          return this.make('osjs/auth').show(user => {
+        } else if (this.has("osjs/auth")) {
+          return this.make("osjs/auth").show((user) => {
             this.user = user;
             //console.log(this.user);
-            this.emit('osjs/core:logged-in');
-            if (this.has('osjs/settings')) {
-              this.make('osjs/settings').load()
+            this.emit("osjs/core:logged-in");
+            if (this.has("osjs/settings")) {
+              this.make("osjs/settings")
+                .load()
                 .then(() => done())
                 .catch(() => done());
             } else {
@@ -206,34 +210,36 @@ export default class Core extends CoreBase {
             }
           });
         } else {
-          console.info('OS.js STARTED WITHOUT ANY AUTHENTICATION');
+          console.info("OS.js STARTED WITHOUT ANY AUTHENTICATION");
         }
 
         return done();
-      }).catch(done);
+      })
+      .catch(done);
   }
 
   /**
    * Starts all core services
    */
   start() {
-    const connect = () => new Promise((resolve, reject) => {
-      try {
-        const valid = this._createConnection(error => error ? reject(error) : resolve());
-        if (valid === false) {
-          // We can skip the connection
-          resolve();
+    const connect = () =>
+      new Promise((resolve, reject) => {
+        try {
+          const valid = this._createConnection((error) => (error ? reject(error) : resolve()));
+          if (valid === false) {
+            // We can skip the connection
+            resolve();
+          }
+        } catch (e) {
+          reject(e);
         }
-      } catch (e) {
-        reject(e);
-      }
-    });
+      });
 
     const done = (err) => {
-      this.emit('osjs/core:started');
+      this.emit("osjs/core:started");
 
       if (err) {
-        console.warn('Error while starting', err);
+        console.warn("Error while starting", err);
       }
 
       console.groupEnd();
@@ -245,24 +251,26 @@ export default class Core extends CoreBase {
       return Promise.resolve();
     }
 
-    console.group('Core::start()');
+    console.group("Core::start()");
 
-    this.emit('osjs/core:start');
+    this.emit("osjs/core:start");
 
     this._createListeners();
 
-    return super.start()
-      .then(result => {
+    return super
+      .start()
+      .then((result) => {
         console.groupEnd();
 
         if (result) {
           return connect()
             .then(() => done())
-            .catch(err => done(err));
+            .catch((err) => done(err));
         }
 
         return false;
-      }).catch(done);
+      })
+      .catch(done);
   }
 
   /**
@@ -270,41 +278,39 @@ export default class Core extends CoreBase {
    */
   _attachEvents() {
     // Attaches sounds for certain events
-    this.on('osjs/core:started', () => {
-      if (this.has('osjs/sounds')) {
-        this.make('osjs/sounds').play('service-login');
+    this.on("osjs/core:started", () => {
+      if (this.has("osjs/sounds")) {
+        this.make("osjs/sounds").play("service-login");
       }
     });
 
-    this.on('osjs/core:destroy', () => {
-      if (this.has('osjs/sounds')) {
-        this.make('osjs/sounds').play('service-logout');
+    this.on("osjs/core:destroy", () => {
+      if (this.has("osjs/sounds")) {
+        this.make("osjs/sounds").play("service-logout");
       }
     });
 
     // Forwards messages to an application from internal websocket
-    this.on('osjs/application:socket:message', ({pid, args}) => {
-      const found = Application.getApplications()
-        .find(proc => proc && proc.pid === pid);
+    this.on("osjs/application:socket:message", ({ pid, args }) => {
+      const found = Application.getApplications().find((proc) => proc && proc.pid === pid);
 
       if (found) {
-        found.emit('ws:message', ...args);
+        found.emit("ws:message", ...args);
       }
     });
 
     // Sets up a server ping
-    this.on('osjs/core:connected', config => {
+    this.on("osjs/core:connected", (config) => {
       const pingTime = config.cookie.maxAge / 2;
 
       this.ping = setInterval(() => {
         if (this.ws) {
           if (this.ws.connected && !this.ws.reconnecting) {
-            this.request('/ping').catch(e => console.warn('Error on ping', e));
+            this.request("/ping").catch((e) => console.warn("Error on ping", e));
           }
         }
       }, pingTime);
     });
-
   }
 
   /**
@@ -315,16 +321,16 @@ export default class Core extends CoreBase {
       return false;
     }
 
-    const {uri} = this.config('ws');
+    const { uri } = this.config("ws");
     let wasConnected = false;
 
-    console.log('Creating websocket connection on', uri);
+    console.log("Creating websocket connection on", uri);
 
-    this.ws = new Websocket('CoreSocket', uri, {
-      interval: this.config('ws.connectInterval', 1000)
+    this.ws = new Websocket("CoreSocket", uri, {
+      interval: this.config("ws.connectInterval", 1000),
     });
 
-    this.ws.once('connected', () => {
+    this.ws.once("connected", () => {
       // Allow for some grace-time in case we close prematurely
       setTimeout(() => {
         wasConnected = true;
@@ -332,30 +338,30 @@ export default class Core extends CoreBase {
       }, 100);
     });
 
-    this.ws.on('connected', (ev, reconnected) => {
-      this.emit('osjs/core:connect', ev, reconnected);
+    this.ws.on("connected", (ev, reconnected) => {
+      this.emit("osjs/core:connect", ev, reconnected);
     });
 
-    this.ws.once('failed', ev => {
+    this.ws.once("failed", (ev) => {
       if (!wasConnected) {
-        cb(new Error('Connection closed'));
-        this.emit('osjs/core:connection-failed', ev);
+        cb(new Error("Connection closed"));
+        this.emit("osjs/core:connection-failed", ev);
       }
     });
 
-    this.ws.on('disconnected', ev => {
-      this.emit('osjs/core:disconnect', ev);
+    this.ws.on("disconnected", (ev) => {
+      this.emit("osjs/core:disconnect", ev);
     });
 
-    this.ws.on('message', ev => {
+    this.ws.on("message", (ev) => {
       try {
         const data = JSON.parse(ev.data);
         const params = data.params || [];
 
-        console.debug('WebSocket message', data);
+        console.debug("WebSocket message", data);
         this.emit(data.name, ...params);
       } catch (e) {
-        console.warn('Exception on websocket message', e);
+        console.warn("Exception on websocket message", e);
       }
     });
 
@@ -366,24 +372,21 @@ export default class Core extends CoreBase {
    * Creates event listeners*
    */
   _createListeners() {
-    const handle = data => {
-      const {pid, wid, args} = data;
+    const handle = (data) => {
+      const { pid, wid, args } = data;
 
-      const proc = Application.getApplications()
-        .find(p => p.pid === pid);
+      const proc = Application.getApplications().find((p) => p.pid === pid);
 
-      const win = proc
-        ? proc.windows.find(w => w.wid === wid)
-        : null;
+      const win = proc ? proc.windows.find((w) => w.wid === wid) : null;
 
       if (win) {
-        win.emit('iframe:get', ...(args || []));
+        win.emit("iframe:get", ...(args || []));
       }
     };
 
-    window.addEventListener('message', ev => {
+    window.addEventListener("message", (ev) => {
       const message = ev.data || {};
-      if (message && message.name === 'osjs/iframe:message') {
+      if (message && message.name === "osjs/iframe:message") {
         handle(...(message.params || []));
       }
     });
@@ -402,10 +405,9 @@ export default class Core extends CoreBase {
    * @param {PackageMetadata} [metadata] A package metadata
    * @return {String}
    */
-  url(endpoint = '/', options = {}, metadata = {}) {
+  url(endpoint = "/", options = {}, metadata = {}) {
     return this.urlResolver(endpoint, options, metadata);
   }
-
 
   /**
    * Make a HTTP request
@@ -418,24 +420,21 @@ export default class Core extends CoreBase {
    * @return {*}
    */
   request(url, options = {}, type = null) {
-    const _ = this.has('osjs/locale')
-      ? this.make('osjs/locale').translate
-      : t => t;
+    const _ = this.has("osjs/locale") ? this.make("osjs/locale").translate : (t) => t;
 
-    if (this.config('standalone')) {
-      return Promise.reject(new Error(_('ERR_REQUEST_STANDALONE')));
+    if (this.config("standalone")) {
+      return Promise.reject(new Error(_("ERR_REQUEST_STANDALONE")));
     }
 
     if (!url.match(/^((http|ws|ftp)s?:)/i)) {
       url = this.url(url);
       options = merge(options || {}, this.requestOptions || {});
     }
-    return fetch(url, options, type)
-      .catch(error => {
-        console.warn(error);
+    return fetch(url, options, type).catch((error) => {
+      console.warn(error);
 
-        throw new Error(_('ERR_REQUEST_NOT_OK', error));
-      });
+      throw new Error(_("ERR_REQUEST_NOT_OK", error));
+    });
   }
 
   /**
@@ -451,13 +450,13 @@ export default class Core extends CoreBase {
     //OXZION CHANGE START
     const splash = this.make("oxzion/splash");
     splash.show();
-    this.on(`osjs/application:${name}:launched`, app => {
+    this.on(`osjs/application:${name}:launched`, (app) => {
       splash.destroy();
     });
     this.make("osjs/packages")
       .running()
       .map((appName) => (appName == name ? splash.destroy() : null));
-    return this.make('osjs/packages').launch(name, args, options);
+    return this.make("osjs/packages").launch(name, args, options);
   }
 
   /**
@@ -467,33 +466,37 @@ export default class Core extends CoreBase {
    * @return {Boolean|Application}
    */
   open(file, options = {}) {
-    const _ = this.make('osjs/locale').translate;
+    const _ = this.make("osjs/locale").translate;
 
-    const run = app => this.run(app, {file}, options);
+    const run = (app) => this.run(app, { file }, options);
 
-    if (file.mime === 'osjs/application') {
-      return this.run(file.path.split('/').pop());
+    if (file.mime === "osjs/application") {
+      return this.run(file.path.split("/").pop());
     }
 
-    const compatible = this.make('osjs/packages')
-      .getCompatiblePackages(file.mime);
+    const compatible = this.make("osjs/packages").getCompatiblePackages(file.mime);
 
     if (compatible.length > 0) {
       if (compatible.length > 1) {
         try {
-          this.make('osjs/dialog', 'choice', {
-            title: _('LBL_LAUNCH_SELECT'),
-            message: _('LBL_LAUNCH_SELECT_MESSAGE', file.path),
-            choices: compatible.reduce((o, i) => Object.assign(o, {[i.name]: i.name}), {})
-          }, (btn, value) => {
-            if (btn === 'ok' && value) {
-              run(value);
+          this.make(
+            "osjs/dialog",
+            "choice",
+            {
+              title: _("LBL_LAUNCH_SELECT"),
+              message: _("LBL_LAUNCH_SELECT_MESSAGE", file.path),
+              choices: compatible.reduce((o, i) => Object.assign(o, { [i.name]: i.name }), {}),
+            },
+            (btn, value) => {
+              if (btn === "ok" && value) {
+                run(value);
+              }
             }
-          });
+          );
 
           return true;
         } catch (e) {
-          console.warn('Exception on compability check', e);
+          console.warn("Exception on compability check", e);
         }
       }
 
@@ -510,8 +513,8 @@ export default class Core extends CoreBase {
    * @see EventHandler#off
    */
   off(name, callback = null, force = false) {
-    if (name.match(/^osjs\//) && typeof callback !== 'function') {
-      throw new TypeError('The callback must be a function');
+    if (name.match(/^osjs\//) && typeof callback !== "function") {
+      throw new TypeError("The callback must be a function");
     }
 
     return super.off(name, callback, force);
@@ -537,8 +540,7 @@ export default class Core extends CoreBase {
    * Updates the current user data
    */
   setUser(user) {
-    console.log('user details updated');
+    console.log("user details updated");
     this.user = user;
   }
-
 }

@@ -7,6 +7,7 @@
     {
       "title": "Create User",
       "collapsible": false,
+      "hideLabel": true,
       "key": "createUser",
       "type": "panel",
       "label": "Panel",
@@ -114,7 +115,7 @@
                   "tableView": true,
                   "dataSrc": "url",
                   "data": {
-                    "url": "/user",
+                    "url": "/account/{{data.accountId}}/user",
                     "headers": [
                       {
                         "key": "",
@@ -125,15 +126,18 @@
                   "idPath": "uuid",
                   "valueProperty": "uuid",
                   "template": "<span>{{ item.name }}</span>",
+                  "validate": {
+                    "required": true
+                  },
                   "key": "managerId",
                   "properties": {
                     "absoluteUrl": "true"
                   },
                   "type": "select",
-                  "filter": "filter=[{\"skip\":0,\"take\":10000}]",
-                  "input": true,
                   "lazyLoad": false,
-                  "disableLimit": false
+                  "disableLimit": false,
+                  "filter": "filter=[{\"skip\":0,\"take\":10000}]",
+                  "input": true
                 }
               ],
               "width": 6,
@@ -391,23 +395,18 @@
             {
               "components": [
                 {
-                  "label": "accountId",
-                  "key": "accountId",
-                  "type": "hidden",
-                  "input": true,
-                  "tableView": false
-                },
-                {
-                  "label": "Select Projects",
+                  "label": "Projects",
                   "widget": "choicesjs",
-                  "tableView": true,
+                  "placeholder": "Select Projects",
+                  "tooltip": "Select one or more projects for this user.",
+                  "tableView": false,
                   "multiple": true,
                   "dataSrc": "url",
                   "defaultValue": [
                     {}
                   ],
                   "data": {
-                    "url": "/project",
+                    "url": "/account/{{data.accountId}}/project",
                     "headers": [
                       {
                         "key": "",
@@ -418,16 +417,15 @@
                   "idPath": "uuid",
                   "template": "<span>{{ item.name }}</span>",
                   "clearOnHide": false,
-                  "customDefaultValue": "console.log(data);\n\n",
                   "key": "project",
                   "properties": {
                     "absoluteUrl": "true"
                   },
                   "type": "select",
-                  "filter": "filter=[{\"skip\":0,\"take\":10000}]",
-                  "input": true,
+                  "lazyLoad": false,
                   "disableLimit": false,
-                  "lazyLoad": false
+                  "filter": "filter=[{\"skip\":0,\"take\":10000}]",
+                  "input": true
                 }
               ],
               "width": 6,
@@ -442,11 +440,14 @@
                 {
                   "label": "Role",
                   "widget": "choicesjs",
-                  "tableView": true,
+                  "placeholder": "Select Roles",
+                  "tooltip": "Select one or more roles for this user.",
+                  "uniqueOptions": true,
+                  "tableView": false,
                   "multiple": true,
                   "dataSrc": "url",
                   "data": {
-                    "url": "/role",
+                    "url": "/account/{{data.accountId}}/roles",
                     "headers": [
                       {
                         "key": "",
@@ -456,6 +457,7 @@
                   },
                   "idPath": "uuid",
                   "template": "<span>{{ item.name }}</span>",
+                  "customDefaultValue": "console.log(data)",
                   "validate": {
                     "required": true
                   },
@@ -464,17 +466,10 @@
                     "absoluteUrl": "true"
                   },
                   "type": "select",
-                  "filter": "filter=[{\"skip\":0,\"take\":10000}]",
-                  "input": true,
                   "lazyLoad": false,
-                  "disableLimit": false
-                },
-                {
-                  "label": "uuid",
-                  "key": "uuid",
-                  "type": "hidden",
-                  "input": true,
-                  "tableView": false
+                  "disableLimit": false,
+                  "filter": "filter=[{\"skip\":0,\"take\":10000}]",
+                  "input": true
                 }
               ],
               "width": 6,
@@ -541,6 +536,7 @@
               "currentWidth": 6
             }
           ],
+          "customClass": "pb-3",
           "key": "columns6",
           "type": "columns",
           "input": false,
@@ -571,6 +567,6 @@
   "path": "adminuser",
   "project": "5dc1489e4f668513e9535090",
   "created": "2021-12-01T10:01:16.951Z",
-  "modified": "2022-02-18T13:10:17.494Z",
+  "modified": "2022-05-04T09:15:02.516Z",
   "machineName": "eoxproductsupport:adminUser"
 }

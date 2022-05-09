@@ -25,9 +25,13 @@ export default function Board(props) {
     const { draggableId, destination } = result;
     let url = "/app/" + props.appId + "/file/crud/" + draggableId // also add entity_ID
     let rygColor;
-    if (destination.droppableId === "Delayed") rygColor = "Red";
-    else if (destination.droppableId === "In Progress") rygColor = "Yellow";
-    else if (destination.droppableId === "Completed" || destination.droppableId === "Open") rygColor = "Green";
+    if (destination.droppableId === "Delayed" || destination.droppableId === "Lost") {
+      rygColor = "RED"
+    } else if (destination.droppableId === "In Progress" || destination.droppableId === "Forecast" || destination.droppableId === "Cold" || destination.droppableId === "Chasing" || destination.droppableId === "Prospecting") {
+      rygColor = "YELLOW"
+    } else if (destination.droppableId === "Completed" || destination.droppableId === "Open" || destination.droppableId === "Active" || destination.droppableId === "Won" || destination.droppableId === "Qualified") {
+      rygColor = "GREEN"
+    };
 
     Requests.doRestRequest(
       props.core,
@@ -69,14 +73,20 @@ export default function Board(props) {
   // DateRangePickerCustom - onDateRange, Search
   const setFilterFromProps = (filterFromProps) => {
     // , ...(childFilter.assignedToFilter || []) <- add this for AssignedTO
-    const newFilter = [...(childFilter.dateFilter || []), ...(childFilter.searchFilter || [])]
+    if(filterFromProps){
+      setChildFilter({ ...childFilter, ...filterFromProps })
+    }
+    const newFilter = [...(childFilter.dateFilter || []), ...(filterFromProps?.searchFilter || [])]
     setFilter(newFilter);
   };
 
   return (
     <Container fluid>
       <div className="expense-item k_expense-item">
-        <div style={{ display: "flex" }}>
+        <div style={{
+          display: "flex",
+          alignItems: "center"
+        }}>
           {/* Date Filter hidden because it should get populated from Apppbuilder */}
           <Badge>
             <DateRangePickerCustom

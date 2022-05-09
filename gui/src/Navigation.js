@@ -59,9 +59,7 @@ class Navigation extends React.Component {
           this.props.selectLoad(this.homepage);
           this.addPage({
             detail: {
-              pageContent: [
-                { type: "EntityViewer", fileId: this.params.fileId },
-              ],
+              pageContent: [{ type: "EntityViewer", fileId: this.params.fileId }],
               title: "View",
               icon: "fa fa-eye",
               fileId: this.params.fileId,
@@ -96,9 +94,7 @@ class Navigation extends React.Component {
                   detail: { pageContent: appParams.detail },
                   bubbles: true,
                 });
-                document
-                  .getElementsByClassName(this.breadcrumbDiv)[0]
-                  .dispatchEvent(ev);
+                document.getElementsByClassName(this.breadcrumbDiv)[0].dispatchEvent(ev);
               }
             } catch (e) {
               console.error(e);
@@ -116,33 +112,21 @@ class Navigation extends React.Component {
 
   pageActive(pageId) {
     if (document.getElementById(pageId + "_page")) {
-      document
-        .getElementById(pageId + "_page")
-        .classList.remove("page-inactive");
+      document.getElementById(pageId + "_page").classList.remove("page-inactive");
       document.getElementById(pageId + "_page").classList.add("page-active");
     }
   }
   pageInActive(pageId, dimPage) {
     if (document.getElementById(pageId + "_page")) {
-      document
-        .getElementById(pageId + "_page")
-        .classList.add(dimPage ? "page-dimmed" : "page-inactive");
+      document.getElementById(pageId + "_page").classList.add(dimPage ? "page-dimmed" : "page-inactive");
       document.getElementById(pageId + "_page").classList.remove("page-active");
     }
   }
   componentDidMount() {
-    document
-      .getElementById(this.appNavigationDiv)
-      .addEventListener("addPage", this.addPage, false);
-    document
-      .getElementById(this.appNavigationDiv)
-      .addEventListener("stepDownPage", this.stepDownPage, false);
-    document
-      .getElementById(this.appNavigationDiv)
-      .addEventListener("selectPage", this.selectPage, false);
-    document
-      .getElementById(this.breadcrumbDiv)
-      .addEventListener("addcustomActions", this.addcustomActions, false);
+    document.getElementById(this.appNavigationDiv).addEventListener("addPage", this.addPage, false);
+    document.getElementById(this.appNavigationDiv).addEventListener("stepDownPage", this.stepDownPage, false);
+    document.getElementById(this.appNavigationDiv).addEventListener("selectPage", this.selectPage, false);
+    document.getElementById(this.breadcrumbDiv).addEventListener("addcustomActions", this.addcustomActions, false);
   }
 
   addPage = (e) => {
@@ -155,7 +139,7 @@ class Navigation extends React.Component {
         title: "View",
         icon: "fa fa-eye",
         fileId: e.detail.fileId,
-        ...e.detail
+        ...e.detail,
       };
       if (!this.checkIfEntityViewerPageExists(pageContent)) {
         pages.push(pageContent);
@@ -181,19 +165,11 @@ class Navigation extends React.Component {
         }, 1000);
       }
     }
-    if (
-      e.detail.parentPage &&
-      document.getElementById(e.detail.parentPage + "_page")
-    ) {
-      this.pageInActive(
-        e.detail.parentPage,
-        e.detail.popupConfig ? true : false
-      );
+    if (e.detail.parentPage && document.getElementById(e.detail.parentPage + "_page")) {
+      this.pageInActive(e.detail.parentPage, e.detail.popupConfig ? true : false);
     } else {
       // if (pages[pages.length - 2] && pages[pages.length - 2].pageId) {
-        pages.length > 0
-          ? this.pageInActive(pages[pages.length - 2].pageId)
-          : null;
+      pages.length > 0 ? this.pageInActive(pages[pages.length - 2].pageId) : null;
       // }
     }
     this.setState({ pages: pages });
@@ -210,47 +186,16 @@ class Navigation extends React.Component {
   checkIfEntityViewerPageExists(page) {
     var last_page_key = this.state.pages.length - 1;
     var pages = this.state.pages;
-    if (
-      this.state.pages[last_page_key] &&
-      this.state.pages[last_page_key].pageContent &&
-      this.state.pages[last_page_key].pageContent[0] &&
-      this.state.pages[last_page_key].pageContent[0].type == "EntityViewer" &&
-      page.pageContent &&
-      (page.pageContent[0].type == "Form" ||
-        page.pageContent[0].type == "Comment")
-    ) {
+    if (this.state.pages[last_page_key] && this.state.pages[last_page_key].pageContent && this.state.pages[last_page_key].pageContent[0] && this.state.pages[last_page_key].pageContent[0].type == "EntityViewer" && page.pageContent && (page.pageContent[0].type == "Form" || page.pageContent[0].type == "Comment")) {
       return true;
     }
-    if (
-      this.state.pages[last_page_key] &&
-      this.state.pages[last_page_key].pageContent &&
-      this.state.pages[last_page_key].pageContent[0] &&
-      this.state.pages[last_page_key].pageContent[0].type == "Form" &&
-      page.pageContent &&
-      (page.pageContent[0].type == "EntityViewer" ||
-        page.pageContent[0].type == "Comment")
-    ) {
+    if (this.state.pages[last_page_key] && this.state.pages[last_page_key].pageContent && this.state.pages[last_page_key].pageContent[0] && this.state.pages[last_page_key].pageContent[0].type == "Form" && page.pageContent && (page.pageContent[0].type == "EntityViewer" || page.pageContent[0].type == "Comment")) {
       return true;
     }
-    if (
-      this.state.pages[last_page_key] &&
-      this.state.pages[last_page_key].pageContent &&
-      this.state.pages[last_page_key].pageContent[0] &&
-      this.state.pages[last_page_key].pageContent[0].type == "Comment" &&
-      page.pageContent &&
-      (page.pageContent[0].type == "EntityViewer" ||
-        page.pageContent[0].type == "Form")
-    ) {
+    if (this.state.pages[last_page_key] && this.state.pages[last_page_key].pageContent && this.state.pages[last_page_key].pageContent[0] && this.state.pages[last_page_key].pageContent[0].type == "Comment" && page.pageContent && (page.pageContent[0].type == "EntityViewer" || page.pageContent[0].type == "Form")) {
       return true;
     }
-    if (
-      this.state.pages[last_page_key] &&
-      this.state.pages[last_page_key].pageContent &&
-      this.state.pages[last_page_key].pageContent[0] &&
-      this.state.pages[last_page_key].pageContent[0].type == "EntityViewer" &&
-      page.pageContent &&
-      page.pageContent[0].type == "EntityViewer"
-    ) {
+    if (this.state.pages[last_page_key] && this.state.pages[last_page_key].pageContent && this.state.pages[last_page_key].pageContent[0] && this.state.pages[last_page_key].pageContent[0].type == "EntityViewer" && page.pageContent && page.pageContent[0].type == "EntityViewer") {
       return true;
     }
     return false;
@@ -266,7 +211,7 @@ class Navigation extends React.Component {
         });
       }
     }
-    this.state.pages.length > 0 &&  this.renderBreadcrumbs()
+    this.state.pages.length > 0 && this.renderBreadcrumbs();
   }
 
   stepDownPage = (e) => {
@@ -293,15 +238,8 @@ class Navigation extends React.Component {
       bubbles: true,
     });
     var navigationElement = document.getElementById("navigation_" + this.appId);
-    if (
-      navigationElement &&
-      navigationElement.getElementsByClassName("page-active") &&
-      navigationElement.getElementsByClassName("page-active")[0]
-    ) {
-      var foundElement = this.getElementInsideElement(
-        navigationElement.getElementsByClassName("page-active")[0],
-        "customActionsToolbar"
-      );
+    if (navigationElement && navigationElement.getElementsByClassName("page-active") && navigationElement.getElementsByClassName("page-active")[0]) {
+      var foundElement = this.getElementInsideElement(navigationElement.getElementsByClassName("page-active")[0], "customActionsToolbar");
       if (foundElement) {
         foundElement.dispatchEvent(ev);
       }
@@ -317,10 +255,7 @@ class Navigation extends React.Component {
       if (elementToReturn.id == wantedElementID) {
         return elementToReturn;
       } else {
-        elementToReturn = this.getElementInsideElement(
-          elementToReturn,
-          wantedElementID
-        );
+        elementToReturn = this.getElementInsideElement(elementToReturn, wantedElementID);
         if (elementToReturn) {
           return elementToReturn;
         }
@@ -347,31 +282,17 @@ class Navigation extends React.Component {
       }
       currentValue.title
         ? breadcrumbsList.push(
-            <span className="page-inactive" key={Math.random()}>
+            <span className='page-inactive' key={Math.random()}>
               {index == "0" ? null : <div style={{ marginLeft: "7px" }} />}
               {childNode}
-              <i className="fad fa-angle-right" style={{ marginRight: "-5px" }}></i>
-              <div
-                value={""}
-                disabled={!clickable}
-                className={
-                  clickable ? "activeBreadcrumb" : "disabledBreadcrumb"
-                }
-                type={clickable || index == 0 ? "none" : "info"}
-                selected={false}
-              >
+              <i className='fad fa-angle-right' style={{ marginRight: "-5px" }}></i>
+              <div value={""} disabled={!clickable} className={clickable ? "activeBreadcrumb" : "disabledBreadcrumb"} type={clickable || index == 0 ? "none" : "info"} selected={false}>
                 <a
                   onClick={() => {
-                    clickable
-                      ? this.breadcrumbClick(currentValue, index)
-                      : null;
+                    clickable ? this.breadcrumbClick(currentValue, index) : null;
                   }}
-                  id={`${this.appId}_${currentValue.title}`}
-                >
-                  <i
-                    className={currentValue.icon}
-                    style={{ marginRight: "0px" }}
-                  />
+                  id={`${this.appId}_${currentValue.title}`}>
+                  <i className={currentValue.icon} style={{ marginRight: "0px" }} />
                   {currentValue.title}
                 </a>
               </div>
@@ -401,25 +322,11 @@ class Navigation extends React.Component {
         var pageId = item.pageId + "_page";
         var pageClasses = this.pageClass + " page-active";
         // if (i == this.state.pages.length - 1 || true) {
-          pageList.push(
-            <div className={pageClasses} id={pageId} key={pageId+i}>
-              <Page
-                key={item.pageId}
-                config={this.props.config}
-                proc={this.props.proc}
-                app={this.props.appId}
-                core={this.core}
-                fileId={item.fileId}
-                pageId={item.pageId}
-                notif={this.notif}
-                params={item.params}
-                pageContent={item.pageContent}
-                currentRow={item.currentRow}
-                popupConfig={item.popupConfig}
-                {...item}
-              />
-            </div>
-          );
+        pageList.push(
+          <div className={pageClasses} id={pageId} key={pageId + i}>
+            <Page key={item.pageId} config={this.props.config} proc={this.props.proc} app={this.props.appId} core={this.core} fileId={item.fileId} pageId={item.pageId} notif={this.notif} params={item.params} pageContent={item.pageContent} currentRow={item.currentRow} popupConfig={item.popupConfig} {...item} />
+          </div>
+        );
         // } else {
         //   pageList.push(<div></div>);
         // }
@@ -431,21 +338,15 @@ class Navigation extends React.Component {
   render() {
     const { expanded, selected } = this.state;
     return (
-      <div id={this.appNavigationDiv} className="Navigation">
+      <div id={this.appNavigationDiv} className='Navigation'>
         <Notification ref={this.notif} />
-        <div
-          className={this.breadcrumbDiv + " breadcrumbHeader"}
-          id={this.breadcrumbDiv}
-        >
+        <div className={this.breadcrumbDiv + " breadcrumbHeader"} id={this.breadcrumbDiv}>
           {this.state.pages.length > 0 ? (
-            <div className="row">
+            <div className='row'>
               {/* <div className="breadcrumbs">{this.renderBreadcrumbs()}</div>
               <div className="breadcrumbs"></div> */}
 
-              <div
-                className="col-md-12 customActions dash-manager-buttons"
-                id="customActions"
-              >
+              <div className='col-md-12 customActions dash-manager-buttons' id='customActions'>
                 {this.state.customActions}
               </div>
             </div>
@@ -453,18 +354,9 @@ class Navigation extends React.Component {
         </div>
         <div className={this.pageDiv} style={{ height: "calc(100% - 55px)" }}>
           {this.state.pages.length > 0 ? this.renderPages() : null}
-          {(this.state.selected.activityInstanceId &&
-            this.state.selected.activityInstanceId) ||
-          this.state.selected.pipeline ? (
-            <div id={this.contentDivID} className="AppBuilderPage">
-              <FormRender
-                core={this.core}
-                appId={this.props.appId}
-                notif={this.notif}
-                activityInstanceId={this.state.selected.activityInstanceId}
-                workflowInstanceId={this.state.selected.workflowInstanceId}
-                pipeline={this.state.selected.pipeline}
-              />
+          {(this.state.selected.activityInstanceId && this.state.selected.activityInstanceId) || this.state.selected.pipeline ? (
+            <div id={this.contentDivID} className='AppBuilderPage'>
+              <FormRender core={this.core} appId={this.props.appId} notif={this.notif} activityInstanceId={this.state.selected.activityInstanceId} workflowInstanceId={this.state.selected.workflowInstanceId} pipeline={this.state.selected.pipeline} />
             </div>
           ) : null}
         </div>

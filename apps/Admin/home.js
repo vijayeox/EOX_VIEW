@@ -44,6 +44,7 @@ export default class Home extends React.Component {
   };
 
   onIconClickHandler = (content) => {
+    document.querySelector(`div[title=${content}]`)?.click(); // Applies the necessary classes to indicate it is clicked.
     this.onSelect(content);
   };
 
@@ -65,22 +66,22 @@ export default class Home extends React.Component {
       case "Menu":
         sectionContent = <Menu args={this.core} setTitle={this.setTitle} userProfile={this.userProfile} name='Menu' key={"Menu"} onIconClick={this.onIconClickHandler} />;
         break;
-      case "Account":
+      case "Accounts":
         if (this.userProfile.privileges["MANAGE_ACCOUNT_READ"]) {
-          sectionContent = <Organization args={this.core} setTitle={this.setTitle} userProfile={this.userProfile} name='Account' key='Account' />;
+          sectionContent = <Organization args={this.core} setTitle={this.setTitle} userProfile={this.userProfile} name='Accounts' key='Accounts' />;
         }
         break;
-      case "User":
+      case "Users":
         if (this.userProfile.privileges["MANAGE_USER_READ"]) {
           sectionContent = <User args={this.core} setTitle={this.setTitle} userProfile={this.userProfile} name='Users' key='Users' />;
         }
         break;
-      case "Role":
+      case "Roles":
         if (this.userProfile.privileges["MANAGE_ROLE_READ"]) {
           sectionContent = <Role args={this.core} setTitle={this.setTitle} userProfile={this.userProfile} name='Roles' key='Roles' />;
         }
         break;
-      case "Team":
+      case "Teams":
         if (this.userProfile.privileges["MANAGE_TEAM_READ"]) {
           sectionContent = <Team args={this.core} setTitle={this.setTitle} userProfile={this.userProfile} name='Teams' key='Teams' />;
         }
@@ -98,14 +99,14 @@ export default class Home extends React.Component {
       //     );
       //   }
       //   break;
-      case "Project":
+      case "Projects":
         if (this.userProfile.privileges["MANAGE_PROJECT_READ"]) {
           sectionContent = <Project args={this.core} setTitle={this.setTitle} userProfile={this.userProfile} name='Projects' key='Projects' />;
         }
         break;
-      case "Announcement":
+      case "Announcements":
         if (this.userProfile.privileges["MANAGE_ANNOUNCEMENT_READ"]) {
-          sectionContent = <Announcement args={this.core} setTitle={this.setTitle} userProfile={this.userProfile} name='Announcement' key='Announcement' />;
+          sectionContent = <Announcement args={this.core} setTitle={this.setTitle} userProfile={this.userProfile} name='Announcements' key='Announcements' />;
         }
         break;
       // case "Errorlog":
@@ -142,7 +143,7 @@ export default class Home extends React.Component {
             </NavItem>
 
             {this.userProfile.privileges.MANAGE_ACCOUNT_WRITE || this.userProfile.privileges.MANAGE_ACCOUNT_READ ? (
-              <NavItem eventKey='Account' key='Account' title='Account'>
+              <NavItem eventKey='Accounts' key='Accounts' title='Accounts'>
                 <NavIcon>
                   <i className='fad fa-users-cog' aria-hidden='true'></i>
                 </NavIcon>
@@ -152,7 +153,7 @@ export default class Home extends React.Component {
               ""
             )}
             {this.userProfile.privileges.MANAGE_USER_WRITE || this.userProfile.privileges.MANAGE_USER_READ ? (
-              <NavItem eventKey='User' key='User' title='Users'>
+              <NavItem eventKey='Users' key='Users' title='Users'>
                 <NavIcon>
                   <i className='fad fa-user' aria-hidden='true'></i>
                 </NavIcon>
@@ -162,7 +163,7 @@ export default class Home extends React.Component {
               ""
             )}
             {this.userProfile.privileges.MANAGE_ROLE_WRITE || this.userProfile.privileges.MANAGE_ROLE_READ ? (
-              <NavItem eventKey='Role' key='Role' title='Roles'>
+              <NavItem eventKey='Roles' key='Roles' title='Roles'>
                 <NavIcon>
                   <i className='fad fa-person-sign' aria-hidden='true'></i>
                 </NavIcon>
@@ -172,7 +173,7 @@ export default class Home extends React.Component {
               ""
             )}
             {this.userProfile.privileges.MANAGE_TEAM_WRITE || this.userProfile.privileges.MANAGE_TEAM_READ ? (
-              <NavItem eventKey='Team' key='Team' title='Teams'>
+              <NavItem eventKey='Teams' key='Teams' title='Teams'>
                 <NavIcon>
                   <i className='fad fa-users' aria-hidden='true'></i>
                 </NavIcon>
@@ -206,7 +207,7 @@ export default class Home extends React.Component {
             )} */}
 						{this.userProfile.privileges.MANAGE_PROJECT_WRITE ||
 						this.userProfile.privileges.MANAGE_PROJECT_READ ? (
-							<NavItem eventKey="Project" key="Project" title="Projects">
+							<NavItem eventKey="Projects" key="Projects" title="Projects">
 								<NavIcon>
 									<i className="fad fa-cogs" aria-hidden="true"></i>
 								</NavIcon>
@@ -218,9 +219,9 @@ export default class Home extends React.Component {
 						{this.userProfile.privileges.MANAGE_ANNOUNCEMENT_WRITE ||
 						this.userProfile.privileges.MANAGE_ANNOUNCEMENT_READ ? (
 							<NavItem
-								eventKey="Announcement"
-								key="Announcement"
-								title="Announcement"
+								eventKey="Announcements"
+								key="Announcements"
+								title="Announcements"
 							>
 								<NavIcon>
 									<i className="fad fa-bullhorn" aria-hidden="true"></i>
@@ -234,7 +235,7 @@ export default class Home extends React.Component {
 						this.userProfile.privileges.MANAGE_MAILADMIN_READ ? (
 							<NavItem
 								eventKey={this.userProfile.privileges.MANAGE_MAILADMIN_WRITE}
-								key={this.userProfile.privileges.MANAGE_MAILADMIN_WRITE}
+								// key={this.userProfile.privileges.MANAGE_MAILADMIN_WRITE}
 								onClick={() => this.launchExternalApp("MailAdmin")}
 								title="Mail Admin"
 								key="MailAdmin"
@@ -251,7 +252,7 @@ export default class Home extends React.Component {
 						this.userProfile.privileges.MANAGE_CRMADMIN_READ ? (
 							<NavItem
 								eventKey={this.userProfile.privileges.MANAGE_CRMADMIN_WRITE}
-								key={this.userProfile.privileges.MANAGE_CRMADMIN_WRITE}
+								// key={this.userProfile.privileges.MANAGE_CRMADMIN_WRITE}
 								onClick={() => this.launchExternalApp("CRMAdmin")}
 								title="CRM Admin"
 								key="CRMAdmin"
@@ -268,7 +269,7 @@ export default class Home extends React.Component {
 						this.userProfile.privileges.MANAGE_TASKADMIN_READ ? (
 							<NavItem
 								eventKey={this.userProfile.privileges.MANAGE_TASKADMIN_WRITE}
-								key={this.userProfile.privileges.MANAGE_TASKADMIN_WRITE}
+								// key={this.userProfile.privileges.MANAGE_TASKADMIN_WRITE}
 								onClick={() => this.launchExternalApp("TaskAdmin")}
 								title="PM Admin"
 								key="PMAdmin"
@@ -285,7 +286,7 @@ export default class Home extends React.Component {
 						this.userProfile.privileges.MANAGE_APPBUILDER_WRITE ? (
 							<NavItem
 								eventKey={this.userProfile.privileges.MANAGE_APPBUILDER_READ}
-								key={this.userProfile.privileges.MANAGE_APPBUILDER_READ}
+								// key={this.userProfile.privileges.MANAGE_APPBUILDER_READ}
 								onClick={() => this.launchExternalApp("EOXAppBuilder")}
 								title="App Studio"
 								key="AppBuilder"
@@ -303,7 +304,7 @@ export default class Home extends React.Component {
 						this.userProfile.privileges.MANAGE_OIBUILDER_WRITE ? (
 							<NavItem
 								eventKey={this.userProfile.privileges.MANAGE_OIBUILDER_READ}
-								key={this.userProfile.privileges.MANAGE_OIBUILDER_READ}
+								// key={this.userProfile.privileges.MANAGE_OIBUILDER_READ}
 								onClick={() => this.launchExternalApp("Analytics")}
 								title="OI Studio"
 								key="OI"
@@ -315,18 +316,8 @@ export default class Home extends React.Component {
 							</NavItem>
 						) : (
 							""
-
-            {this.userProfile.privileges.MANAGE_OIBUILDER_READ || this.userProfile.privileges.MANAGE_OIBUILDER_WRITE ? (
-              <NavItem eventKey={this.userProfile.privileges.MANAGE_OIBUILDER_READ} key={this.userProfile.privileges.MANAGE_OIBUILDER_READ} onClick={() => this.launchExternalApp("Analytics")} title='OI Studio' key='OI'>
-                <NavIcon>
-                  <i className='fad fa-chart-bar' aria-hidden='true'></i>
-                </NavIcon>
-                <NavText>OI Studio</NavText>
-              </NavItem>
-            ) : (
-              ""
             )}
-
+          
             {this.userProfile.privileges.MANAGE_USER_READ || this.userProfile.privileges.MANAGE_USER_WRITE ? (
               <NavItem eventKey='EOXLogs' key='EOXLogs' title='EOXLogs' onClick={() => this.externalLink("http://13.58.246.62:3000/")}>
                 <NavIcon>

@@ -202,7 +202,7 @@ class Dashboard extends Component {
             }
           }
           if (widgetFilter.length > 0) {
-            preparedFilter = preparefilter(preapredExtractedFilterValue, widgetFilter);
+            preparedFilter = preparefilter(widgetFilter, preapredExtractedFilterValue);
           }
         }
         this.setState(
@@ -333,13 +333,13 @@ class Dashboard extends Component {
     let drilldownDashboardTitle = data.dashboardTitle;
     event.value = JSON.stringify(dashboardData.data.dashboard);
     if (this.state.preparedDashboardFilter !== null) {
-      //combining dashboardfilter with widgetfilter
-      if (this.state.preparedDashboardFilter.length > 0 && widgetFilter.length > 0) drilldownDashboardFilter = preparefilter(this.state.preparedDashboardFilter, widgetFilter);
+      //combining dashboardfilter with
+      if (this.state.preparedDashboardFilter.length > 0 && widgetFilter.length > 0) drilldownDashboardFilter = preparefilter(widgetFilter, this.state.preparedDashboardFilter);
       else drilldownDashboardFilter = widgetFilter;
       event.dashboardFilter = this.state.preparedDashboardFilter;
     } else if (dashboardFilter.length > 0) {
       //combining dashboardfilter with widgetfilter
-      drilldownDashboardFilter = preparefilter(dashboardFilter, widgetFilter);
+      drilldownDashboardFilter = preparefilter(widgetFilter, dashboardFilter);
       event.dashboardFilter = dashboardFilter;
     }
     event.drilldownDashboardFilter = drilldownDashboardFilter;

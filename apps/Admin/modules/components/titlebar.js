@@ -12,9 +12,10 @@ export class TitleBar extends React.Component {
           alignItems: "center",
           position: "relative",
           width: "92%",
-          top: "5px",
+          top: "2px",
         }}
         className="adminTitleBar"
+        id="titlebar-admin"
       >
         {/* <div> */}
         {/* <div
@@ -43,15 +44,16 @@ export class TitleBar extends React.Component {
               // top: "4px",
               // position: "absolute",
               zIndex: "1",
-              width: "155px",
+              width: "160px",
             }}
           >
             <DropDown
               args={this.props.args}
               mainList={"account"}
               selectedItem={{
-                id: "111",
-                name: "Switch Account",
+                // id:this.props.selectedOrgId
+                // id: "111",
+                name: this.props.selectedOrgId
               }}
               preFetch={true}
               onDataChange={this.props.orgChange}
