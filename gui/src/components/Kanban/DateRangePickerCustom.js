@@ -72,18 +72,6 @@ const DateRangePickerCustom = (props) => {
         ]
         break;
 
-      case "LTE":
-        filter = [
-          { field: cardParameters.end.name, operator: "lte", value: maxdatevalue },
-        ]
-        break;
-
-      case "GTE":
-        filter = [
-          { field: cardParameters.end.name, operator: "gte", value: maxdatevalue },
-        ]
-        break;
-
       case "MTD":
         filter = [
           { field: cardParameters.start.name, operator: "gte", value: mindatevalue },
