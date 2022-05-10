@@ -452,7 +452,7 @@ export default class DocumentViewer extends Component {
                   });
                 }}
               >
-                <i className="fad fa-file-edit"></i>
+                <i className="fas fa-file-edit"></i>
               </button>
             </>
           ) : null}
@@ -493,7 +493,7 @@ export default class DocumentViewer extends Component {
                 });
               }}
             >
-              <i className="fad fa-trash"></i>
+              <i className="fas fa-trash"></i>
             </button>
           ) : null}
           {downloadUrl ? (
@@ -505,7 +505,7 @@ export default class DocumentViewer extends Component {
               title="Download"
               onClick={e => this.navigateOrDownload(e, this.state.selectedDocument, downloadUrl)}
             >
-              <i className="fad fa-download" aria-hidden="true"></i>
+              <i className="fas fa-download" aria-hidden="true"></i>
             </a>
           ) : null}
         </div>

@@ -1,7 +1,7 @@
 {
   "type": "application",
   "name": "Timesheet",
-  "fontIcon":"fad fa-stopwatch",
+  "fontIcon":"fas fa-stopwatch",
   "category": null,
   "server": "server.js",
   "title": {

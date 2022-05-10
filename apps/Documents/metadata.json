@@ -4,7 +4,7 @@
   "category": "organization",
   "autostart":false,
   "icon": "icon.png",
-  "fontIcon":"fad fa-folder-open",
+  "fontIcon":"fas fa-folder-open",
   "icon_white": "icon_white.png",
   "hidden": false,
   "internal": true,

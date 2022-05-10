@@ -48,7 +48,7 @@
 		"@babel/preset-env": "^7.2.3",
 		"@babel/preset-react": "^7.0.0",
 		"@babel/runtime": "^7.2.0",
-		"@fortawesome/fontawesome-pro": "^5.13.0",
+        "@fortawesome/fontawesome-pro": "^6.1.1",
 		"babel-loader": "^8.1.0",
 		"copy-webpack-plugin": "^9.0.1",
 		"css-loader": "^3.6.0",

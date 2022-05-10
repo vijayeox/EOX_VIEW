@@ -224,7 +224,7 @@ export default class GridTemplate extends React.Component {
             this.props.permission.canDelete) && (
             <GridColumn
               title="Actions"
-              minResizableWidth={170}              
+              minResizableWidth={170}
               cell={GridActions(
                 this.props.config.title,
                 this.props.manageGrid.edit,
@@ -261,7 +261,7 @@ class AddButton extends React.Component {
           padding: "8px 6px 5px 10px",
         }}
       >
-        <i className="fad fa-plus" style={{ fontSize: "18px" }}></i>
+        <i className="fas fa-plus" style={{ fontSize: "18px" }}></i>
 
         <p style={{ margin: "0px", paddingLeft: "0px" }}>
           {/* Add {this.props.label} */}

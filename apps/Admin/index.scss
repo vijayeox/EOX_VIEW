@@ -18,7 +18,7 @@ body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown) {
 
 .Window_Admin {
   $primary-color: #275362;
-  @import "~@fortawesome/fontawesome-pro/css/all.css";
+  // @import "~@fortawesome/fontawesome-pro/css/all.css";
   @import url("https://fonts.googleapis.com/css?family=Didact+Gothic");
   @import "./node_modules/bootstrap/dist/css/bootstrap.css";
 
@@ -1391,7 +1391,7 @@ div.iconTitle {
     border-color: #275362 !important;
   }
   .btn.btn-danger,
-  .btn.btn-danger:hover 
+  .btn.btn-danger:hover
    {
     color: #fff;
     background-color: #5a6268;

@@ -557,7 +557,7 @@ export default CommentsView;
 function ReplyTextArea({header, saveComment, core}){
   const emojiId = useMemo(() => `${Math.random()}`,[])
   function stateReducer(toggle, data){
-    return {...toggle, ...data} 
+    return {...toggle, ...data}
   }
   const [state, setState] = useReducer(stateReducer,{
     showEmojiPicker: null,
@@ -570,7 +570,7 @@ function ReplyTextArea({header, saveComment, core}){
     emojis: [],
     showModal: false,
     imageDetails: {},
-    showAuditLog: false, 
+    showAuditLog: false,
   })
   useEffect(() => {
     CommentsView.emojiToggleCallback = (showEmojiPicker) => setState({showEmojiPicker})
@@ -767,7 +767,7 @@ function ReplyTextArea({header, saveComment, core}){
           id="toggleEmojiButton"
         >
           {/* <Smile /> */}
-          <i class="fad fa-grin"></i>
+          <i class="fas fa-grin"></i>
         </button>
       </div>
       <div style={{ padding: "5px", fontSize: "12px" }}>
@@ -831,7 +831,7 @@ function CommentList({ comments, core, fileId, parentId, setReplyCommentToggle, 
   }
   /*
   1
-  1.1 
+  1.1
   add comment in 1.1 -> 1.1.1
   reply to 1 -> 1.2
   refresh 1 children
@@ -845,7 +845,7 @@ function CommentList({ comments, core, fileId, parentId, setReplyCommentToggle, 
       return Promise.resolve(processResponse(response))
      })).then((childCommentsResponse) => {
       setChildComments(childCommentsResponse)
-     })   
+     })
   },[])
   function formatFormData(data) {
     var parsedData = [];
@@ -976,22 +976,22 @@ function CommentList({ comments, core, fileId, parentId, setReplyCommentToggle, 
                   })}
               </div>
               {
-                childComments[commentIdx]?.length > 0 && 
+                childComments[commentIdx]?.length > 0 &&
                 <div className="comment-replies display-flex flex-col">
                 <div className="reply-toggle gap-5" onClick={() => toggleReplies(uniqueId)}>
                   <div className="display-flex gap-5" >
-                    <i class={"fas fa-arrow-circle-"+(isRepliesExpanded && 'down' || 'right')}></i> 
+                    <i class={"fas fa-arrow-circle-"+(isRepliesExpanded && 'down' || 'right')}></i>
                     <div>{isRepliesExpanded && 'Hide' || 'View'} {!isRepliesExpanded && childComments[commentIdx].length} Replies</div>
                   </div>
                 </div>
-                    { isRepliesExpanded && 
-                    <CommentList 
-                      comments={childComments[commentIdx]} 
-                      core={core} 
-                      fileId={fileId} 
+                    { isRepliesExpanded &&
+                    <CommentList
+                      comments={childComments[commentIdx]}
+                      core={core}
+                      fileId={fileId}
                       parentId={uniqueId}
                       setReplyCommentToggle={setReplyCommentToggle}
-                      replyCommentToggle={replyCommentToggle}  
+                      replyCommentToggle={replyCommentToggle}
                     /> }
                 </div>
               }
