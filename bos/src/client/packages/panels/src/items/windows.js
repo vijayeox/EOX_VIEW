@@ -172,13 +172,13 @@ export default class WindowsPanelItem extends PanelItem {
           },
           [
             h("i", {
-              className: fontString.includes("fa-") ? w.icon : "fad fa-globe",
+              className: fontString.includes("fa-") ? w.icon : "fas fa-globe",
               alt: w.title || "(window)",
             }),
             h("span", {}, w.title || "(window)"),
             h("i", {
             label: _("LBL_CLOSE"),
-              className: "fad fa-caret-down",
+              className: "fas fa-caret-down",
               style: {
                 marginLeft: "0.3em",
                 marginRight: "0px",

@@ -132,7 +132,7 @@ class Body extends React.Component {
           <SideNav.Nav defaultSelected={SECTION_DASHBOARD}>
             <NavItem eventKey={SECTION_DATA_SOURCE} key={SECTION_DATA_SOURCE}>
               <NavIcon>
-                <i className='fad fa-database' aria-hidden='true'></i>
+                <i className='fas fa-database' aria-hidden='true'></i>
               </NavIcon>
               <NavText>Data Source</NavText>
             </NavItem>

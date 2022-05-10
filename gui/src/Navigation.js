@@ -285,7 +285,7 @@ class Navigation extends React.Component {
             <span className='page-inactive' key={Math.random()}>
               {index == "0" ? null : <div style={{ marginLeft: "7px" }} />}
               {childNode}
-              <i className='fad fa-angle-right' style={{ marginRight: "-5px" }}></i>
+              <i className='fas fa-angle-right' style={{ marginRight: "-5px" }}></i>
               <div value={""} disabled={!clickable} className={clickable ? "activeBreadcrumb" : "disabledBreadcrumb"} type={clickable || index == 0 ? "none" : "info"} selected={false}>
                 <a
                   onClick={() => {
