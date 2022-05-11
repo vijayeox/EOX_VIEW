@@ -37,9 +37,9 @@ html {
   // background: #275362;
   // padding :0px;
 
-  &[data-focused="false"] {
-    opacity: 0.5;
-  }
+  // &[data-focused="false"] {
+  //   opacity: 0.5;
+  // }
 
   &[data-loading="true"] {
     pointer-events: none;
