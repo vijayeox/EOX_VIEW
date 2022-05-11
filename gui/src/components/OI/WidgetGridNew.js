@@ -85,7 +85,7 @@ export default class WidgetGridNew extends React.Component {
         else{
             this.setState({showContextPopup: true});
         }
-       
+
       };
 
     dataStateChange = (e) => {
@@ -262,11 +262,11 @@ export default class WidgetGridNew extends React.Component {
             //this.handleMoveUp();
             break;
           case "Edit":
-            console.log("Menu Item 2"); 
+            console.log("Menu Item 2");
             //this.handleMoveDown();
             break;
           case "Delete":
-            console.log("Menu Item 3s");  
+            console.log("Menu Item 3s");
           //this.handleDelete();
             break;
           default:
@@ -275,25 +275,25 @@ export default class WidgetGridNew extends React.Component {
             showContextPopup: false,
         });
       };
-    
+
       onFocusHandler = () => {
         clearTimeout(this.blurTimeoutRef);
         this.blurTimeoutRef = undefined;
       };
-    
+
       onBlurTimeout = () => {
         this.setState({
             showContextPopup: false,
         });
-    
+
         this.blurTimeoutRef = undefined;
       };
-    
+
       onBlurHandler = (event) => {
         clearTimeout(this.blurTimeoutRef);
         this.blurTimeoutRef = setTimeout(this.onBlurTimeout);
       };
-    
+
       onPopupOpen = () => {
         this.menuWrapperRef.querySelector("[tabindex]").focus();
       };
@@ -310,7 +310,7 @@ export default class WidgetGridNew extends React.Component {
             this.setState({showContextPopup: true});
         }
       };
-    
+
       handleMoveUp = () => {
         let data = [...this.state.gridData];
         if (this.dataItemIndex !== 0) {
@@ -319,7 +319,7 @@ export default class WidgetGridNew extends React.Component {
           this.setState({ gridData: data });
         }
       };
-    
+
       handleMoveDown = () => {
         let data = [...this.state.gridData];
         if (this.dataItemIndex < this.state.gridData.length) {
@@ -328,7 +328,7 @@ export default class WidgetGridNew extends React.Component {
           this.setState({ gridData: data });
         }
       };
-    
+
       handleDelete = () => {
         let data = [...this.state.gridData];
         data.splice(this.dataItemIndex, 1);
@@ -476,7 +476,7 @@ export default class WidgetGridNew extends React.Component {
                 top: "1px",
                 right: "-2px",
               }}
-              className={"fad fa-times"}
+              className={"fas fa-times"}
               onClick={() => {
                 this.setState({showContextPopup: false});
               }}
@@ -488,7 +488,7 @@ export default class WidgetGridNew extends React.Component {
                         </ExcelExport>
                     </>
                 }
-                {!this.exportToExcel && 
+                {!this.exportToExcel &&
                 <>
                 {
         <Popup
@@ -520,7 +520,7 @@ export default class WidgetGridNew extends React.Component {
                 top: "1px",
                 right: "-2px",
               }}
-              className={"fad fa-times"}
+              className={"fas fa-times"}
               onClick={() => {
                 this.setState({showContextPopup: false});
               }}
