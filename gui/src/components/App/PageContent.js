@@ -491,7 +491,7 @@ class PageContent extends React.Component {
           fileId = item.fileId;
         }
             
-            content.push(<CommentsView pageId={this.state.pageId} appId={this.appId} key={i} core={this.core} url={url} notif={this.notif} fileId={fileId} currentRow={this.state.currentRow} />);
+        content.push(<CommentsView pageId={this.state.pageId} appId={this.appId} key={i} core={this.core} url={url} notif={this.notif} fileId={fileId} currentRow={this.state.currentRow} />);
       } else if (item.type == "TabSegment") {
         content.push(<TabSegment appId={this.appId} core={this.core} notif={this.notif} proc={this.props.proc} fileId={fileId} tabs={item.content.tabs} pageId={this.state.pageId} currentRow={this.state.currentRow} />);
       } else if (item.type == "Dashboard") {

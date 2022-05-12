@@ -182,9 +182,13 @@ class Navigation extends React.Component {
     this.pageActive(e.detail.parentPage);
   };
   addcustomActions = (e) => {
-    const mappedActions = {...this.state.mappedActions};
-    mappedActions[e.detail.pageId] = e.detail.customActions
-    this.setState({ customActions: e.detail.customActions, mappedActions }, () => console.log('custom--',this.state));
+    let mappedActions = {};
+    if(e.detail?.pageId){
+      const clone = {...this.state.mappedActions};
+      clone[e.detail.pageId] = e.detail.customActions
+      mappedActions = { mappedActions : clone }
+    }
+    this.setState({ customActions: e.detail.customActions, ...mappedActions });
   };
   checkIfEntityViewerPageExists(page) {
     var last_page_key = this.state.pages.length - 1;
@@ -209,7 +213,7 @@ class Navigation extends React.Component {
       if (item && item.page_id) {
         this.setState({ pages: [], selected: this.props.selected });
         var page = [{ pageId: item.page_id, title: item.name }];
-        this.setState({ pages: page, customActions : this.state.mappedActions?.[this.props?.selected?.page_id] || [] }, () => {
+        this.setState({ pages: page, customActions : this.state.mappedActions?.[item.page_id] || [] }, () => {
           this.pageActive(item.page_id);
         });
       }
