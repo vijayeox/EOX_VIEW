@@ -343,7 +343,7 @@ export default class OX_Grid extends React.Component {
       gridToolbarContent.push(this.renderListOperations(this.props.gridOperations));
       if (this.props.defaultToolBar != true) {
         let ev = new CustomEvent("addcustomActions", {
-          detail: { customActions: gridToolbarContent },
+          detail: { customActions: gridToolbarContent, pageId : this.props.pageId  },
           bubbles: true,
         });
         document.getElementById(this.appId + "_breadcrumbParent").dispatchEvent(ev);
