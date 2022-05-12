@@ -4,7 +4,7 @@
   "category": "sales",
   "singleton":true,
   "icon": "icon.svg",
-  "fontIcon":"fad fa-handshake-alt",
+  "fontIcon":"fas fa-handshake-alt",
   "defaultAppforOrgs": false,
   "icon_white": "icon_white.svg",
   "title": {

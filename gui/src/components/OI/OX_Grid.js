@@ -234,7 +234,7 @@ export default class OX_Grid extends React.Component {
     const trProps = {
       ...trElement.props,
       onContextMenu: (e) => {
-        e.preventDefault();        
+        e.preventDefault();
         if(this.props.disableContextAction) return;
         this.handleContextMenuOpen(e, dataItem.dataItem);
       },
@@ -870,7 +870,7 @@ export default class OX_Grid extends React.Component {
                 top: "1px",
                 right: "-2px",
               }}
-              className={"fad fa-times"}
+              className={"fas fa-times"}
               onClick={() => {
                 this.setState({ contextMenuOpen: false });
               }}></i>

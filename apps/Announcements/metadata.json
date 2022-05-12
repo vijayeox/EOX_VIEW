@@ -4,7 +4,7 @@
   "category": "utilities",
   "icon" : "icon.svg",
   "icon_white": "icon_white.svg",
-  "fontIcon":"fad fa-bullhorn",
+  "fontIcon":"fas fa-bullhorn",
   "server": "server.js",
   "autostart": true,
   "singleton": true,

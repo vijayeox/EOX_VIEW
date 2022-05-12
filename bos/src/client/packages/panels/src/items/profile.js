@@ -39,9 +39,9 @@ const MySwal = withReactContent(Swal);
 // const edit_account = require("../../../../assets/images/Edit_account.svg").default;
 // const Switch_account = require("../../../../assets/images/Switch_account.svg").default;
 // const open_profile = require("../../../../assets/images/View_Profile.svg").default;
-const edit_account = 'fad fa-user-edit';
-const switch_account = 'fad fa-toggle-off';
-const open_profile = 'fad fa-user-chart';
+const edit_account = 'fas fa-user-edit';
+const switch_account = 'fas fa-toggle-off';
+const open_profile = 'fas fa-user-chart';
 
 
 // const profileIcon = require('../../../../assets/images/profile_pic.png');
