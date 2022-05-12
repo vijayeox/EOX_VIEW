@@ -37,9 +37,9 @@ html {
   // background: #275362;
   // padding :0px;
 
-  &[data-focused="false"] {
-    opacity: 0.5;
-  }
+  // &[data-focused="false"] {
+  //   opacity: 0.5;
+  // }
 
   &[data-loading="true"] {
     pointer-events: none;
@@ -516,7 +516,7 @@ iframe {
 }
 
 // Grid sizes according to screen resolution
-@media screen and (min-width: 320px) {
+@media screen and (min-width: 1080px) {
   .k-grid {
     font-size: 14px !important;
   }
