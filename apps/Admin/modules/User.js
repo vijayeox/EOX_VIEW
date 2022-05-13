@@ -70,10 +70,6 @@ class User extends React.Component {
             title: "Phone Number",
             field: "phone",
           },
-           {
-            title: "Employee ID",
-            field: "employee_id",
-          },
           {
             title: "Designation",
             field: "designation",
