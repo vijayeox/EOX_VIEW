@@ -21,13 +21,18 @@
               "components": [
                 {
                   "label": "First Name",
+                  "tabindex": "1",
                   "tableView": true,
+                  "validate": {
+                    "required": true
+                  },
                   "key": "firstname",
                   "type": "textfield",
                   "input": true
                 },
                 {
                   "label": "Email",
+                  "tabindex": "3",
                   "tableView": true,
                   "validate": {
                     "required": true
@@ -48,13 +53,18 @@
               "components": [
                 {
                   "label": "Last Name",
+                  "tabindex": "2",
                   "tableView": true,
+                  "validate": {
+                    "required": true
+                  },
                   "key": "lastname",
                   "type": "textfield",
                   "input": true
                 },
                 {
                   "label": "Username",
+                  "tabindex": "4",
                   "tableView": true,
                   "validate": {
                     "required": true
@@ -112,6 +122,7 @@
                 {
                   "label": "Manager Assigned",
                   "widget": "choicesjs",
+                  "tabindex": "5",
                   "tableView": true,
                   "dataSrc": "url",
                   "data": {
@@ -151,6 +162,7 @@
               "components": [
                 {
                   "label": "Designation",
+                  "tabindex": "6",
                   "tableView": true,
                   "validate": {
                     "required": true
@@ -181,6 +193,7 @@
                 {
                   "label": "Country",
                   "widget": "choicesjs",
+                  "tabindex": "7",
                   "tableView": true,
                   "dataSrc": "custom",
                   "data": {
@@ -209,6 +222,7 @@
                   "label": "State",
                   "widget": "choicesjs",
                   "customClass": ".choices__list--dropdown",
+                  "tabindex": "8",
                   "tableView": true,
                   "dataSrc": "custom",
                   "data": {
@@ -252,6 +266,7 @@
                 {
                   "label": "Gender",
                   "optionsLabelPosition": "right",
+                  "tabindex": "9",
                   "inline": true,
                   "tableView": false,
                   "values": [
@@ -286,14 +301,13 @@
                 {
                   "label": "Date of Birth",
                   "format": "yyyy-MM-dd",
+                  "tabindex": "10",
                   "tableView": false,
-                  "enableMinDateInput": false,
                   "datePicker": {
                     "disableWeekends": false,
                     "disableWeekdays": false,
                     "maxDate": "moment().subtract(18,'year')"
                   },
-                  "enableMaxDateInput": true,
                   "enableTime": false,
                   "timePicker": {
                     "showMeridian": false
@@ -302,6 +316,8 @@
                   "validate": {
                     "required": true
                   },
+                  "enableMinDateInput": false,
+                  "enableMaxDateInput": true,
                   "key": "date_of_birth",
                   "type": "datetime",
                   "input": true,
@@ -337,13 +353,12 @@
                 {
                   "label": "Date of Joining",
                   "format": "yyyy-MM-dd",
+                  "tabindex": "11",
                   "tableView": false,
-                  "enableMinDateInput": false,
                   "datePicker": {
                     "disableWeekends": false,
                     "disableWeekdays": false
                   },
-                  "enableMaxDateInput": false,
                   "enableTime": false,
                   "timePicker": {
                     "showMeridian": false
@@ -353,6 +368,8 @@
                     "required": true,
                     "custom": "valid = (input > data.date_of_birth) ? true : 'Date of joining should be greater than date of birth';"
                   },
+                  "enableMinDateInput": false,
+                  "enableMaxDateInput": false,
                   "key": "date_of_join",
                   "type": "datetime",
                   "input": true,
@@ -399,6 +416,7 @@
                   "widget": "choicesjs",
                   "placeholder": "Select Projects",
                   "tooltip": "Select one or more projects for this user.",
+                  "tabindex": "12",
                   "tableView": false,
                   "multiple": true,
                   "dataSrc": "url",
@@ -442,6 +460,7 @@
                   "widget": "choicesjs",
                   "placeholder": "Select Roles",
                   "tooltip": "Select one or more roles for this user.",
+                  "tabindex": "13",
                   "uniqueOptions": true,
                   "tableView": false,
                   "multiple": true,
@@ -493,6 +512,7 @@
                 {
                   "label": "Submit",
                   "showValidations": false,
+                  "tabindex": "14",
                   "disableOnInvalid": true,
                   "tableView": false,
                   "key": "submit",
@@ -500,8 +520,8 @@
                     "style": "position:absolute;right:10px;top:-3px;"
                   },
                   "type": "button",
-                  "input": true,
-                  "saveOnEnter": false
+                  "saveOnEnter": false,
+                  "input": true
                 }
               ],
               "width": 6,
@@ -518,6 +538,7 @@
                   "action": "event",
                   "showValidations": false,
                   "theme": "secondary",
+                  "tabindex": "15",
                   "tableView": false,
                   "key": "cancel",
                   "attributes": {
@@ -567,6 +588,6 @@
   "path": "adminuser",
   "project": "5dc1489e4f668513e9535090",
   "created": "2021-12-01T10:01:16.951Z",
-  "modified": "2022-05-04T09:15:02.516Z",
+  "modified": "2022-05-13T07:55:14.826Z",
   "machineName": "eoxproductsupport:adminUser"
 }
