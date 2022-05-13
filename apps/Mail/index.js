@@ -54,7 +54,7 @@
     if (parent.childNodes[3].getAttribute("data-action") == "minimize") {
       var clonedItem = (parent.childNodes[3]).cloneNode(true);
       clonedItem.className = "osjs-window-button dummyCloseButton";
-      parent.appendChild(clonedItem);
+      // parent.appendChild(clonedItem);
     }
   }
 
