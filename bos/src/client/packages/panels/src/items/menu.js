@@ -50,7 +50,7 @@ const makeCategory = (category, core) => {
   let captionDiv = document.createElement("div");
   captionDiv.classList.add("caption");
   let dropdown = document.createElement("i");
-  dropdown.classList.add("fad");
+  dropdown.classList.add("fas");
   dropdown.classList.add("fa-caret-down");
   dropdown.classList.add("dropdown-icon");
   dropdown.style.float = "right";
