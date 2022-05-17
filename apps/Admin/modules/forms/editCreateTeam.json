@@ -108,6 +108,7 @@
                 {
                   "label": "Parent Team",
                   "widget": "choicesjs",
+                  "description": "**Please do not choose the same team name as the parent team**",
                   "tableView": true,
                   "dataSrc": "url",
                   "data": {
@@ -121,8 +122,9 @@
                   },
                   "idPath": "uuid",
                   "valueProperty": "uuid",
-                  "template": "<span>{{ item.name }}</span>",
-                  "calculateValue": "if(data.parent_id === \"\"){\n  value = null\n}\n",
+                  "template": "<span>{{ item.name }}</span>\n",
+                  "customOptions": "",
+                  "calculateValue": "if(data.parent_id === \"\"){\n  value = null\n}",
                   "allowCalculateOverride": true,
                   "key": "parent_id",
                   "properties": {
@@ -233,6 +235,6 @@
   "path": "adminteam",
   "project": "5dc1489e4f668513e9535090",
   "created": "2021-12-01T10:14:34.756Z",
-  "modified": "2022-05-04T09:10:23.650Z",
+  "modified": "2022-05-17T12:49:26.939Z",
   "machineName": "eoxproductsupport:adminTeam"
 }
