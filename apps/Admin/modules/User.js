@@ -27,7 +27,7 @@ class User extends React.Component {
         text: "CREATE",
         title: "Create New",
       },
-      resetPassword: {
+      reset: {
         type: "button",
         icon: "fas fa-redo",
         text: "RESET",
@@ -86,9 +86,11 @@ class User extends React.Component {
         accountData: [],
         selectedOrg: this.props.userProfile.accountId,
         permission: {
-          canAdd: this.props.userProfile.privileges.MANAGE_USER_CREATE,
+          canCreate: this.props.userProfile.privileges.MANAGE_USER_CREATE,
           canEdit: this.props.userProfile.privileges.MANAGE_USER_WRITE,
           canDelete: this.props.userProfile.privileges.MANAGE_USER_DELETE,
+          canReset:this.props.userProfile.privileges.MANAGE_USER_WRITE,
+          canAdd:false,
         },
       }),
       (this.api = "account/" + this.state.selectedOrg + "/user");
