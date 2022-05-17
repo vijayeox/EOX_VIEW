@@ -83,9 +83,11 @@ class Announcement extends React.Component {
         accountData: [],
         selectedOrg: this.props.userProfile.accountId,
         permission: {
-          canAdd: this.props.userProfile.privileges.MANAGE_ANNOUNCEMENT_CREATE,
+          canCreate: this.props.userProfile.privileges.MANAGE_ANNOUNCEMENT_CREATE,
           canEdit: this.props.userProfile.privileges.MANAGE_ANNOUNCEMENT_WRITE,
           canDelete:this.props.userProfile.privileges.MANAGE_ANNOUNCEMENT_DELETE,
+          canAdd:this.props.userProfile.privileges.MANAGE_ANNOUNCEMENT_WRITE,
+          canReset:false,
         },
         skip: 0,
         isLoading: true,

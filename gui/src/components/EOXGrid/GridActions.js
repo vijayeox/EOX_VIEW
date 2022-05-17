@@ -27,7 +27,9 @@ export default class GridActions extends React.Component {
     this.permissionMap = {
       canEdit: "edit",
       canDelete: "delete",
-      canAdd: "create",
+      canCreate: "create",
+      canAdd:"add",
+      canReset:"reset",
     };
   }
 
@@ -205,11 +207,14 @@ export default class GridActions extends React.Component {
 
   add = (data, config) => {
     let addUsersTemplate;
-    this.setState({
-      visible: !this.state.visible,
-    });
+    // this.setState({
+    //   visible: !this.state.visible,
+    // });
 
     if (config.addAnnouncementFlag) {
+      this.setState({
+        visible: !this.state.visible,
+      });
       // this.loader.show(this.adminWindow);
       Requests.getAnnouncementTeams(this.core, data.uuid).then((response) => {
         this.addUsersTemplate = React.createElement(MultiSelect, {
@@ -238,6 +243,9 @@ export default class GridActions extends React.Component {
         );
       });
     } else if (config) {
+      this.setState({
+        visible: !this.state.visible,
+      });
       var multiselectElement = React.createElement(MultiSelect, {
         args: this.core,
         config: {
@@ -274,6 +282,9 @@ export default class GridActions extends React.Component {
         );
       }
     } else {
+      this.setState({
+        visible: !this.state.visible,
+      });
       let addUsersTemplate = React.createElement(MultiSelect, {
         args: this.core,
         config: {
@@ -301,6 +312,9 @@ export default class GridActions extends React.Component {
       document.getElementById("eox-grid").style.marginTop = "-35px";
       document.getElementById("dash-manager-button").classList.remove("display-none")
     }
+    ReactDOM.unmountComponentAtNode(
+      document.getElementById("eox-grid-form")
+    );
     this.setState({
       visible: !this.state.visible,
     });
@@ -374,22 +388,22 @@ export default class GridActions extends React.Component {
     this.toggleDialog();
   };
 
-  getFilteredActions = (obj) => {
-    let permissions = this.permission;
+  // getFilteredActions = (obj) => {
+  //   let permissions = this.permission;
 
-    Object.keys(obj).forEach(key => {
-      if ((key === "delete") && ((permissions.canDelete != true) || (!permissions.canDelete))) {
-        obj = delete obj[`${key}`];
-      } else if ((key === "edit") && ((permissions.canEdit != true) || (!permissions.canEdit))) {
-        obj = delete obj[`${key}`];
-      }
-      //we dont have create action inside the list view -actions 
-      //  if(key === "create" && ((permissions.canAdd !== true )|| (permissions.canAdd === undefined ))){
-      //   obj=  delete obj[`${key}`];
-      //  }
-    })
-    return obj;
-  }
+  //   Object.keys(obj).forEach(key => {
+  //     if ((key === "delete") && ((permissions.canDelete != true) || (!permissions.canDelete))) {
+  //       obj = delete obj[`${key}`];
+  //     } else if ((key === "edit") && ((permissions.canEdit != true) || (!permissions.canEdit))) {
+  //       obj = delete obj[`${key}`];
+  //     }
+  //     //we dont have create action inside the list view -actions 
+  //     //  if(key === "create" && ((permissions.canAdd !== true )|| (permissions.canAdd === undefined ))){
+  //     //   obj=  delete obj[`${key}`];
+  //     //  }
+  //   })
+  //   return obj;
+  // }
 
   showConfirm(actionFunction, args, text, confirmButtonText) {
     Swal.fire({
