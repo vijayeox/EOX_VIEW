@@ -83,9 +83,11 @@ class Announcement extends React.Component {
         accountData: [],
         selectedOrg: this.props.userProfile.accountId,
         permission: {
-          canAdd: this.props.userProfile.privileges.MANAGE_ANNOUNCEMENT_CREATE,
+          canCreate: this.props.userProfile.privileges.MANAGE_ANNOUNCEMENT_CREATE,
           canEdit: this.props.userProfile.privileges.MANAGE_ANNOUNCEMENT_WRITE,
           canDelete:this.props.userProfile.privileges.MANAGE_ANNOUNCEMENT_DELETE,
+          canAdd:this.props.userProfile.privileges.MANAGE_ANNOUNCEMENT_WRITE,
+          canReset:false,
         },
         skip: 0,
         isLoading: true,
@@ -183,6 +185,7 @@ class Announcement extends React.Component {
           menu={this.props.menu}
           args={this.core}
           orgChange={this.orgChange}
+          selectedOrgId={this.props.userProfile.active_account.name}
           orgSwitch={
             this.props.userProfile.privileges.MANAGE_ACCOUNT_WRITE
               ? true

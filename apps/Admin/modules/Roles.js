@@ -70,12 +70,14 @@ class Role extends React.Component {
         accountData: [],
         selectedOrg: this.props.userProfile.accountId,
         permission: {
-          canAdd: this.props.userProfile.privileges.MANAGE_ROLE_CREATE,
+          canCreate: this.props.userProfile.privileges.MANAGE_ROLE_CREATE,
           canEdit: this.props.userProfile.privileges.MANAGE_ROLE_WRITE,
           canDelete: this.props.userProfile.privileges.MANAGE_ROLE_DELETE,
+          canAdd:false,
+          canReset:false,
         },
       }),
-      (this.api = "account/" + this.state.selectedOrg + "/role");
+      (this.api = "account/" + this.state.selectedOrg + "/roles");
     // this.editApi =  "/role";
     this.editApi = "account/" + this.state.selectedOrg + "/role";
     this.createApi = "account/" + this.state.selectedOrg + "/role";
@@ -84,7 +86,7 @@ class Role extends React.Component {
 
   orgChange = (event) => {
     this.setState({ selectedOrg: event.target.value, isLoading: true }, () => {
-      this.api = "account/" + this.state.selectedOrg + "/role";
+      this.api = "account/" + this.state.selectedOrg + "/roles";
       this.createApi = "account/" + this.state.selectedOrg + "/role";
       this.editApi = "account/" + this.state.selectedOrg + "/role";
       GetData(this.api).then((data) => {
@@ -199,6 +201,7 @@ class Role extends React.Component {
           menu={this.props.menu}
           args={this.core}
           orgChange={this.orgChange}
+          selectedOrgId={this.props.userProfile.active_account.name}
           orgSwitch={
             this.props.userProfile.privileges.MANAGE_ACCOUNT_WRITE
               ? true

@@ -6,7 +6,7 @@
   "icon": "icon.png",
   "singleton": true,
   "hidden": false,
-  "fontIcon":"fad fa-folder-tree",
+  "fontIcon":"fas fa-folder-tree",
   "icon_white": "icon_white.png",
   "title": {
     "en_EN": "Project Management"

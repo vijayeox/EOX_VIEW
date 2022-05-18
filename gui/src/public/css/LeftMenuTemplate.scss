@@ -14,6 +14,12 @@
     position: relative;
     // overflow-y: auto;
     // overflow-x: hidden; // added overflow-y : auto [BUG #27964]
+    div[role="menu"] > div[role="presentation"]:not(.sidenav---selected---1EK3y):not(.sidenav---highlighted---oUx9u){
+      background: #275362;
+    }
+    div[class="sidenav---sidenav-navitem---uwIJ- sidenav---selected---1EK3y sidenav---highlighted---oUx9u"]{
+      background: #13323c;
+    }
   }
 
   // added custom scroll bar for all apps

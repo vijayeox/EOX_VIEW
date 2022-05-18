@@ -81,7 +81,7 @@ export default class LogoutPanelItem extends PanelItem {
         },
         [
           h("i", {
-            className: "fad fa-sign-out",
+            className: "fas fa-sign-out",
             alt: "logout-Icon",
           })
         ]

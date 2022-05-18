@@ -16,8 +16,8 @@
     "dependencies": {
         "@amcharts/amcharts4": "4.9.13",
         "@amcharts/amcharts4-geodata": "4.1.14",
-        "@fortawesome/fontawesome-pro": "^5.13.0",
-        "@fortawesome/pro-light-svg-icons": "^5.15.4",
+        "@fortawesome/fontawesome-pro": "^6.1.1",
+        "@fortawesome/pro-light-svg-icons": "^6.1.1",
         "@fortawesome/react-fontawesome": "^0.1.15",
         "@progress/kendo-data-query": "^1.5.5",
         "@progress/kendo-licensing": "^1.1.4",

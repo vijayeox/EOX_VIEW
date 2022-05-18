@@ -73,9 +73,11 @@ class Team extends React.Component {
       selectedOrg: this.props.userProfile.accountId,
       isChildGrid: true,
       permission: {
-        canAdd: this.props.userProfile.privileges.MANAGE_TEAM_CREATE,
+        canCreate: this.props.userProfile.privileges.MANAGE_TEAM_CREATE,
         canEdit: this.props.userProfile.privileges.MANAGE_TEAM_WRITE,
         canDelete: this.props.userProfile.privileges.MANAGE_TEAM_DELETE,
+        canAdd:this.props.userProfile.privileges.MANAGE_TEAM_WRITE,
+        canReset:false,
       },
     }),
       (this.api = "account/" + this.state.selectedOrg + "/teams");
@@ -171,6 +173,7 @@ class Team extends React.Component {
           menu={this.props.menu}
           args={this.core}
           orgChange={this.orgChange}
+          selectedOrgId={this.props.userProfile.active_account.name}
           orgSwitch={
             this.props.userProfile.privileges.MANAGE_ACCOUNT_WRITE
               ? true
