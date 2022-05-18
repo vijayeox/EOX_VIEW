@@ -234,7 +234,7 @@ export default class OX_Grid extends React.Component {
     const trProps = {
       ...trElement.props,
       onContextMenu: (e) => {
-        e.preventDefault();        
+        e.preventDefault();
         if(this.props.disableContextAction) return;
         this.handleContextMenuOpen(e, dataItem.dataItem);
       },
@@ -343,7 +343,7 @@ export default class OX_Grid extends React.Component {
       gridToolbarContent.push(this.renderListOperations(this.props.gridOperations));
       if (this.props.defaultToolBar != true) {
         let ev = new CustomEvent("addcustomActions", {
-          detail: { customActions: gridToolbarContent },
+          detail: { customActions: gridToolbarContent, pageId : this.props.pageId  },
           bubbles: true,
         });
         document.getElementById(this.appId + "_breadcrumbParent").dispatchEvent(ev);
@@ -870,7 +870,7 @@ export default class OX_Grid extends React.Component {
                 top: "1px",
                 right: "-2px",
               }}
-              className={"fad fa-times"}
+              className={"fas fa-times"}
               onClick={() => {
                 this.setState({ contextMenuOpen: false });
               }}></i>

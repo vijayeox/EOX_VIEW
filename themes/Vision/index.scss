@@ -37,9 +37,9 @@ html {
   // background: #275362;
   // padding :0px;
 
-  &[data-focused="false"] {
-    opacity: 0.5;
-  }
+  // &[data-focused="false"] {
+  //   opacity: 0.5;
+  // }
 
   &[data-loading="true"] {
     pointer-events: none;
@@ -516,15 +516,15 @@ iframe {
 }
 
 // Grid sizes according to screen resolution
-@media screen and (min-width: 320px) {
+@media screen and (min-width: 1080px) {
   .k-grid {
-    font-size: 1.2vh !important;
+    font-size: 14px !important;
   }
   .GridCustomStyle .k-grid-table {
-    font-size: 1.2vh !important;
+    font-size: 14px !important;
   }
   .k-grid-header .k-header {
-    font-size: 12px !important;
+    font-size: 16px !important;
   }
 
   // Added as a table/Grid breakpoint - Refer customStyles.scss (gui/src/Grid/customStyles.scss)
@@ -540,10 +540,10 @@ iframe {
 
 @media screen and (min-width: 1366px) {
   .k-grid {
-    font-size: 1.8vh !important;
+    font-size: 14px !important;
   }
   .GridCustomStyle .k-grid-table {
-    font-size: 1.8vh !important;
+    font-size: 14px !important;
   }
   .k-grid-header .k-header {
     font-size: 16px !important;

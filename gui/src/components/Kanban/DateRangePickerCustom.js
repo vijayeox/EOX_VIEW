@@ -72,18 +72,6 @@ const DateRangePickerCustom = (props) => {
         ]
         break;
 
-      case "LTE":
-        filter = [
-          { field: cardParameters.end.name, operator: "lte", value: maxdatevalue },
-        ]
-        break;
-
-      case "GTE":
-        filter = [
-          { field: cardParameters.end.name, operator: "gte", value: maxdatevalue },
-        ]
-        break;
-
       case "MTD":
         filter = [
           { field: cardParameters.start.name, operator: "gte", value: mindatevalue },
@@ -157,7 +145,7 @@ const DateRangePickerCustom = (props) => {
           <div className="dashboard-filter-field" id="" style={{ minWidth: "auto" }}>
             <Form.Group className="dashboard-filter-field">
               <Form.Label>Date</Form.Label>
-              <Form.Control className="dashboardTextField field-width-150" as="select" name="date" onChange={(e) => setSelectedValue(e.target.value)} required>
+              <Form.Control className="dashboardTextField field-width-150" as="select" name="date" value={selectedValue} onChange={(e) => setSelectedValue(e.target.value)} required>
                 {
                   Object.keys(dateFilter).map((item, index) => {
                     return (<option key={index} value={item}>{item}</option>)
@@ -205,7 +193,7 @@ const DateRangePickerCustom = (props) => {
               </div>
             </div>
           }
-          <div><Button id="k_button" onClick={props.setFilterFromProps} disabled={(startDate > endDate) ? true : false}> Submit </Button></div>
+          <div><Button id="k_button" onClick={() => props.setFilterFromProps()} disabled={(startDate > endDate) ? true : false}> Submit </Button></div>
         </div>
       </DropdownMenu>
     </Dropdown>

@@ -179,7 +179,7 @@ class EntityViewer extends React.Component {
       </div>
     );
     let ev = new CustomEvent("addcustomActions", {
-      detail: { customActions: gridToolbarContent },
+      detail: { customActions: gridToolbarContent, pageId : this.props.pageId  },
       bubbles: true,
     });
     document.getElementById(this.appId + "_breadcrumbParent").dispatchEvent(ev);

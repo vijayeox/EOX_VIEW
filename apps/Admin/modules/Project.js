@@ -72,9 +72,11 @@ class Project extends React.Component {
         selectedOrg: this.props.userProfile.accountId,
 
         permission: {
-          canAdd: this.props.userProfile.privileges.MANAGE_PROJECT_CREATE,
+          canCreate: this.props.userProfile.privileges.MANAGE_PROJECT_CREATE,
           canEdit: this.props.userProfile.privileges.MANAGE_PROJECT_WRITE,
           canDelete: this.props.userProfile.privileges.MANAGE_PROJECT_DELETE,
+          canAdd:this.props.userProfile.privileges.MANAGE_PROJECT_WRITE,
+          canReset:false,
         },
       }),
     this.api = "account/" + this.state.selectedOrg + "/projects";
@@ -195,6 +197,7 @@ class Project extends React.Component {
           menu={this.props.menu}
           args={this.core}
           orgChange={this.orgChange}
+          selectedOrgId={this.props.userProfile.active_account.name}
           orgSwitch={
             this.props.userProfile.privileges.MANAGE_ACCOUNT_WRITE
               ? true
