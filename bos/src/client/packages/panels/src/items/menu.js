@@ -121,7 +121,7 @@ const makeTree = (core, __, metadata) => {
       categories[cat].items.push({
         icon: getIcon(core, m),
         label: getTitle(locale, m),
-        fontIcon: m.fontIcon ? m.fontIcon : "fad fa-globe",
+        fontIcon: m.fontIcon ? m.fontIcon : "fas fa-globe",
         data: {
           name: m.name,
         },
