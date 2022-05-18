@@ -291,7 +291,8 @@ export default class DocumentViewer extends Component {
                         </Card>
                       );
                     })}
-                    {this.state.folderType[docType] == "file" ? (
+                    {/* [#35182] Remove upload button */}
+                    {/* {this.state.folderType[docType] == "file" ? (
                       <div className="popupWindow">
                         <Upload
                           batch={false}
@@ -337,7 +338,7 @@ export default class DocumentViewer extends Component {
                           Upload
                         </button>
                       </div>
-                    ) : null}
+                    ) : null} */}
                   </Card.Body>
                 </Accordion.Collapse>
               </Card>
@@ -451,7 +452,7 @@ export default class DocumentViewer extends Component {
                   });
                 }}
               >
-                <i className="fad fa-file-edit"></i>
+                <i className="fas fa-file-edit"></i>
               </button>
             </>
           ) : null}
@@ -492,7 +493,7 @@ export default class DocumentViewer extends Component {
                 });
               }}
             >
-              <i className="fad fa-trash"></i>
+              <i className="fas fa-trash"></i>
             </button>
           ) : null}
           {downloadUrl ? (
@@ -504,7 +505,7 @@ export default class DocumentViewer extends Component {
               title="Download"
               onClick={e => this.navigateOrDownload(e, this.state.selectedDocument, downloadUrl)}
             >
-              <i className="fad fa-download" aria-hidden="true"></i>
+              <i className="fas fa-download" aria-hidden="true"></i>
             </a>
           ) : null}
         </div>

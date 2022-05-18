@@ -1617,7 +1617,7 @@ class BaseFormRenderer extends React.Component {
           );
         }
         let ev = new CustomEvent("addcustomActions", {
-          detail: { customActions: gridToolbarContent },
+          detail: { customActions: gridToolbarContent, pageId : this.props.pageId },
           bubbles: true,
         });
         if (entityPage?.data?.content?.find((c) => c?.type === "TabSegment"))

@@ -81,9 +81,11 @@ class Organization extends React.Component {
       isLoading: true,
       accountData: [],
       permission: {
-        canAdd: this.props.userProfile.privileges.MANAGE_ACCOUNT_CREATE,
+        canCreate: this.props.userProfile.privileges.MANAGE_ACCOUNT_CREATE,
         canEdit: this.props.userProfile.privileges.MANAGE_ACCOUNT_WRITE,
         canDelete: this.props.userProfile.privileges.MANAGE_ACCOUNT_DELETE,
+        canAdd:this.props.userProfile.privileges.MANAGE_ACCOUNT_WRITE,
+        canReset:false,
       },
       total: 0,
       skip: 0,

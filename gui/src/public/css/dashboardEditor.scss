@@ -263,6 +263,8 @@ div.filter-form-container.show-filter-panel {
     align-items: center;
     position: relative;
     margin-bottom: 0px;
+    justify-content: flex-start;
+    margin: 5px 0 0 0;
   }
 }
 
@@ -272,29 +274,32 @@ div.filter-form-container.show-filter-panel {
   border-radius: 0;
   box-shadow: none;
   min-width: 100%;
-  margin-top: 1em;
+  margin-top: .5em;
   // margin-top: 4em;
 }
 
 .dashboard-rollup-button {
   color: white;
   cursor: pointer;
-  right: 0%;
-  position: absolute;
-  top: 15%;
+  // right: 0%;
+  // position: absolute;
+  // top: 15%;
   background-color: rgb(39, 83, 98);
   overflow: hidden;
   padding: 0.5em 1em;
   border-radius: 0 0.25rem 0.25rem 0;
+
+  margin-left: auto;
 }
 
 .dashboard-filter-description {
-  position: absolute;
-  left: 0;
-  top: 0;
-  height: 30px;
+  // position: absolute;
+  // left: 0;
+  // top: 0;
+  height: 32px;
   width: 100%;
-  font-size: 13px !important;
+  font-size: 15px !important;
+  border-radius: 0 !important;
 }
 
 .dashboard-preview-tab {

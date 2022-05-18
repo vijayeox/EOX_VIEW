@@ -9,7 +9,6 @@ import FormRender from "../App/FormRender";
 import Requests from "../../Requests";
 import Swal from "sweetalert2";
 import { GridDetailRow } from "@progress/kendo-react-grid";
-import { split } from "lodash";
 
 const loadingPanel = (
   <div className="k-loading-mask">
@@ -175,8 +174,15 @@ export default class EOXGrid extends React.Component {
     let gridsId = document.getElementsByClassName("eox-grids")[0].parentNode.id;
     if (createFlag) {
       document.getElementById(gridsId).classList.add("display-none");
-      (this.api  === "account") ?document.getElementById("eox-grid").style.marginTop = "-38px":document.getElementById("eox-grid").style.marginTop = "-25px";
-      document.getElementById("eox-grid").style.zIndex = "99";
+      document.getElementById("titlebar-admin").style.zIndex = "10";
+      (this.api === "account") ? document.getElementById("eox-grid").style.marginTop = "-38px" : document.getElementById("eox-grid").style.marginTop = "-25px";
+      if(this.isReactComponent){
+        document.getElementById("eox-grid").style.marginTop = "-35px";
+        document.getElementById("eox-grid").style.left = "8px";
+      }else{
+        document.getElementById("eox-grid").style.marginTop = "-25px";
+      }
+    
       // document.getElementById("dash-manager-button").classList.add("display-none");
     } else {
       document.getElementById(gridsId).classList.remove("display-none");
@@ -198,10 +204,10 @@ export default class EOXGrid extends React.Component {
         formAction={"post"} 
         createApi={this.createApi} 
         selectedOrg={this.props.selectedOrg} 
-        create={this.create(null)}
         // diableField="false"
         gridsId= {gridsId}
         isReactComponent={this.isReactComponent}
+        onUpdate= {this.updateDisplayData}
         />, 
         document.getElementById("eox-grid-form")
       ) ? (document.getElementById("eox-grid-form").style.overflow = "scroll")

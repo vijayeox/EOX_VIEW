@@ -24,6 +24,7 @@ class Navigation extends React.Component {
       selected: this.props.selected,
       customActions: [],
       pages: [],
+      mappedActions : {}
     };
     this.homepage = null;
     this.breadcrumbDiv = this.appId + "_breadcrumbParent";
@@ -181,7 +182,13 @@ class Navigation extends React.Component {
     this.pageActive(e.detail.parentPage);
   };
   addcustomActions = (e) => {
-    this.setState({ customActions: e.detail.customActions });
+    let mappedActions = {};
+    if(e.detail?.pageId){
+      const clone = {...this.state.mappedActions};
+      clone[e.detail.pageId] = e.detail.customActions
+      mappedActions = { mappedActions : clone }
+    }
+    this.setState({ customActions: e.detail.customActions, ...mappedActions });
   };
   checkIfEntityViewerPageExists(page) {
     var last_page_key = this.state.pages.length - 1;
@@ -206,7 +213,7 @@ class Navigation extends React.Component {
       if (item && item.page_id) {
         this.setState({ pages: [], selected: this.props.selected });
         var page = [{ pageId: item.page_id, title: item.name }];
-        this.setState({ pages: page }, () => {
+        this.setState({ pages: page, customActions : this.state.mappedActions?.[item.page_id] || [] }, () => {
           this.pageActive(item.page_id);
         });
       }
@@ -223,13 +230,14 @@ class Navigation extends React.Component {
         data.splice(data.length - 1, data.length);
         this.setState({
           pages: data,
+          customActions : this.state.mappedActions?.[data[data.length - 1]["pageId"]] || []
         });
         this.pageActive(data[data.length - 1]["pageId"]);
       } else {
         this.props.selectLoad(this.homepage);
       }
     }
-    this.resetCustomActions();
+    // this.resetCustomActions();
   };
   resetCustomActions() {
     this.setState({ customActions: null });
@@ -285,7 +293,7 @@ class Navigation extends React.Component {
             <span className='page-inactive' key={Math.random()}>
               {index == "0" ? null : <div style={{ marginLeft: "7px" }} />}
               {childNode}
-              <i className='fad fa-angle-right' style={{ marginRight: "-5px" }}></i>
+              <i className='fas fa-angle-right' style={{ marginRight: "-5px" }}></i>
               <div value={""} disabled={!clickable} className={clickable ? "activeBreadcrumb" : "disabledBreadcrumb"} type={clickable || index == 0 ? "none" : "info"} selected={false}>
                 <a
                   onClick={() => {
