@@ -362,6 +362,7 @@ class PageContent extends React.Component {
             notif={this.notif}
             workflowId={workflowId}
             cacheId={cacheId}
+            pageId={this.state.pageId}
             activityInstanceId={activityInstanceId}
             parentWorkflowInstanceId={workflowInstanceId}
             dataUrl={item.dataUrl ? this.prepareDataRoute(item.dataUrl, this.state.currentRow, true) : undefined}
@@ -489,7 +490,8 @@ class PageContent extends React.Component {
         if (item.fileId) {
           fileId = item.fileId;
         }
-        content.push(<CommentsView appId={this.appId} key={i} core={this.core} url={url} notif={this.notif} fileId={fileId} currentRow={this.state.currentRow} />);
+            
+        content.push(<CommentsView pageId={this.state.pageId} appId={this.appId} key={i} core={this.core} url={url} notif={this.notif} fileId={fileId} currentRow={this.state.currentRow} />);
       } else if (item.type == "TabSegment") {
         content.push(<TabSegment appId={this.appId} core={this.core} notif={this.notif} proc={this.props.proc} fileId={fileId} tabs={item.content.tabs} pageId={this.state.pageId} currentRow={this.state.currentRow} />);
       } else if (item.type == "Dashboard") {
@@ -528,7 +530,7 @@ class PageContent extends React.Component {
         content.push(<HTMLViewer key={i} core={this.core} appId={this.appId} url={item.url ? ParameterHandler.replaceParams(this.appId, item.url, this.state.currentRow) : undefined} fileId={fileId} content={item.content ? item.content : ""} fileData={fileData} notif={this.notif} className={item.className} item={item} currentRow={this.state.currentRow} />);
       } else if (item.type == "EntityViewer") {
         var fileId = this.props.fileId ? this.props.fileId : this.state.currentRow.uuid;
-        content.push(<EntityViewer key={i} core={this.core} appId={this.appId} proc={this.props.proc} fileId={fileId} notif={this.notif} fileData={this.state.currentRow} className={item.className} />);
+        content.push(<EntityViewer pageId={this.state.pageId} key={i} core={this.core} appId={this.appId} proc={this.props.proc} fileId={fileId} notif={this.notif} fileData={this.state.currentRow} className={item.className} />);
       } else if (item.type == "History") {
         var fileId = this.props.fileId ? this.props.fileId : this.state.currentRow.uuid;
         content.push(<ActivityLog appId={this.appId} fileId={fileId} core={this.core} disableControls={item?.disableControls} />);

@@ -6,9 +6,9 @@
   "hidden": true,
   "autostart": false,
   "defaultAppforOrgs" : false,
-  "icon": "icon.png", 
+  "icon": "icon.png",
   "icon_white":"icon_white.png",
-  "fontIcon":"fad fa-chart-bar",
+  "fontIcon":"fas fa-chart-bar",
   "title": {
     "en_EN": "OI Studio"
   },

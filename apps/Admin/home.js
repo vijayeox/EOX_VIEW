@@ -137,7 +137,7 @@ export default class Home extends React.Component {
           <SideNav.Nav defaultSelected={this.state.displaySection}>
             <NavItem eventKey='Menu' key='Menu' title='Home'>
               <NavIcon>
-                <i className='fad fa-home' aria-hidden='true'></i>
+                <i className='fas fa-home' aria-hidden='true'></i>
               </NavIcon>
               <NavText>Home</NavText>
             </NavItem>
@@ -145,7 +145,7 @@ export default class Home extends React.Component {
             {this.userProfile.privileges.MANAGE_ACCOUNT_WRITE || this.userProfile.privileges.MANAGE_ACCOUNT_READ ? (
               <NavItem eventKey='Accounts' key='Accounts' title='Accounts'>
                 <NavIcon>
-                  <i className='fad fa-users-cog' aria-hidden='true'></i>
+                  <i className='fas fa-users-cog' aria-hidden='true'></i>
                 </NavIcon>
                 <NavText>Account</NavText>
               </NavItem>
@@ -155,7 +155,7 @@ export default class Home extends React.Component {
             {this.userProfile.privileges.MANAGE_USER_WRITE || this.userProfile.privileges.MANAGE_USER_READ ? (
               <NavItem eventKey='Users' key='Users' title='Users'>
                 <NavIcon>
-                  <i className='fad fa-user' aria-hidden='true'></i>
+                  <i className='fas fa-user' aria-hidden='true'></i>
                 </NavIcon>
                 <NavText>Users</NavText>
               </NavItem>
@@ -165,7 +165,7 @@ export default class Home extends React.Component {
             {this.userProfile.privileges.MANAGE_ROLE_WRITE || this.userProfile.privileges.MANAGE_ROLE_READ ? (
               <NavItem eventKey='Roles' key='Roles' title='Roles'>
                 <NavIcon>
-                  <i className='fad fa-person-sign' aria-hidden='true'></i>
+                  <i className='fas fa-person-sign' aria-hidden='true'></i>
                 </NavIcon>
                 <NavText>Roles</NavText>
               </NavItem>
@@ -175,7 +175,7 @@ export default class Home extends React.Component {
             {this.userProfile.privileges.MANAGE_TEAM_WRITE || this.userProfile.privileges.MANAGE_TEAM_READ ? (
               <NavItem eventKey='Teams' key='Teams' title='Teams'>
                 <NavIcon>
-                  <i className='fad fa-users' aria-hidden='true'></i>
+                  <i className='fas fa-users' aria-hidden='true'></i>
                 </NavIcon>
                 <NavText>Teams</NavText>
               </NavItem>
@@ -185,7 +185,7 @@ export default class Home extends React.Component {
             {/* {this.userProfile.privileges.MANAGE_KRA_WRITE || this.userProfile.privileges.MANAGE_KRA_READ ? (
               <NavItem eventKey="Goal" key="Goal" title="Goals">
                 <NavIcon>
-                  <i className="fad fa-bullseye-arrow" aria-hidden="true"></i>
+                  <i className="fas fa-bullseye-arrow" aria-hidden="true"></i>
                 </NavIcon>
                 <NavText>Goals</NavText>
               </NavItem>
@@ -196,7 +196,7 @@ export default class Home extends React.Component {
               <NavItem eventKey="Errorlog" key="Errorlog" title="Errorlog">
                 <NavIcon>
                   <i
-                    className="fad fa-bug faa-bug animated-hover"
+                    className="fas fa-bug faa-bug animated-hover"
                     aria-hidden="true"
                   ></i>
                 </NavIcon>
@@ -209,7 +209,7 @@ export default class Home extends React.Component {
 						this.userProfile.privileges.MANAGE_PROJECT_READ ? (
 							<NavItem eventKey="Projects" key="Projects" title="Projects">
 								<NavIcon>
-									<i className="fad fa-cogs" aria-hidden="true"></i>
+									<i className="fas fa-cogs" aria-hidden="true"></i>
 								</NavIcon>
 								<NavText>Projects</NavText>
 							</NavItem>
@@ -224,7 +224,7 @@ export default class Home extends React.Component {
 								title="Announcements"
 							>
 								<NavIcon>
-									<i className="fad fa-bullhorn" aria-hidden="true"></i>
+									<i className="fas fa-bullhorn" aria-hidden="true"></i>
 								</NavIcon>
 								<NavText>Announcement</NavText>
 							</NavItem>
@@ -241,7 +241,7 @@ export default class Home extends React.Component {
 								key="MailAdmin"
 							>
 								<NavIcon>
-									<i className="fad fa-mail-bulk" aria-hidden="true"></i>
+									<i className="fas fa-mail-bulk" aria-hidden="true"></i>
 								</NavIcon>
 								<NavText>Mail Admin</NavText>
 							</NavItem>
@@ -258,7 +258,7 @@ export default class Home extends React.Component {
 								key="CRMAdmin"
 							>
 								<NavIcon>
-									<i className="fad fa-user-tie" aria-hidden="true"></i>
+									<i className="fas fa-user-tie" aria-hidden="true"></i>
 								</NavIcon>
 								<NavText>CRM Admin</NavText>
 							</NavItem>
@@ -275,7 +275,7 @@ export default class Home extends React.Component {
 								key="PMAdmin"
 							>
 								<NavIcon>
-									<i className="fad fa-project-diagram" aria-hidden="true"></i>
+									<i className="fas fa-project-diagram" aria-hidden="true"></i>
 								</NavIcon>
 								<NavText>PM Admin</NavText>
 							</NavItem>
@@ -292,7 +292,7 @@ export default class Home extends React.Component {
 								key="AppBuilder"
 							>
 								<NavIcon>
-									<i className="fad fa-desktop-alt" aria-hidden="true"></i>
+									<i className="fas fa-desktop-alt" aria-hidden="true"></i>
 								</NavIcon>
 								<NavText>App Studio</NavText>
 							</NavItem>
@@ -310,18 +310,18 @@ export default class Home extends React.Component {
 								key="OI"
 							>
 								<NavIcon>
-									<i className="fad fa-chart-bar" aria-hidden="true"></i>
+									<i className="fas fa-chart-bar" aria-hidden="true"></i>
 								</NavIcon>
 								<NavText>OI Studio</NavText>
 							</NavItem>
 						) : (
 							""
             )}
-          
+
             {this.userProfile.privileges.MANAGE_USER_READ || this.userProfile.privileges.MANAGE_USER_WRITE ? (
               <NavItem eventKey='EOXLogs' key='EOXLogs' title='EOXLogs' onClick={() => this.externalLink("http://13.58.246.62:3000/")}>
                 <NavIcon>
-                  <i className='fad fa-info-circle' aria-hidden='true'></i>
+                  <i className='fas fa-info-circle' aria-hidden='true'></i>
                 </NavIcon>
                 <NavText>EOX Logs</NavText>
               </NavItem>

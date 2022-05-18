@@ -9,7 +9,7 @@ class Errorlog extends React.Component {
     (this.actionItems = {
       retry:{
         type:"button",
-        icon:"fad fa-redo",
+        icon:"fas fa-redo",
         text:"RETRY",
         title:"Reload "
       }
@@ -57,7 +57,7 @@ class Errorlog extends React.Component {
     (this.state = {
       skip : 0,
       isLoading: true,
-      accountData: [], 
+      accountData: [],
       permission: {
           canAdd: this.props.userProfile.privileges.MANAGE_ERROR_CREATE,
           canEdit: this.props.userProfile.privileges.MANAGE_ERROR_WRITE,

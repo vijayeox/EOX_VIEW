@@ -11,7 +11,6 @@
     "prepublishOnly": "npm run eslint && npm run stylelint && rm ./dist/* && npm run build"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-pro": "^5.13.0",
     "@progress/kendo-drawing": "^1.10.1",
     "@progress/kendo-licensing": "^1.0.2",
     "@progress/kendo-react-buttons": "^4.6.7",

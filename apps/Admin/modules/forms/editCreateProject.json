@@ -111,6 +111,7 @@
                 {
                   "label": "Parent Project",
                   "widget": "choicesjs",
+                  "description": "**Please do not choose the same project name as the parent project**",
                   "tableView": true,
                   "dataSrc": "url",
                   "data": {
@@ -232,6 +233,6 @@
   "path": "adminproject",
   "project": "5dc1489e4f668513e9535090",
   "created": "2021-12-01T09:35:49.729Z",
-  "modified": "2022-05-04T09:18:12.037Z",
+  "modified": "2022-05-17T12:48:01.057Z",
   "machineName": "eoxproductsupport:adminProject"
 }

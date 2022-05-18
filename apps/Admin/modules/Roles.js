@@ -70,9 +70,11 @@ class Role extends React.Component {
         accountData: [],
         selectedOrg: this.props.userProfile.accountId,
         permission: {
-          canAdd: this.props.userProfile.privileges.MANAGE_ROLE_CREATE,
+          canCreate: this.props.userProfile.privileges.MANAGE_ROLE_CREATE,
           canEdit: this.props.userProfile.privileges.MANAGE_ROLE_WRITE,
           canDelete: this.props.userProfile.privileges.MANAGE_ROLE_DELETE,
+          canAdd:false,
+          canReset:false,
         },
       }),
       (this.api = "account/" + this.state.selectedOrg + "/roles");
