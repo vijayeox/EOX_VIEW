@@ -105,7 +105,7 @@ const makeTree = (core, __, metadata) => {
   const locale = core.make("osjs/locale");
 
   metadata
-    .filter((m) => m.hidden != true || typeof(m.hidden) == 'undefined')
+    .filter((m) => m.hidden !== true)
     .forEach((m) => {
       const cat = Object.keys(configuredCategories).find((c) => c === m.category) || "other";
       const found = configuredCategories[cat];

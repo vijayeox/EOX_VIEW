@@ -1,12 +1,11 @@
 {
   "type": "application",
-  "name": "Legacy CRM",
+  "name": "CRM",
   "category": "sales",
   "singleton":true,
   "icon": "icon.svg",
   "fontIcon":"fas fa-handshake-alt",
   "defaultAppforOrgs": false,
-  "hidden": true,
   "icon_white": "icon_white.svg",
   "title": {
     "en_EN": "Legacy CRM"
