@@ -56,7 +56,7 @@ class ChildEOXGrid extends React.Component{
           createApi={createApi}
           deleteApi={deleteApi}
           addConfig={addConfig}
-          rowTemplate={(e) => <ChildEOXGrid instance={this.instance} e={e} form={this.props.form} GetData={this.getData}/>}
+          rowTemplate={(e) => <ChildEOXGrid instance={this.instance} e={e} form={this.props.form} GetData={this.getData} prepareFormData={this.props.prepareFormData}/>}
           expandableApi={(callback) => {
             this.getData?.(this.api).then((response) => {
               const data = this.parseData(response);
@@ -67,6 +67,7 @@ class ChildEOXGrid extends React.Component{
           }}
           noCreateAction={noCreateAction}
           dataStateChanged={this.filterChange}
+          prepareFormData={this.props.prepareFormData}
         />
       )
     };
