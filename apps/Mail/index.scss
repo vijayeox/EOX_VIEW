@@ -7,7 +7,7 @@
         background-image: url('./close.svg');
     }
     .osjs-window-button[data-action=minimize] {
-        min-width: 3em;
+        min-width: 0em;
     }
 
     // Changing the Icon cursor from Pointer to Auto
