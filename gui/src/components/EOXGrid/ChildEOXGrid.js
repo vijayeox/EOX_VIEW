@@ -21,9 +21,13 @@ class ChildEOXGrid extends React.Component{
       }
     }
   
-    filterChange = ({ dataState: { filter, group, skip, sort, take } }) => {
+    filterChange = ({ dataState, refresh }) => {
+      const { filter, group, skip, sort, take } = dataState;
       const config = {...this.instance.config}
       config.pageSize = take;
+      if(refresh){
+        this.props.dataStateChanged?.({dataState})
+      }
       this.getData?.(
         this.api +
           `?filter=[{"skip":${skip},"take":${
