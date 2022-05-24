@@ -160,6 +160,11 @@ class Project extends React.Component {
     return route;
   }
 
+  prepareFormData = (data) => {
+    if(data) data['accountId'] = this.state.selectedOrg;
+    return {data};
+  }
+
   renderRow(e, rowConfig) {
     let subRoute = this.replaceParams(rowConfig.subRoute, e);
     return (
@@ -184,6 +189,7 @@ class Project extends React.Component {
         noCreateAction={this.noCreateAction}
         dataStateChanged={this.dataStateChanged.bind(this)}
         // key={Math.random()}
+        prepareFormData={this.prepareFormData}
       />
     );
   }
@@ -220,11 +226,12 @@ class Project extends React.Component {
             deleteApi={this.deleteApi}
             addConfig={this.addConfig}
             // key={Math.random()}
-            rowTemplate={(e) => <ChildEOXGrid instance={this} e={e} form={form} GetData={GetData}/>}
+            rowTemplate={(e) => <ChildEOXGrid instance={this} e={e} form={form} GetData={GetData} prepareFormData={this.prepareFormData}/>}
             // rowTemplate={(e) => this.renderRow(e, this.config)}
             skip={this.state.skip}
             dataStateChanged={this.dataStateChanged.bind(this)}
             isLoading={this.state.isLoading}
+            prepareFormData={this.prepareFormData}
           />
         </React.Suspense>
       </div>
