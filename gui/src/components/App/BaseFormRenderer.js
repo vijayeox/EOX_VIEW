@@ -30,6 +30,7 @@ import axios from "axios";
 import * as MomentTZ from "moment-timezone";
 import { countryList } from "./Form/Country";
 import { phoneList } from "./Form/Phonelist";
+import PrintPdf from "../print/printpdf";
 import merge from "deepmerge";
 class BaseFormRenderer extends React.Component {
   constructor(props) {
@@ -37,6 +38,8 @@ class BaseFormRenderer extends React.Component {
     this.core = this.props.core;
     this.notif = this.props.notif;
     this.state = {
+      printPdfId:null,
+      showPdf: false,
       form: null,
       showLoader: false,
       stylePath: null,
@@ -75,6 +78,70 @@ class BaseFormRenderer extends React.Component {
     //     'onload': function () { },
     //     'onerror': function () { }
     // }]);
+  }
+
+  toggleShowPdf = (showPdf) => {
+    if(showPdf){
+        this.printEntireForm()
+        return;
+    }
+    document.querySelector(`#${this.formDivID}>.formio-form>div>nav[aria-label="navigation"]>.pagination`)?.children?.[0]?.children[0]?.click();
+    this.setState({showPdf})
+  }
+  async printEntireForm(){
+    try{
+        const navTabSelector = `#${this.formDivID}>.formio-form>div>nav[aria-label="navigation"]>.pagination`
+        if(!document.querySelector(navTabSelector)){
+            this.setState({showPdf : true, printPdfId : this.formDivID})
+            return;
+        }
+        const sleep = t => new Promise((r) => {  setTimeout(r,t) })
+        const pages = [];
+        const radioCheckedData = []
+        this.loader.show()
+        const fetchForms = async i => { 
+            const navTabs = document.querySelector(navTabSelector)
+            const e = navTabs?.children?.[i]?.children[0];
+            if(!e) {
+                const formPages = document.createElement('div');
+                formPages.id = `${this.formDivID}_${Date.now()}`;
+                formPages.innerHTML = pages.join('')
+                document.getElementById(this.formDivID).appendChild(formPages)
+                document.querySelectorAll(`#${formPages.id}>.formio-form>div>ul`)?.forEach((childNode) => childNode?.remove())
+                try{
+                    radioCheckedData.forEach((childId) => {
+                        const e = formPages.querySelector(`#${childId}`);
+                        if(e){
+                            const clone = document.createElement('div');
+                            clone.style= "padding: 5px;background: #0573fa;border-radius: 6px;width: 10px;margin: auto;margin-top: 5px;border: 1px solid #FFF;outline: 1px;solid #0573fa;"
+                            e?.replaceWith(clone)
+                        }
+                    })
+                }catch(_e){}
+                this.setState({showPdf : true, printPdfId : formPages.id},this.loader.destroy)
+                return;
+            };
+            e.click()
+            await sleep(500)
+            try{
+                document.getElementById(this.formDivID).querySelectorAll('input[type="radio"]:checked')?.forEach((child) => 
+                child?.parentElement?.tagName?.toUpperCase() === 'TD' && radioCheckedData.push(child.id)
+            )
+            }catch(_e){}
+            pages.push(document.querySelector(`#${this.formDivID}`)?.innerHTML)
+            fetchForms(i+1)
+        }
+        const startTabs = document.querySelector(navTabSelector);
+        const len =  startTabs?.children?.length;
+        startTabs?.children?.[len-1]?.children[0]?.click();
+        await sleep(500)
+        fetchForms(0)
+        return true;
+    }catch(e){
+        console.error(`printEntireForm : `,e)
+        this.loader.destroy()
+        return true;
+    }
   }
 
   cancelFormSubmission = () => {
@@ -1615,6 +1682,18 @@ class BaseFormRenderer extends React.Component {
           detail: { customActions: gridToolbarContent, pageId : this.props.pageId },
           bubbles: true,
         });
+        if (this.props?.exportPDF) {
+          gridToolbarContent.push(
+            <Button
+              title={"Print"}
+              className={"toolBarButton"}
+              primary={true}
+              onClick={(e) => this.toggleShowPdf(true)}
+            >
+              <i className={"fa fa-print"}></i>
+            </Button>
+          );
+        }
         if (entityPage?.data?.content?.find((c) => c?.type === "TabSegment"))
           return;
         document
@@ -2263,6 +2342,13 @@ class BaseFormRenderer extends React.Component {
           <h3>{this.state.formErrorMessage}</h3>
         </div>
         <div className="form-render" id={this.formDivID}></div>
+        {   this.state.showPdf && 
+                        <PrintPdf
+                        cancel={() => this.toggleShowPdf(false)}
+                        idSelector={this.state.printPdfId}
+                        osjsCore={this.core}
+                        />
+        }
       </div>
     );
   }
