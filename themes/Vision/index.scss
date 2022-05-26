@@ -549,3 +549,12 @@ iframe {
     font-size: 16px !important;
   }
 }
+// buttons css  -(only the icon and without any borders and backround colors )
+button.btn.btn-ternary{
+  border: none !important;
+  box-shadow: none;
+  background: none !important;
+  padding: none !important;
+  color: #275362;
+  font-size: 14px;
+}
