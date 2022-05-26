@@ -194,7 +194,7 @@ class Team extends React.Component {
             createApi={this.createApi}
             deleteApi={this.deleteApi}
             addConfig={this.addConfig}
-            rowTemplate={(e) => <ChildEOXGrid instance={this} e={e} form={form} GetData={GetData}/>}
+            rowTemplate={(e) => <ChildEOXGrid instance={this} e={e} form={form} GetData={GetData} dataStateChanged={this.dataStateChanged.bind(this)}/>}
             // key={Math.random()}
             skip={this.state.skip}
             dataStateChanged={this.dataStateChanged.bind(this)}

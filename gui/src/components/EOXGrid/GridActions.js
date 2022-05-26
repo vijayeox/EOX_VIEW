@@ -28,8 +28,8 @@ export default class GridActions extends React.Component {
       canEdit: "edit",
       canDelete: "delete",
       canCreate: "create",
-      canAdd:"add",
-      canReset:"reset",
+      canAdd: "add",
+      canReset: "reset",
     };
   }
 
@@ -129,13 +129,12 @@ export default class GridActions extends React.Component {
       document.getElementById("eox-grid").style.marginTop = "-35px";
       // document.getElementById("dash-manager-button").classList.remove("display-none");
     }
-    let changedAccountId = this.api.split("/")[1];
-    data ? data.changedAccountId = changedAccountId:"";
+    // let changedAccountId = this.api.split("/")[1]; 
+    // data ? data.changedAccountId = changedAccountId : "";
     let formRenderProps = { data };
     if (this.props.prepareFormData) {
       formRenderProps = await this.props.prepareFormData(data);
     }
-
     const RoleFormComponent = this.isReactComponent ? this.editForm : null
     RoleFormComponent ?
       ReactDOM.render(
@@ -150,12 +149,13 @@ export default class GridActions extends React.Component {
           gridsId={gridsId}
           isReactComponent={this.isReactComponent}
           index={index}
-          onUpdate = {this.onUpdate}
+          onUpdate={this.onUpdate}
         />, document.getElementById("eox-grid-form")
       ) ? (document.getElementById("eox-grid-form").style.overflow = "scroll")
         : (document.getElementById("eox-grid-form").style.overflow = "auto") :
       ReactDOM.render(
         data ? (
+
           <div
             style={{
               position: "absolute",
@@ -167,16 +167,16 @@ export default class GridActions extends React.Component {
             }}
           >
             <FormRender
-             key={"abc"}
-             core={this.core}
-            {...formRenderProps}
-            updateFormData={true}
-            getAttachment={true}
-            postSubmitCallback={(formData) =>
-              this.handleSubmit(formData, api, index, false)
-            }
-            content={form}
-            appId={data.uuid}
+              key={"abc"}
+              core={this.core}
+              {...formRenderProps}
+              updateFormData={true}
+              getAttachment={true}
+              postSubmitCallback={(formData) =>
+                this.handleSubmit(formData, api, index, false)
+              }
+              content={form}
+              appId={data.uuid}
             // route= {this.api}
             />
           </div>
@@ -436,71 +436,71 @@ export default class GridActions extends React.Component {
           return (
             <abbr title={actions.title} key={permissionType}>
               {(actions.text !== "CREATE") ?
-              <button
-                type={actions.type}
-                key={permissionType}
-                className="btn btn-primary m-2 align-right EOXGrids"
-                onClick={(e) => {
-                  var tr = e.target.closest("tr");
-                  let index = tr.getAttribute("data-grid-row-index");
-                  {
-                    actions.text === "DELETE"
-                      ? this.showConfirm(
-                        this.delete,
-                        [
-                          this.dataItems.data
-                            ? this.dataItems.data[index]
-                            : this.dataItems[index],
-                          index,
-                        ],
-                        "Do you really want to delete the record? This cannot be undone.",
-                        "Delete"
-                      )
-                      : "";
-                  }
-                  {
-                    actions.text === "RESET"
-                      ? this.showConfirm(
-                        this.resetPassword,
-                        [
-                          this.dataItems.data
-                            ? this.dataItems.data[index]
-                            : this.dataItems[index],
-                          index,
-                        ],
-                        "Do you really want to reset your password",
-                        "Reset"
-                      )
-                      : "";
-                  }
+                <button
+                  type={actions.type}
+                  key={permissionType}
+                  className="btn btn-ternary EOXGrids"
+                  onClick={(e) => {
+                    var tr = e.target.closest("tr");
+                    let index = tr.getAttribute("data-grid-row-index");
+                    {
+                      actions.text === "DELETE"
+                        ? this.showConfirm(
+                          this.delete,
+                          [
+                            this.dataItems.data
+                              ? this.dataItems.data[index]
+                              : this.dataItems[index],
+                            index,
+                          ],
+                          "Do you really want to delete the record? This cannot be undone.",
+                          "Delete"
+                        )
+                        : "";
+                    }
+                    {
+                      actions.text === "RESET"
+                        ? this.showConfirm(
+                          this.resetPassword,
+                          [
+                            this.dataItems.data
+                              ? this.dataItems.data[index]
+                              : this.dataItems[index],
+                            index,
+                          ],
+                          "Do you really want to reset your password",
+                          "Reset"
+                        )
+                        : "";
+                    }
 
-                  {
-                    actions.text === "ADD"
-                      ? (this.add(
-                        this.dataItems.data
-                          ? this.dataItems.data[index]
-                          : this.dataItems[index],
-                        this.addConfig
-                      ),
-                        this.state.visible)
-                      : " ";
-                  }
-                  {
-                    actions.text === "EDIT"
-                      ? this.edit(
-                        this.dataItems.data
-                          ? this.dataItems.data[index]
-                          : this.dataItems[index],
-                        this.editForm,
-                        index
-                      )
-                      : " ";
-                  }
-                }}
-              >
-                <i className={actions.icon}></i>
-              </button> :""
-        }
+                    {
+                      actions.text === "ADD"
+                        ? (this.add(
+                          this.dataItems.data
+                            ? this.dataItems.data[index]
+                            : this.dataItems[index],
+                          this.addConfig
+                        ),
+                          this.state.visible)
+                        : " ";
+                    }
+                    {
+                      actions.text === "EDIT"
+                        ? this.edit(
+                          this.dataItems.data
+                            ? this.dataItems.data[index]
+                            : this.dataItems[index],
+                          this.editForm,
+                          index
+                        )
+                        : " ";
+                    }
+                  }}
+                >
+                  <i className={actions.icon}></i>
+                </button> : ""
+              }
             </abbr>
           )
         }

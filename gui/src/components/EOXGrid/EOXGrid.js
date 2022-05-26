@@ -138,7 +138,7 @@ export default class EOXGrid extends React.Component {
 
   //updating the data 
   updateDisplayData = () => {
-    this.props.dataStateChanged({ dataState: { skip: this.props.skip, take: this.pageSize, filter: null, group: null, sort: null } })
+    this.props.dataStateChanged({ dataState: { skip: this.props.skip, take: this.pageSize, filter: null, group: null, sort: null }, refresh: true })
   };
 
   async handleCreateSubmit(formData, createFlag) {
