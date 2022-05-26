@@ -8,6 +8,7 @@ import Dashboard from "../../components/OI/Dashboard";
 import DashboardManager from "../../components/OI/DashboardManager";
 import OX_Grid from "../../components/OI/OX_Grid";
 import DocumentViewer from "../../DocumentViewer";
+import Helpers from '../../helpers';
 import CustomGoogleMapComponent from "../googlemapfinal/App";
 import KanbanView from "../Kanban/KanbanRoutes";
 import PageNavigation from "../PageNavigation";
@@ -19,13 +20,11 @@ import EntityViewer from "./EntityViewer";
 import FormRender from "./FormRender";
 import HTMLViewer from "./HTMLViewer";
 import Page from "./Page";
-import ParameterHandler from "./ParameterHandler";
 import ReactComponent from "./ReactComponent";
 import RenderButtons from "./RenderButtons";
 import SearchPage from "./SearchPage";
 import "./Styles/PageComponentStyles.scss";
 import TabSegment from "./TabSegment";
-
 class PageContent extends React.Component {
   constructor(props) {
     super(props);
@@ -47,7 +46,7 @@ class PageContent extends React.Component {
         showLoader: false,
       });
     });
-    this.contentDivID = "content_" + this.appId + "_" + (this.pageId ? this.pageId : this.generateUUID());
+    this.contentDivID = "content_" + this.appId + "_" + (this.pageId ? this.pageId : Helpers.Utils.generateUUID());
     this.state = {
       pageContent: this.props.pageContent ? this.props.pageContent : [],
       pageId: this.props.pageId,
@@ -62,25 +61,6 @@ class PageContent extends React.Component {
       displaySection: "DB",
       sectionData: null,
     };
-  }
-
-  generateUUID() {
-    // Public Domain/MIT
-    let d = new Date().getTime(); //Timestamp
-    let d2 = (performance && performance.now && performance.now() * 1000) || 0; //Time in microseconds since page-load or 0 if unsupported
-    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
-      let r = Math.random() * 16; //random number between 0 and 16
-      if (d > 0) {
-        //Use timestamp until depleted
-        r = (d + r) % 16 | 0;
-        d = Math.floor(d / 16);
-      } else {
-        //Use microseconds since page-load if supported
-        r = (d2 + r) % 16 | 0;
-        d2 = Math.floor(d2 / 16);
-      }
-      return (c === "x" ? r : (r & 0x3) | 0x8).toString(16);
-    });
   }
 
   async fetchExternalComponents() {
@@ -125,7 +105,7 @@ class PageContent extends React.Component {
         const row = e;
         const _moment = moment;
         const profile = this.userprofile;
-        const string = ParameterHandler.replaceParams(this.appId, action[key].rule, e).replace(/moment/g, "_moment");
+        const string = Helpers.Helpers.ParameterHandler.replaceParams(this.appId, action[key].rule, e).replace(/moment/g, "_moment");
         return eval(string);
       } catch (e) {
         return true;
@@ -237,19 +217,19 @@ class PageContent extends React.Component {
             if (item.params && item.params.page_id) {
               pageId = item.params.page_id;
               if (item.params.params && typeof item.params.params === "string") {
-                var newParams = ParameterHandler.replaceParams(this.appId, item.params.params, mergeRowData);
+                var newParams = Helpers.ParameterHandler.replaceParams(this.appId, item.params.params, mergeRowData);
                 mergeRowData = { ...newParams, ...mergeRowData };
               } else if (item.params.params && typeof item.params.params === "object") {
                 var params = {};
                 Object.keys(item.params.params).map((i) => {
-                  params[i] = ParameterHandler.replaceParams(this.appId, item.params.params[i], mergeRowData);
+                  params[i] = Helpers.ParameterHandler.replaceParams(this.appId, item.params.params[i], mergeRowData);
                 });
                 mergeRowData = { ...params, ...mergeRowData };
               }
               copyPageContent = [];
             } else {
               var pageContentObj = {};
-              pageContentObj = ParameterHandler.replaceParams(this.appId, item, mergeRowData);
+              pageContentObj = Helpers.ParameterHandler.replaceParams(this.appId, item, mergeRowData);
               copyPageContent.push(pageContentObj);
             }
           }
@@ -262,25 +242,25 @@ class PageContent extends React.Component {
   updateActionHandler(details, rowData) {
     var that = this;
     return new Promise((resolve) => {
-      var queryRoute = ParameterHandler.replaceParams(that.appId, details.params.url, rowData);
+      var queryRoute = Helpers.ParameterHandler.replaceParams(that.appId, details.params.url, rowData);
       var postData = {};
       try {
         if (details.params.postData) {
           Object.keys(details.params.postData).map((i) => {
-            postData[i] = ParameterHandler.replaceParams(that.appId, details.params.postData[i], rowData);
+            postData[i] = Helpers.ParameterHandler.replaceParams(that.appId, details.params.postData[i], rowData);
           });
         } else {
           Object.keys(details.params).map((i) => {
-            postData[i] = ParameterHandler.replaceParams(that.appId, details.params[i], rowData);
+            postData[i] = Helpers.ParameterHandler.replaceParams(that.appId, details.params[i], rowData);
           });
           postData = rowData;
         }
       } catch (error) {
         postData = rowData;
       }
-      ParameterHandler.updateCall(this.core, this.appId, queryRoute, postData, details.params.disableAppId, details.method).then((response) => {
+      Helpers.ParameterHandler.updateCall(this.core, this.appId, queryRoute, postData, details.params.disableAppId, details.method).then((response) => {
         if (details.params.downloadFile && response.status == 200) {
-          ParameterHandler.downloadFile(response).then((result) => {
+          Helpers.ParameterHandler.downloadFile(response).then((result) => {
             that.setState({ showLoader: false });
             var downloadStatus = result ? "success" : "failed";
             resolve({ status: downloadStatus });
@@ -298,7 +278,7 @@ class PageContent extends React.Component {
       if (!params) {
         params = {};
       }
-      var result = ParameterHandler.replaceParams(this.appId, route, params);
+      var result = Helpers.ParameterHandler.replaceParams(this.appId, route, params);
       result = disableAppId ? result : "app/" + this.appId + "/" + result;
       return result;
     } else {
@@ -341,12 +321,12 @@ class PageContent extends React.Component {
       if (item.type == "Form") {
         var dataString = this.prepareDataRoute(item.url, this.state.currentRow);
         // This workflow instance id corresponds to completed workflow instance
-        var workflowInstanceId = ParameterHandler.replaceParams(this.appId, item.workflowInstanceId, this.state.currentRow);
-        var workflowId = ParameterHandler.replaceParams(this.appId, item.workflowId, this.state.currentRow);
-        var activityInstanceId = ParameterHandler.replaceParams(this.appId, item.activityInstanceId, this.state.currentRow);
-        var cacheId = ParameterHandler.replaceParams(this.appId, item.cacheId, this.state.currentRow);
-        var urlPostParams = ParameterHandler.replaceParams(this.appId, item.urlPostParams, this.state.currentRow);
-        var fileId = ParameterHandler.replaceParams(this.appId, item.fileId, this.state.currentRow);
+        var workflowInstanceId = Helpers.ParameterHandler.replaceParams(this.appId, item.workflowInstanceId, this.state.currentRow);
+        var workflowId = Helpers.ParameterHandler.replaceParams(this.appId, item.workflowId, this.state.currentRow);
+        var activityInstanceId = Helpers.ParameterHandler.replaceParams(this.appId, item.activityInstanceId, this.state.currentRow);
+        var cacheId = Helpers.ParameterHandler.replaceParams(this.appId, item.cacheId, this.state.currentRow);
+        var urlPostParams = Helpers.ParameterHandler.replaceParams(this.appId, item.urlPostParams, this.state.currentRow);
+        var fileId = Helpers.ParameterHandler.replaceParams(this.appId, item.fileId, this.state.currentRow);
         content.push(
           <FormRender
             {...item}
@@ -387,7 +367,7 @@ class PageContent extends React.Component {
         }
         var mergeRowData = this.props.params ? { ...this.props.params, ...this.state.currentRow } : this.state.currentRow;
         var dataString = this.prepareDataRoute(itemContent.route, mergeRowData, itemContent.disableAppId);
-        var urlPostParams = ParameterHandler.replaceParams(this.appId, item.urlPostParams, mergeRowData);
+        var urlPostParams = Helpers.ParameterHandler.replaceParams(this.appId, item.urlPostParams, mergeRowData);
         var listOptions = itemContent.listOptions;
         var reorderable = false;
         if (listOptions && listOptions.reorderable == "true") {
@@ -416,7 +396,7 @@ class PageContent extends React.Component {
                 act.details.map((detail, k) => {
                   if (detail.params) {
                     Object.keys(detail.params).map(function (key, index) {
-                      detail.params[key] = ParameterHandler.replaceParams(that.appId, detail.params[key], mergeRowData);
+                      detail.params[key] = Helpers.ParameterHandler.replaceParams(that.appId, detail.params[key], mergeRowData);
                     });
                   }
                 });
@@ -424,7 +404,7 @@ class PageContent extends React.Component {
             });
           }
         }
-        var operations = ParameterHandler.replaceParams(this.appId, itemContent.operations, mergeRowData);
+        var operations = Helpers.ParameterHandler.replaceParams(this.appId, itemContent.operations, mergeRowData);
         content.push(
           <OX_Grid
             rowTemplate={itemContent.expandable ? (e) => this.renderRow(e, itemContent.rowConfig) : null}
@@ -442,7 +422,7 @@ class PageContent extends React.Component {
             parentData={this.state.currentRow}
             notif={this.notif}
             urlPostParams={urlPostParams}
-            gridDefaultFilters={itemContent.defaultFilters ? (typeof itemContent.defaultFilters == "string" ? JSON.parse(ParameterHandler.replaceParams(this.appId, itemContent.defaultFilters, mergeRowData)) : JSON.parse(ParameterHandler.replaceParams(this.appId, JSON.stringify(itemContent.defaultFilters), mergeRowData))) : undefined}
+            gridDefaultFilters={itemContent.defaultFilters ? (typeof itemContent.defaultFilters == "string" ? JSON.parse(Helpers.ParameterHandler.replaceParams(this.appId, itemContent.defaultFilters, mergeRowData)) : JSON.parse(Helpers.ParameterHandler.replaceParams(this.appId, JSON.stringify(itemContent.defaultFilters), mergeRowData))) : undefined}
             gridOperations={operations}
             gridToolbar={itemContent.toolbarTemplate}
             columnConfig={columnConfig}
@@ -469,10 +449,10 @@ class PageContent extends React.Component {
       } else if (item.type == "DocumentViewer") {
         var url;
         if (item.url) {
-          url = ParameterHandler.replaceParams(this.appId, item.url, this.state.currentRow);
+          url = Helpers.ParameterHandler.replaceParams(this.appId, item.url, this.state.currentRow);
         }
         if (item.content) {
-          url = ParameterHandler.replaceParams(this.appId, item.content, this.state.currentRow);
+          url = Helpers.ParameterHandler.replaceParams(this.appId, item.content, this.state.currentRow);
         }
         content.push(<DocumentViewer appId={this.appId} key={i} core={this.core} url={url} />);
       } else if (item.type == "RenderButtons") {
@@ -480,10 +460,10 @@ class PageContent extends React.Component {
       } else if (item.type == "Comment") {
         var url;
         if (item.content) {
-          url = ParameterHandler.replaceParams(this.appId, item.content, this.state.currentRow);
+          url = Helpers.ParameterHandler.replaceParams(this.appId, item.content, this.state.currentRow);
         } else {
           if (item.url) {
-            url = ParameterHandler.replaceParams(this.appId, item.url, this.state.currentRow);
+            url = Helpers.ParameterHandler.replaceParams(this.appId, item.url, this.state.currentRow);
           }
         }
         var fileId;
@@ -506,7 +486,7 @@ class PageContent extends React.Component {
                 act.details.map((detail, k) => {
                   if (detail.params) {
                     Object.keys(detail.params).map(function (key, index) {
-                      detail.params[key] = ParameterHandler.replaceParams(this.appId, detail.params[key], mergeRowData);
+                      detail.params[key] = Helpers.ParameterHandler.replaceParams(this.appId, detail.params[key], mergeRowData);
                     });
                   }
                 });
@@ -514,20 +494,20 @@ class PageContent extends React.Component {
             });
           }
         }
-        var dashboardoperations = ParameterHandler.replaceParams(this.appId, itemContent.dashboardoperations);
+        var dashboardoperations = Helpers.ParameterHandler.replaceParams(this.appId, itemContent.dashboardoperations);
         var uuid = item.content ? (item.content.uuid ? item.content.uuid : null) : null;
         content.push(<DashboardManager appId={this.appId} uuid={uuid} content={item.content} notif={this.notif} args={this.core} key={i} setTitle={() => {}} proc={this.proc} editDashboard='EDB' hideEdit={true} dashboardoperations={dashboardoperations} parentDiv={this.contentDivID} customActions={this.props.customActions} />);
       } else if (item.type == "Page") {
         var mergeRowData = this.props.params ? { ...this.props.params, ...item.params } : item.params;
-        var params = ParameterHandler.replaceParams(this.appId, mergeRowData, this.state.currentRow);
+        var params = Helpers.ParameterHandler.replaceParams(this.appId, mergeRowData, this.state.currentRow);
         content.push(<Page key={item.page_id} config={this.props.config} proc={this.props.proc} isTab={this.isTab} parentPage={this.parentPage} app={this.props.appId} notif={this.notif} currentRow={this.state.currentRow} pageId={item.page_id} core={this.core} {...params} />);
       } else if (item.type == "Document" || item.type == "HTMLViewer") {
         var fileData = this.state.fileData ? this.state.fileData : this.state.currentRow;
         var fileId = item.fileId ? item.fileId : item.uuid;
         if (item.useRowData) {
-          item.content = ParameterHandler.replaceParams(this.appId, item.content, this.state.currentRow);
+          item.content = Helpers.ParameterHandler.replaceParams(this.appId, item.content, this.state.currentRow);
         }
-        content.push(<HTMLViewer key={i} core={this.core} appId={this.appId} url={item.url ? ParameterHandler.replaceParams(this.appId, item.url, this.state.currentRow) : undefined} fileId={fileId} content={item.content ? item.content : ""} fileData={fileData} notif={this.notif} className={item.className} item={item} currentRow={this.state.currentRow} />);
+        content.push(<HTMLViewer key={i} core={this.core} appId={this.appId} url={item.url ? Helpers.ParameterHandler.replaceParams(this.appId, item.url, this.state.currentRow) : undefined} fileId={fileId} content={item.content ? item.content : ""} fileData={fileData} notif={this.notif} className={item.className} item={item} currentRow={this.state.currentRow} />);
       } else if (item.type == "EntityViewer") {
         var fileId = this.props.fileId ? this.props.fileId : this.state.currentRow.uuid;
         content.push(<EntityViewer pageId={this.state.pageId} key={i} core={this.core} appId={this.appId} proc={this.props.proc} fileId={fileId} notif={this.notif} fileData={this.state.currentRow} className={item.className} />);
@@ -545,12 +525,12 @@ class PageContent extends React.Component {
         var fileId = this.props.fileId ? this.props.fileId : this.state.currentRow.uuid;
         content.push(<ReactComponent fileId={fileId} parentPageData={this.parentPageData} core={this.core} appId={this.appId} data={item.content} componentProps={this} />);
       } else if (item.type == "UploadArtifact") {
-        item.params = ParameterHandler.replaceParams(this.appId, item.params, this.state.currentRow);
+        item.params = Helpers.ParameterHandler.replaceParams(this.appId, item.params, this.state.currentRow);
         content.push(<UploadArtifact {...item} key={i} components={OxzionGUIComponents} appId={this.appId} notif={this.notif} core={this.core} refresh={this.postSubmitCallback}></UploadArtifact>);
       } else {
         if (this.extGUICompoents && this.extGUICompoents[item.type]) {
           this.externalComponent = this.extGUICompoents[item.type];
-          item.params = ParameterHandler.replaceParams(this.appId, item.params, this.state.currentRow);
+          item.params = Helpers.ParameterHandler.replaceParams(this.appId, item.params, this.state.currentRow);
           let guiComponent = this.extGUICompoents && this.extGUICompoents[item.type] ? <this.externalComponent {...item} key={i} components={OxzionGUIComponents} appId={this.appId} notif={this.notif} core={this.core} refresh={this.postSubmitCallback}></this.externalComponent> : <h3 key={i}>The component used is not available.</h3>;
           content.push(guiComponent);
         } else {
