@@ -14,7 +14,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import JsxParser from "react-jsx-parser";
 import Swal from "sweetalert2";
-import ParameterHandler from "../App/ParameterHandler";
+import helpers from "../../helpers";
 import { ColumnMenu } from "../Grid/ColumnMenu";
 import CustomFilter from "../Grid/CustomFilter";
 import "../Grid/customStyles.scss";
@@ -263,7 +263,7 @@ export default class OX_Grid extends React.Component {
       });
       Object.keys(this.state.actions).map(function (key, index) {
         var action = this.state.actions;
-        var paramsRule = ParameterHandler.replaceParams(this.appId, action[key].rule, dataItem);
+        var paramsRule = helpers.ParameterHandler.replaceParams(this.appId, action[key].rule, dataItem);
         var row = dataItem;
         var _moment = moment;
         var profile = this.userprofile;
@@ -594,7 +594,7 @@ export default class OX_Grid extends React.Component {
           } else if (item.type == "API") {
             if (item.typeOfRequest == "delete") {
               action.updateOnly = true;
-              var url = ParameterHandler.replaceParams(this.appId, item.route, mergeRowData);
+              var url = helpers.ParameterHandler.replaceParams(this.appId, item.route, mergeRowData);
               Swal.fire({
                 title: "Are you sure?",
                 text: "Do you really want to delete the record? This cannot be undone.",
@@ -621,8 +621,8 @@ export default class OX_Grid extends React.Component {
               });
             } else if (item.typeOfRequest == "post") {
               action.updateOnly = true;
-              var url = ParameterHandler.replaceParams(this.appId, item.route, mergeRowData);
-              var params = ParameterHandler.replaceParams(this.appId, item.params, mergeRowData);
+              var url = helpers.ParameterHandler.replaceParams(this.appId, item.route, mergeRowData);
+              var params = helpers.ParameterHandler.replaceParams(this.appId, item.params, mergeRowData);
               this.restClient
                 .request("v1", "/" + url, params, "post", {
                   "Content-Type": "application/json",
@@ -633,7 +633,7 @@ export default class OX_Grid extends React.Component {
             }
           } else if (item.type == "ButtonPopUp") {
             action.updateOnly = true;
-            var params = ParameterHandler.replaceParams(this.appId, item.params, mergeRowData);
+            var params = helpers.ParameterHandler.replaceParams(this.appId, item.params, mergeRowData);
             var buttonPopup = this.renderButtonPopup(params);
             that.setState({
               buttonPopup: buttonPopup,
@@ -643,9 +643,9 @@ export default class OX_Grid extends React.Component {
             action.updateOnly = true;
             var urlPostParams = {};
             if (item.params && item.params.urlPostParams) {
-              urlPostParams = ParameterHandler.replaceParams(this.appId, item.params.urlPostParams, mergeRowData);
+              urlPostParams = helpers.ParameterHandler.replaceParams(this.appId, item.params.urlPostParams, mergeRowData);
             }
-            var url = ParameterHandler.replaceParams(this.appId, item.route, mergeRowData);
+            var url = helpers.ParameterHandler.replaceParams(this.appId, item.route, mergeRowData);
             Swal.fire({
               title: "Are you sure?",
               text: "Do you really want to delete the record? This cannot be undone.",
@@ -674,12 +674,12 @@ export default class OX_Grid extends React.Component {
             if (item.params && item.params.page_id) {
               pageId = item.params.page_id;
               if (item.params.params && typeof item.params.params === "string") {
-                var newParams = ParameterHandler.replaceParams(this.appId, item.params.params, mergeRowData);
+                var newParams = helpers.ParameterHandler.replaceParams(this.appId, item.params.params, mergeRowData);
                 mergeRowData = { ...newParams, ...mergeRowData };
               } else if (item.params.params && typeof item.params.params === "object") {
                 var params = {};
                 Object.keys(item.params.params).map((i) => {
-                  params[i] = ParameterHandler.replaceParams(this.appId, item.params.params[i], mergeRowData);
+                  params[i] = helpers.ParameterHandler.replaceParams(this.appId, item.params.params[i], mergeRowData);
                 });
                 mergeRowData = { ...params, ...mergeRowData };
               }
@@ -687,7 +687,7 @@ export default class OX_Grid extends React.Component {
             } else {
               var pageContentObj = {};
               mergeRowData = { ...this.props.parentData, ...mergeRowData };
-              pageContentObj = ParameterHandler.replaceParams(this.appId, item, mergeRowData);
+              pageContentObj = helpers.ParameterHandler.replaceParams(this.appId, item, mergeRowData);
               copyPageContent.push(pageContentObj);
             }
           }
@@ -759,25 +759,25 @@ export default class OX_Grid extends React.Component {
     var that = this;
     rowData = { ...this.props.parentData, ...rowData };
     return new Promise((resolve) => {
-      var queryRoute = ParameterHandler.replaceParams(this.appId, details.params.url, rowData);
+      var queryRoute = helpers.ParameterHandler.replaceParams(this.appId, details.params.url, rowData);
       var postData = {};
       try {
         if (details.params.postData) {
           Object.keys(details.params.postData).map((i) => {
-            postData[i] = ParameterHandler.replaceParams(this.appId, details.params.postData[i], rowData);
+            postData[i] = helpers.ParameterHandler.replaceParams(this.appId, details.params.postData[i], rowData);
           });
         } else {
           Object.keys(details.params).map((i) => {
-            postData[i] = ParameterHandler.replaceParams(this.appId, details.params[i], rowData);
+            postData[i] = helpers.ParameterHandler.replaceParams(this.appId, details.params[i], rowData);
           });
           postData = rowData;
         }
       } catch (error) {
         postData = rowData;
       }
-      ParameterHandler.updateCall(that.core, that.appId, queryRoute, postData, details.params.disableAppId, details.method).then((response) => {
+      helpers.ParameterHandler.updateCall(that.core, that.appId, queryRoute, postData, details.params.disableAppId, details.method).then((response) => {
         if (details.params.downloadFile && response.status == 200) {
-          ParameterHandler.downloadFile(response).then((result) => {
+          helpers.ParameterHandler.downloadFile(response).then((result) => {
             that.setState({ showLoader: false });
             var downloadStatus = result ? "success" : "failed";
             resolve({ status: downloadStatus });
