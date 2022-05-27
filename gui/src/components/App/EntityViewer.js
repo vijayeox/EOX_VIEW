@@ -10,6 +10,7 @@ class EntityViewer extends React.Component {
     super(props);
     this.core = this.props.core;
     this.profileAdapter = this.core.make("oxzion/profile");
+    // this.storeAdapter = this.core.make("oxzion/storeLoader");
     this.profile = this.profileAdapter.get();
     this.appId = this.props.appId;
     this.fileId = this.props.fileId;
@@ -32,13 +33,13 @@ class EntityViewer extends React.Component {
 
   async getFileDetails(fileId) {
     let helper = this.core.make("oxzion/restClient");
-    let fileContent = await helper.request(
-      "v1",
-      "/app/" + this.appId + "/file/" + fileId + "/data",
-      {},
-      "get"
-    );
-    return fileContent;
+    // let fileContent = await helper.request(
+    //   "v1",
+    //   "/app/" + this.appId + "/file/" + fileId + "/data",
+    //   {},
+    //   "get"
+    // );
+    return helper.getMemoizedData(this.appId, 'FILE', "/app/" + this.appId + "/file/" + fileId + "/data");
   }
   async getEntityPage() {
     let helper = this.core.make("oxzion/restClient");

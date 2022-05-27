@@ -36,6 +36,7 @@ class PageContent extends React.Component {
     this.params = this.props.params;
     this.notif = this.props.notif;
     this.userprofile = this.props.core.make("oxzion/profile").get().key;
+    this.restClient = this.core.make("oxzion/restClient")
     this.isTab = this.props.isTab;
     this.parentPage = this.props.parentPage ? this.props.parentPage : null;
     this.loader = this.core.make("oxzion/splash");
@@ -65,6 +66,10 @@ class PageContent extends React.Component {
 
   async fetchExternalComponents() {
     return await import("../../externals/" + this.appId + "/index.js");
+  }
+
+  componentWillUnmount(){
+    this.restClient.clearMemoizedData(this.appId, 'FILE')
   }
 
   componentDidUpdate(prevProps) {
