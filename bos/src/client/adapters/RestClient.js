@@ -8,6 +8,7 @@ export class RestClientServiceProvider extends ServiceProvider {
 		this.core = core;
 		this.token = null;
 		this.baseUrl = this.core.config('wrapper.url');
+		this.store = {}; // { [APP_ID] : { [DATA_NAME] : DATA } }
 	}
 
 	providers() {
@@ -22,6 +23,8 @@ export class RestClientServiceProvider extends ServiceProvider {
 			authenticate: (params) => this.authenticate(params),
 			profile: () => this.profile(),
 			handleRefresh: () => this.handleRefresh(),
+			clearMemoizedData: (...args) => this.clearMemoizedData(...args),
+			getMemoizedData: (...args) => this.getMemoizedData(...args),
 		}));
 
 
@@ -263,5 +266,19 @@ export class RestClientServiceProvider extends ServiceProvider {
 		.then((response) => {
 			return response;
 		});
+	}
+
+	clearMemoizedData(appId, dataName) {
+		return delete this.store[appId]?.[dataName];
+	}
+	
+	async getMemoizedData(appId, dataName, url, method = "get", payload = {}) {
+		if (this.store[appId]?.[dataName]) return this.store[appId][dataName];
+		const response = await this.makeRequest("v1", url, payload, method);
+		if (response.status === "success") {
+		  if (!this.store[appId]) this.store[appId] = {};
+		  this.store[appId][dataName] = response;
+		}
+		return response;
 	}
 }
