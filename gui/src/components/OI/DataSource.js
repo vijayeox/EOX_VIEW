@@ -74,7 +74,7 @@ class DataSource extends React.Component {
       showButton
         ? action[key].name === "toggleActivate"
           ? actionButtons.push(
-              <abbr className={this.checkedList[e.name] ? "deactivateDash" : "activateDash"} title={this.checkedList[e.name] ? "Deactivate" : "Activate"} key={index}>
+              <abbr className={this.checkedList[e.name] ? "deactivateDash m-3" : "activateDash m-3"} title={this.checkedList[e.name] ? "Deactivate" : "Activate"} key={index}>
                 <Switch id={e.name} onChange={() => this.buttonAction(action[key], e)} checked={this.state.checked[e.name]} onClick={() => this.buttonAction(action[key], e)} onColor='#86d3ff' onHandleColor='#2693e6' handleDiameter={10} uncheckedIcon={false} checkedIcon={false} boxShadow='0px 1px 5px rgba(0, 0, 0, 0.6)' activeBoxShadow='0px 0px 1px 10px rgba(0, 0, 0, 0.2)' height={20} width={33} className='react-switch' />
               </abbr>
             )
