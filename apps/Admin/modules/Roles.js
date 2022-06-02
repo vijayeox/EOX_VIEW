@@ -1,9 +1,8 @@
-import { React, EOXGrid } from "oxziongui";
-import { TitleBar } from "./components/titlebar";
+import { EOXGrid, Helpers, React } from "oxziongui";
 import { GetData } from "./components/apiCalls";
+import { TitleBar } from "./components/titlebar";
 // import form from "../modules/forms/editCreateRole.json";
 import EditCreateRole from "./forms/editCreateRole";
-import { data } from "jquery";
 
 class Role extends React.Component {
   constructor(props) {
@@ -99,7 +98,7 @@ class Role extends React.Component {
   };
 
   componentDidMount() {
-    GetData(this.api + `?filter=[{"skip":0,"take":${this.config.pageSize}}]`)
+    GetData(Helpers.Utils.getFilterParams(this.api, this.config.pageSize, 0))
       .then((data) => {
         this.setState({
           accountData:
