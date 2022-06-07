@@ -1143,40 +1143,40 @@ body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown) {
       /* Mozilla-based browsers will ignore this. */
     }
   }
-  //Filter and clear filter buttons changes
-  .k-filtercell .k-filtercell-wrapper {
-    .k-filtercell-operator {
-      display: block !important;
-      height: 20px !important;
-    }
-    span.k-dropdown-wrap,
-    span.k-dropdown-wrap:hover {
-      border-color: #e4e7eb00;
-      color: #212529;
-      background-color: #e4e7eb00;
-    }
+  //Filter and clear filter buttons changes(added these changes to themes/vision)
+  // .k-filtercell .k-filtercell-wrapper {
+  //   .k-filtercell-operator {
+  //     display: block !important;
+  //     height: 20px !important;
+  //   }
+  //   span.k-dropdown-wrap,
+  //   span.k-dropdown-wrap:hover {
+  //     border-color: #e4e7eb00;
+  //     color: #212529;
+  //     background-color: #e4e7eb00;
+  //   }
 
-    button.k-button.k-button-icon.k-clear-button-visible {
-      background-color: #e4e7eb00;
-      border-color: #e4e7eb00;
-    }
+  //   button.k-button.k-button-icon.k-clear-button-visible {
+  //     background-color: #e4e7eb00;
+  //     border-color: #e4e7eb00;
+  //   }
 
-    span.k-select {
-      padding: 0px !important;
-      margin-bottom: 15px;
-    }
-    .k-icon.k-i-filter-clear {
-      margin-bottom: 15px;
-    }
+  //   span.k-select {
+  //     padding: 0px !important;
+  //     margin-bottom: 15px;
+  //   }
+  //   .k-icon.k-i-filter-clear {
+  //     margin-bottom: 15px;
+  //   }
 
-    button.k-button.k-button-icon.k-clear-button-visible {
-      padding: 0px !important;
-    }
+  //   button.k-button.k-button-icon.k-clear-button-visible {
+  //     padding: 0px !important;
+  //   }
 
-    // .k-filtercell .k-filtercell-operator {
-    //   height: 35px !important;
-    // }
-  }
+  //   // .k-filtercell .k-filtercell-operator {
+  //   //   height: 35px !important;
+  //   // }
+  // }
 }
 
 .gender1,
