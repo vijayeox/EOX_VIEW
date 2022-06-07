@@ -23,6 +23,32 @@ class WidgetDrillDownHelper {
   static CTX_PROP_IS_BOUND = "isBound";
   static CTX_PROP_MAX_DEPTH = "maxDepth";
   static CTX_DASHBOARD_ID = "dashboard-uuid"
+  static CTX_LISTENERS = {};
+  
+  //instead of adding window listeners in each OI related component use this static listener
+  /**
+   * No need to remove this listener in unmount callback
+   * @param {string} id specific uuid with respect to that component
+   * @param {function} callback 
+   * @returns {void}
+   */ 
+  static initializeListener = (id, callback) => {
+    if(Object.keys(this.CTX_LISTENERS).length === 0){
+      this.CTX_LISTENERS[id] = callback;
+      window.addEventListener("message", (e) => {
+        const { data } = e;
+        if(data[this.CTX_DASHBOARD_ID] && this.CTX_LISTENERS[data[this.CTX_DASHBOARD_ID]]){
+          this.CTX_LISTENERS[data[this.CTX_DASHBOARD_ID]](e);
+        }else{
+          for(let i in this.CTX_LISTENERS){
+            this.CTX_LISTENERS[i](e);
+          }
+        }
+      }, false)
+      return;
+    }
+    this.CTX_LISTENERS[id] = callback;
+  }
   
   static bindDrillDownDataContext(templateString, dataContext) {
     if (!templateString || "" === templateString || !dataContext) {
