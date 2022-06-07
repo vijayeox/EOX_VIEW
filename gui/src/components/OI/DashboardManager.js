@@ -53,7 +53,6 @@ class DashboardManager extends React.Component {
       dashboardStack: [],
       exportConfiguration: null,
       loadDefaultFilters: false,
-      filterCount: 0,
     };
     this.appId = this.props.app;
     this.proc = this.props.proc;
@@ -311,9 +310,6 @@ class DashboardManager extends React.Component {
     let dashboardStack = null;
     let dashboardFilterRef = this.filterRef.current;
     let filterOptions = dashboardFilterRef.state.applyFilterOption;
-    this.setState({
-      filterCount: filter.length,
-    });
     if (this.state.dashboardStack.length == 1) {
       dashboardStack = [...this.state.dashboardStack];
       let dashboardFilter = filter;
@@ -498,7 +494,7 @@ class DashboardManager extends React.Component {
         filterOptions: filterOptions,
       },
       () => {
-        // console.log(this.state);
+        console.log(this.state);
       }
     );
   }
@@ -561,6 +557,7 @@ class DashboardManager extends React.Component {
     let response = await this.restClient.request("v1", "analytics/query/preview", formData, "filepost");
     this.notif.current.notify("Generating Report", "Please wait...", "warning");
     if (response.status == "success") {
+      // console.log(response.data.result)
       let data = response.data.result;
       let filename = this.state.inputs["dashname"]["name"];
       exportFromJSON({ data, fileName: filename, exportType });
@@ -639,7 +636,6 @@ class DashboardManager extends React.Component {
                         {containsFilter && (
                           <Button onClick={() => this.showFilter(this.state.uuid)} title="Filter OI">
                             <i className="fa fa-filter" aria-hidden="true"></i>
-                            {this.state.filterCount > 0 ? <FilterCount count={this.state.filterCount} /> : " "}
                           </Button>
                         )}
                         {this.state.exportConfiguration !== null && this.state.exportConfiguration !== "" && (
@@ -734,9 +730,3 @@ class DashboardManager extends React.Component {
 }
 
 export default DashboardManager;
-
-function FilterCount({ count }) {
-  return <div className="badgeInApps">
-           <div className="badgeCheck filterInApps">{count}</div>
-         </div>
-}
