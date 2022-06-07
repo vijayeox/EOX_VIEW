@@ -75,6 +75,8 @@ class DashboardEditor extends React.Component {
 
   widgetDrillDownMessageHandler = (event) => {
     let data = event["data"];
+    //only drill down widget matching current dashboard uuid
+    if(data.hasOwnProperty(WidgetDrillDownHelper.CTX_DASHBOARD_ID) && data[WidgetDrillDownHelper.CTX_DASHBOARD_ID] !== this.props.dashboardId) return;
     if (data["action"] !== "oxzion-widget-drillDown") {
       return;
     }
@@ -382,7 +384,7 @@ class DashboardEditor extends React.Component {
         renderProperties["element"] = widgetElement;
         renderProperties["widget"] = response.widget;
         renderProperties["dashboardEditMode"] = true;
-        let chart = WidgetRenderer.render(renderProperties, undefined, undefined, thisInstance.core);
+        let chart = WidgetRenderer.render(renderProperties, undefined, undefined, thisInstance.core, this.props.dashboardId);
         thisInstance.renderedCharts[elementId] = chart;
       },
       function (response) {

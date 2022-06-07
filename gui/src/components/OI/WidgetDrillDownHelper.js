@@ -22,7 +22,8 @@ class WidgetDrillDownHelper {
   static CTX_PROP_DASHBOARD_TITLE = WidgetDrillDownHelper.MSG_PROP_DASHBOARD_TITLE;
   static CTX_PROP_IS_BOUND = "isBound";
   static CTX_PROP_MAX_DEPTH = "maxDepth";
-
+  static CTX_DASHBOARD_ID = "dashboard-uuid"
+  
   static bindDrillDownDataContext(templateString, dataContext) {
     if (!templateString || "" === templateString || !dataContext) {
       return templateString;
@@ -118,6 +119,7 @@ class WidgetDrillDownHelper {
     widgetElement.setAttribute(WidgetDrillDownHelper.OXZION_DRILL_DOWN_CONTEXT_ATTRIBUTE, JSON.stringify(drillDownContext));
 
     console.log("Posting drillDown message to window.", messageContent);
+    messageContent[this.CTX_DASHBOARD_ID] = widgetElement.getAttribute(this.CTX_DASHBOARD_ID)
     window.postMessage(messageContent);
   }
 
@@ -313,6 +315,7 @@ class WidgetDrillDownHelper {
     }
 
     console.log("Posting rollUp message to window.", messageContent);
+    messageContent[this.CTX_DASHBOARD_ID] = widgetElement.getAttribute(this.CTX_DASHBOARD_ID)
     window.postMessage(messageContent);
   }
 

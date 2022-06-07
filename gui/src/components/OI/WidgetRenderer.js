@@ -23,7 +23,7 @@ import ComponentIndex from "../Custom/ComponentIndex";
 
 class WidgetRenderer {
   // static render(element, widget, props,hasDashboardFilters,dashboardMode) {
-  static render(renderpropertiesObject, widgetUUId, filterParams, core) {
+  static render(renderpropertiesObject, widgetUUId, filterParams, core, uuid) {
     let { element, widget, props, hasDashboardFilters, dashboardEditMode } = {
       ...renderpropertiesObject,
     };
@@ -100,6 +100,8 @@ class WidgetRenderer {
       default:
         throw `Unexpected widget renderer "${widget.renderer}"`;
     }
+    //append uuid of dashboard to keep tracking post invoking events
+    element.setAttribute(WidgetDrillDownHelper.CTX_DASHBOARD_ID, uuid)
     return widgetReturnParams;
   }
 
