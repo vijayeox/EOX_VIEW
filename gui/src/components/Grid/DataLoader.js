@@ -64,6 +64,7 @@ export class DataLoader extends React.Component {
   triggerGetCall(hideLoader) {
     hideLoader ? null : this.loader.show();
     this.pending = toODataString(this.props.dataState);
+    // console.log("this.props",this.props, this.pending);
     this.getData(this.props.url).then((response) => {
       this.lastSuccess = this.pending;
       this.pending = undefined;
