@@ -3,6 +3,7 @@ import "../assets/scss/login.scss";
 import React from "react";
 import ReactDOM from "react-dom";
 import oxLogo from "../assets/images/eox.png";
+import wallpaper from "../assets/images/wallpaper.png";
 import AnnouncementIcon from "../assets/images/icon_white.svg";
 import ForgotPassword from "./ForgotPassword.js";
 import ResetPasswordPage from "./ResetPasswordPage.js";
@@ -112,6 +113,18 @@ class Login extends React.Component {
     } else {
       return (
         <main id="login-container " className="loginContainer row lighten-3 ">
+           <img
+          src={wallpaper}
+          alt="EOX Vantage"
+          style={{
+            position: "absolute",
+            width: "100vw",
+            height: "135vh",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%,-50%)",
+          }}
+        />
           <div
             className="loginSlider col-8"
             style={{

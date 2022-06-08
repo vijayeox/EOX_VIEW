@@ -3,6 +3,7 @@
   "name": "Timesheet",
   "fontIcon":"fas fa-stopwatch",
   "category": null,
+  "singleton": true,
   "server": "server.js",
   "title": {
     "en_EN": "Timesheet"
