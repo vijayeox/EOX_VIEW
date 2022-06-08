@@ -21,9 +21,13 @@ class ChildEOXGrid extends React.Component{
       }
     }
   
-    filterChange = ({ dataState: { filter, group, skip, sort, take } }) => {
+    filterChange = ({ dataState, refresh }) => {
+      const { filter, group, skip, sort, take } = dataState;
       const config = {...this.instance.config}
       config.pageSize = take;
+      if(refresh){
+        this.props.dataStateChanged?.({dataState})
+      }
       this.getData?.(
         this.api +
           `?filter=[{"skip":${skip},"take":${
@@ -56,7 +60,7 @@ class ChildEOXGrid extends React.Component{
           createApi={createApi}
           deleteApi={deleteApi}
           addConfig={addConfig}
-          rowTemplate={(e) => <ChildEOXGrid instance={this.instance} e={e} form={this.props.form} GetData={this.getData}/>}
+          rowTemplate={(e) => <ChildEOXGrid instance={this.instance} e={e} form={this.props.form} GetData={this.getData} prepareFormData={this.props.prepareFormData}/>}
           expandableApi={(callback) => {
             this.getData?.(this.api).then((response) => {
               const data = this.parseData(response);
@@ -67,6 +71,7 @@ class ChildEOXGrid extends React.Component{
           }}
           noCreateAction={noCreateAction}
           dataStateChanged={this.filterChange}
+          prepareFormData={this.props.prepareFormData}
         />
       )
     };

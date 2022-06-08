@@ -39,6 +39,10 @@ const FilterFields = function (props) {
     selectoperator: [{ Equals: "==" }, { "Not Equals": "NOT LIKE" }],
   };
 
+  let startDateSet = new Date();
+  startDateSet.setDate(['ytd', 'mtd'].includes(filters[index]["operator"]) && 1 || startDateSet.getDate()); // set date to 1st of the current month if mtd/ytd filter is applied
+  filters[index]["operator"] == "ytd" && startDateSet.setMonth(0); // sets month to January if YTD is applied
+
   useEffect(() => {
     //set index value if datasource is set previously
     if (filters[index]["filterDataSource"]) {
@@ -315,14 +319,14 @@ const FilterFields = function (props) {
               <div className="dates-container">
                 <DatePicker
                   className="dashboardTextField"
-                  selected={Date.parse(filters[index]["startDate"])}
+                  selected={Date.parse(startDateSet || filters[index]["startDate"])}
                   dateFormat={dateFormat}
                   onChange={(date) => onUpdate(date, index, "startDate")}
                   selectsStart
                   enabled={false}
                   // key={index}
                   disabled={disableDateField}
-                  startDate={Date.parse(filters[index]["startDate"])}
+                  startDate={startDateSet || Date.parse(filters[index]["startDate"])}
                   endDate={filters[index]["operator"] == "mtd" || filters[index]["operator"] == "ytd" ? new Date() : Date.parse(filters[index]["endDate"])}
                   showMonthDropdown
                   showYearDropdown
@@ -371,47 +375,47 @@ const FilterFields = function (props) {
               </div>
             )
           ) : // filterMode == "CREATE" ?
-          dataType === "select" && multiFilters ? (
-            // <Select
-            //     className="dashboardTextField"
-            //     selected={filters[index]["value"] || ""}
-            //     name="value"
-            //     id="value"
-            //     placeholder="Select an option"
-            //     style={{ flex: "1 1 100%" }}
-            //     onChange={(e) => {
-            //         onUpdate(e, index, "value");
-            //         var x = document.getElementById("select_notif" + index);
-            //         x.className = "toastHide"
-            //     }}
-            //     value={filterValueOption ? filterValueOption.filter(option => option.value == filters[index]["value"]) : ""}
-            //     options={filterValueOption}
-            //     styles={customStyles}
-            //     isLoading={isFilterValueLoading}
-            // />
-            <div>
-              {/* <pre>{JSON.stringify(((multiFilters[index]) ? (Array.isArray(multiFilters[index]["value"]) ? multiFilters[index]["value"] : []) : []))}</pre> */}
-              <MultiSelect
-                className="dashboardTextField field-width-300"
-                name="value"
-                value={multiFilters[index] ? (Array.isArray(multiFilters[index]["value"]) ? multiFilters[index]["value"] : []) : []}
-                id="value"
-                key={index}
-                displayValue="value"
-                placeholder="Select an option"
-                options={filterValueOption}
-                style={{
-                  width: "50px",
-                }}
-                styles={customStyles}
-                isLoading={isFilterValueLoading}
-                onChange={(e) => onSelect(e, index, "")} // create onSelect function where it assigns the value array
-                onRemove={(e) => onRemove(e, index, "")}
-              />
-            </div>
-          ) : (
-            <Form.Control className="dashboardTextField field-width-150" id="value" type="text" placeholder="Enter the keyword" value={filters[index]["value"]} name="value" styles={customStyles} onChange={(e) => onUpdate(e, index, "value")} key={index} />
-          )}
+            dataType === "select" && multiFilters ? (
+              // <Select
+              //     className="dashboardTextField"
+              //     selected={filters[index]["value"] || ""}
+              //     name="value"
+              //     id="value"
+              //     placeholder="Select an option"
+              //     style={{ flex: "1 1 100%" }}
+              //     onChange={(e) => {
+              //         onUpdate(e, index, "value");
+              //         var x = document.getElementById("select_notif" + index);
+              //         x.className = "toastHide"
+              //     }}
+              //     value={filterValueOption ? filterValueOption.filter(option => option.value == filters[index]["value"]) : ""}
+              //     options={filterValueOption}
+              //     styles={customStyles}
+              //     isLoading={isFilterValueLoading}
+              // />
+              <div>
+                {/* <pre>{JSON.stringify(((multiFilters[index]) ? (Array.isArray(multiFilters[index]["value"]) ? multiFilters[index]["value"] : []) : []))}</pre> */}
+                <MultiSelect
+                  className="dashboardTextField field-width-300"
+                  name="value"
+                  value={multiFilters[index] ? (Array.isArray(multiFilters[index]["value"]) ? multiFilters[index]["value"] : []) : []}
+                  id="value"
+                  key={index}
+                  displayValue="value"
+                  placeholder="Select an option"
+                  options={filterValueOption}
+                  style={{
+                    width: "50px",
+                  }}
+                  styles={customStyles}
+                  isLoading={isFilterValueLoading}
+                  onChange={(e) => onSelect(e, index, "")} // create onSelect function where it assigns the value array
+                  onRemove={(e) => onRemove(e, index, "")}
+                />
+              </div>
+            ) : (
+              <Form.Control className="dashboardTextField field-width-150" id="value" type="text" placeholder="Enter the keyword" value={filters[index]["value"]} name="value" styles={customStyles} onChange={(e) => onUpdate(e, index, "value")} key={index} />
+            )}
         </Form.Group>
       </div>
 
@@ -507,12 +511,12 @@ class DashboardFilter extends React.Component {
       this.props.filterMode != "CREATE" && this.props.dashboardStack.length == 1
         ? this.displayDefaultFilters()
         : this.setState({
-            filterConfiguration: this.props.filterConfiguration,
-            filters: this.props.filterConfiguration,
-            multiFilters: this.props.filterConfiguration,
-            applyFilterOption: this.props.applyFilterOption,
-            uuid: dashboardUuid,
-          });
+          filterConfiguration: this.props.filterConfiguration,
+          filters: this.props.filterConfiguration,
+          multiFilters: this.props.filterConfiguration,
+          applyFilterOption: this.props.applyFilterOption,
+          uuid: dashboardUuid,
+        });
     }
     if (this.props.filterMode == "APPLY" && prevProps.applyFilterOption !== this.props.applyFilterOption) {
       this.setState({

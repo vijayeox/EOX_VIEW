@@ -77,7 +77,7 @@ class ForgotPassword extends React.Component {
               </div>
               <div className="ox-forgotPWText">
                 <h4>Recover Password</h4>
-                <h6>Don’t worry, happens to the best of us.</h6>
+                <h6>Don't worry. It happens to the best of us.</h6>
               </div>
 
               <div className="floating-label">
