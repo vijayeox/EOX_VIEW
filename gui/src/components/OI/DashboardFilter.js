@@ -319,14 +319,14 @@ const FilterFields = function (props) {
               <div className="dates-container">
                 <DatePicker
                   className="dashboardTextField"
-                  selected={Date.parse(startDateSet || filters[index]["startDate"])}
+                  selected={filters[index]["operator"] == "mtd" || filters[index]["operator"] == "ytd" ? startDateSet : Date.parse(filters[index]["startDate"])}
                   dateFormat={dateFormat}
                   onChange={(date) => onUpdate(date, index, "startDate")}
                   selectsStart
                   enabled={false}
                   // key={index}
                   disabled={disableDateField}
-                  startDate={startDateSet || Date.parse(filters[index]["startDate"])}
+                  startDate={filters[index]["operator"] == "mtd" || filters[index]["operator"] == "ytd" ? startDateSet : Date.parse(filters[index]["startDate"])}
                   endDate={filters[index]["operator"] == "mtd" || filters[index]["operator"] == "ytd" ? new Date() : Date.parse(filters[index]["endDate"])}
                   showMonthDropdown
                   showYearDropdown
