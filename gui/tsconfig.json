@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "jsx": "react",
+    "target": "esnext" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
+    "module": "commonjs" /* Specify what module code is generated. */,
+    "moduleResolution": "Node",
+    "noEmit": true,
+    "isolatedModules": true,
+    "strict": true /* Enable all strict type-checking options. */,
+  }
+}
