@@ -1,14 +1,16 @@
-import React from "react";
+import React, { Ref, RefObject } from "react";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
-
 class Notification extends React.Component {
+  notificationDOMRef: RefObject<{
+    addNotification: (...args) => any;
+  }>;
   constructor(props) {
     super(props);
     this.notificationDOMRef = React.createRef();
   }
   notify(title, message, type, container, duration) {
-    this.notificationDOMRef.current.addNotification({
+    this.notificationDOMRef?.current?.addNotification({
       title: title || "",
       message: message || "",
       type: type || "",
