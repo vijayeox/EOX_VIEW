@@ -1,4 +1,4 @@
-import { React, EOXGrid } from "oxziongui";
+import { React, EOXGrid, Helpers } from "oxziongui";
 import { TitleBar } from "./components/titlebar";
 import { GetData } from "./components/apiCalls";
 import form from "../modules/forms/editCreateUser.json";
@@ -114,7 +114,7 @@ class User extends React.Component {
   };
 
   componentDidMount() {
-    GetData(this.api + `?filter=[{"skip":0,"take":${this.config.pageSize}}]`)
+    GetData(Helpers.Utils.getFilterParams(this.api, this.config.pageSize, 0))
       .then((data) => {
         this.setState({
           accountData:

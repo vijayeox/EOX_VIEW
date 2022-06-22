@@ -119,11 +119,11 @@ class WidgetEditorBody extends AbstractEditor {
         }
       }
       previewElement.style.height = cardBody.offsetHeight - 40 + "px"; //-40px for border and margin around preview area.
-
       try {
-        let props = {}; //Props is the property list to override things like widget title, footer etc.
-        if (this.state.widgetType === "chart") this.amChart = WidgetRenderer.renderAmCharts(previewElement, config, props, this.data);
-        else if (this.state.widgetType === "table") {
+        let props = {}; // Props is the property list to override things like widget title, footer etc.
+        if (this.state.widgetType === "chart") {
+          this.amChart = WidgetRenderer.renderAmCharts(previewElement, config, props, this.data);
+        } else if (this.state.widgetType === "table") {
           previewElement.style.width = cardBody.offsetWidth - 40 + "px"; //-40px for border and margin around preview area.
           WidgetRenderer.renderTable(previewElement, config, this.data);
         } else if (this.state.widgetType === "profile") {
