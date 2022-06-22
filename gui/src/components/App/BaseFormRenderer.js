@@ -1,42 +1,41 @@
-import "../../public/css/formstyles.scss";
-import { Formio } from "formiojs";
-
-import {
-  getComponent,
-  flattenComponents,
-  eachComponent,
-} from "formiojs/utils/formUtils";
-import SliderComponent from "./Form/SliderComponent";
-import scrollIntoView from "scroll-into-view-if-needed";
-import ConvergePayCheckoutComponent from "./Form/Payment/ConvergePayCheckoutComponent";
-import DocumentComponent from "./Form/DocumentComponent";
-import FortePayCheckoutComponent from "./Form/Payment/FortePayCheckoutComponent";
-import DocumentViewerComponent from "./Form/DocumentViewerComponent";
-import DocumentSignerComponent from "./Form/DocumentSignerComponent";
-import RadioCardComponent from "./Form/RadioCardComponent";
-import PhoneNumberComponent from "./Form/PhoneNumberComponent";
-import CountryComponent from "./Form/CountryComponent";
-import FileComponent from "./Form/FileComponent";
-import SelectComponent from "./Form/SelectComponent";
-import TextAreaComponent from "./Form/TextAreaComponent";
-import ParameterHandler from "./ParameterHandler";
-import Nested from "./Form/Nested";
-import { Button, DropDownButton } from "@progress/kendo-react-buttons";
-
-import DateFormats from "../../public/js/DateFormats";
-import React from "react";
-import Swal from "sweetalert2";
+import { Button } from "@progress/kendo-react-buttons";
 import axios from "axios";
-import * as MomentTZ from "moment-timezone";
-import { countryList } from "./Form/Country";
-import { phoneList } from "./Form/Phonelist";
 import merge from "deepmerge";
+import { Formio } from "formiojs";
+import {
+  flattenComponents
+} from "formiojs/utils/formUtils";
+import * as MomentTZ from "moment-timezone";
+import React from "react";
+import scrollIntoView from "scroll-into-view-if-needed";
+import Swal from "sweetalert2";
+import helpers from "../../helpers";
+import "../../public/css/formstyles.scss";
+import DateFormats from "../../public/js/DateFormats";
+import { countryList } from "./Form/Country";
+import CountryComponent from "./Form/CountryComponent";
+import DocumentComponent from "./Form/DocumentComponent";
+import DocumentSignerComponent from "./Form/DocumentSignerComponent";
+import DocumentViewerComponent from "./Form/DocumentViewerComponent";
+import FileComponent from "./Form/FileComponent";
+import Nested from "./Form/Nested";
+import ConvergePayCheckoutComponent from "./Form/Payment/ConvergePayCheckoutComponent";
+import FortePayCheckoutComponent from "./Form/Payment/FortePayCheckoutComponent";
+import { phoneList } from "./Form/Phonelist";
+import PhoneNumberComponent from "./Form/PhoneNumberComponent";
+import RadioCardComponent from "./Form/RadioCardComponent";
+import SelectComponent from "./Form/SelectComponent";
+import SliderComponent from "./Form/SliderComponent";
+import TextAreaComponent from "./Form/TextAreaComponent";
+import PrintPdf from "../print/printpdf";
 class BaseFormRenderer extends React.Component {
   constructor(props) {
     super(props);
     this.core = this.props.core;
     this.notif = this.props.notif;
     this.state = {
+      printPdfId:null,
+      showPdf: false,
       form: null,
       showLoader: false,
       stylePath: null,
@@ -66,7 +65,7 @@ class BaseFormRenderer extends React.Component {
       this.userprofile = userprofile.key;
     }
     this.appUrl = "/app/" + this.state.appId;
-    this.formDivID = "formio_" + this.generateUUID();
+    this.formDivID = "formio_" + helpers.Utils.generateUUID();
     this.loaderDivID = "formio_loader_" + formID;
     this.formErrorDivId = "formio_error_" + formID;
     // JavascriptLoader.loadScript([{
@@ -75,6 +74,70 @@ class BaseFormRenderer extends React.Component {
     //     'onload': function () { },
     //     'onerror': function () { }
     // }]);
+  }
+
+  toggleShowPdf = (showPdf) => {
+    if(showPdf){
+        this.printEntireForm()
+        return;
+    }
+    document.querySelector(`#${this.formDivID}>.formio-form>div>nav[aria-label="navigation"]>.pagination`)?.children?.[0]?.children[0]?.click();
+    this.setState({showPdf})
+  }
+  async printEntireForm(){
+    try{
+        const navTabSelector = `#${this.formDivID}>.formio-form>div>nav[aria-label="navigation"]>.pagination`
+        if(!document.querySelector(navTabSelector)){
+            this.setState({showPdf : true, printPdfId : this.formDivID})
+            return;
+        }
+        const sleep = t => new Promise((r) => {  setTimeout(r,t) })
+        const pages = [];
+        const radioCheckedData = []
+        this.loader.show()
+        const fetchForms = async i => { 
+            const navTabs = document.querySelector(navTabSelector)
+            const e = navTabs?.children?.[i]?.children[0];
+            if(!e) {
+                const formPages = document.createElement('div');
+                formPages.id = `${this.formDivID}_${Date.now()}`;
+                formPages.innerHTML = pages.join('')
+                document.getElementById(this.formDivID).appendChild(formPages)
+                document.querySelectorAll(`#${formPages.id}>.formio-form>div>ul`)?.forEach((childNode) => childNode?.remove())
+                try{
+                    radioCheckedData.forEach((childId) => {
+                        const e = formPages.querySelector(`#${childId}`);
+                        if(e){
+                            const clone = document.createElement('div');
+                            clone.style= "padding: 5px;background: #0573fa;border-radius: 6px;width: 10px;margin: auto;margin-top: 5px;border: 1px solid #FFF;outline: 1px;solid #0573fa;"
+                            e?.replaceWith(clone)
+                        }
+                    })
+                }catch(_e){}
+                this.setState({showPdf : true, printPdfId : formPages.id},this.loader.destroy)
+                return;
+            };
+            e.click()
+            await sleep(500)
+            try{
+                document.getElementById(this.formDivID).querySelectorAll('input[type="radio"]:checked')?.forEach((child) => 
+                child?.parentElement?.tagName?.toUpperCase() === 'TD' && radioCheckedData.push(child.id)
+            )
+            }catch(_e){}
+            pages.push(document.querySelector(`#${this.formDivID}`)?.innerHTML)
+            fetchForms(i+1)
+        }
+        const startTabs = document.querySelector(navTabSelector);
+        const len =  startTabs?.children?.length;
+        startTabs?.children?.[len-1]?.children[0]?.click();
+        await sleep(500)
+        fetchForms(0)
+        return true;
+    }catch(e){
+        console.error(`printEntireForm : `,e)
+        this.loader.destroy()
+        return true;
+    }
   }
 
   cancelFormSubmission = () => {
@@ -95,27 +158,6 @@ class BaseFormRenderer extends React.Component {
     });
   };
 
-  generateUUID() {
-    // Public Domain/MIT
-    let d = new Date().getTime(); //Timestamp
-    let d2 = (performance && performance.now && performance.now() * 1000) || 0; //Time in microseconds since page-load or 0 if unsupported
-    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
-      /[xy]/g,
-      function (c) {
-        let r = Math.random() * 16; //random number between 0 and 16
-        if (d > 0) {
-          //Use timestamp until depleted
-          r = (d + r) % 16 | 0;
-          d = Math.floor(d / 16);
-        } else {
-          //Use microseconds since page-load if supported
-          r = (d2 + r) % 16 | 0;
-          d2 = Math.floor(d2 / 16);
-        }
-        return (c === "x" ? r : (r & 0x3) | 0x8).toString(16);
-      }
-    );
-  }
   updatePageContent = (config) => {
     if (this.state.appId) {
       let eventDiv = document.getElementById("navigation_" + this.state.appId);
@@ -602,7 +644,7 @@ class BaseFormRenderer extends React.Component {
             const responses = await Promise.all(
               newFiles.map((file) => {
                 if(this.props.uniqueAttachments && file.uploadFile?.file){
-                  file.uploadFile.file = new File([file.uploadFile.file], `${this.generateUUID()}-${file.uploadFile.file.name}`,{type : file.uploadFile.type})
+                  file.uploadFile.file = new File([file.uploadFile.file], `${helpers.Utils.generateUUID()}-${file.uploadFile.file.name}`,{type : file.uploadFile.type})
                 }
                 return this.helper.request(
                   "v1",
@@ -786,7 +828,7 @@ class BaseFormRenderer extends React.Component {
         form._form["properties"]["submission_api"]
       ) {
         var postParams = JSON.parse(form._form["properties"]["submission_api"]);
-        route = ParameterHandler.replaceParams(
+        route = helpers.ParameterHandler.replaceParams(
           that.state.appId,
           postParams.api.url,
           form.submission.data
@@ -1620,6 +1662,18 @@ class BaseFormRenderer extends React.Component {
           detail: { customActions: gridToolbarContent, pageId : this.props.pageId },
           bubbles: true,
         });
+        if (this.props?.exportPDF) {
+          gridToolbarContent.push(
+            <Button
+              title={"Print"}
+              className={"toolBarButton"}
+              primary={true}
+              onClick={(e) => this.toggleShowPdf(true)}
+            >
+              <i className={"fa fa-print"}></i>
+            </Button>
+          );
+        }
         if (entityPage?.data?.content?.find((c) => c?.type === "TabSegment"))
           return;
         document
@@ -2103,7 +2157,7 @@ class BaseFormRenderer extends React.Component {
                   var postParams = JSON.parse(properties["api"]);
                   var data = that.cleanData(changed);
                   delete data.orgId;
-                  let router = ParameterHandler.replaceParams(
+                  let router = helpers.ParameterHandler.replaceParams(
                     data.app.uuid,
                     postParams["api"]["url"],
                     { data: data }
@@ -2268,6 +2322,13 @@ class BaseFormRenderer extends React.Component {
           <h3>{this.state.formErrorMessage}</h3>
         </div>
         <div className="form-render" id={this.formDivID}></div>
+        {   this.state.showPdf && 
+                        <PrintPdf
+                        cancel={() => this.toggleShowPdf(false)}
+                        idSelector={this.state.printPdfId}
+                        osjsCore={this.core}
+                        />
+        }
       </div>
     );
   }

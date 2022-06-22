@@ -267,6 +267,8 @@ class Dashboard extends Component {
       this.loader.destroy();
     } else {
       for (let widget of widgets) {
+        //only update widget matching uuid of current dashboard component
+        if(widget.hasAttribute(WidgetDrillDownHelper.CTX_DASHBOARD_ID) && widget.getAttribute(WidgetDrillDownHelper.CTX_DASHBOARD_ID) !== this.uuid) continue;
         var attributes = widget.attributes;
         //dispose
         var that = this;
@@ -289,7 +291,7 @@ class Dashboard extends Component {
                 hasDashboardFilters: hasDashboardFilters,
                 dashboardEditMode: false,
               };
-              let widgetObject = WidgetRenderer.render(renderproperties, widgetUUId, filterParams, this.core);
+              let widgetObject = WidgetRenderer.render(renderproperties, widgetUUId, filterParams, this.core, this.uuid);
               if (widgetObject) {
                 this.renderedWidgets[widgetUUId] = widgetObject;
               }
@@ -356,6 +358,8 @@ class Dashboard extends Component {
 
   widgetDrillDownMessageHandler = (event) => {
     let eventData = event.data;
+    //only drill down widget matching current dashboard uuid
+    if(eventData.hasOwnProperty(WidgetDrillDownHelper.CTX_DASHBOARD_ID) && eventData[WidgetDrillDownHelper.CTX_DASHBOARD_ID] !== this.uuid) return;
     if (eventData.target == "dashboard") {
       this.drillDownToDashboard(eventData);
     }
@@ -441,7 +445,7 @@ class Dashboard extends Component {
           props: eventData,
           dashboardEditMode: false,
         };
-        let widgetObject = WidgetRenderer.render(renderproperties, undefined, undefined, this.core);
+        let widgetObject = WidgetRenderer.render(renderproperties, undefined, undefined, this.core, this.uuid);
         if (widgetObject) {
           self.renderedWidgets[elementId] = widgetObject;
         }

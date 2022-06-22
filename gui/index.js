@@ -56,6 +56,7 @@ import TemplateManager from "./src/components/OI/TemplateManager";
 import SSOCustom from "./src/components/Custom/SSOCustom";
 import EOXGrid from "./src/components/EOXGrid/EOXGrid";
 import ChildEOXGrid from "./src/components/EOXGrid/ChildEOXGrid";
+import Helpers from './src/helpers'
 //import Mapbox from "./src/components/Custom/Mapbox";
 
 const LazyLoad = ({ component: Component, ...rest }) => (
@@ -158,4 +159,5 @@ export {
   SSOCustom,
   //  Mapbox
   EOXGrid,
+  Helpers
 };

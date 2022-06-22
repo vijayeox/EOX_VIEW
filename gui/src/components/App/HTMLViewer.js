@@ -8,7 +8,7 @@ import WidgetRenderer from "../../components/OI/WidgetRenderer";
 import WidgetDrillDownHelper from "../../components/OI/WidgetDrillDownHelper";
 import ReactDOMServer from "react-dom/server";
 import "../../components/OI/WidgetStyles.css";
-
+import helpers from "../../helpers";
 class HTMLViewer extends React.Component {
   constructor(props) {
     super(props);
@@ -16,7 +16,7 @@ class HTMLViewer extends React.Component {
     this.profileAdapter = this.core.make("oxzion/profile");
     this.profile = this.profileAdapter.get();
     this.appId = this.props.appId;
-    this.fileDivID = "file_" + this.generateUUID();
+    this.fileDivID = "file_" + helpers.Utils.generateUUID();
     this.renderedWidgets = {};
     this.helper = this.core.make("oxzion/restClient");
     this.loader = this.core.make("oxzion/splash");
@@ -39,24 +39,6 @@ class HTMLViewer extends React.Component {
       });
     });
   }
-  generateUUID() {
-    // Public Domain/MIT
-    let d = new Date().getTime(); //Timestamp
-    let d2 = (performance && performance.now && performance.now() * 1000) || 0; //Time in microseconds since page-load or 0 if unsupported
-    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
-      let r = Math.random() * 16; //random number between 0 and 16
-      if (d > 0) {
-        //Use timestamp until depleted
-        r = (d + r) % 16 | 0;
-        d = Math.floor(d / 16);
-      } else {
-        //Use microseconds since page-load if supported
-        r = (d2 + r) % 16 | 0;
-        d2 = Math.floor(d2 / 16);
-      }
-      return (c === "x" ? r : (r & 0x3) | 0x8).toString(16);
-    });
-  }
   formatDate = (dateTime, dateTimeFormat) => {
     let userTimezone,
       userDateTimeFomat = null;
@@ -73,6 +55,7 @@ class HTMLViewer extends React.Component {
   };
 
   async getFileDetails(fileId) {
+    return this.helper.getData(this.appId, 'FILE', "/app/" + this.appId + "/file/" + fileId + "/data");
     let fileContent = await this.helper.request("v1", "/app/" + this.appId + "/file/" + fileId + "/data", {}, "get");
     return fileContent;
   }

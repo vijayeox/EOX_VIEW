@@ -7,6 +7,8 @@ import Parser from "html-react-parser";
 import WidgetDrillDownHelper from "./WidgetDrillDownHelper";
 import * as am4core from "../../../amcharts/core";
 import * as am4charts from "../../../amcharts/charts";
+import { CandlestickSeriesDataItem, CandlestickSeries } from "../../../amcharts/charts";
+import { StepLineSeriesDataItem, StepLineSeries } from "../../../amcharts/charts";
 import * as am4maps from "../../../amcharts/maps";
 import am4geodata_usaAlbersLow from "@amcharts/amcharts4-geodata/usaAlbersLow";
 import am4themes_animated from "../../../amcharts/themes/animated";
@@ -23,7 +25,7 @@ import ComponentIndex from "../Custom/ComponentIndex";
 
 class WidgetRenderer {
   // static render(element, widget, props,hasDashboardFilters,dashboardMode) {
-  static render(renderpropertiesObject, widgetUUId, filterParams, core) {
+  static render(renderpropertiesObject, widgetUUId, filterParams, core, uuid) {
     let { element, widget, props, hasDashboardFilters, dashboardEditMode } = {
       ...renderpropertiesObject,
     };
@@ -100,6 +102,8 @@ class WidgetRenderer {
       default:
         throw `Unexpected widget renderer "${widget.renderer}"`;
     }
+    //append uuid of dashboard to keep tracking post invoking events
+    element.setAttribute(WidgetDrillDownHelper.CTX_DASHBOARD_ID, uuid)
     return widgetReturnParams;
   }
 
@@ -261,6 +265,10 @@ class WidgetRenderer {
           am4ChartType = am4charts.XYChart;
           break;
         case "ColumnSeries":
+          am4ChartType = am4charts.XYChart;
+          break;
+        case "StepLineSeries":
+        case "CandlestickSeries":
           am4ChartType = am4charts.XYChart;
           break;
         case "PieSeries":

@@ -232,6 +232,19 @@ export default class WidgetGridNew extends React.Component {
         return <td>{props.dataItem[props.field]}</td>
     }
 
+    jsonToText = (props,config) => {
+        if (props.dataItem[props.field] !== '') {
+          let jsonData = JSON.parse(props.dataItem[props.field]);
+          if(jsonData !== null) {
+            return <td>{jsonData[config.jsonKeyName]}</td>;
+          } else {
+            return <td></td>;
+          }
+        } else {
+          return <td></td>;
+        }
+    }
+
     rowRender = (trElement, dataItem) => {
         const trProps = {
           ...trElement.props,
@@ -345,19 +358,20 @@ export default class WidgetGridNew extends React.Component {
             for (const config of thiz.columnConfig) {
                 if (config['footerAggregate']) {
                     if (config['type'] == null) {
-                        columns.push(<Column field={config['field']} title={config['title']} key={config['field']} />);
+                        columns.push(<Column field={config['field']} title={config['title']} key={config['field']} className={config['className'] ? config['className'] : null}/>);
                     } else {
-                        columns.push(<Column field={config['field']} title={config['title']} filter={config ? ((config['type'] == 'number') ? 'numeric' : config['type']) : "numeric"} key={config['field']} />);
+                        columns.push(<Column field={config['field']} title={config['title']} filter={config ? ((config['type'] == 'number') ? 'numeric' : config['type']) : "numeric"} key={config['field']} className={config['className'] ? config['className'] : null} />);
                     }
+                } else if (config['jsonKeyName']) {
+                  columns.push(<Column field={config['field']} title={config['title']} key={config['field']} filter="text"  {...config} className={config['className'] ? config['className'] : null} cell={(props) => thiz.jsonToText(props,config)} />);
                 } else {
                     if (config['type'] == null) {
-                        columns.push(<Column field={config['field']} title={config['title']} key={config['field']} {...config} style={config['className'] ? config['className'] : null}/>);
-                    }
-                    else if(config['type'] == 'date'){
-                        columns.push(<Column field={config['field']} title={config['title']} filter="date" key={config['field']} {...config} style={config['className'] ? config['className'] : null} cell={(props) => thiz.myCustomDateCell(props,config)} />);
+                        columns.push(<Column field={config['field']} title={config['title']} key={config['field']} {...config} className={config['className'] ? config['className'] : null}/>);
+                    } else if (config['type'] == 'date'){
+                        columns.push(<Column field={config['field']} title={config['title']} filter="date" key={config['field']} {...config} className={config['className'] ? config['className'] : null} cell={(props) => thiz.myCustomDateCell(props,config)} />);
                     } else {
                         columns.push(<Column field={config['field']} title={config['title']} filter={config ? ((config['type'] == 'number') ? 'numeric' : config['type']) : "numeric"
-                        } key={config['field']} {...config} style={config['className'] ? config['className'] : null} />);
+                        } key={config['field']} {...config} className={config['className'] ? config['className'] : null} />);
                     }
                 }
             }

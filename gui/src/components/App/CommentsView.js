@@ -134,13 +134,14 @@ class CommentsView extends React.Component {
   }
   async getFileDetails(fileId) {
     let helper = this.core.make("oxzion/restClient");
-    let fileContent = await helper.request(
-      "v1",
-      "/app/" + this.appId + "/file/" + fileId + "/data",
-      {},
-      "get"
-    );
-    return fileContent;
+    // let fileContent = await helper.request(
+    //   "v1",
+    //   "/app/" + this.appId + "/file/" + fileId + "/data",
+    //   {},
+    //   "get"
+    // );
+    // return fileContent;
+    return helper.getMemoizedData(this.appId, 'FILE', "/app/" + this.appId + "/file/" + fileId + "/data");
   }
   async getEntityPage() {
     let helper = this.core.make("oxzion/restClient");

@@ -14,7 +14,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import JsxParser from "react-jsx-parser";
 import Swal from "sweetalert2";
-import ParameterHandler from "../App/ParameterHandler";
+import helpers from "../../helpers";
 import { ColumnMenu } from "../Grid/ColumnMenu";
 import CustomFilter from "../Grid/CustomFilter";
 import "../Grid/customStyles.scss";
@@ -38,6 +38,7 @@ export default class OX_Grid extends React.Component {
     this.datePickerValue = null;
     this.state = {
       showLoader: false,
+      exportExcelGridData: this.rawDataPresent ? this.props.data : { data: [], total: 0 },
       gridData: this.rawDataPresent ? this.props.data : { data: [], total: 0 },
       dataState: this.props.gridDefaultFilters ? this.props.gridDefaultFilters : {},
       showButtonPopup: false,
@@ -77,7 +78,7 @@ export default class OX_Grid extends React.Component {
   }
 
   componentWillUnmount() {
-    document.getElementById(`navigation_${this.appId}`)?.removeEventListener("exportPdf", this.exportPDF, false);
+      document.getElementById(`navigation_${this.appId}`)?.removeEventListener("exportPdf", this.exportPDF, false);
   }
 
   getCustomActions = (e) => {
@@ -263,7 +264,7 @@ export default class OX_Grid extends React.Component {
       });
       Object.keys(this.state.actions).map(function (key, index) {
         var action = this.state.actions;
-        var paramsRule = ParameterHandler.replaceParams(this.appId, action[key].rule, dataItem);
+        var paramsRule = helpers.ParameterHandler.replaceParams(this.appId, action[key].rule, dataItem);
         var row = dataItem;
         var _moment = moment;
         var profile = this.userprofile;
@@ -359,6 +360,23 @@ export default class OX_Grid extends React.Component {
     }
   };
 
+  preFilterExcelData = async (excelConfig) => {
+    try{
+      const total = this.state.gridData.total;
+      if(!this.props.exportToExcel.fetchAll || total === 0) throw '';
+      this.loader.show();
+      const response = await this.restClient.request('v1',`/${this.props.data}?filter=[{"take":"${total}","skip":"0"}]`, {}, "get");
+      this.setState({exportExcelGridData :response}, 
+      () => {
+        this.loader.destroy();
+        this.exportExcel(excelConfig)
+      })
+    }catch(e){
+      this.loader.destroy();
+      this.exportExcel(excelConfig, true)
+    }
+  }
+  
   exportExcel = (excelConfig) => {
     var gridData = this.state.gridData;
     if (excelConfig.columnConfig) {
@@ -394,6 +412,51 @@ export default class OX_Grid extends React.Component {
       this._excelExport.save(gridData, excelConfig.columnConfig ? undefined : this._grid.columns);
     }
   };
+
+  async exportMultipleSheets(columnConfigs, workbookOptions){
+    try{
+      const excelData = await Promise.all(columnConfigs?.map(({url}) => {
+        const finalUrl = "app/" + this.appId + "/" + ParameterHandler.replaceParams(this.appId, url, this.props.parentData)
+        return this.restClient.request('v1',`/${finalUrl}?filter=[{"take":"${Number.MAX_SAFE_INTEGER}","skip":"0"}]`, {}, "get")
+      }))
+      const responses = excelData.map(({data, status}) => status === 'success' ? data : []);
+      const headerTemplate = workbookOptions.sheets[0].rows[0].cells[0];
+      const remainingWorkbookData = workbookOptions.sheets[0];
+      delete remainingWorkbookData['filter']
+      const sheets = [];
+      columnConfigs.forEach(({sheetName, columnConfig, safeFields}, index) => {
+          let name = sheetName;
+          let rows = [{cells : columnConfig.map(({title, headerProperty}) => {
+            return {...headerTemplate, value : title, ...(headerProperty || {}), field : title}
+          })}];
+          const extraSafeFields = Array(safeFields || 0).fill({});
+          responses[index] = (responses?.[index] || []).concat(extraSafeFields)
+            responses[index].forEach((responseData, dataIndex) => {
+              rows.push({
+                type : 'data',
+                cells : columnConfig.map(({field, properties}) => {
+                  const dataProperty = properties ? JSON.parse(JSON.stringify({ ...properties })) : {} //to exclude referential pointer for object literal
+                  const data =  {
+                    value : responseData[field],
+                    ...dataProperty
+                  }
+                  if(data.validation?.dataType && data.validation?.dataType === 'custom'){
+                    data.validation.from = data.validation.from.replaceAll('<<INDEX>>',`${dataIndex+2}`)
+                  }
+                  return data;
+                })
+              })
+            })
+          sheets.push({...remainingWorkbookData, rows, name, columns : rows[0].cells})
+      });
+      workbookOptions['sheets'] = sheets;
+       this._excelExport.save(
+        workbookOptions
+      );
+    }catch(e){
+      console.error('exportMultipleSheets error',e)
+    }
+  }
 
   expandChange = (event) => {
     event.dataItem.expanded = !event.dataItem.expanded;
@@ -594,7 +657,7 @@ export default class OX_Grid extends React.Component {
           } else if (item.type == "API") {
             if (item.typeOfRequest == "delete") {
               action.updateOnly = true;
-              var url = ParameterHandler.replaceParams(this.appId, item.route, mergeRowData);
+              var url = helpers.ParameterHandler.replaceParams(this.appId, item.route, mergeRowData);
               Swal.fire({
                 title: "Are you sure?",
                 text: "Do you really want to delete the record? This cannot be undone.",
@@ -621,19 +684,40 @@ export default class OX_Grid extends React.Component {
               });
             } else if (item.typeOfRequest == "post") {
               action.updateOnly = true;
-              var url = ParameterHandler.replaceParams(this.appId, item.route, mergeRowData);
-              var params = ParameterHandler.replaceParams(this.appId, item.params, mergeRowData);
-              this.restClient
-                .request("v1", "/" + url, params, "post", {
-                  "Content-Type": "application/json",
-                })
-                .then((response) => {
-                  this.refreshHandler(response);
-                });
+              var url = helpers.ParameterHandler.replaceParams(
+                this.appId,
+                item.route,
+                mergeRowData
+              );
+              var params = helpers.ParameterHandler.replaceParams(
+                this.appId,
+                item.params,
+                mergeRowData
+              );
+              var postData = {...mergeRowData,...params};
+              this.messageBox.show(item.confirmationMessage, '', 'Yes', true)
+              .then((response) => {
+                  if(response){
+                    this.restClient
+                    .request("v1", "/" + url, postData, "post", {
+                      "Content-Type": "application/json",
+                    })
+                    .then((response1) => {
+                        if(response1.status == "success"){
+                          if(item.successNotification){
+                            this.messageBox.show(item.successNotification, '', 'OK', false);
+                          }
+                          this.refreshHandler(response1);
+                        }else{
+                          this.messageBox.show(response1.message, '', 'OK', false);
+                        }
+                    });
+                  }
+              });
             }
           } else if (item.type == "ButtonPopUp") {
             action.updateOnly = true;
-            var params = ParameterHandler.replaceParams(this.appId, item.params, mergeRowData);
+            var params = helpers.ParameterHandler.replaceParams(this.appId, item.params, mergeRowData);
             var buttonPopup = this.renderButtonPopup(params);
             that.setState({
               buttonPopup: buttonPopup,
@@ -643,9 +727,9 @@ export default class OX_Grid extends React.Component {
             action.updateOnly = true;
             var urlPostParams = {};
             if (item.params && item.params.urlPostParams) {
-              urlPostParams = ParameterHandler.replaceParams(this.appId, item.params.urlPostParams, mergeRowData);
+              urlPostParams = helpers.ParameterHandler.replaceParams(this.appId, item.params.urlPostParams, mergeRowData);
             }
-            var url = ParameterHandler.replaceParams(this.appId, item.route, mergeRowData);
+            var url = helpers.ParameterHandler.replaceParams(this.appId, item.route, mergeRowData);
             Swal.fire({
               title: "Are you sure?",
               text: "Do you really want to delete the record? This cannot be undone.",
@@ -674,12 +758,12 @@ export default class OX_Grid extends React.Component {
             if (item.params && item.params.page_id) {
               pageId = item.params.page_id;
               if (item.params.params && typeof item.params.params === "string") {
-                var newParams = ParameterHandler.replaceParams(this.appId, item.params.params, mergeRowData);
+                var newParams = helpers.ParameterHandler.replaceParams(this.appId, item.params.params, mergeRowData);
                 mergeRowData = { ...newParams, ...mergeRowData };
               } else if (item.params.params && typeof item.params.params === "object") {
                 var params = {};
                 Object.keys(item.params.params).map((i) => {
-                  params[i] = ParameterHandler.replaceParams(this.appId, item.params.params[i], mergeRowData);
+                  params[i] = helpers.ParameterHandler.replaceParams(this.appId, item.params.params[i], mergeRowData);
                 });
                 mergeRowData = { ...params, ...mergeRowData };
               }
@@ -687,7 +771,7 @@ export default class OX_Grid extends React.Component {
             } else {
               var pageContentObj = {};
               mergeRowData = { ...this.props.parentData, ...mergeRowData };
-              pageContentObj = ParameterHandler.replaceParams(this.appId, item, mergeRowData);
+              pageContentObj = helpers.ParameterHandler.replaceParams(this.appId, item, mergeRowData);
               copyPageContent.push(pageContentObj);
             }
           }
@@ -759,25 +843,25 @@ export default class OX_Grid extends React.Component {
     var that = this;
     rowData = { ...this.props.parentData, ...rowData };
     return new Promise((resolve) => {
-      var queryRoute = ParameterHandler.replaceParams(this.appId, details.params.url, rowData);
+      var queryRoute = helpers.ParameterHandler.replaceParams(this.appId, details.params.url, rowData);
       var postData = {};
       try {
         if (details.params.postData) {
           Object.keys(details.params.postData).map((i) => {
-            postData[i] = ParameterHandler.replaceParams(this.appId, details.params.postData[i], rowData);
+            postData[i] = helpers.ParameterHandler.replaceParams(this.appId, details.params.postData[i], rowData);
           });
         } else {
           Object.keys(details.params).map((i) => {
-            postData[i] = ParameterHandler.replaceParams(this.appId, details.params[i], rowData);
+            postData[i] = helpers.ParameterHandler.replaceParams(this.appId, details.params[i], rowData);
           });
           postData = rowData;
         }
       } catch (error) {
         postData = rowData;
       }
-      ParameterHandler.updateCall(that.core, that.appId, queryRoute, postData, details.params.disableAppId, details.method).then((response) => {
+      helpers.ParameterHandler.updateCall(that.core, that.appId, queryRoute, postData, details.params.disableAppId, details.method).then((response) => {
         if (details.params.downloadFile && response.status == 200) {
-          ParameterHandler.downloadFile(response).then((result) => {
+          helpers.ParameterHandler.downloadFile(response).then((result) => {
             that.setState({ showLoader: false });
             var downloadStatus = result ? "success" : "failed";
             resolve({ status: downloadStatus });
