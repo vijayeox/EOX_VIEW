@@ -58,7 +58,7 @@
         "load-script": "^1.0.0",
         "locale-currency": "0.0.2",
         "lodash": "^4.17.20",
-        "mapbox-gl": "^2.4.1",
+        "mapbox-gl": "2.4.1",
         "moment": "^2.29.1",
         "moment-timezone": "^0.5.31",
         "multiselect-react-dropdown": "^2.0.5",
