@@ -38,6 +38,7 @@ export default class OX_Grid extends React.Component {
     this.datePickerValue = null;
     this.state = {
       showLoader: false,
+      exportExcelGridData: this.rawDataPresent ? this.props.data : { data: [], total: 0 },
       gridData: this.rawDataPresent ? this.props.data : { data: [], total: 0 },
       dataState: this.props.gridDefaultFilters ? this.props.gridDefaultFilters : {},
       showButtonPopup: false,
@@ -77,7 +78,7 @@ export default class OX_Grid extends React.Component {
   }
 
   componentWillUnmount() {
-    document.getElementById(`navigation_${this.appId}`)?.removeEventListener("exportPdf", this.exportPDF, false);
+      document.getElementById(`navigation_${this.appId}`)?.removeEventListener("exportPdf", this.exportPDF, false);
   }
 
   getCustomActions = (e) => {
@@ -359,6 +360,23 @@ export default class OX_Grid extends React.Component {
     }
   };
 
+  preFilterExcelData = async (excelConfig) => {
+    try{
+      const total = this.state.gridData.total;
+      if(!this.props.exportToExcel.fetchAll || total === 0) throw '';
+      this.loader.show();
+      const response = await this.restClient.request('v1',`/${this.props.data}?filter=[{"take":"${total}","skip":"0"}]`, {}, "get");
+      this.setState({exportExcelGridData :response}, 
+      () => {
+        this.loader.destroy();
+        this.exportExcel(excelConfig)
+      })
+    }catch(e){
+      this.loader.destroy();
+      this.exportExcel(excelConfig, true)
+    }
+  }
+  
   exportExcel = (excelConfig) => {
     var gridData = this.state.gridData;
     if (excelConfig.columnConfig) {
@@ -394,6 +412,51 @@ export default class OX_Grid extends React.Component {
       this._excelExport.save(gridData, excelConfig.columnConfig ? undefined : this._grid.columns);
     }
   };
+
+  async exportMultipleSheets(columnConfigs, workbookOptions){
+    try{
+      const excelData = await Promise.all(columnConfigs?.map(({url}) => {
+        const finalUrl = "app/" + this.appId + "/" + ParameterHandler.replaceParams(this.appId, url, this.props.parentData)
+        return this.restClient.request('v1',`/${finalUrl}?filter=[{"take":"${Number.MAX_SAFE_INTEGER}","skip":"0"}]`, {}, "get")
+      }))
+      const responses = excelData.map(({data, status}) => status === 'success' ? data : []);
+      const headerTemplate = workbookOptions.sheets[0].rows[0].cells[0];
+      const remainingWorkbookData = workbookOptions.sheets[0];
+      delete remainingWorkbookData['filter']
+      const sheets = [];
+      columnConfigs.forEach(({sheetName, columnConfig, safeFields}, index) => {
+          let name = sheetName;
+          let rows = [{cells : columnConfig.map(({title, headerProperty}) => {
+            return {...headerTemplate, value : title, ...(headerProperty || {}), field : title}
+          })}];
+          const extraSafeFields = Array(safeFields || 0).fill({});
+          responses[index] = (responses?.[index] || []).concat(extraSafeFields)
+            responses[index].forEach((responseData, dataIndex) => {
+              rows.push({
+                type : 'data',
+                cells : columnConfig.map(({field, properties}) => {
+                  const dataProperty = properties ? JSON.parse(JSON.stringify({ ...properties })) : {} //to exclude referential pointer for object literal
+                  const data =  {
+                    value : responseData[field],
+                    ...dataProperty
+                  }
+                  if(data.validation?.dataType && data.validation?.dataType === 'custom'){
+                    data.validation.from = data.validation.from.replaceAll('<<INDEX>>',`${dataIndex+2}`)
+                  }
+                  return data;
+                })
+              })
+            })
+          sheets.push({...remainingWorkbookData, rows, name, columns : rows[0].cells})
+      });
+      workbookOptions['sheets'] = sheets;
+       this._excelExport.save(
+        workbookOptions
+      );
+    }catch(e){
+      console.error('exportMultipleSheets error',e)
+    }
+  }
 
   expandChange = (event) => {
     event.dataItem.expanded = !event.dataItem.expanded;
