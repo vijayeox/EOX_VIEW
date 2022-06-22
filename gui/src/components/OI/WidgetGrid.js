@@ -363,6 +363,19 @@ export default class WidgetGrid extends React.Component {
         return <td>{props.dataItem[props.field]}</td>	
     }
 
+    jsonToText = (props,config) => {
+        if (props.dataItem[props.field] !== '') {
+          let jsonData = JSON.parse(props.dataItem[props.field]);
+          if(jsonData !== null) {
+            return <td>{jsonData[config.jsonKeyName]}</td>;
+          } else {
+            return <td></td>;
+          }
+        } else {
+          return <td></td>;
+        }
+    }
+
 
     render() {
         let thiz = this;
@@ -374,6 +387,10 @@ export default class WidgetGrid extends React.Component {
                     // add a check here for checking for derived column around this. if derived column pass the props to load derived column values. 
 
                     columns.push(<GridColumn key={config['field']} {...config} footerCell={(props) => thiz.Aggregate(props, config['footerAggregate'])} className={config['className'] ? config['className'] : null}/>);
+                } else if (config['jsonKeyName']) {
+
+                    columns.push(<GridColumn field={config['field']} title={config['title']} key={config['field']} filter="text"  {...config} className={config['className'] ? config['className'] : null} cell={(props) => thiz.jsonToText(props,config)} />);
+                
                 } else {
                     if (config['derived_column']) {
                         columns.push(<GridColumn key={config['field']} {...config} className={config['className'] ? config['className'] : null} cell={(props) => thiz.cellWithBackGround(props, config, config['field'])} />)
