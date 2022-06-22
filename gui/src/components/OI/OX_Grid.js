@@ -74,12 +74,10 @@ export default class OX_Grid extends React.Component {
     this.generateGridToolbar();
     document.getElementById("customActionsToolbar").addEventListener("getCustomActions", this.getCustomActions, false);
     document.getElementById(`navigation_${this.appId}`)?.addEventListener("exportPdf", this.exportPDF, false);
-    // document.getElementById(`navigation_${this.appId}`)?.addEventListener('exportExcel', (e) =>  this.preFilterExcelData(e?.detail), false);
     this.toggleGridLoader();
   }
 
   componentWillUnmount() {
-      // document.getElementById(`navigation_${this.appId}`)?.removeEventListener('exportExcel', (e) =>  this.preFilterExcelData(e?.detail), false);
       document.getElementById(`navigation_${this.appId}`)?.removeEventListener("exportPdf", this.exportPDF, false);
   }
 
