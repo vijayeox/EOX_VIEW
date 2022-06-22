@@ -1,4 +1,4 @@
-import { React, EOXGrid } from "oxziongui";
+import { React, EOXGrid, Helpers } from "oxziongui";
 import { TitleBar } from "./components/titlebar";
 import { GetData } from "./components/apiCalls";
 class Errorlog extends React.Component {
@@ -68,7 +68,7 @@ class Errorlog extends React.Component {
   }
 
   componentDidMount() {
-    GetData(this.api+`?filter=[{"skip":0,"take":${this.config.pageSize}}]`).then((data) => {
+    GetData(Helpers.Utils.getFilterParams(this.api, this.config.pageSize, 0)).then((data) => {
       this.setState({
         accountData: data?.status === 'success' ? data : {data : [], total : 0},
         isLoading: false,

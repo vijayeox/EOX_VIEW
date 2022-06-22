@@ -1,7 +1,7 @@
 //Utility class for dynamically loading/unloading javascript libraries.
 import merge from "deepmerge";
 import moment from "moment";
-class ParameterHandler {
+export default class ParameterHandler {
     static replaceParams(appId,route, params,fileId) {
       var finalParams = merge(params ? params : {}, {
         current_date: moment().format("YYYY-MM-DD"),
@@ -172,4 +172,3 @@ class ParameterHandler {
   
   }
 }
-export default ParameterHandler;
