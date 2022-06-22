@@ -55,6 +55,7 @@ class HTMLViewer extends React.Component {
   };
 
   async getFileDetails(fileId) {
+    return this.helper.getData(this.appId, 'FILE', "/app/" + this.appId + "/file/" + fileId + "/data");
     let fileContent = await this.helper.request("v1", "/app/" + this.appId + "/file/" + fileId + "/data", {}, "get");
     return fileContent;
   }
