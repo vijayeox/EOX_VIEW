@@ -621,15 +621,36 @@ export default class OX_Grid extends React.Component {
               });
             } else if (item.typeOfRequest == "post") {
               action.updateOnly = true;
-              var url = ParameterHandler.replaceParams(this.appId, item.route, mergeRowData);
-              var params = ParameterHandler.replaceParams(this.appId, item.params, mergeRowData);
-              this.restClient
-                .request("v1", "/" + url, params, "post", {
-                  "Content-Type": "application/json",
-                })
-                .then((response) => {
-                  this.refreshHandler(response);
-                });
+              var url = ParameterHandler.replaceParams(
+                this.appId,
+                item.route,
+                mergeRowData
+              );
+              var params = ParameterHandler.replaceParams(
+                this.appId,
+                item.params,
+                mergeRowData
+              );
+              var postData = {...mergeRowData,...params};
+              this.messageBox.show(item.confirmationMessage, '', 'Yes', true)
+              .then((response) => {
+                  if(response){
+                    this.restClient
+                    .request("v1", "/" + url, postData, "post", {
+                      "Content-Type": "application/json",
+                    })
+                    .then((response1) => {
+                        if(response1.status == "success"){
+                          if(item.successNotification){
+                            this.messageBox.show(item.successNotification, '', 'OK', false);
+                          }
+                          this.refreshHandler(response1);
+                        }else{
+                          this.messageBox.show(response1.message, '', 'OK', false);
+                        }
+                    });
+                  }
+              });
             }
           } else if (item.type == "ButtonPopUp") {
             action.updateOnly = true;
@@ -867,8 +888,8 @@ export default class OX_Grid extends React.Component {
                 color: "#212529b3",
                 cursor: "pointer",
                 position: "absolute",
-                top: "1px",
-                right: "-2px",
+                top: "4px",
+                right: "4px",
               }}
               className={"fas fa-times"}
               onClick={() => {
