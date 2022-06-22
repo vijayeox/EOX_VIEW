@@ -393,8 +393,8 @@ export default class DocumentViewer extends Component {
 
   attachmentOperations(documentData, rename, del, downloadUrl) {
     return (
-      <div className="row">
-        <div className="col-md-12 dash-manager-buttons">
+      <div className="row" style={{display : 'unset'}}>
+        <div className="col-md-12 dash-manager-buttons w-100">
           {rename &&
           this.state.activeCard != "Documents" &&
           documentData.uuid ? (
@@ -528,8 +528,8 @@ export default class DocumentViewer extends Component {
       return (
         <React.Fragment>
           {this.attachmentOperations(documentData, true, true, url)}
-          <div className="row">
-            <div className="col-md-12 dash-manager-buttons">
+          <div className="row" style={{display : 'unset'}}>
+            <div className="col-md-12 dash-manager-buttons w-100">
               <img
                 onLoad={() => this.loader.destroy()}
                 className="img-fluid"
