@@ -7,6 +7,7 @@ import { ExcelExport } from '@progress/kendo-react-excel-export';
 import WidgetDrillDownHelper from './WidgetDrillDownHelper';
 import "@progress/kendo-theme-bootstrap/dist/all.css";
 import parseCustom from "html-react-parser";
+import Moment from 'moment';
 
 const loadingPanel = (
     <div className="k-loading-mask">
@@ -73,8 +74,8 @@ export default class WidgetGrid extends React.Component {
     parseData = () => {
         let fieldDataTypeMap = new Map();
         for (const config of this.columnConfig) {
-            if (config['dataType']) {
-                fieldDataTypeMap.set(config['field'], config['dataType']);
+            if (config['dataType'] === "date" || config['type'] === "date") {
+                fieldDataTypeMap.set(config['field'], (config['dataType'] || config['type']));
             }
         }
         for (let dataItem of this.allData) {
@@ -355,6 +356,26 @@ export default class WidgetGrid extends React.Component {
         );
     };
 
+    myCustomDateCell = (props,config) => {	
+        if (props.dataItem[props.field] !== '') {	
+          return <td className={config.className} >{Moment(props.dataItem[props.field]).format(config.dateFormat || "YYYY/MM/DD")}</td>	
+        }	
+        return <td>{props.dataItem[props.field]}</td>	
+    }
+
+    jsonToText = (props,config) => {
+        if (props.dataItem[props.field] !== '') {
+          let jsonData = JSON.parse(props.dataItem[props.field]);
+          if(jsonData !== null) {
+            return <td>{jsonData[config.jsonKeyName]}</td>;
+          } else {
+            return <td></td>;
+          }
+        } else {
+          return <td></td>;
+        }
+    }
+
 
     render() {
         let thiz = this;
@@ -365,13 +386,18 @@ export default class WidgetGrid extends React.Component {
                 if (config['footerAggregate']) {
                     // add a check here for checking for derived column around this. if derived column pass the props to load derived column values. 
 
-                    columns.push(<GridColumn key={config['field']} {...config} footerCell={(props) => thiz.Aggregate(props, config['footerAggregate'])} />);
+                    columns.push(<GridColumn key={config['field']} {...config} footerCell={(props) => thiz.Aggregate(props, config['footerAggregate'])} className={config['className'] ? config['className'] : null}/>);
+                } else if (config['jsonKeyName']) {
+
+                    columns.push(<GridColumn field={config['field']} title={config['title']} key={config['field']} filter="text"  {...config} className={config['className'] ? config['className'] : null} cell={(props) => thiz.jsonToText(props,config)} />);
+                
                 } else {
                     if (config['derived_column']) {
-                        columns.push(<GridColumn key={config['field']} {...config} cell={(props) => thiz.cellWithBackGround(props, config, config['field'])} />)
-                    }
-                    else {
-                        columns.push(<GridColumn key={config['field']} {...config} />);
+                        columns.push(<GridColumn key={config['field']} {...config} className={config['className'] ? config['className'] : null} cell={(props) => thiz.cellWithBackGround(props, config, config['field'])} />)
+                    } else if (config['type'] == 'date') {
+                        columns.push(<GridColumn field={config['field']} title={config['title']} filter="date" key={config['field']} {...config} className={config['className'] ? config['className'] : null} cell={(props) => thiz.myCustomDateCell(props,config)} />);
+                    } else {
+                        columns.push(<GridColumn key={config['field']} {...config} className={config['className'] ? config['className'] : null} />);
                     }
                 }
             }
