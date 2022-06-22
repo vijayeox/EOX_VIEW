@@ -148,13 +148,13 @@ class Query extends React.Component {
       showButton
         ? action[key].name === "toggleActivate"
           ? actionButtons.push(
-              <abbr className={that.checkedList[e.name] ? "deactivateDash" : "activateDash"} title={that.checkedList[e.name] ? "Deactivate" : "Activate"} key={index}>
+              <abbr className={that.checkedList[e.name] ? "deactivateDash mx-3 px-3" : "activateDash mx-3 px-3"} title={that.checkedList[e.name] ? "Deactivate" : "Activate"} key={index}>
                 <Switch id={e.name} onChange={() => that.buttonAction(action[key], e)} checked={that.state.checked[e.name] ? that.state.checked[e.name] : false} onClick={() => that.buttonAction(action[key], e)} onColor='#86d3ff' onHandleColor='#2693e6' handleDiameter={10} uncheckedIcon={false} checkedIcon={false} boxShadow='0px 1px 5px rgba(0, 0, 0, 0.6)' activeBoxShadow='0px 0px 1px 10px rgba(0, 0, 0, 0.2)' height={20} width={33} className='react-switch' />
               </abbr>
             )
           : actionButtons.push(
-              <abbr title={action[key].name} key={index}>
-                <Button key={"manage" + action[key].name} className=' btn manage-btn k-grid-edit-command' variant='primary' onClick={() => that.buttonAction(action[key], e)} style={buttonStyles}>
+              <abbr title={action[key].name} key={index} className={action[key].classNames}>
+                <Button key={"manage" + action[key].name} className='btn manage-btn k-grid-edit-command' variant='primary' onClick={() => that.buttonAction(action[key], e)} style={buttonStyles}>
                   {action[key].icon ? <i className={action[key].icon + " manageIcons"}></i> : action[key].name}
                 </Button>
               </abbr>
@@ -344,11 +344,13 @@ class Query extends React.Component {
                             name: "execute",
                             rule: "{{isdeleted}}==0",
                             icon: "fa fa-gear",
+                            classNames: "mr-3"
                           },
                           {
                             name: "edit",
                             rule: "{{isdeleted}}==0",
                             icon: "fa fa-edit",
+                            classNames: "mx-3"
                           },
                           {
                             name: "toggleActivate",
