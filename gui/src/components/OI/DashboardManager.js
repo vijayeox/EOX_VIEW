@@ -643,11 +643,12 @@ class DashboardManager extends React.Component {
                             <i className="fa fa-file-export"></i>
                           </Button>
                         )}
-                        {
+                        {/* Hide Refresh button If the filter has the db rollup / Back button */}
+                        {!(document.getElementById("dashboard-rollup-button")) && (
                           <Button onClick={() => this.refreshDashboard()} title="Refresh OI">
                             <i className="fa fa-refresh" aria-hidden="true"></i>
                           </Button>
-                        }
+                        )}
                         {/* <ReactToPrint
                           trigger={() => {
                             return <Button title="Print OI">
