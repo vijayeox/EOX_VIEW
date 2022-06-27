@@ -2,6 +2,7 @@
   "type": "application",
   "name": "Demo",
   "category": null,
+  "hidden": true,
   "server": "server.js",
   "icon": "icon.png",
   "icon_white": "icon_white.png",
