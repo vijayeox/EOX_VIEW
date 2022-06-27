@@ -20,6 +20,7 @@ module.exports = {
     alias: {
       OxzionGUI: path.resolve(__dirname, "../gui/src"),
     },
+    extensions : ['.ts','.js','.tsx', '.jsx']
   },
   entry: {
     osjs: [path.resolve(__dirname, "src/client/index.js"), path.resolve(__dirname, "src/client/assets/scss/index.scss")],
@@ -101,13 +102,13 @@ module.exports = {
         sideEffects: true,
       },
       {
-        test: /\.js$/,
+        test: /\.js$|.jsx$|.ts$|.tsx$/,
         exclude: /(node_modules|bower_components)/,
         use: {
           loader: "babel-loader",
           options: {
             generatorOpts: { compact: false },
-            presets: ["@babel/react", "@babel/env"],
+            presets: ["@babel/react", "@babel/env", "@babel/preset-typescript"],
             plugins: [require.resolve("@babel/plugin-transform-runtime"), "@babel/proposal-class-properties"],
           },
         },

@@ -63,6 +63,7 @@ module.exports = {
       OxzionGUI: path.resolve(__dirname, "./src"),
       "react-icons": path.resolve(__dirname, "./node_modules/react-icons"),
     },
+    extensions: ['.ts','.js','.jsx','.tsx']
   },
   module: {
     rules: [
@@ -92,13 +93,13 @@ module.exports = {
         sideEffects: true,
       },
       {
-        test: /\.js$/,
+        test: /\.js$|.ts$|.js$|.tsx$/,
         exclude: /(node_modules|bower_components)/,
         use: {
           loader: "babel-loader",
           options: {
             generatorOpts: { compact: false },
-            presets: ["@babel/react", "@babel/env"],
+            presets: ["@babel/react", "@babel/env",  "@babel/preset-typescript"],
             plugins: [require.resolve("@babel/plugin-transform-runtime"), "@babel/proposal-class-properties"],
           },
         },

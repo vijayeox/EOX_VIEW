@@ -215,7 +215,10 @@ class BaseFormRenderer extends React.Component {
         that.storeCache(this.cleanData(form_data));
         next(null);
       },
-      beforeCancel: () => that.cancelFormSubmission(),
+      beforeCancel: () => {
+        that.deleteCacheData('form');
+        that.cancelFormSubmission();
+      },
       beforeSubmit: async (submission, next) => {
         if (
           that.state.currentForm.checkValidity(
@@ -404,10 +407,12 @@ class BaseFormRenderer extends React.Component {
     }
   }
 
-  async deleteCacheData() {
+  async deleteCacheData(type = 'all') {
     var route = this.appUrl + "/deletecache";
     if (this.state.cacheId) {
       route = route + "/" + this.state.cacheId;
+    } else if (type == 'form') {
+      return false;
     }
     if (this.hasCore) {
       return await this.helper
