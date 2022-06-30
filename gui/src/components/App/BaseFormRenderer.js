@@ -200,6 +200,12 @@ class BaseFormRenderer extends React.Component {
     }
   }
 
+  async fetchData(route, method) {
+    if (this.hasCore) {
+      return await this.helper.request("v1", route, {}, method);
+    }
+  }
+
   createHook() {
     let that = this;
     let hook = {
@@ -686,7 +692,7 @@ class BaseFormRenderer extends React.Component {
         // resolve(true)
         resolve(attachmentsResponse)
       } catch (e) {
-        console.log(e)
+        //console.log(e)
         Swal.fire({
           title: "Failed to upload attachment(s)",
           icon: "warning",
@@ -1854,6 +1860,23 @@ class BaseFormRenderer extends React.Component {
                     changed.changed.properties,
                     changed.data
                   );
+                }
+              }
+            }
+            if (changed.data.customValidate) {
+              if ((changed.data.createFlag !== undefined) || (changed.data.createFlag !== false)) {
+                let customValidateprops = changed.data.customValidate;
+                let targetComponent = form.getComponent(changed.changed.component.key);
+                let filteredKeyArray = customValidateprops.filter(value => value.key === targetComponent.component.key)
+                if (Object.keys(filteredKeyArray).length > 0 || (filteredKeyArray.length !== 0)) {
+                  if (filteredKeyArray[0].api.split("/")[3].length > 2) {
+                    that.fetchData(filteredKeyArray[0].api, "get").then(result => {
+                      targetComponent.component.validate.custom = result.status === "error" ? 'valid = "' + result.message + '"' : "valid=true"
+                    })
+                  }
+                  // else {
+                  //   targetComponent.component.validate.custom = "valid=true";
+                  // }
                 }
               }
             }
