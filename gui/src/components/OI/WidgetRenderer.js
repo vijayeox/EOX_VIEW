@@ -25,7 +25,7 @@ import ComponentIndex from "../Custom/ComponentIndex";
 
 class WidgetRenderer {
   // static render(element, widget, props,hasDashboardFilters,dashboardMode) {
-  static render(renderpropertiesObject, widgetUUId, filterParams, core, uuid) {
+  static render(renderpropertiesObject, widgetUUId, filterParams, core, uuid, dashboardProps) {
     let { element, widget, props, hasDashboardFilters, dashboardEditMode } = {
       ...renderpropertiesObject,
     };
@@ -70,7 +70,7 @@ class WidgetRenderer {
           throw `Unexpected table widget tag "${widgetTagName}"`;
         }
         try {
-          widgetReturnParams = WidgetRenderer.renderTable(element, widget.configuration, widget.data, hasDashboardFilters, "WidgetGridNew", widget.uuid, filterParams, core, widget["total_count"]);
+          widgetReturnParams = WidgetRenderer.renderTable(element, widget.configuration, widget.data, hasDashboardFilters, "WidgetGridNew", widget.uuid, filterParams, core, widget["total_count"], dashboardProps);
           break;
         } catch (e) {
           console.error(e);
@@ -653,7 +653,7 @@ class WidgetRenderer {
     }
   }
 
-  static renderTable(element, configuration, data, hasDashboardFilters, widgetGridType, widgetUUId = null, filterParams = null, core, total_count = null) {
+  static renderTable(element, configuration, data, hasDashboardFilters, widgetGridType, widgetUUId = null, filterParams = null, core, total_count = null, dashboardProps = {}) {
     let elementTagName = element.tagName.toUpperCase();
     let canvasElement = null;
     let isDrillDownTable = false;
@@ -700,9 +700,9 @@ class WidgetRenderer {
     }
 
     if (widgetGridType == "WidgetGridNew") {
-      ReactDOM.render(<WidgetGridNew configuration={configuration} data={data} isDrillDownTable={isDrillDownTable} canvasElement={canvasElement} uuid={widgetUUId} filterParams={filterParams} core={core} totalcount={total_count} />, canvasElement);
+      ReactDOM.render(<WidgetGridNew configuration={configuration} data={data} isDrillDownTable={isDrillDownTable} canvasElement={canvasElement} uuid={widgetUUId} filterParams={filterParams} core={core} totalcount={total_count} notif={dashboardProps.notif} />, canvasElement);
     } else if (widgetGridType == "WidgetGrid") {
-      ReactDOM.render(<WidgetGrid configuration={configuration} data={data} isDrillDownTable={isDrillDownTable} canvasElement={canvasElement} core={core} />, canvasElement);
+      ReactDOM.render(<WidgetGrid configuration={configuration} data={data} isDrillDownTable={isDrillDownTable} canvasElement={canvasElement} core={core} notif={dashboardProps.notif} />, canvasElement);
     }
   }
 }

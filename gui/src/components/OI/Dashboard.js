@@ -291,7 +291,7 @@ class Dashboard extends Component {
                 hasDashboardFilters: hasDashboardFilters,
                 dashboardEditMode: false,
               };
-              let widgetObject = WidgetRenderer.render(renderproperties, widgetUUId, filterParams, this.core, this.uuid);
+              let widgetObject = WidgetRenderer.render(renderproperties, widgetUUId, filterParams, this.core, this.uuid, this.props);
               if (widgetObject) {
                 this.renderedWidgets[widgetUUId] = widgetObject;
               }
