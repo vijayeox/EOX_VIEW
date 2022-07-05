@@ -522,6 +522,7 @@ export default class OX_Grid extends React.Component {
           popupSettings={{ popupClass: "dropDownButton" }}
           items={operationsList}
           primary={true}
+          className={"toolBarButton"}
           key={Math.random()}
         />
       );
