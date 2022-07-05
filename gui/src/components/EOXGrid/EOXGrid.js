@@ -227,7 +227,7 @@ export default class EOXGrid extends React.Component {
             <FormRender
               key={"abc"}
               core={this.core}
-              data={{accountId:changedAccountId}}
+              data={{accountId:changedAccountId,createFlag:true}}
               updateFormData={true}
               getAttachment={true}
               postSubmitCallback={(formData) =>
