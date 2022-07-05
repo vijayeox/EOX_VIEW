@@ -27,20 +27,7 @@ import RadioCardComponent from "./Form/RadioCardComponent";
 import SelectComponent from "./Form/SelectComponent";
 import SliderComponent from "./Form/SliderComponent";
 import TextAreaComponent from "./Form/TextAreaComponent";
-
-import ParameterHandler from "./ParameterHandler";
-import Nested from "./Form/Nested";
-import { Button, DropDownButton } from "@progress/kendo-react-buttons";
-
-import DateFormats from "../../public/js/DateFormats";
-import React from "react";
-import Swal from "sweetalert2";
-import axios from "axios";
-import * as MomentTZ from "moment-timezone";
-import { countryList } from "./Form/Country";
-import { phoneList } from "./Form/Phonelist";
 import PrintPdf from "../print/printpdf";
-import merge from "deepmerge";
 class BaseFormRenderer extends React.Component {
   constructor(props) {
     super(props);
@@ -210,6 +197,12 @@ class BaseFormRenderer extends React.Component {
       } catch (e) {
         console.error("Unable to Handle Callback");
       }
+    }
+  }
+
+  async fetchData(route, method) {
+    if (this.hasCore) {
+      return await this.helper.request("v1", route, {}, method);
     }
   }
 
@@ -699,7 +692,7 @@ class BaseFormRenderer extends React.Component {
         // resolve(true)
         resolve(attachmentsResponse)
       } catch (e) {
-        console.log(e)
+        //console.log(e)
         Swal.fire({
           title: "Failed to upload attachment(s)",
           icon: "warning",
@@ -1867,6 +1860,22 @@ class BaseFormRenderer extends React.Component {
                     changed.changed.properties,
                     changed.data
                   );
+                }
+              }
+            }
+            if (changed.data.customValidate) {
+              if ((changed.data.createFlag !== undefined) || (changed.data.createFlag !== false)) {
+                let customValidateprops = changed.data.customValidate;
+                let targetComponent = form.getComponent(changed.changed.component.key);
+                let filteredKeyArray = customValidateprops.filter(value => value.key === targetComponent.component.key)
+                if (Object.keys(filteredKeyArray).length > 0 || (filteredKeyArray.length !== 0)) {
+                  if (filteredKeyArray[0].api.split("/")[3].length > 2) {
+                    that.fetchData(filteredKeyArray[0].api, "get").then(result => {
+                      targetComponent.component.validate.custom = result.status === "error" ? 'valid = "' + result.message + '"' : "valid=true"
+                    })
+                  }else {
+                     targetComponent.component.validate.custom = "valid=true";
+                  }
                 }
               }
             }
