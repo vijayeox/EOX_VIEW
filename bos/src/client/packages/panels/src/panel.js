@@ -127,13 +127,22 @@ export default class Panel extends EventEmitter {
     const _ = this.core.make('osjs/locale').translate;
     const __ = this.core.make('osjs/locale').translatable(languages);
 
+    let profileDetails = this.core.make("oxzion/profile").get();
+    let userAcountInfo = profileDetails["key"]["active_account"];
+
     let footerElement = document.createElement('div');
     footerElement.classList.add('footer-CR');
     footerElement.id = 'footer-CR';
-    footerElement.innerHTML = '<div class="coppyRight">'
+    if(userAcountInfo?.preferences?.footer){
+      footerElement.innerHTML = '<div class="coppyRight">' + 
+      userAcountInfo.preferences.footer
+      + '</div>  ';
+    } else {
+      footerElement.innerHTML = '<div class="coppyRight">'
          + `Copyright © 2004-${new Date().getFullYear()} EOX Vantage. All rights reserved.`
          + '</div>  ';
-
+    }
+    
     this.core.$root.appendChild(footerElement);
 
     this.$element = document.createElement('div');
@@ -185,7 +194,6 @@ export default class Panel extends EventEmitter {
     let profileElement = document.createElement('div');
     profileElement.classList.add('profile');
     profileElement.id = 'profileMenu';
-    let profileDetails = this.core.make('oxzion/profile').get();
     Object.keys(profileDetails.key).map(key => {
       profileDetails.key[key] = profileDetails.key[key] && profileDetails.key[key] !== 'null' ? profileDetails.key[key] : '';
     });
