@@ -522,7 +522,6 @@ export default class OX_Grid extends React.Component {
           popupSettings={{ popupClass: "dropDownButton" }}
           items={operationsList}
           primary={true}
-          className={"toolBarButton"}
           key={Math.random()}
         />
       );
@@ -684,12 +683,12 @@ export default class OX_Grid extends React.Component {
               });
             } else if (item.typeOfRequest == "post") {
               action.updateOnly = true;
-              var url = helpers.ParameterHandler.replaceParams(
+              var url = ParameterHandler.replaceParams(
                 this.appId,
                 item.route,
                 mergeRowData
               );
-              var params = helpers.ParameterHandler.replaceParams(
+              var params = ParameterHandler.replaceParams(
                 this.appId,
                 item.params,
                 mergeRowData
