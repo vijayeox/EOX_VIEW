@@ -255,6 +255,8 @@ export default class MenuPanelItem extends PanelItem {
     };
 
     var menu_name = this.hideMenu() ? "menu_hidden" : "menu";
+    let profileDetails = this.core.make("oxzion/profile").get();
+    let userAcountInfo = profileDetails["key"]["active_account"];
     return super.render(menu_name, [
       h(
         "div",
@@ -265,7 +267,7 @@ export default class MenuPanelItem extends PanelItem {
         },
         [
           h("img", {
-            src: menuIcon,
+            src: userAcountInfo?.preferences?.logo ? userAcountInfo?.preferences?.logo : menuIcon,
             alt: _("LBL_MENU"),
             title: menu_name == "menu" ? "Applications" : null,
           }),

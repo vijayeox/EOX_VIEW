@@ -15,6 +15,14 @@
       "tableView": false,
       "components": [
         {
+          "label": "customValidate",
+          "calculateValue": "value = [{\n        key: \"username\",\n        type: \"api\",\n        api: \"account/\" + data?.accountId + \"/usercheck/\" +  data?.username \n    },\n    {\n        key: \"email\",\n        type: \"api\",\n        api: \"account/\" + data?.accountId + \"/emailcheck/\" + data?.email,\n        // callback: (inputKey) => {\n        //     //custom\n        // }\n    }\n]",
+          "key": "customValidate",
+          "type": "hidden",
+          "input": true,
+          "tableView": false
+        },
+        {
           "label": "Columns",
           "columns": [
             {
@@ -34,6 +42,7 @@
                   "label": "Email",
                   "tabindex": "3",
                   "tableView": true,
+                  "validateOn": "blur",
                   "validate": {
                     "required": true
                   },
@@ -66,6 +75,7 @@
                   "label": "Username",
                   "tabindex": "4",
                   "tableView": true,
+                  "validateOn": "blur",
                   "validate": {
                     "required": true
                   },
@@ -312,7 +322,7 @@
                   "timePicker": {
                     "showMeridian": false
                   },
-                  "calculateValue": "if(data.date_of_birth){\n  value=moment(data.date_of_birth).format(\"YYYY-MM-DD\");\n// console.log(\"Valuee\",value);\n}",
+                  "calculateValue": "if(data?.date_of_birth){\n  value=moment(data.date_of_birth).format(\"YYYY-MM-DD\");\n}",
                   "validate": {
                     "required": true
                   },
@@ -363,7 +373,7 @@
                   "timePicker": {
                     "showMeridian": false
                   },
-                  "calculateValue": "if(data.date_of_join){\n  value=moment(data.date_of_join).format(\"YYYY-MM-DD\");\n}",
+                  "calculateValue": "if(data?.date_of_join){\n  value=moment(data.date_of_join).format(\"YYYY-MM-DD\");\n}",
                   "validate": {
                     "required": true,
                     "custom": "valid = (input > data.date_of_birth) ? true : 'Date of joining should be greater than date of birth';"
@@ -476,7 +486,6 @@
                   },
                   "idPath": "uuid",
                   "template": "<span>{{ item.name }}</span>",
-                  "customDefaultValue": "console.log(data)",
                   "validate": {
                     "required": true
                   },
@@ -588,6 +597,6 @@
   "path": "adminuser",
   "project": "5dc1489e4f668513e9535090",
   "created": "2021-12-01T10:01:16.951Z",
-  "modified": "2022-05-13T07:55:14.826Z",
+  "modified": "2022-06-30T14:43:13.134Z",
   "machineName": "eoxproductsupport:adminUser"
 }
