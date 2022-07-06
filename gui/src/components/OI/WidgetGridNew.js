@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import ReactDOM from "react-dom";
 import {
   Grid,
@@ -14,6 +14,8 @@ import { Menu, MenuItem } from "@progress/kendo-react-layout";
 import { Popup } from "@progress/kendo-react-popup";
 import { WidgetGridLoader } from "./WidgetGridLoader.js";
 import "@progress/kendo-theme-bootstrap/dist/all.css";
+import { PopupContext } from "../../helpers";
+import { EventListeners } from "../../interfaces";
 import Moment from "moment";
 
 const loadingPanel = (
@@ -145,16 +147,10 @@ export default class WidgetGridNew extends React.Component {
   };
 
   dataStateChange = (e) => {
-    // console.log(e);
-    this.setState(
-      {
-        ...this.state,
-        dataState: e.dataState,
-      },
-      () => {
-        // console.log(this.state.dataState);
-      }
-    );
+    this.setState({
+      ...this.state,
+      dataState: e.dataState,
+    });
   };
 
   dataRecieved = (displayedData) => {
@@ -355,30 +351,23 @@ export default class WidgetGridNew extends React.Component {
   };
 
   handleOnSelect = (e) => {
-    // var dataItem = this.dataItem;
-    // if (this.state.actions) {
-    //   Object.keys(this.state.actions).map(function (key, index) {
-    //     if (this.state.actions[key].name == e.item.text) {
-    //       this.handleAction(key, dataItem);
-    //     }
-    //   }, this);
-    // }
+    const appName =
+      this.state.props.configuration["oxzion-meta"]["drillDown"][
+        "nextWidgetId"
+      ];
+    const app = this.props.core
+      .make("osjs/packages")
+      .getPackages((m) => m.type === "application")
+      .find((v) => v.name === appName);
     switch (e.item.text) {
       case "View":
-        this.launchApplication(this.dataItem,
-          this.state.props.configuration["oxzion-meta"]["drillDown"][
-            "nextWidgetId"
-          ],
-          "file_uuid"
-        );
+        this.launchApplication(this.dataItem, appName, "file_uuid");
         break;
       case "Edit":
-        console.log("Menu Item 2");
-        //this.handleMoveDown();
+        this.editRecord(app);
         break;
       case "Delete":
-        this.deleteRecord()
-        //this.handleDelete();
+        this.deleteRecord(app);
         break;
       default:
     }
@@ -387,7 +376,28 @@ export default class WidgetGridNew extends React.Component {
     });
   };
 
-  deleteRecord = async () => {
+  editRecord = async (app) => {
+    const { file_uuid, formId } = this.dataItem;
+    let ev = new CustomEvent(EventListeners.ADD_PAGE, {
+      detail: {
+        pageContent: [
+          {
+            form_id: formId,
+            fileId: file_uuid,
+            type: "Form",
+            form_name: {
+              name: "",
+              uuid: formId,
+            },
+          },
+        ],
+      },
+      bubbles: true,
+    });
+    document.getElementById(`navigation_${app.appId}`)?.dispatchEvent(ev);
+  };
+
+  deleteRecord = async (app) => {
     const { value } = await Swal.fire({
       title: "Are you sure?",
       text: "Do you really want to delete the record? This cannot be undone.",
@@ -399,27 +409,21 @@ export default class WidgetGridNew extends React.Component {
       showCancelButton: true,
       cancelButtonColor: "#3085d6",
     });
-    if(!value) return;
-    const { file_uuid } = this.dataItem
-    const app = this.props.core
-    .make("osjs/packages")
-    .getPackages((m) => m.type === "application")
-    .find(
-      (v) =>
-        v.name ===
-        this.state.props.configuration["oxzion-meta"]["drillDown"][
-          "nextWidgetId"
-        ]
-    );
-    // const fileResponse = this.restClient.request('v1', "/app/" + app.appId + "/file/" + file_uuid + "/data")
-    //get file version before deleting it
+    if (!value) return;
+    const { file_uuid, version } = this.dataItem;
     const { status, message } = await this.restClient.request(
       "v1",
-      `app/${app.appId}/file/crud/${file_uuid}`, {}, "delete"
+      `app/${app.appId}/file/crud/${file_uuid}?version=${version || 1}`,
+      {},
+      "delete"
     );
     const isSuccess = status == "success";
-    this.props.notif?.current?.notify(isSuccess ? "Success" : "Error",!isSuccess ? message : "Deleted Successfully", isSuccess ? "success" : "danger");
-    if(isSuccess){
+    this.props.notif?.current?.notify(
+      isSuccess ? "Success" : "Error",
+      !isSuccess ? message : "Deleted Successfully",
+      isSuccess ? "success" : "danger"
+    );
+    if (isSuccess) {
       let data = [...this.state.gridData];
       data.splice(this.dataItemIndex, 1);
       this.setState({
@@ -471,14 +475,6 @@ export default class WidgetGridNew extends React.Component {
       data.splice(this.dataItemIndex + 1, 0, this.dataItem);
       this.setState({ gridData: data });
     }
-  };
-
-  handleDelete = () => {
-    let data = [...this.state.gridData];
-    data.splice(this.dataItemIndex, 1);
-    this.setState({
-      gridData: data,
-    });
   };
 
   render() {
@@ -703,43 +699,30 @@ export default class WidgetGridNew extends React.Component {
         )}
         {!this.exportToExcel && (
           <>
-            {
-              <Popup
+            {this.state.showContextPopup && (
+              <PopupContext
                 offset={this.offset}
-                show={this.state.showContextPopup}
-                open={console.log}
-              >
-                <div
-                  onFocus={this.onFocusHandler}
-                  onBlur={this.onBlurHandler}
-                  tabIndex={-1}
-                  ref={(el) => (this.menuWrapperRef = el)}
-                >
-                  <Menu
-                    vertical={true}
-                    style={{ display: "inline-block" }}
-                    onSelect={this.handleOnSelect}
-                  >
-                    <MenuItem text="View" />
-                    <MenuItem text="Edit" />
-                    <MenuItem text="Delete" />
-                  </Menu>
-                  <i
-                    style={{
-                      color: "#212529b3",
-                      cursor: "pointer",
-                      position: "absolute",
-                      top: "1px",
-                      right: "-2px",
-                    }}
-                    className={"fas fa-times"}
-                    onClick={() => {
-                      this.setState({ showContextPopup: false });
-                    }}
-                  ></i>
-                </div>
-              </Popup>
-            }
+                onClick={this.handleOnSelect}
+                onClose={() => this.setState({ showContextPopup: false })}
+                menus={[
+                  {
+                    text: "View",
+                    icon: "fa fa-eye",
+                    disabled: !this.dataItem.file_uuid,
+                  },
+                  {
+                    text: "Edit",
+                    icon: "fa fa-pencil",
+                    disabled: !this.dataItem.formId,
+                  },
+                  {
+                    text: "Delete",
+                    icon: "fa fa-trash",
+                    disabled: !this.dataItem.version,
+                  },
+                ]}
+              />
+            )}
             {gridTag}
             {gridLoader}
           </>
