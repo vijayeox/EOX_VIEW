@@ -297,6 +297,7 @@ class BaseFormRenderer extends React.Component {
       }
     });
     formData = JSON.parse(JSON.stringify(formData)); // Cloning the formdata to avoid original data being removed
+    formData.baseUrl = undefined;
     formData.privileges = undefined;
     formData.userprofile = undefined;
     formData.countryList = undefined;
@@ -346,6 +347,7 @@ class BaseFormRenderer extends React.Component {
   addAddlData(data) {
     data = data ? data : {};
     return merge(data, {
+      baseUrl: this.core.config("wrapper.url"),
       privileges: this.privileges,
       userprofile: this.userprofile,
       countryList: countryList,

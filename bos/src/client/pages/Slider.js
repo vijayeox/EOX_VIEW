@@ -65,6 +65,10 @@ class Slider extends React.Component {
           },
           () => this.refreshTimer()
         );
+      } else {
+        this.setState({
+            loading: false,
+          }, () => this.refreshTimer());
       }
     });
   }

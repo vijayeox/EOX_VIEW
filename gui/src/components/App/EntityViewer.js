@@ -68,7 +68,7 @@ class EntityViewer extends React.Component {
   componentWillUnmount(){
     this.unmounted = true;
   }
-  generateEditButton(enableComments, enableAuditLog, fileData) {
+  generateEditButton(enableComments, enableAuditLog, fileData, enablePrint, enableGenerateLink) {
     var fileId;
     let gridToolbarContent = [];
     var filePage;
@@ -105,18 +105,18 @@ class EntityViewer extends React.Component {
         </Button>
       );
     }
-    {!this.state.isTabSegment && 
-      toolbarButtons.push(
-        <Button
-          title={"Print"}
-          className={"btn btn-primary"}
-          primary={true}
-          onClick={(e) => this.callPrint()}
-        >
-          <i className={"fa fa-print"}></i>
-        </Button>
-      )
-    };
+    if(enablePrint && !this.state.isTabSegment){
+	    toolbarButtons.push(
+	      <Button
+	        title={"Print"}
+	        className={"btn btn-primary"}
+	        primary={true}
+	        onClick={(e) => this.callPrint()}
+	      >
+	        <i className={"fa fa-print"}></i>
+	      </Button>
+	    );
+    }
     if (enableAuditLog && !this.state.isTabSegment) {
       toolbarButtons.push(
         <Button
@@ -146,33 +146,33 @@ class EntityViewer extends React.Component {
         </Button>
       );
     }
-    {!this.state.isTabSegment && 
-    toolbarButtons.push(
-      <Button
-        title={"Generate Link"}
-        className={"btn btn-primary"}
-        primary={true}
-        onClick={(e) =>
-          this.core
-            .make("oxzion/link")
-            .copyToClipboard(
-              '<a eoxapplication="' +
-              this.state.entityConfig.app_name +
-              '" file-id="' +
-              fileId +
-              '" href="' +
-              this.core.config("ui.url") +
-              "?app=" +
-              this.state.entityConfig.app_name +
-              "&fileId=" +
-              fileId +
-              '" >Link</a>'
-            )
-        }
-      >
-        <i className={"fa fa-share-alt"}></i>
-      </Button>
-    );
+    if(enableGenerateLink && !this.state.isTabSegment){
+	    toolbarButtons.push(
+	      <Button
+	        title={"Generate Link"}
+	        className={"btn btn-primary"}
+	        primary={true}
+	        onClick={(e) =>
+	          this.core
+	            .make("oxzion/link")
+	            .copyToClipboard(
+	              '<a eoxapplication="' +
+	                this.state.entityConfig.app_name +
+	                '" file-id="' +
+	                fileId +
+	                '" href="' +
+	                this.core.config("ui.url") +
+	                "?app=" +
+	                this.state.entityConfig.app_name +
+	                "&fileId=" +
+	                fileId +
+	                '" >Link</a>'
+	            )
+	        }
+	      >
+	        <i className={"fa fa-share-alt"}></i>
+	      </Button>
+	    );
     }
     gridToolbarContent.push(
       <div className={`display-flex ${this.state.isTabSegment ? "task-header-pos-abs" : ""}`} key={Math.random()}>
@@ -203,7 +203,9 @@ class EntityViewer extends React.Component {
           this.generateEditButton(
             entityPage.data.enable_documents,
             entityPage.data.enable_auditlog,
-            fileData
+            fileData,
+            entityPage.data.enable_print,
+            entityPage.data.enable_generateLink
           );
           var content = this.constructTabs(
             entityPage.data,
