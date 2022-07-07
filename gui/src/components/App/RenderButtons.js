@@ -18,7 +18,7 @@ class RenderButtons extends React.Component {
   createTiles = () => {
     let adminItems = [];
     var rowData = this.fileData;
-    (this.props.content || this.props.renderContent || []).buttonList.map((currentValue, index) => {
+    (this.props.content || []).buttonList.map((currentValue, index) => {
       var showButton;
       if (currentValue.rule) {
         const profile = this.userProfile; //for eval
