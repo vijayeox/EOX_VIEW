@@ -1741,6 +1741,7 @@ class BaseFormRenderer extends React.Component {
         //disableAttachmentControl in yaml only when there's an inconsistency for a specific application, if not sure.
         options.fileUploadCallback = this.onFileUpload.bind(this)
       }
+      options.readOnly = !!this.state.readOnly;
       Formio.registerPlugin(
         {
           options: {
