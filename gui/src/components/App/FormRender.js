@@ -28,6 +28,7 @@ class FormRender extends BaseFormRenderer {
       formId: this.props.formId,
       fileId: this.props.fileId,
       content: this.props.content,
+      readOnly: this.props.readOnly ? this.props.readOnly : false,
     };
   }
 
