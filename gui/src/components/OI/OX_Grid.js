@@ -14,7 +14,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import JsxParser from "react-jsx-parser";
 import Swal from "sweetalert2";
-import helpers from "../../helpers";
+import helpers,{PopupContext} from "../../helpers";
 import { ColumnMenu } from "../Grid/ColumnMenu";
 import CustomFilter from "../Grid/CustomFilter";
 import "../Grid/customStyles.scss";
@@ -285,7 +285,7 @@ export default class OX_Grid extends React.Component {
             </div>
           );
         };
-        showButton ? actionButtons.push(<MenuItem text={action[key].name} key={index} render={itemRender} />) : null;
+        showButton && actionButtons.push({text : action[key].name, icon : `${action[key].icon} manageIcons`})//? actionButtons.push(<MenuItem text={action[key].name} key={index} render={itemRender} />) : null;
       }, this);
       this.setState({
         menu: actionButtons,
@@ -940,25 +940,10 @@ export default class OX_Grid extends React.Component {
     return (
       <div style={this.props.wrapStyle ? this.props.wrapStyle : { height: "100%", float: "left" }} className={"GridCustomStyle " + (this.props.className ? this.props.className : "")}>
         {this.state.showButtonPopup ? this.state.buttonPopup : null}
-        <Popup offset={this.offset} show={this.state.contextMenuOpen} open={this.onPopupOpen} popupClass={"popup-content"}>
-          <div onFocus={this.onFocusHandler} onBlur={this.onBlurHandler} tabIndex={-1} ref={(el) => (this.menuWrapperRef = el)} style={{ backgroundColor: "#f8f9fa" }}>
-            <Menu vertical={true} style={{ display: "inline-block" }} onSelect={this.handleOnSelect}>
-              {this.state.menu}
-            </Menu>
-            <i
-              style={{
-                color: "#212529b3",
-                cursor: "pointer",
-                position: "absolute",
-                top: "4px",
-                right: "4px",
-              }}
-              className={"fas fa-times"}
-              onClick={() => {
-                this.setState({ contextMenuOpen: false });
-              }}></i>
-          </div>
-        </Popup>
+        {
+          this.state.contextMenuOpen && 
+          <PopupContext offset={this.offset} menus={this.state.menu} onClick={this.handleOnSelect}  onClose={() => this.setState({ contextMenuOpen: false })}  />
+        }
         <>{this.rawDataPresent ? <DataOperation args={this.props.osjsCore} gridData={this.props.data} total={this.props.data.length} dataState={this.state.dataState} onDataRecieved={this.dataRecieved} /> : this.loadData()}</>
         <div id='customActionsToolbar' />
         <Grid

@@ -677,7 +677,7 @@ class DashboardManager extends React.Component {
                   </div>
                 </div>
 
-                <div className="dashboard-viewer-div">{this.state.uuid !== "" && <DashboardViewer drilldownToDashboard={(e, type) => this.drilldownToDashboard(e, type)} ref={(el) => (this.dashboardViewerRef = el)} key={this.state.uuid} uuid={this.state.uuid} core={this.core} setTitle={this.props.setTitle} proc={this.props.proc} dashboardFilter={this.state.dashboardFilter} applyDashboardFilter={(filter) => this.applyDashboardFilter(filter)} drilldownDashboardFilter={this.state.drilldownDashboardFilter} dashboardStack={this.state.dashboardStack} rollupToDashboard={() => this.rollupToDashboard()} loadDefaultFilters={this.state.loadDefaultFilters} />}</div>
+                <div className="dashboard-viewer-div">{this.state.uuid !== "" && <DashboardViewer notif={this.props.notif} drilldownToDashboard={(e, type) => this.drilldownToDashboard(e, type)} ref={(el) => (this.dashboardViewerRef = el)} key={this.state.uuid} uuid={this.state.uuid} core={this.core} setTitle={this.props.setTitle} proc={this.props.proc} dashboardFilter={this.state.dashboardFilter} applyDashboardFilter={(filter) => this.applyDashboardFilter(filter)} drilldownDashboardFilter={this.state.drilldownDashboardFilter} dashboardStack={this.state.dashboardStack} rollupToDashboard={() => this.rollupToDashboard()} loadDefaultFilters={this.state.loadDefaultFilters} />}</div>
               </div>
             ) : (
               <div
