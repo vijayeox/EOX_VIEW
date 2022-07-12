@@ -5,7 +5,6 @@ export class MessageServiceProvider extends ServiceProvider {
     constructor(core, options = {}) {
         super(core, options || {});
         this.core = core;
-        this.lsHelper = new LocalStorageAdapter();
     }
 
     providers() {
