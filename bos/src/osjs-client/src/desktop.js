@@ -897,12 +897,16 @@ export default class Desktop extends EventEmitter {
       condition["data"]["verification_pending"] == null
     ) {
       const splash = this.core.make("oxzion/splash");
+
+      let profileDetails = this.core.make("oxzion/profile").get();
+      let userAcountInfo = profileDetails["key"]["active_account"];
+ 
       splash.destroy();
       const { value: accept } = await Swal.fire({
         title: "Privacy and Policy",
         allowOutsideClick: false,
         input: "checkbox",
-        inputPlaceholder:
+        inputPlaceholder: userAcountInfo?.preferences?.privacyPolicy ? userAcountInfo?.preferences?.privacyPolicy :  
           'I have read the EOX Vantage <a href="./privacy-policy" target="_blank">Privacy and Policy</a>. I agree with the terms and conditions.',
         confirmButtonText: 'Continue <i class="fa fa-arrow-right"></i>',
         inputValidator: (result) => {
