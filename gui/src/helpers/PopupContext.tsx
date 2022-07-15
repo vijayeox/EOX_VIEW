@@ -2,22 +2,25 @@ import { Menu, MenuItem, MenuSelectEvent } from "@progress/kendo-react-layout";
 import { Popup } from "@progress/kendo-react-popup";
 import React, { useEffect, useMemo } from "react";
 interface M extends MouseEvent {
-  path: HTMLElement[];
+  path: any[];
 }
 interface Props {
   offset: { left: number; top: number };
-  onClick: () => (event: MenuSelectEvent) => void;
-  menus: { text: string; icon?: string; disabled?: boolean }[];
+  onClick?: () => (event: MenuSelectEvent) => void;
+  menus?: { text: string; icon?: string; disabled?: boolean }[];
   onClose?: () => void;
+  children?: React.ReactNode;
 }
 export default function PopupContext({
   offset,
   onClick,
   menus,
   onClose,
+  children,
 }: Props) {
   const id = useMemo(Math.random, []);
-  const onMouseDown = ({ path }: M) => {
+  const onMouseDown = (event :M ) => {
+    const path = event.path ||event.composedPath?.() || [];
     !!!path?.find((p) => `${p.id}` === `${id}`) && onClose?.();
   };
   useEffect(() => {
@@ -27,13 +30,13 @@ export default function PopupContext({
 
   return (
     <Popup offset={offset} show={true} id={`${id}`}>
-      <div>
+      {(menus && (
         <Menu
           vertical={true}
           style={{ display: "inline-block" }}
           onSelect={onClick}
         >
-          {menus.map(({ text, icon, disabled }, i) => (
+          {menus?.map(({ text, icon, disabled }, i) => (
             <MenuItem
               disabled={disabled}
               text={text}
@@ -49,7 +52,9 @@ export default function PopupContext({
             />
           ))}
         </Menu>
-      </div>
+      )) ||
+        children ||
+        null}
     </Popup>
   );
 }
