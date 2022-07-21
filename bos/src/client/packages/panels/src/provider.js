@@ -31,6 +31,7 @@ import Panel from './panel';
 import WindowsPanelItem from './items/windows';
 import TrayPanelItem from './items/tray';
 import ProfilePanelItem from './items/profile';
+import NotificationCenterPanel from './items/notificationCenter';
 import LogoutPanelItem from './items/logout';
 import MenuPanelItem from './items/menu';
 
@@ -50,6 +51,7 @@ export default class PanelServiceProvider {
       windows: WindowsPanelItem,
       tray: TrayPanelItem,
       profile:ProfilePanelItem,
+      notificationCenter: NotificationCenterPanel,
       logout: LogoutPanelItem
     }, args.registry || {});
     // console.log(this.registry);
