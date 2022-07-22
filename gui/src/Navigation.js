@@ -233,12 +233,21 @@ class Navigation extends React.Component {
           customActions : this.state.mappedActions?.[data[data.length - 1]["pageId"]] || []
         });
         this.pageActive(data[data.length - 1]["pageId"]);
+        this.state.pages.length <2 && this.reloadExistingPage(true);
       } else {
         this.props.selectLoad(this.homepage);
       }
     }
     // this.resetCustomActions();
   };
+
+  reloadExistingPage = (stepDown) => {
+    (this.state.pages.length <= 2) || (stepDown == true) ?
+    this.setState({ reloadInProgress : true },() => {
+        this.setState({ reloadInProgress : false })
+    })
+    :""
+  }
   resetCustomActions() {
     this.setState({ customActions: null });
     let ev = new CustomEvent("getCustomActions", {
@@ -361,7 +370,7 @@ class Navigation extends React.Component {
           ) : null}
         </div>
         <div className={this.pageDiv} style={{ height: "calc(100% - 55px)" }}>
-          {this.state.pages.length > 0 ? this.renderPages() : null}
+          {this.state.pages.length > 0 && !this.state.reloadInProgress ? this.renderPages() : null}
           {(this.state.selected.activityInstanceId && this.state.selected.activityInstanceId) || this.state.selected.pipeline ? (
             <div id={this.contentDivID} className='AppBuilderPage'>
               <FormRender core={this.core} appId={this.props.appId} notif={this.notif} activityInstanceId={this.state.selected.activityInstanceId} workflowInstanceId={this.state.selected.workflowInstanceId} pipeline={this.state.selected.pipeline} />
