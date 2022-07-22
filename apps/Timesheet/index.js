@@ -33,7 +33,7 @@ const register = (core, args, options, metadata) => {
 
     var jwt = user.jwt;
     var userAccess = (details.key.privileges.hasOwnProperty('MANAGE_TIMESHEET_MANAGER_READ')) ? 'managerreport' : 'hive';
-    jwt = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2NTgzODUwNzQsImp0aSI6IkV5ZHhCVWNBajZOa0RSVkZkclRYTllVczlrb2RXaEJhdTh1aVJBb1hsZ2s9IiwibmJmIjoxNjU4Mzg1MDc0LCJleHAiOjE2NTg0NTcwNzQsImRhdGEiOnsidXNlcm5hbWUiOiJrYXJhbmEiLCJhY2NvdW50SWQiOiIzIn19.Ueklc2D17jyUy_LmmIYjnVFzEh6rBvHBwcCkvq56ckorqM0j4ust7J2X5zZGVNuF4hAAJJYgHxDb1UXKrfJKpw';
+    // jwt = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2NTgzODUwNzQsImp0aSI6IkV5ZHhCVWNBajZOa0RSVkZkclRYTllVczlrb2RXaEJhdTh1aVJBb1hsZ2s9IiwibmJmIjoxNjU4Mzg1MDc0LCJleHAiOjE2NTg0NTcwNzQsImRhdGEiOnsidXNlcm5hbWUiOiJrYXJhbmEiLCJhY2NvdW50SWQiOiIzIn19.Ueklc2D17jyUy_LmmIYjnVFzEh6rBvHBwcCkvq56ckorqM0j4ust7J2X5zZGVNuF4hAAJJYgHxDb1UXKrfJKpw';
 
     const clientId = (proc.args.clientId != undefined) ? proc.args.clientId : 56;
     iframe.src = proc.resource(sourceUrl+'/login/iframelogin/eosFrame/1?lasturl=commatrix/timesheet/'+userAccess+'/moduleid/28/client/'+clientId+'/instanceform&url='+serverUrl+'/user/me&user=username&m=GET&h=Authorization&Authorization=Authorization: Bearer ' + jwt);
