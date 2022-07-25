@@ -60,6 +60,7 @@ class BaseFormRenderer extends React.Component {
     if (this.hasCore) {
       this.helper = this.core.make("oxzion/restClient");
       this.loader = this.core.make("oxzion/splash");
+      this.messageBox = this.core.make("oxzion/messageDialog");
       var userprofile = this.core.make("oxzion/profile").get();
       this.privileges = userprofile.key.privileges;
       this.userprofile = userprofile.key;
@@ -556,14 +557,23 @@ class BaseFormRenderer extends React.Component {
     }
   }
 
-  handleError(e) {
+  handleError(emsg,action) {
     this.showFormLoader(false, 0);
-    console.error("ERROR" + e);
-    this.notif.current.notify(
-      "Error",
-      "Unexpected Error! Please try later",
-      "danger"
-    );
+        emsg = emsg ? emsg : "Unexpected Error! Please contact support team";
+        this.messageBox.show(emsg, '', 'OK', false)
+            .then((response) => {
+                if (action) {
+                    if (action == 'loadWorkflow' || action == "loadForm") {
+                        this.stepDownPage();
+                    } else if(action == 'nextPage'){
+                        this.state.currentForm.setPage(this.state.page - 1);
+                    }
+                } else {
+                    if(this.state.previousData.length != 0){
+                        this.state.currentForm.data = this.state.previousData;
+                    }
+                }
+            });
   }
 
   async storeError(data, error, route) {
@@ -811,17 +821,11 @@ class BaseFormRenderer extends React.Component {
           } else {
             if (response.status == "error") {
               await that.storeError(data, response, "pipeline");
-              that.showFormLoader(false, 0);
-              that.notif.current.notify("Error", response.message, "danger");
+              that.handleError(response.message);
               return response;
             } else {
               await that.storeCache(data);
-              that.showFormLoader(false, 0);
-              that.notif.current.notify(
-                "Error",
-                "Form Submission Failed",
-                "danger"
-              );
+              that.handleError("Form Submission Failed");
             }
           }
         })
@@ -943,12 +947,7 @@ class BaseFormRenderer extends React.Component {
                           route
                         )
                         .then((storeErrorResponse) => {
-                          that.showFormLoader(false, 0);
-                          that.notif.current.notify(
-                            "Error",
-                            "Form Submission Failed",
-                            "danger"
-                          );
+                          that.handleError("Form Submission Failed");
                           return storeErrorResponse;
                         });
                     } else {
@@ -1003,12 +1002,7 @@ class BaseFormRenderer extends React.Component {
                         route
                       )
                       .then((storeErrorResponse) => {
-                        that.showFormLoader(false, 0);
-                        that.notif.current.notify(
-                          "Error",
-                          "Form Submission Failed",
-                          "danger"
-                        );
+                        that.handleError("Form Submission Failed");
                         return storeErrorResponse;
                       });
                   } else {
@@ -1342,7 +1336,7 @@ class BaseFormRenderer extends React.Component {
       });
   }
 
-  runDelegates(form, properties) {
+  runDelegates(form, properties,action) {
     if (properties) {
       if (properties["delegate"]) {
         this.callDelegate(
@@ -1397,7 +1391,7 @@ class BaseFormRenderer extends React.Component {
                   });
               }
             } else {
-              that.showFormLoader(false, 0);
+              that.handleError(response.message,action);
             }
           })
           .catch((e) => {
@@ -1825,7 +1819,7 @@ class BaseFormRenderer extends React.Component {
           form.emit("render");
           that.runDelegates(
             form,
-            form.pages[changed.page].originalComponent["properties"]
+            form.pages[changed.page].originalComponent["properties"],'nextPage'
           );
           that.setState({ page: changed.page });
           var elm = document.getElementsByClassName(
@@ -2211,12 +2205,7 @@ class BaseFormRenderer extends React.Component {
                           }
                         }
                       } else {
-                        that.showFormLoader(false, 0);
-                        that.notif.current.notify(
-                          "Error",
-                          response.message,
-                          "danger"
-                        );
+                        that.handleError(response.message);
                       }
                     })
                     .catch((e) => {
@@ -2322,13 +2311,8 @@ class BaseFormRenderer extends React.Component {
               this.props.postSubmitCallback();
             }
           } else {
-            this.notif.current.notify(
-              "Error",
-              response.errors[0].message
-                ? response.errors[0].message
-                : "Operation failed",
-              "danger"
-            );
+            errMsg = response.errors[0].message ? response.errors[0].message : "Qperation failed";
+            this.handleError(errMsg);
           }
         })
         .catch((e) => {

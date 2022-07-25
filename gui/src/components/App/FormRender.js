@@ -87,9 +87,9 @@ class FormRender extends BaseFormRenderer {
     return this.props.urlPostParams ? await this.helper.request("v1", url, this.props.urlPostParams, "post") : await this.helper.request("v1", url, {}, "get");
   }
 
-  processProperties(form) {
+  processProperties(form,action = null) {
     if (form._form.properties || form.originalComponent.properties) {
-      this.runDelegates(form, form._form.properties ? form._form.properties : form.originalComponent.properties);
+      this.runDelegates(form, form._form.properties ? form._form.properties : form.originalComponent.properties,action);
       // Should'nt run both runDelegates and runProps func on form initializaton as it creates duplicate delegate calls
     }
   }
@@ -107,12 +107,16 @@ class FormRender extends BaseFormRenderer {
           that.setState({ formDivID: "formio_" + that.state.formId });
           if (form) {
             form.setSubmission({ data: that.state.data }).then(function () {
-              that.processProperties(form);
+              that.processProperties(form,'loadWorkflow');
             });
           } else {
             this.createForm();
           }
+        }else{
+          that.stepDownPage();
         }
+      }).catch((e) => {
+        that.handleError(null, 'loadWorkflow');
       });
     } else if (this.state.workflowId && this.state.workflowId != null && this.state.isDraft) {
       this.getStartFormWorkflow().then((response) => {
@@ -145,7 +149,7 @@ class FormRender extends BaseFormRenderer {
               var that = this;
               if (cacheResponse.data) {
                 form.setSubmission({ data: this.formatFormData(cacheResponse.data) }).then((respone) => {
-                  that.processProperties(form);
+                  that.processProperties(form,'loadWorkflow');
                   if (cacheResponse.data.page && form.wizard) {
                     if (form.wizard && form.wizard.display == "wizard") {
                       form.setPage(parseInt(cacheResponse.data.page));
@@ -155,8 +159,12 @@ class FormRender extends BaseFormRenderer {
                 });
               }
             }
+          }).catch((e) => {
+            that.handleError(null, 'loadWorkflow');
           });
         });
+      }).catch((e) => {
+        that.handleError(null, 'loadWorkflow');
       });
     } else if (this.state.activityInstanceId && this.state.workflowInstanceId && this.state.isDraft) {
       this.getActivityInstance().then((response) => {
@@ -189,7 +197,7 @@ class FormRender extends BaseFormRenderer {
               var that = this;
               if (cacheResponse.data) {
                 form.setSubmission({ data: this.formatFormData(cacheResponse.data) }).then((respone) => {
-                  that.processProperties(form);
+                  that.processProperties(form,'loadWorkflow');
                   if (cacheResponse.data.page && form.wizard) {
                     if (form.wizard && form.wizard.display == "wizard") {
                       form.setPage(parseInt(cacheResponse.data.page));
@@ -199,8 +207,12 @@ class FormRender extends BaseFormRenderer {
                 });
               }
             }
+          }).catch((e) => {
+            that.handleError(null, 'loadWorkflow');
           });
         });
+      }).catch((e) => {
+        that.handleError(null, 'loadWorkflow');
       });
     } else if (this.state.fileId || this.props.parentFileId) {
       this.getFileDataById().then((response) => {
@@ -219,15 +231,17 @@ class FormRender extends BaseFormRenderer {
               form || this.state.currentForm
                 ? form
                   ? form.setSubmission({ data: this.state.data }).then(function () {
-                      that.processProperties(form);
+                      that.processProperties(form,'loadWorkflow');
                     })
                   : this.state.currentForm.setSubmission({ data: this.state.data }).then(function () {
-                      that.processProperties(that.state.currentForm);
+                      that.processProperties(that.state.currentForm,'loadWorkflow');
                     })
                 : null;
             }
           );
         }
+      }).catch((e) => {
+        that.handleError(null, 'loadWorkflow');
       });
     } else if (this.props.dataUrl) {
       this.getDataByUrl().then((response) => {
@@ -240,15 +254,17 @@ class FormRender extends BaseFormRenderer {
               form || this.state.currentForm
                 ? form
                   ? form.setSubmission({ data: this.state.data }).then(function () {
-                      that.processProperties(form);
+                      that.processProperties(form,'loadWorkflow');
                     })
                   : this.state.currentForm.setSubmission({ data: this.state.data }).then(function () {
-                      that.processProperties(that.state.currentForm);
+                      that.processProperties(that.state.currentForm,'loadWorkflow');
                     })
                 : null;
             }
           );
         }
+      }).catch((e) => {
+        that.handleError(null, 'loadWorkflow');
       });
     } else if (this.state.activityInstanceId && this.state.workflowInstanceId && !this.state.cacheId) {
       this.getActivityInstance().then((response) => {
@@ -260,12 +276,14 @@ class FormRender extends BaseFormRenderer {
           that.setState({ content: JSON.parse(response.data.template) });
           if (form) {
             form.setSubmission({ data: that.state.data }).then(function () {
-              that.processProperties(form);
+              that.processProperties(form,'loadWorkflow');
             });
           } else {
             this.createForm();
           }
         }
+      }).catch((e) => {
+        that.handleError(null, 'loadWorkflow');
       });
     } else if (this.state.instanceId) {
       this.getInstanceData().then((response) => {
@@ -277,16 +295,18 @@ class FormRender extends BaseFormRenderer {
           that.setState({ content: response.data.template });
           if (form) {
             form.setSubmission({ data: that.state.data }).then(function () {
-              that.processProperties(form);
+              that.processProperties(form,'loadWorkflow');
             });
           } else {
             this.createForm();
           }
         }
+      }).catch((e) => {
+        that.handleError(null, 'loadWorkflow');
       });
     } else {
       if (form) {
-        that.processProperties(form);
+        that.processProperties(form,'loadWorkflow');
       }
     }
   }
@@ -344,7 +364,7 @@ class FormRender extends BaseFormRenderer {
                 var that = this;
                 if (parsedData.data) {
                   form.setSubmission({ data: this.formatFormData(parsedData.data) }).then((respone) => {
-                    that.processProperties(form);
+                    that.processProperties(form,'loadForm');
                   });
                 } else {
                   this.loadWorkflow(form);
@@ -362,7 +382,7 @@ class FormRender extends BaseFormRenderer {
           if (response.message) {
             errorMessage = response.errors[0]["message"];
           }
-          this.showFormError(true, errorMessage);
+          this.handleError(errorMessage,'loadForm');
         }
       });
     } else if (this.props.pipeline) {
@@ -380,7 +400,7 @@ class FormRender extends BaseFormRenderer {
           this.createForm().then((form) => {
             var that = this;
             that.setState({ currentForm: form });
-            that.processProperties(form);
+            that.processProperties(form,'loadForm');
           });
         }
       });
