@@ -31,6 +31,7 @@ module.exports = {
     alias: {
       react: path.resolve(__dirname, "node_modules/react"),
     },
+    extensions: ['.ts','.js','.jsx','.tsx']
   },
   optimization: {
     minimizer: [new CssMinimizerPlugin(), new TerserPlugin()],
@@ -86,12 +87,12 @@ module.exports = {
         sideEffects: true,
       },
       {
-        test: /\.js$/,
+        test: /\.js$|.ts$|.js$|.tsx$/,
         exclude: /(node_modules|bower_components)/,
         use: {
           loader: "babel-loader",
           options: {
-            presets: [require.resolve("@babel/preset-react"), require.resolve("@babel/preset-env")],
+            presets: [require.resolve("@babel/preset-react"), require.resolve("@babel/preset-env"), require.resolve("@babel/preset-typescript")],
             plugins: [require.resolve("@babel/plugin-transform-runtime"), [require.resolve("@babel/plugin-proposal-class-properties"), { loose: false }]],
           },
         },
