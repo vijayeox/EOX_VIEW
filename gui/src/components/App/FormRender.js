@@ -305,6 +305,7 @@ class FormRender extends BaseFormRenderer {
 
   componentDidMount() {
     this.showFormLoader(true, 1);
+    this.toggleFormLoader(true)
     if (this.props.url) {
       this.getFormContents(this.props.url).then((response) => {
         if (response.status == "success") {
