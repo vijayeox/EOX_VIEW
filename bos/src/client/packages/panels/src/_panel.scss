@@ -342,6 +342,10 @@
 }
 
 .osjs-panel-item[data-name="notificationCenter"] {
+  $red: #ee4623;
+  $yellow: #f4ba18;
+  $green: #a3c639;
+
   display: flex;
   align-items: center;
 
@@ -359,30 +363,26 @@
     background-color: #426282;
     z-index: 11;
 
-    img {
-
-      width: 1.8em;
+    i {
+      font-size: 20px;
       margin-left: 5px;
-
     }
 
     .notificationCenter-badge {
       border-radius: 50%;
-      background-color: #EE4623;
+      background-color: $red;
       font-size: 12px;
       text-align: center;
-      min-width: 10px;
+      min-width: 19px;
       position: relative;
       line-height: 14px;
       bottom: 7px;
       padding: 2px;
-      right: 8px;
+      right: 6px;
     }
-
-
   }
 
-  .tasks-completed{
+  .tasks-completed {
     display: flex;
     align-items: center;
     text-align: center;
@@ -393,7 +393,7 @@
       opacity: 0;
       transform: translateY(-5px);
     }
-   
+
     100% {
       opacity: 1;
       transform: translateY(0);
@@ -401,22 +401,112 @@
   }
 
   .notificationCenter-panel {
+    $panel-height: 48vh;
     // opacity: 0;
     z-index: 10;
     position: absolute;
     width: 22em;
     top: 38px;
-    height: 45vh;
+    height: $panel-height;
     background-color: #c9d4d8;
     border-style: solid;
     border-color: #275362;
     animation: 1s ease-out 0s 1 slideInFromLeft;
+
+    .rygToggle-container {
+      display: flex;
+      justify-content: space-evenly;
+
+      .rygToggle-r {
+        background-color: $red + d1;
+      }
+      .rygToggle-y {
+        background-color: $yellow + d1;
+      }
+      .rygToggle-g {
+        background-color: $green + d1;
+      }
+    }
+
+    .rygToggle-container > div {
+      width: 25%;
+      border-radius: 10px;
+      padding: 3px;
+      margin: 3px;
+      text-align: center;
+      font-size: 15px;
+      font-family: monospace;
+    }
+
+    .rygToggle-container > div:hover:not(.focus) {
+      background-color: #275362;
+      color: white;
+      cursor: pointer;
+      transition: 0.7s;
+    }
+
+    .rygToggle-container > div.focus {
+      border-bottom: solid #455a64 5px;
+    }
+
+    .task-list {
+      height: calc(48vh - 52px);
+      overflow-y: scroll;
+      margin-top: 5px;
+      margin-bottom: 5px;
+
+      .task-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 3px 5px 3px 5px;
+        padding: 5px;
+        background-color: #a5c3c1;
+
+        .title {
+          font-weight: bold;
+        }
+
+        .app{
+          font-style: italic;
+        }
+
+        .task-item-actions{
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .task-item-actions > i {
+          margin: 3px 6px 3px 6px;
+          padding: 7px;
+          border: solid #455a64 2px;
+          color: #455a64;
+          border-radius: 10px;
+          cursor: pointer;
+        }
+
+        .task-item-actions > i:hover {
+          background-color: #275362;
+          color: white;
+          transition: 0.7s;
+        }
+
+        .fa-chevron-up, .fa-chevron-down {
+          margin-left: 5px;
+          margin-right: 5px;
+          cursor: pointer;
+        }
+      }
+    }
+
+    .task-list::-webkit-scrollbar-thumb {
+      background: #9e9e9e;
+      border-radius: 10px;
+    }
   }
-
-
-
-
 }
+
 .osjs-panel-logout img {
   max-width: 30px;
 }
