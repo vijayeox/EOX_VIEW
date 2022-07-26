@@ -30,8 +30,6 @@
 import { h } from "hyperapp";
 import PanelItem from "../panel-item";
 import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
-const MySwal = withReactContent(Swal);
 // const logoutIcon = require("../../../../assets/images/logout.png");
 // const profileIcon = require("../../../../assets/images/profile.png");
 // const settingsIcon = require("../../../../assets/images/settings.png");
@@ -70,9 +68,9 @@ export default class ProfilePanelItem extends PanelItem {
       profileAccounts[v.accountId] = v.name;
     });
     const switchaccountPopup = () => {
-      MySwal.fire({
+      Swal.fire({
         title: "Select an Account",
-        position: "center",
+        position: "top",
         showCancelButton: true,
         cancelButtonColor: "#7b7878",
         target: ".osjs-root",

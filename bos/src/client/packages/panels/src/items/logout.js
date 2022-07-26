@@ -32,8 +32,6 @@ import { h } from "hyperapp";
 import PanelItem from "../panel-item";
 const logoutIcon = require("../../../../assets/images/logout.svg").default;
 import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
-const MySwal = withReactContent(Swal);
 /**
  * Logout
  *
@@ -58,7 +56,7 @@ export default class LogoutPanelItem extends PanelItem {
       this.core.make("osjs/auth").logout();
     };
     const confirm = () => {
-      MySwal.fire({
+      Swal.fire({
         title: "Would you like to logout?",
         position: "top-end",
         confirmButtonText: "Yes",
