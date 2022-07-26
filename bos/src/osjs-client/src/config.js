@@ -134,7 +134,7 @@ export const defaultConfiguration = {
         label: 'LBL_APP_CAT_TRAVEL',
         icon: 'applications-travel'
       },
-      dashboard: {
+      oi: {
         label: 'LBL_APP_CAT_DASHBOARD',
         icon: 'applications-dashboard'
       },
