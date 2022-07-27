@@ -72,7 +72,7 @@ export const en_EN = {
   LBL_APP_CAT_PHOTOANDVEDIO: 'Photo & Video',
   LBL_APP_CAT_SHOPPING: 'Shopping',
   LBL_APP_CAT_TRAVEL: 'Travel',
-  LBL_APP_CAT_DASHBOARD: 'Dashboard',
+  LBL_APP_CAT_DASHBOARD: 'OI',
   // New Categories
   LBL_APP_CAT_SALES: 'Sales',
   LBL_APP_CAT_UTILITIES: 'Utilities',

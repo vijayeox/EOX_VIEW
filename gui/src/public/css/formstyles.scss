@@ -285,6 +285,13 @@
   width: 100%;
 }
 
+.formloader-spinner{
+  top: 50%;
+  z-index: 111;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #ffffff8f;
+}
 .formBuilder {
   #form-save-button {
     /*display: flex;

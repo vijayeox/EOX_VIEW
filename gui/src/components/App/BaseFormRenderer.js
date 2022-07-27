@@ -47,7 +47,8 @@ class BaseFormRenderer extends React.Component {
       currentForm: null,
       formErrorMessage:
         "Form seems to have an error while loading ,Please Try Again.",
-      filesToUpload: {}
+      filesToUpload: {},
+      formLoader : false
     };
     //set the base url from config file
     axios.defaults.baseURL = "http://localhost:8080";
@@ -75,6 +76,10 @@ class BaseFormRenderer extends React.Component {
     //     'onload': function () { },
     //     'onerror': function () { }
     // }]);
+  }
+
+  toggleFormLoader = (flag = false) => {
+    this.setState({ formLoader : !!flag })
   }
 
   toggleShowPdf = (showPdf) => {
@@ -1879,6 +1884,7 @@ class BaseFormRenderer extends React.Component {
           }
         });
         form.on("render", function () {
+          that.toggleFormLoader()
           that.hideBreadCrumb(true);
           var nextButton = document.getElementsByClassName(
             "btn-wizard-nav-next"
@@ -2330,6 +2336,13 @@ class BaseFormRenderer extends React.Component {
         <div id={this.formErrorDivId} style={{ display: "none" }}>
           <h3>{this.state.formErrorMessage}</h3>
         </div>
+        {this.state.formLoader && (
+          <div className="formloader-spinner spinner d-flex align-items-center justify-content-center position-fixed w-100 h-100 top-50 start-50">
+            <div className="bounce1"></div>
+            <div className="bounce2"></div>
+            <div className="bounce3"></div>
+          </div>
+        )}
         <div className="form-render" id={this.formDivID}></div>
         {   this.state.showPdf && 
                         <PrintPdf
