@@ -11,6 +11,7 @@ export default class NotificationCenterPanel extends PanelItem {
       {
         count: 10,
         showPanel: false,
+        selectedTab: "assignments",
         taskList: [],
         rygFocus: "R",
         rygCount: {
@@ -22,6 +23,7 @@ export default class NotificationCenterPanel extends PanelItem {
       },
       {
         toggleNotificationPanel: this.toggleNotificationPanel,
+        switchTab: this.switchTab,
         switchRygFocus: this.switchRygFocus,
         expandTaskItem: this.expandTaskItem,
         taskItemClick: this.taskItemClick,
@@ -66,10 +68,18 @@ export default class NotificationCenterPanel extends PanelItem {
             { title: "Task 2 Sample Text ABC XYZ", app: "CRM" },
             { title: "Task 3 Sample Text ABC XYZ", app: "CarPort" },
             { title: "Task 3 Sample Text ABC XYZ", app: "CarPort" },
-            { title: "Task 3 Sample Text ABC XYZ", app: "Dive Insurabce" },
+            { title: "Task 3 Sample Text ABC XYZ", app: "Dive Insurance" },
+            { title: "Task 3 Sample Text ABC XYZ", app: "CarPort" },
+            { title: "Task 3 Sample Text ABC XYZ", app: "CarPort" },
+            { title: "Task 3 Sample Text ABC XYZ", app: "Dive Insurance" },
+            { title: "Task 3 Sample Text ABC XYZ", app: "CarPort" },
+            { title: "Task 3 Sample Text ABC XYZ", app: "CarPort" },
+            { title: "Task 3 Sample Text ABC XYZ", app: "Dive Insurance" },
           ]
         : [],
   });
+
+  switchTab = (data) => data;
 
   switchRygFocus = (data) => data;
 
@@ -146,10 +156,32 @@ export default class NotificationCenterPanel extends PanelItem {
   };
 
   render(state, actions) {
-    console.log(
-      "file: notificationCenter.js ~ line 42 ~ NotificationCenterPanel ~ render ~ state",
-      state
-    );
+    let rygComponent = h("div", { className: "rygToggle-container" }, [
+      h(
+        "div",
+        {
+          className: "rygToggle-r" + (state.rygFocus == "R" ? " focus" : ""),
+          onclick: () => actions.switchRygFocus({ rygFocus: "R" }),
+        },
+        state.rygCount.red
+      ),
+      h(
+        "div",
+        {
+          className: "rygToggle-y" + (state.rygFocus == "Y" ? " focus" : ""),
+          onclick: () => actions.switchRygFocus({ rygFocus: "Y" }),
+        },
+        state.rygCount.yellow
+      ),
+      h(
+        "div",
+        {
+          className: "rygToggle-g" + (state.rygFocus == "G" ? " focus" : ""),
+          onclick: () => actions.switchRygFocus({ rygFocus: "G" }),
+        },
+        state.rygCount.green
+      ),
+    ]);
 
     return super.render("notificationCenter", [
       h(
@@ -175,75 +207,88 @@ export default class NotificationCenterPanel extends PanelItem {
             {
               className: "notificationCenter-panel",
             },
-            h("div", { className: "rygToggle-container" }, [
-              h(
-                "div",
-                {
-                  className:
-                    "rygToggle-r" + (state.rygFocus == "R" ? " focus" : ""),
-                  onclick: () => actions.switchRygFocus({ rygFocus: "R" }),
-                },
-                state.rygCount.red
-              ),
-              h(
-                "div",
-                {
-                  className:
-                    "rygToggle-y" + (state.rygFocus == "Y" ? " focus" : ""),
-                  onclick: () => actions.switchRygFocus({ rygFocus: "Y" }),
-                },
-                state.rygCount.yellow
-              ),
-              h(
-                "div",
-                {
-                  className:
-                    "rygToggle-g" + (state.rygFocus == "G" ? " focus" : ""),
-                  onclick: () => actions.switchRygFocus({ rygFocus: "G" }),
-                },
-                state.rygCount.green
-              ),
-            ]),
+            h(
+              "div",
+              {
+                className: "tab-container",
+              },
+              [
+                h(
+                  "div",
+                  {
+                    onclick: () =>
+                      actions.switchTab({ selectedTab: "assignments" }),
+                    className:
+                      "tab-assignments" +
+                      (state.selectedTab == "assignments" ? " selected" : ""),
+                  },
+                  "Assignments",
+                  state.selectedTab == "assignments" ? rygComponent : null
+                ),
+                h(
+                  "div",
+                  {
+                    onclick: () =>
+                      actions.switchTab({ selectedTab: "followups" }),
+
+                    className:
+                      "tab-followups" +
+                      (state.selectedTab == "followups" ? " selected" : ""),
+                  },
+                  "Followups",
+                  state.selectedTab == "followups" ? rygComponent : null
+                ),
+              ]
+            ),
             state.taskList.length > 0
               ? [
                   h(
                     "div",
                     { className: "task-list" },
                     state.taskList.map((task, index) =>
-                      h("div", { className: "task-item" }, [
-                        h("div", { style: "width:100%" }, [
-                          h("div", { className: "title" }, task.title),
-                          h("div", { className: "app" }, task.app),
-                          state.expandItem == index
-                            ? h("div", { className: "task-item-actions" }, [
-                                this.taskItemActions.map((action) =>
-                                  h("i", {
-                                    className: action.icon,
-                                    name: action.name,
-                                    onclick: () =>
-                                      actions.taskItemClick(action.name),
-                                  })
-                                ),
-                              ])
-                            : null,
-                        ]),
-                        h("i", {
-                          className:
-                            "fa-solid fa-chevron-" +
-                            (state.expandItem == index ? "up" : "down"),
+                      h(
+                        "div",
+                        {
+                          className: "task-item",
                           onclick: () =>
-                            actions.expandTaskItem(
-                              { expandItem: index },
-                              [1, 2, 3]
-                            ),
-                        }),
-                      ])
+                            actions.expandTaskItem({ expandItem: index }),
+                        },
+                        [
+                          h(
+                            "div",
+                            {
+                              style: "width:100%; cursor:pointer",
+                            },
+                            [
+                              h("div", { className: "title" }, task.title),
+                              h("div", { className: "app" }, task.app),
+                              state.expandItem == index
+                                ? h("div", { className: "task-item-actions" }, [
+                                    this.taskItemActions.map((action) =>
+                                      h("i", {
+                                        className: action.icon,
+                                        name: action.name,
+                                        onclick: () =>
+                                          actions.taskItemClick(action.name),
+                                      })
+                                    ),
+                                  ])
+                                : null,
+                            ]
+                          ),
+                          h("i", {
+                            className:
+                              "fa-solid fa-chevron-" +
+                              (state.expandItem == index ? "up" : "down"),
+                          }),
+                        ]
+                      )
                     )
                   ),
                 ]
               : h("div", {
                   className: "tasks-completed",
-                  innerHTML: "All done for the day! ",
+                  innerHTML: "Nothing here. </br> You are all done for the day!",
                 })
           )
         : null,
