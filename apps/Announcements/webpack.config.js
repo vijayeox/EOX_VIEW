@@ -22,6 +22,7 @@ module.exports = {
     path.resolve(__dirname, 'index.js'),
     path.resolve(__dirname, 'index.scss')
   ],
+  resolve : { extensions: ['.ts','.js','.jsx','.tsx']},
   externals: {
     osjs: 'OSjs',
     oxziongui: "oxziongui"
@@ -59,11 +60,14 @@ module.exports = {
         ]
       },
       {
-        test: /\.js$/,
+        test: /\.js$|.ts$|.js$|.tsx$/,
         exclude: /(node_modules|bower_components)/,
         use: {
-          loader: 'babel-loader'
-        }
+          loader: 'babel-loader',
+          options : {
+            presets: [require.resolve("@babel/preset-typescript")],
+          }
+        },
       },
       {
         test: /\.(svg|png|jpe?g|gif|webp)$/,
