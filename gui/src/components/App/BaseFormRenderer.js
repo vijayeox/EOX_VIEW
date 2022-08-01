@@ -801,6 +801,13 @@ class BaseFormRenderer extends React.Component {
         )
         .then(async (response) => {
           if (response.status == "success") {
+            if( that.props.formSuccessMessage ) {
+              await Swal.fire({
+                icon: "success",
+                html: that.props.formSuccessMessage || 'Submitted successfully',
+                showConfirmButton: true,
+              });
+            }
             await that
               .deleteCacheData()
               .then((response2) => {
@@ -919,7 +926,7 @@ class BaseFormRenderer extends React.Component {
                 that.showFormLoader(false, 0);
                 that.props.postSubmitCallback();
               }
-              var cache = await that.deleteCacheData().then((response2) => {
+              var cache = await that.deleteCacheData().then(async (response2) => {
                 that.showFormLoader(false, 0);
                 if (response2.status == "success") {
                   if (that.notif && that.notif.current) {
@@ -928,6 +935,13 @@ class BaseFormRenderer extends React.Component {
                       that.checkCustomSaveMessage(),
                       "success"
                     );
+                  }
+                  if( that.props.formSuccessMessage ) {
+                    await Swal.fire({
+                        icon: "success",
+                        html: that.props.formSuccessMessage || 'Submitted successfully',
+                        showConfirmButton: true,
+                    });
                   }
                   that.stepDownPage();
                 }
@@ -978,6 +992,13 @@ class BaseFormRenderer extends React.Component {
             ) {
               that.showFormLoader(false, 0);
               that.props.postSubmitCallback();
+            }
+            if( that.props.formSuccessMessage ) {
+              await Swal.fire({
+                icon: "success",
+                html: that.props.formSuccessMessage || 'Submitted successfully',
+                showConfirmButton: true,
+              });
             }
             var cache = await that.deleteCacheData().then((response2) => {
               that.showFormLoader(false, 0);
