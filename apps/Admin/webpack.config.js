@@ -29,6 +29,9 @@ module.exports = {
       new TerserPlugin()
     ],
   },
+  resolve : {
+    extensions: ['.ts','.js','.jsx','.tsx']
+  },
   plugins: [
     // new CopyWebpackPlugin(["icon.svg", "icon_white.svg", "images/"]),
     new MiniCssExtractPlugin({
@@ -70,14 +73,15 @@ module.exports = {
         sideEffects: true,
       },
       {
-        test: /\.js$/,
+        test: /\.js$|.ts$|.js$|.tsx$/,
         exclude: /(node_modules|bower_components)/,
         use: {
           loader: "babel-loader",
           options: {
             presets: [
               require.resolve("@babel/preset-react"),
-              require.resolve("@babel/preset-env")
+              require.resolve("@babel/preset-env"),
+              require.resolve("@babel/preset-typescript")
             ],
             plugins: [
               require.resolve("@babel/plugin-transform-runtime"),
