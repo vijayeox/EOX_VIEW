@@ -29,6 +29,9 @@ module.exports = {
   optimization: {
     minimize,
   },
+  resolve : {
+    extensions: ['.ts','.js','.jsx','.tsx']
+  },
   plugins: [
     // new BundleAnalyzerPlugin(),
     new CopyWebpackPlugin(["icon.svg", "icon_white.svg"]),
@@ -86,12 +89,12 @@ module.exports = {
         ],
       },
       {
-        test: /\.js$/,
+        test: /\.js$|.ts$|.js$|.tsx$/,
         exclude: /(node_modules|bower_components)/,
         use: {
           loader: "babel-loader",
           options: {
-            presets: [require.resolve("@babel/preset-react"), require.resolve("@babel/preset-env")],
+            presets: [require.resolve("@babel/preset-react"), require.resolve("@babel/preset-env"),require.resolve("@babel/preset-typescript")],
             plugins: [require.resolve("@babel/plugin-transform-runtime"), [require.resolve("@babel/plugin-proposal-class-properties"), { loose: false }]],
           },
         },
