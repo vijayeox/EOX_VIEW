@@ -91,19 +91,21 @@ export default class Auth {
   /**
    * Run the shutdown procedure
    */
-  shutdown(reload) {
+  shutdown(reload, loginURL) {
     this.core.emit('osjs/core:logged-out');
     try {
       this.core.destroy();
     } catch (e) {
       console.warn('Exception on destruction', e);
     }
-    
+    // To be used instead of window.location.reload()
+    // this.core.boot(); 
     if (reload) {
-    	this.core.boot();
-      // setTimeout(() => {
+      if(loginURL){
+        window.location.replace(loginURL);
+      } else {
         window.location.reload();
-      // }, 1);
+      }
     }
   }
 
@@ -162,6 +164,8 @@ export default class Auth {
    */
   logout(reload = true) {
     this.core.emit('osjs/core:logout-start');
+    let profileDetails = this.core.make("oxzion/profile").get();
+    let userAcountInfo = profileDetails["key"]["active_account"];
     return this.adapter.logout(reload)
       .then(response => {
         if (!response) {
@@ -169,7 +173,7 @@ export default class Auth {
         }
         var that = this;
         window.setTimeout(function(){
-          that.shutdown(reload);          
+          that.shutdown(reload, userAcountInfo?.preferences?.loginURL);          
         },2000);
       });
   }
