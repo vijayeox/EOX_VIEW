@@ -65,6 +65,7 @@ module.exports = {
         items: [
           {name: 'menu'},
           {name: 'windows'},
+          {name: 'notificationCenter'},
           {name: 'tray'},
           {name: 'profile'},
           {name:'logout'}

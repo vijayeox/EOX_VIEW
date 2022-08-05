@@ -35,6 +35,7 @@ import TrayPanelItem from './src/items/tray';
 import MenuPanelItem from './src/items/menu';
 import PanelItem from './src/panel-item';
 import Panel from './src/panel';
+import NotificationCenterPanel from './src/items/notificationCenter.js';
 import ProfilePanelItem from './src/items/profile';
 import LogoutPanelItem from './src/items/logout';
 
@@ -42,6 +43,7 @@ export {
   PanelServiceProvider,
   PanelItem,
   Panel,
+  NotificationCenterPanel,
   WindowsPanelItem,
   TrayPanelItem,
   ProfilePanelItem,
