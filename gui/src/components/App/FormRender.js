@@ -401,7 +401,7 @@ class FormRender extends BaseFormRenderer {
           this.createForm().then((form) => {
             var that = this;
             that.setState({ currentForm: form });
-            that.processProperties(form,'loadForm');
+            // that.processProperties(form,'loadForm');
           });
         }
       });
