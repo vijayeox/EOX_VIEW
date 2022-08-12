@@ -90,7 +90,7 @@
     "form-data": "^2.5.0",
     "formidable": "^1.2.2",
     "fs-extra": "7.0.0",
-    "globby": "11.0.1",
+    "globby": "11.1.0",
     "http-post": "^0.1.1",
     "mime": "^2.4.4",
     "minimist": "^1.2.5",
