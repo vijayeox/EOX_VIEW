@@ -85,7 +85,7 @@
     "express-http-proxy": "^1.5.1",
     "express-session": "^1.17.1",
     "express-ws": "^4.0.0",
-    "fast-glob": "2.2.6",
+    "fast-glob": "2.2.7",
     "filehound": "^1.17.4",
     "form-data": "^2.5.0",
     "formidable": "^1.2.2",
