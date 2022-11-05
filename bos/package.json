@@ -103,7 +103,7 @@
     "screenfull": "^5.0.2",
     "secure-web-storage": "^1.0.2",
     "signale": "^1.4.0",
-    "simplejsonconf": "2.0.5",
+    "simplejsonconf": "2.0.6",
     "sweetalert2": "^11.0.0",
     "sweetalert2-react-content": "^4.1.0",
     "terser-webpack-plugin": "5.1.4",
