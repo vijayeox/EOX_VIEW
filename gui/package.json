@@ -94,7 +94,7 @@
         "redux-thunk": "^2.3.0",
         "sass": "^1.43.4",
         "scroll-into-view-if-needed": "^2.2.24",
-        "serve": "^11.3.0",
+        "serve": "^14.1.0",
         "sweetalert2": "^9.10.12",
         "url-loader": "^4.1.1",
         "uuid": "^8.3.2",
