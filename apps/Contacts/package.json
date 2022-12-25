@@ -20,7 +20,7 @@
     "@progress/kendo-theme-default": "^3.7.0",
     "bootstrap": "^4.4.1",
     "convert-csv-to-json": "0.0.15",
-    "copy-webpack-plugin": "^5.1.1",
+    "copy-webpack-plugin": "^6.0.0",
     "font-awesome": "^4.7.0",
     "image-to-base64": "^2.0.1",
     "jquery": "^3.5.0",
